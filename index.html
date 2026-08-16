@@ -286,8 +286,8 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 /* Blizzard ability icon. Fixed box so a slow/blocked image never reflows the
    row, and a sunken plate so the gap reads as deliberate while it loads. */
 .aicon{
-  width:22px;height:22px;border-radius:3px;border:1px solid var(--rule);
-  background:var(--ground-sunken);vertical-align:-5px;margin-right:.42rem
+  width:44px;height:44px;border-radius:4px;border:1px solid var(--rule);
+  background:var(--ground-sunken);vertical-align:middle;margin-right:.5rem
 }
 /* Holds the column when no icon exists, without drawing an empty plate. */
 .aicon.none{display:inline-block;border-color:transparent;background:none}
@@ -1937,7 +1937,7 @@ const ic=(id,sz)=>`<svg width="${sz||12}" height="${sz||12}" aria-hidden="true">
    no Wowhead entry, and without the spacer their titles would hang a glyph's
    width left of every other row in the column. */
 const abilIcon=n=>{const s=ICONS[n];
-  return s?`<img class="aicon" src="assets/icons/${s}.jpg" alt="" loading="lazy" decoding="async" width="22" height="22">`
+  return s?`<img class="aicon" src="assets/icons/${s}.jpg" alt="" loading="lazy" decoding="async" width="44" height="44">`
           :`<span class="aicon none" aria-hidden="true"></span>`;};
 const D=Object.fromEntries(DUNGEONS.map(d=>[d.id,d]));
 
@@ -2068,7 +2068,7 @@ const SLOTORDER=["Head","Shoulder","Back","Chest","Wrist","Hands","Waist","Legs"
   "Neck","Ring","One-hand","Two-hand","Off-hand","Ranged","Trinket"];
 const slotRank=x=>{const i=SLOTORDER.indexOf(x);return i<0?99:i;};
 
-const itemIcon=x=>x.ic?`<img class="aicon" src="assets/icons/${x.ic}.jpg" alt="" loading="lazy" decoding="async" width="22" height="22">`:`<span class="aicon none"></span>`;
+const itemIcon=x=>x.ic?`<img class="aicon" src="assets/icons/${x.ic}.jpg" alt="" loading="lazy" decoding="async" width="44" height="44">`:`<span class="aicon none"></span>`;
 const primChip=p=>(p||[]).map(v=>`<span class="chip pstat p-${v.toLowerCase()}">${esc(v)}</span>`).join("");
 /* Secondaries are spoken as "big mastery, little haste", never in points — and
    the points move with item level anyway, so only the lean is worth printing.
