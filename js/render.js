@@ -848,6 +848,10 @@ function pBoss(id,tab){
      the pieces people chase all season lead the table instead of trailing it.
      Everything else keeps its listing order. */
   const featRank=x=>x.ty==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?3:5;
+  /* who a token is for: these are armour-typed tokens, so the share is the
+     armour class roster; the Curio is everyone by design */
+  const TOKCLS={Cloth:"Mage · Priest · Warlock",Leather:"Druid · Rogue · Monk · Demon Hunter",
+    Mail:"Hunter · Shaman · Evoker",Plate:"Warrior · Paladin · Death Knight",All:"Every class — trade for any set piece"};
   const loot=(b.loot||[]).slice().sort((a,c)=>featRank(a)-featRank(c));
   const lootRows=loot.length?`
   <div class="sec"><h2>Loot</h2><span class="n">${loot.length} items · the chased stuff first</span></div>
@@ -855,7 +859,8 @@ function pBoss(id,tab){
   <table><thead><tr><th>Item</th><th>Slot</th><th>Type</th><th>Stats</th></tr></thead><tbody>
   ${loot.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
     <td class="mono">${esc(x.sl)}</td><td class="mono">${esc(x.ty)}${x.tc?` · ${esc(x.tc)}`:""}</td>
-    <td class="statcell">${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}</td></tr>
+    <td class="statcell">${x.ty==="Token"?`<span class="n">${TOKCLS[x.tc]||"—"}</span>`
+      :`${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}`}</td></tr>
     ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`
       :x.ty==="Trinket"?`<tr class="fxrow"><td colspan="4"><p class="fx pending">Effect not yet published —
       the tooltip carries no Use or Equip text yet; it lands here when the database has it.</p></td></tr>`:""}`).join("")}
