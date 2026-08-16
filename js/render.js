@@ -797,9 +797,21 @@ function pPrep(){
   <p class="note">Every boss also drops ten crests: ${esc(il.crests.n)}; on Heroic, ${esc(il.crests.h)}.${srcMark(["iv_va"])}</p>
 
   <div class="sec"><h2>Tier sets</h2><span class="n">Bosses 2–6, plus the Curio</span></div>
-  <p class="note">Set tokens drop from the four wing bosses and the Twin Fangs — head, shoulders, chest, hands
-  and legs across them — and never from Nek'zali or the Coiled Altar. Ula'tek drops the Slumbering Coil Curio,
-  a token any class can roll that trades for a set piece of your choice.${srcMark(["wh_vr","wg_va"])}</p>
+  <p class="note">Set tokens drop from the four wing bosses and the Twin Fangs — Vashnik holds chests, the
+  Sentinels gloves, the Explorers shoulders, Sszorak legs, the Twins helms — and never from Nek'zali or the
+  Coiled Altar. Tokens have a small chance to arrive Warbound-Until-Equipped on a lower upgrade track. Ula'tek
+  drops the Slumbering Coil Curio on every difficulty: any class rolls it, you can hold only one, and Kirana
+  near the Catalyst in Silvermoon trades it for the set piece of your choice.${srcMark(["wh_vr","wg_va","iv_ts"])}</p>
+  <p class="note">The Catalyst also converts eligible season gear into set pieces — and new this season, a
+  converted piece keeps its original secondary and tertiary stats.${srcMark(["iv_ts"])}</p>
+  <div class="sec"><h2>What the bonuses do</h2><span class="n">${SETBONUS.reduce((a,c)=>a+c.specs.length,0)} spec bonuses · exact, because they don't scale</span></div>
+  ${["Cloth","Leather","Mail","Plate"].map(arm=>{
+    const cs=SETBONUS.filter(x=>x.a===arm);
+    return `<div class="area-h">${arm} — shared tokens</div>`+cs.map(x=>`
+    <div class="card"><h3>${esc(x.c)}</h3><div class="meta">${esc(x.set)}${srcMark(["iv_ts"])}</div>
+    <table><thead><tr><th>Spec</th><th>2-piece</th><th>4-piece</th></tr></thead><tbody>
+    ${x.specs.map(v=>`<tr><td class="mono">${esc(v.s)}</td><td>${esc(v.p2)}</td><td>${esc(v.p4)}</td></tr>`).join("")}
+    </tbody></table></div>`).join("");}).join("")}
 
   <div class="sec"><h2>The Great Vault</h2><span class="n">Six bosses fills it</span></div>
   <p class="note">Raid kills fill the vault's raid row; defeating six bosses in a week maxes the choices, drawn
