@@ -8,9 +8,15 @@ function route(){
   const key=h[0]||"home";
   $$(".page").forEach(p=>p.classList.remove("on"));
   document.body.removeAttribute("data-dungeon");
+  document.body.removeAttribute("data-raid");
+  document.body.removeAttribute("data-boss");
   let page="home",html="";
-  if(key==="dungeons"){page="dungeons";html=pDungeons();}
+  if(key==="dungeons"||key==="mplus"){page="dungeons";html=pDungeons();}
   else if(key==="d"&&D[h[1]]){page="dungeon";document.body.setAttribute("data-dungeon",h[1]);html=pDungeon(h[1],h[2]);}
+  else if(key==="raid"&&h[1]==="prep"){page="prep";document.body.setAttribute("data-raid","");html=pPrep();}
+  else if(key==="raid"){page="raid";document.body.setAttribute("data-raid","");html=pRaid();}
+  else if(key==="r"&&RB[h[1]]){page="boss";document.body.setAttribute("data-raid","");
+    document.body.setAttribute("data-boss",h[1]);html=pBoss(h[1],h[2]);}
   else if(key==="mechanics"){page="mechanics";html=pMechanics();}
   else if(key==="loot"){page="loot";html=pLoot();}
   else if(key==="routes"){page="routes";html=pRoutes();}
@@ -25,9 +31,16 @@ function route(){
   const cur=el.querySelector(".dswitch a[aria-current]");
   if(cur&&cur.parentElement.scrollWidth>cur.parentElement.clientWidth)
     cur.parentElement.scrollLeft=cur.offsetLeft-cur.parentElement.clientWidth/2+cur.offsetWidth/2;
-  $$("#nav a").forEach(a=>{const k=a.dataset.nav;
-    if(k===key||(key==="d"&&k==="dungeons")) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");});
-  document.title=(page==="dungeon"?D[h[1]].name+" — ":page!=="home"?key[0].toUpperCase()+key.slice(1)+" — ":"")+"The Coiled Compendium";
+  /* which nav entry owns this page: module pages roll up to their module */
+  const navKey=(key==="d"||key==="dungeons"||key==="mplus"||key==="routes")?"mplus"
+              :(key==="raid"||key==="r")?"raid":key;
+  $$("#nav a").forEach(a=>{
+    if(a.dataset.nav===navKey) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");});
+  document.title=(page==="dungeon"?D[h[1]].name+" — "
+    :page==="boss"?RB[h[1]].n+" — "
+    :page==="raid"?RAID.name+" — "
+    :page==="prep"?"Raid Prep — "
+    :page!=="home"?key[0].toUpperCase()+key.slice(1)+" — ":"")+"The Coiled Compendium";
   window.scrollTo({top:0,behavior:"instant"});
 }
 addEventListener("hashchange",route);

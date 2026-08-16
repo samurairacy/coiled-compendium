@@ -53,11 +53,15 @@
 
 <header class="bar">
   <a class="brand" href="#/"><svg><use href="#i-serpent"/></svg><span><b>The Coiled Compendium</b><i>Midnight · Season 2</i></span></a>
+  <!-- Two module entries, a rule, then the shared indexes. The modules are
+       places; the indexes are tools that span both. The accent dot is the
+       module signal — nm-mplus warm, nm-raid venom. -->
   <nav id="nav" aria-label="Primary">
-    <a href="#/dungeons" data-nav="dungeons">Dungeons</a>
+    <a href="#/dungeons" data-nav="mplus" class="navmod nm-mplus">Mythic+</a>
+    <a href="#/raid" data-nav="raid" class="navmod nm-raid">Raid</a>
+    <span class="navdiv" aria-hidden="true"></span>
     <a href="#/mechanics" data-nav="mechanics">Mechanics</a>
     <a href="#/loot" data-nav="loot">Loot</a>
-    <a href="#/routes" data-nav="routes">Routes</a>
     <a href="#/season" data-nav="season">Season</a>
     <a href="#/sources" data-nav="sources">Sources</a>
     <a href="#/glossary" data-nav="glossary">Glossary</a>
@@ -74,6 +78,9 @@
     <section class="page" data-page="home" id="p-home"></section>
     <section class="page" data-page="dungeons" id="p-dungeons"></section>
     <section class="page" data-page="dungeon" id="p-dungeon"></section>
+    <section class="page" data-page="raid" id="p-raid"></section>
+    <section class="page" data-page="boss" id="p-boss"></section>
+    <section class="page" data-page="prep" id="p-prep"></section>
     <section class="page" data-page="mechanics" id="p-mechanics"></section>
     <section class="page" data-page="loot" id="p-loot"></section>
     <section class="page" data-page="routes" id="p-routes"></section>
@@ -96,7 +103,7 @@
     Every claim carries its source. Source ledger at <a href="#/sources">Sources</a>.
   </div>
   <div style="text-align:right">
-    Built 16 August 2026 · Engine v1<br>
+    Rebuilt 17 August 2026 · Engine v2 — two modules<br>
     Source material paraphrased throughout. Links go to the originals.
   </div>
 </div></footer>

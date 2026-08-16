@@ -102,6 +102,25 @@
 [data-dungeon="ruby-life-pools"]     { --d-accent:#E0576B; --d-accent-2:#5B8FD6; --d-ink:#1A0A0E; }
 [data-dungeon="temple-of-sethraliss"]{ --d-accent:#4FBBDD; --d-accent-2:#D8B87A; --d-ink:#06151A; }
 
+/* ═══ RAID PALETTE ════════════════════════════════════════════════════
+   One module accent — venom green, measured in Lab at dE>=39 from every
+   dungeon accent — then eight boss accents that DESCEND: green through
+   drowned cyan into abyssal violet, brightest at the entrance, darkest
+   at Ula'tek. Raid pages reuse the --d-* names on purpose: every
+   accent-driven component (pills, chips, switchers, area heads) works
+   on raid pages without a second stylesheet.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{ --r-accent:#2CC966; --r-accent-2:#9680C5; --r-ink:#07200F; }
+body[data-raid]{ --d-accent:var(--r-accent); --d-accent-2:var(--r-accent-2); --d-ink:var(--r-ink); }
+body[data-boss="nekzali"],           [data-boss="nekzali"]           { --d-accent:#79BB74; --d-accent-2:#45BA8E; --d-ink:#182517; }
+body[data-boss="entombed-sentinels"],[data-boss="entombed-sentinels"]{ --d-accent:#45BA8E; --d-accent-2:#00B7AA; --d-ink:#11251D; }
+body[data-boss="vashnik"],           [data-boss="vashnik"]           { --d-accent:#00B7AA; --d-accent-2:#00B1C4; --d-ink:#0B2623; }
+body[data-boss="lost-explorers"],    [data-boss="lost-explorers"]    { --d-accent:#00B1C4; --d-accent-2:#00A8D5; --d-ink:#082529; }
+body[data-boss="sszorak"],           [data-boss="sszorak"]           { --d-accent:#00A8D5; --d-accent-2:#309DDC; --d-ink:#0C252D; }
+body[data-boss="twin-fangs"],        [data-boss="twin-fangs"]        { --d-accent:#309DDC; --d-accent-2:#6F8FD6; --d-ink:#14232F; }
+body[data-boss="coiled-altar"],      [data-boss="coiled-altar"]      { --d-accent:#6F8FD6; --d-accent-2:#9680C5; --d-ink:#1C212F; }
+body[data-boss="ulatek"],            [data-boss="ulatek"]            { --d-accent:#9680C5; --d-accent-2:#2CC966; --d-ink:#241F2D; }
+
 /* ═══ LOCKED LAYER ═══════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -154,6 +173,16 @@ hr{border:none;border-top:1px solid var(--rule);margin:2.2rem 0}
 }
 .bar nav a:hover{color:var(--ink);background:var(--ground-raised)}
 .bar nav a[aria-current]{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* module entries: an accent dot carries the module colour; the divider
+   separates places (modules) from tools (the shared indexes) */
+.navmod{display:inline-flex;align-items:center;gap:.42rem;font-weight:600}
+.navmod::before{content:"";width:7px;height:7px;border-radius:50%;flex:0 0 auto;
+  background:var(--mdot);box-shadow:0 0 6px color-mix(in srgb,var(--mdot) 55%,transparent)}
+.nm-mplus{--mdot:var(--accent)}
+.nm-raid{--mdot:var(--r-accent)}
+.nm-raid[aria-current]{color:var(--r-accent);border-bottom-color:var(--r-accent)}
+.navdiv{width:1px;height:1.05em;background:var(--rule);margin:0 .45rem;flex:0 0 auto;align-self:center}
 .tools{display:flex;gap:.4rem;align-items:center}
 .srch{
   display:flex;align-items:center;gap:.4rem;background:var(--ground-raised);
@@ -213,6 +242,47 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .tile .sub{font-family:var(--face-term);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:.25rem}
 .tile p{font-size:.87rem;color:var(--ink-muted);margin:.6rem 0 .75rem;max-width:none}
 .tile-foot{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;padding-top:.7rem;border-top:1px solid var(--rule-soft)}
+
+/* ═══ MODULE CHOOSER ═══ the homepage's two doors ═════════════════════ */
+.modgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1rem;margin:0 0 .4rem}
+.modcard{
+  display:block;text-decoration:none;color:var(--ink);
+  background:var(--ground-panel);border:1px solid var(--rule);
+  border-top:3px solid var(--mc,var(--accent));
+  padding:1.35rem 1.3rem 1.15rem;transition:transform var(--dur) var(--ease),border-color var(--dur) var(--ease)
+}
+.modcard:hover{transform:translateY(-3px);border-color:var(--mc,var(--accent))}
+.modcard h3{font-size:clamp(1.35rem,2.4vw,1.7rem);margin:.3rem 0 .45rem}
+.modcard p{color:var(--ink-muted);font-size:.93rem;margin:0 0 .95rem}
+.modcard .mk{font-family:var(--face-term);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mc,var(--accent))}
+.modcard .tile-foot{border-top-color:var(--rule-soft)}
+.mc-mplus{--mc:var(--accent)}
+.mc-raid{--mc:var(--r-accent)}
+.modtabs{margin-top:.9rem}
+
+/* ═══ THE DESCENT ═══ raid boss list, wearing its depth colours ═══════ */
+.rlist{display:flex;flex-direction:column;gap:.45rem;margin:0 0 .5rem}
+.rboss{
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.85rem;
+  text-decoration:none;color:var(--ink);
+  background:var(--ground-panel);border:1px solid var(--rule);
+  border-left:4px solid var(--d-accent);
+  padding:.72rem 1rem;transition:transform var(--dur) var(--ease),background var(--dur) var(--ease)
+}
+.rboss:hover{transform:translateX(4px);background:var(--ground-raised)}
+.rboss .rnum{
+  font-family:var(--face-term);font-size:.8rem;width:1.9em;height:1.9em;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--d-accent);color:var(--d-ink);border-radius:3px;font-weight:700
+}
+.rboss .rname{font-family:var(--face-display);font-weight:600;font-size:1.05rem}
+.rboss .rsub{grid-column:2;color:var(--ink-muted);font-size:.85rem}
+.rboss .rabil{font-family:var(--face-term);font-size:.7rem;letter-spacing:.06em;color:var(--ink-faint);text-transform:uppercase}
+.dswitch .rnum{
+  font-family:var(--face-term);font-size:.68rem;width:1.6em;height:1.6em;margin-right:.35rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--d-accent);color:var(--d-ink);border-radius:3px;font-weight:700
+}
 
 /* ═══ IMAGERY ═══ the accent scrim keeps colour doing the wayfinding ═══ */
 .tban{display:block;margin:-1.05rem -1.05rem .85rem;height:96px;overflow:hidden;position:relative}

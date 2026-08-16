@@ -272,35 +272,55 @@ function disputeBlock(dg){
 
 
 /* ═══ PAGES ═══════════════════════════════════════════════════════════ */
+/* The homepage is the module chooser. Two large cards carry the real choice;
+   the indexes get a thin row beneath so "I just have a question" still has a
+   door. The dungeon grid lives on the Mythic+ landing now — it stopped being
+   the whole site the day the raid arrived. */
 function pHome(){
   const now=new Date(), open=new Date(SEASON.opens+"T15:00:00Z");
   const days=Math.ceil((open-now)/864e5), wk=Math.floor((now-open)/6048e5)+1;
+  const nAb=ALL.length, nB=RAID.bosses.length;
   return `<div class="hero">
     <div class="kicker">Patch 12.1 · The Curse of Ula'tek</div>
-    <h1>Eight dungeons, one season, every claim sourced.</h1>
-    <p class="lede">A working reference for Midnight Season 2 Mythic+. Built from creator testing, cross-checked
-    against Blizzard's own notes, and honest about which is which — because the fastest way to be wrong about a
-    new season is to read one confident guide.</p>
+    <h1>Eight dungeons. Eight bosses. Every claim sourced.</h1>
+    <p class="lede">A working reference for Midnight Season 2 — the Mythic+ pool and The Venomous Abyss. Built from
+    creator testing, cross-checked against Blizzard's own notes, and honest about which is which — because the
+    fastest way to be wrong about a new season is to read one confident guide.</p>
     <div class="status">${ic("i-clock",15)}<div>${now<open
-      ? `<b>Season 2 opens in ${days} day${days>1?"s":""}.</b> ${esc(SEASON.opensLocal)}. Everything here is pre-launch material until it isn't.`
+      ? `<b>Season 2 opens in ${days} day${days>1?"s":""}.</b> ${esc(SEASON.opensLocal)}. The raid opens the same week. Everything here is pre-launch material until it isn't.`
       : `<b>Season 2 is live — week ${wk}.</b> Opened ${esc(SEASON.opensLocal)}. Anything still marked PTR predates launch and should be checked against the live game.`}</div></div>
   </div>
 
-  <div class="sec"><h2>Start here</h2><span class="n">Three ways in</span></div>
+  <div class="sec"><h2>Choose your poison</h2><span class="n">Two modules</span></div>
+  <div class="modgrid">
+    <a class="modcard mc-mplus notch" href="#/dungeons">
+      <div class="mk">Module 01 · five players, one timer</div>
+      <h3>Mythic+</h3>
+      <p>The Season 2 pool: ${DUNGEONS.length} dungeons with the three things that kill groups up front,
+      then bosses, trash, loot and a pug route for each.</p>
+      <div class="tile-foot"><span class="pill">${DUNGEONS.length} dungeons</span>
+        <span class="pill">${nAb} abilities</span><span class="pill">${ic("i-clock")}timed</span></div></a>
+    <a class="modcard mc-raid notch" href="#/raid">
+      <div class="mk">Module 02 · the other half of the week</div>
+      <h3>The Venomous Abyss</h3>
+      <p>${nB} bosses inside the Vaults of Atal'Utek, ending at Ula'tek — the serpent the patch is named
+      for. Covered on Normal and Heroic.</p>
+      <div class="tile-foot"><span class="pill new" style="background:var(--r-accent);color:var(--r-ink)">Opens with the season</span>
+        <span class="pill">${nB} bosses</span><span class="pill">Normal · Heroic</span></div></a>
+  </div>
+
+  <div class="sec"><h2>Or go straight to a question</h2><span class="n">The indexes span both</span></div>
   <div class="split">
-    <a class="card acc" href="#/dungeons" style="text-decoration:none;display:block"><h3>I need a dungeon</h3>
-      <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">All eight, each with the three things that
-      actually kill groups up front, then bosses, trash and a pug route.</p></a>
     <a class="card acc" href="#/mechanics" style="text-decoration:none;display:block"><h3>I need one answer</h3>
       <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">Every ability in the season, filterable by
-      what stops it. "Show me everything a poison dispel solves" is one click.</p></a>
+      what stops it — and by where it comes from. "Everything a poison dispel solves" is one click.</p></a>
+    <a class="card acc" href="#/loot" style="text-decoration:none;display:block"><h3>I need gear</h3>
+      <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">Every item, filterable by slot, armour,
+      stats and who it's for.</p></a>
     <a class="card acc" href="#/sources" style="text-decoration:none;display:block"><h3>Why should I believe this?</h3>
       <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">The source ledger, how the sources are weighed, and a list
       of things this guide does not yet know.</p></a>
   </div>
-
-  <div class="sec"><h2>The pool</h2><span class="n">Eight dungeons</span></div>
-  <div class="grid">${DUNGEONS.map(tile).join("")}</div>
 
   <div class="sec"><h2>Open questions</h2><span class="n">${DISPUTES.length} contested</span></div>
   <p class="note">Most guides pick a side quietly. Where the sources actually disagree, this one shows both and says
@@ -320,9 +340,19 @@ function tile(d){
 }
 const countAb=d=>[...d.areas.flatMap(a=>a.mobs),...d.encounters].reduce((n,m)=>n+(m.a||[]).length,0);
 
+/* Inside a module, a second-level bar carries that module's own pages.
+   Same .tabs component the dungeon detail already uses — one vocabulary. */
+const modbar=(mod,cur)=>{
+  const T=mod==="mplus"
+    ?[["dungeons","Dungeons","#/dungeons"],["routes","Routes","#/routes"]]
+    :[["raid","Bosses","#/raid"],["prep","Prep","#/raid/prep"]];
+  return `<div class="tabs modtabs">${T.map(([k,l,h])=>
+    `<a href="${h}" ${k===cur?'aria-current="page"':""}>${l}</a>`).join("")}</div>`;};
+
 function pDungeons(){
-  return `<div class="crumb"><a href="#/">Compendium</a> › <em>Dungeons</em></div>
+  return `<div class="crumb"><a href="#/">Compendium</a> › <em>Mythic+</em></div>
   <h1>The Season 2 pool</h1>
+  ${modbar("mplus","dungeons")}
   <p class="lede">Five Midnight dungeons, two returning from Battle for Azeroth and one from Dragonflight. The two
   BfA returns are the ones most groups have stale knowledge of — both were changed substantially.</p>
   <div class="sec"><h2>All eight</h2><span class="n">Sorted by origin</span></div>
@@ -629,9 +659,82 @@ function pLoot(){
 function paintMech(){ $("#p-mechanics").innerHTML=pMechanics(); feedStart("#mfeed",MRES,mechRow,mechNote); }
 function paintLoot(){ $("#p-loot").innerHTML=pLoot(); feedStart("#lfeed",LRES,lootIdxRow,lootNote); }
 
+/* ═══ RAID PAGES ═══ The Venomous Abyss — landing, boss detail, prep ═══ */
+
+/* The descent strip: eight bosses in kill order, each wearing its depth
+   colour. The palette walks venom green down into abyssal violet — the
+   literal shape of the raid. */
+const bossTile=b=>`<a class="rboss" href="#/r/${b.id}" data-boss="${b.id}">
+  <span class="rnum">${b.o}</span>
+  <span class="rname">${esc(b.n)}</span>
+  ${b.sub?`<span class="rsub">${esc(b.sub)}</span>`:""}
+  <span class="rabil">${(b.phases?b.phases.flatMap(p=>p.a):b.a||[]).length||"—"} abilities</span></a>`;
+
+function pRaid(){
+  const nAb=RAID.bosses.reduce((n,b)=>n+(b.phases?b.phases.flatMap(p=>p.a):b.a||[]).length,0);
+  return `<div class="crumb"><a href="#/">Compendium</a> › <em>Raid</em></div>
+  <h1>${esc(RAID.name)}</h1>
+  ${modbar("raid","raid")}
+  <div class="tile-foot" style="border:none;padding:.8rem 0 0">
+    <span class="pill new" style="background:var(--r-accent);color:var(--r-ink)">Patch ${RAID.patch}</span>
+    <span class="pill">${ic("i-boss")}${RAID.bosses.length} bosses</span>
+    <span class="pill">Normal · Heroic</span>
+    ${nAb?`<span class="pill">${nAb} abilities</span>`:""}</div>
+  <p class="lede">${esc(RAID.loc)} — beneath the same vaults Altar of Fangs digs under. Eight bosses in a fixed
+  order, ending at Ula'tek, the serpent the patch is named for.</p>
+  <p class="note">${ic("i-info",13)} Covered here: <b>Normal and Heroic</b>. Mythic and Raid Finder are out of
+  scope for now — a decision, not an oversight. The structure accommodates both if that changes.</p>
+
+  <div class="sec"><h2>The descent</h2><span class="n">Kill order</span></div>
+  <div class="rlist">${RAID.bosses.map(bossTile).join("")}</div>
+
+  <div class="sec"><h2>When it opens</h2><span class="n">Staggered</span></div>
+  <table><thead><tr><th>Week</th><th>What opens</th></tr></thead><tbody>
+  ${RAID.schedule.map(([w,x])=>`<tr><td class="mono">${esc(w)}</td><td>${esc(x)}${srcMark(["wh_va"])}</td></tr>`).join("")}
+  </tbody></table>
+  <p class="note">Raid Finder wants item level ${RAID.minIlvl} to queue.${srcMark(["wh_va"])}</p>`;
+}
+
+function pPrep(){
+  return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>Prep</em></div>
+  <h1>Before you zone in</h1>
+  ${modbar("raid","prep")}
+  <p class="lede">Lockout, schedule and what to bring. The parts of raid night that are decided before the
+  first pull.</p>
+  <div class="sec"><h2>The lockout</h2><span class="n">Once a week, per difficulty</span></div>
+  <p class="note">Normal and Heroic bosses each award loot once per character per week. Unlike Mythic+, there is
+  no end-of-run chest and no repeatable farm — the boss is the loot table, once.${srcMark(["wh_va"])}</p>
+  <div class="sec"><h2>Release schedule</h2><span class="n">${RAID.schedule.length} weeks</span></div>
+  <table><thead><tr><th>Week</th><th>What opens</th></tr></thead><tbody>
+  ${RAID.schedule.map(([w,x])=>`<tr><td class="mono">${esc(w)}</td><td>${esc(x)}${srcMark(["wh_va"])}</td></tr>`).join("")}
+  </tbody></table>
+  <div class="sec"><h2>Consumables and composition</h2><span class="n">Lands with the boss guides</span></div>
+  <p class="note">${ic("i-warn",13)} Not yet written — it will be built from the same sources as the boss pages
+  rather than guessed at now.</p>`;
+}
+
+function pBoss(id,tab){
+  const b=RB[id]; if(!b) return `<p>Unknown boss.</p>`;
+  const abils=b.phases?b.phases.flatMap(p=>p.a):(b.a||[]);
+  const head=`<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>${esc(b.n)}</em></div>
+  <nav class="dswitch" id="dswitch" aria-label="Switch boss">${RAID.bosses.map(x=>
+    `<a href="#/r/${x.id}" data-boss="${x.id}" ${x.id===b.id?'aria-current="page"':""}
+      title="Boss ${x.o} — ${esc(x.n)}"><span class="rnum">${x.o}</span>${esc(x.short)}</a>`).join("")}</nav>
+  <h1>${esc(b.n)}</h1>
+  <div class="tile-foot" style="border:none;padding:.8rem 0 0">
+    <span class="pill">Boss ${b.o} of ${RAID.bosses.length}</span>
+    <span class="pill">Normal · Heroic</span></div>
+  ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}`;
+  if(!abils.length) return head+`
+  <p class="note">${ic("i-warn",13)} The order and name are confirmed against Wowhead; the encounter guide has
+  not been written yet. Bosses are being sourced and added one at a time — the same way the dungeons were.</p>`;
+  return head+`<div class="bossabils">${abils.map(a=>abilityRow(a,null)).join("")}</div>`;
+}
+
 function pRoutes(){
-  return `<div class="crumb"><a href="#/">Compendium</a> › <em>Routes</em></div>
-  <h1>Pug routes, all eight</h1>
+  return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/dungeons">Mythic+</a> › <em>Routes</em></div>
+  <h1>Pug routes, all ${DUNGEONS.length===8?"eight":DUNGEONS.length}</h1>
+  ${modbar("mplus","routes")}
   <p class="lede">Conservative by design — no skips, minimised interrupts per pull, minimised danger. These are
   week-one routes for groups that have not played the dungeons, not title-push routes.</p>
   <p class="note">${ic("i-warn",13)} All routing below is from PTR testing. Enemy Forces counts, pack composition and

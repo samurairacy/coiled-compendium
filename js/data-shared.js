@@ -14,6 +14,7 @@ const SOURCES={
  bz0813 :{l:"BLIZZARD",t:1,k:"blizzard", a:"Blizzard",b:"Hotfixes: 13 August 2026",d:"2026-08-13",u:"https://news.blizzard.com/en-us/article/24296142/hotfixes-august-14-2026"},
  bz0814 :{l:"BLIZZARD",t:1,k:"blizzard", a:"Blizzard",b:"Hotfixes: 14 August 2026",d:"2026-08-14",u:"https://news.blizzard.com/en-us/article/24296142/hotfixes-august-14-2026"},
  wh_dt  :{l:"WOWHEAD",t:2,k:"wowhead",  a:"Wowhead",b:"Midnight Season 2 Dungeon Tuning for Patch 12.1",d:"2026-07-25",u:"https://www.wowhead.com/news/midnight-season-2-dungeon-tuning-for-patch-12-1-382238"},
+ wh_va  :{l:"WOWHEAD",t:2,k:"wowhead",  a:"Wowhead",b:"The Venomous Abyss Raid Overview",d:"2026-08-17",u:"https://www.wowhead.com/guide/midnight/raids/the-venomous-abyss-overview-location-rewards-bosses"},
  iv_ov  :{l:"ICY VEINS",t:2,k:"icyveins",a:"Icy Veins (Gogogadgetkat)",b:"Midnight Mythic+ Season 2 Guide",d:"2026-08-05",u:"https://www.icy-veins.com/wow/midnight-mythic-plus-season-2-guide"},
  iv_aof :{l:"ICY VEINS",t:2,k:"icyveins",a:"Icy Veins (Petko)",b:"Altar of Fangs Dungeon Guide",d:"2026-08-11",u:"https://www.icy-veins.com/wow/altar-of-fangs-dungeon-guide"},
  iv_bv  :{l:"ICY VEINS",t:2,k:"icyveins",a:"Icy Veins (Petko)",b:"The Blinding Vale Dungeon Guide",d:"2026-08-11",u:"https://www.icy-veins.com/wow/the-blinding-vale-dungeon-guide"},
