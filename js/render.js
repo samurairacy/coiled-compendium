@@ -1008,7 +1008,20 @@ function pGlossary(){
    ["Ataraxis","Atroxus, Ataraxus","Voidscar Arena second boss. The creator transcript uses both spellings within one video; the written guide settles on Atroxus."],
    ["Taz'grah","Ta'agra, Taz'Rah","Voidscar Arena first boss."],
    ["Geti'ikku, Cut of Death","Gatiku","The King's Rest two-hand sword. Confirmed by the published loot table."],
-   ["Aku'mai the Light Hunter","Ikuzz the Light Hunter","Genuinely unresolved. Aku'mai is a real Blackfathom Deeps name, which is exactly the kind of substitution auto-captioning makes — so the written guide's spelling may well be right."]
+   ["Aku'mai the Light Hunter","Ikuzz the Light Hunter","Genuinely unresolved. Aku'mai is a real Blackfathom Deeps name, which is exactly the kind of substitution auto-captioning makes — so the written guide's spelling may well be right."],
+   ["Sszorak","Sorak, Sister Rag, Sisters of Elune, Coven","Auto-captions, raid guide videos"],
+   ["Nek'zali the Soulcoiler","Nexxus-Asol, Exzolar the Soul Coiler","Auto-captions, raid guide videos"],
+   ["Mor'zahi","Morzaki, Mor'oes, Ursoc","Auto-captions, raid guide videos"],
+   ["Vashnik","Vashj'nir","Auto-captions, raid guide videos"],
+   ["Scrollsage Iku","Ik'kris, Ik'kinu","Auto-captions, raid guide videos"],
+   ["First Mate Nama","Na'masu, Namha, Namu","Auto-captions, raid guide videos"],
+   ["Trader Gebbo","Gabbro, Gebo, GBO, Rider Gabbro","Auto-captions, raid guide videos"],
+   ["Vexhul","Vexil, Vexoul, Vex Soul, Vex Hoole","Auto-captions, raid guide videos"],
+   ["Ithraz","Itra's, Ithis, Itherael's","Auto-captions, raid guide videos"],
+   ["Restless Amani","Restless Ammani, ammoniads","Auto-captions, raid guide videos"],
+   ["Coalesced Venom","Collapsed Venoms, Toxic Telyu orbs","Auto-captions, raid guide videos"],
+   ["Dreadmarch","Death March, Dread March","Auto-captions, raid guide videos"],
+   ["Ula'tek's Presence","Mulatek's presence","Auto-captions, raid guide videos"]
   ];
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Glossary</em></div>
   <h1>Names, and the ones that are wrong everywhere</h1>
