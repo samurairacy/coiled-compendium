@@ -155,6 +155,10 @@ to `main` publishes. No CI, no Actions — and `tools/check.py` locally is
 the gate that replaces them.
 
 - `.nojekyll` stays.
+- **Pages serves JS/CSS with `max-age=600`**: after a push, index.html is
+  fresh but scripts can stay stale for up to ten minutes. When live-checking
+  a deploy, verify with `fetch(url, {cache:"no-store"})` before diagnosing —
+  a "broken" deploy that is ten minutes old is usually just this.
 - `.gitattributes` pins html/js/css/py to LF.
 - No `CNAME`; no bare `LICENSE` file, deliberately — the README's
   *Licensing and attribution* section is the licence position. Don't "fix"
