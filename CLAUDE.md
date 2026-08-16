@@ -78,10 +78,13 @@ item icons keyed by Blizzard slug.
   all-three-primaries plus a stat effect (Gebbo's Bottomless Bag, Vile
   Vial, Ruby Whelp Shell) is marked for everyone, while all-three-primaries
   plus a damage-only effect (Sapling of the Dawnroot) stays DPS-only.
-  All 41 trinkets were re-adjudicated against this on 2026-08-17. Note the
-  label collision: in **loot** `ro`, hunters count as `mdps` (they share
-  Agility gear); in **ability** `r`, `rdps` means "stands at range", so a
-  hunter is `rdps` there. Different axes, same words — check which field.
+  All 41 trinkets were re-adjudicated against this on 2026-08-17.
+  **Two axes wear the same words — check which field you are editing.**
+  Loot `ro` is the *gear pool*: every hunter takes Agility, so all three
+  specs read `mdps` there. Ability `r` is *positioning*: Beast Mastery and
+  Marksmanship are `rdps`, and **Survival is a real melee spec — `mdps` on
+  both axes.** So "hunter" is never a synonym for either label; only the
+  spec settles it, and a mechanic that baits melee reaches Survival.
 - **The role lens** rides every boss and dungeon page: Everyone / Tank /
   Healer / Melee / Ranged, persisted (`cc-role`) and URL-carried (`?r=tank`).
   Ability `r:` vocabulary is tank/healer/dps plus **mdps/rdps refinements**

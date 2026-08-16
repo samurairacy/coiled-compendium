@@ -207,8 +207,12 @@ const secChip=x=>{
 const isCantrip=i=>i.ty!=="Trinket"&&!!(i.u||i.e);
 /* Role is the one field on this page nobody published — it is read off the
    primary stat and the effect, so it ships marked UNCONFIRMED rather than
-   dressed up as sourced. Hunters sit under melee: they cannot use Intellect
-   trinkets, which is the only distinction that matters here. */
+   dressed up as sourced.
+   Note what "Melee DPS" means HERE: this axis is the gear pool, not where you
+   stand. Every hunter takes Agility, so all three specs read as melee for loot
+   — and Survival genuinely is melee anyway. The ability role lens (r:) asks
+   the other question, positioning, where Beast Mastery and Marksmanship are
+   ranged and Survival stays melee. Same words, different axes. */
 const LROLE={tank:"Tank",healer:"Healer",rdps:"Ranged DPS",mdps:"Melee DPS"};
 const roleChips=i=>(i.ro||[]).map(r=>`<span class="rochip r-${r}" title="Unconfirmed — inferred from the primary stat and the effect, not from a published source.">${esc(LROLE[r]||r)}</span>`).join("");
 const cantrip=x=>isCantrip(x)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
