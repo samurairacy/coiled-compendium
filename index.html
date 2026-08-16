@@ -52,6 +52,20 @@
   --signal-warn:   #E0A93B;
   --signal-ok:     #6FA96B;
 
+  /* ── dispel families. WoW's own debuff-border hues, lightened for this
+        ground. Players already read these off raid frames, so the colour is
+        free to learn. Never the only cue: every chip keeps its full label. ── */
+  --dis-magic:   #4FA8FF;
+  --dis-curse:   #B478FF;
+  --dis-poison:  #4FBF4F;
+  /* The game's disease brown is a near-match for this site's gold accent, which
+     every other counter already wears — it disappeared. Pushed to a pallid
+     yellow: same sickly reading, and the one hue this palette had free. */
+  --dis-disease: #E3DA5E;
+  --dis-bleed:   #E0665A;
+  --dis-enrage:  #E08A3C;
+  --dis-purge:   #4FD3E4;
+
   /* ── source tiers ─────────────────────────────────────────────────── */
   --tier1: #7FB4D8;
   --tier2: #8FBE88;
@@ -270,6 +284,23 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 }
 .chip svg{width:11px;height:11px;flex:none;opacity:.85}
 .chip.c-counter{border-style:dashed;border-color:var(--accent-deep);color:var(--accent)}
+/* ═══ DISPEL FAMILY ═══════════════════════════════════════════════════════
+   Two dimensions, no extra words. Hue = which school of removal, taken from
+   the game's debuff borders. Border style = which way it points: dashed for
+   the defensive dispels that take something off your own side, solid for the
+   offensive ones that strip an enemy. The label is always present, so the
+   colour is a shortcut and never the carrier. */
+.chip.x-magic  {border-color:var(--dis-magic);  color:var(--dis-magic)}
+.chip.x-curse  {border-color:var(--dis-curse);  color:var(--dis-curse)}
+.chip.x-poison {border-color:var(--dis-poison); color:var(--dis-poison)}
+.chip.x-disease{border-color:var(--dis-disease);color:var(--dis-disease)}
+.chip.x-bleedcl{border-color:var(--dis-bleed);  color:var(--dis-bleed)}
+.chip.x-soothe {border-color:var(--dis-enrage); color:var(--dis-enrage); border-style:solid}
+.chip.x-purge  {border-color:var(--dis-purge);  color:var(--dis-purge);  border-style:solid}
+/* the dispel glyph carries the hue too, rather than staying muted accent */
+.chip[class*="x-magic"] svg,.chip[class*="x-curse"] svg,.chip[class*="x-poison"] svg,
+.chip[class*="x-disease"] svg,.chip[class*="x-bleedcl"] svg,.chip[class*="x-soothe"] svg,
+.chip[class*="x-purge"] svg{opacity:1}
 .chip.c-tank{border-color:#8C6BC4;color:#B79BE4}
 .chip.c-heal{border-color:#4E8F6B;color:#7DC49A}
 .chip.c-dps{border-color:#A6693C;color:#D69A63}
@@ -1953,8 +1984,10 @@ function srcMark(ids){
   }).join("");
 }
 const alt=o=>o&&o.alt?`<span class="alt" title="This entity is written differently by different sources. Both are shown so a name from either guide finds it.">also: ${esc(o.alt)}</span>`:"";
+/* The id rides along as a class so a single vocabulary entry can be themed
+   without touching any of the four places chips are rendered. */
 const chip=(id,map,cls)=>{const t=(map||TAGS)[id];if(!t)return"";
-  return `<span class="chip ${cls||""}">${ic(t.i)}${esc(t.l)}</span>`;};
+  return `<span class="chip ${cls||""} x-${id}">${ic(t.i)}${esc(t.l)}</span>`;};
 const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
   healer:`<span class="chip c-heal">${ic("i-heal")}Healer</span>`,
   dps:`<span class="chip c-dps">${ic("i-dps")}DPS</span>`}[r]||"");
