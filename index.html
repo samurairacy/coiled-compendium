@@ -1750,7 +1750,10 @@ function srcMark(ids){
   if(!ids||!ids.length) return `<span class="src t4" title="No source recorded. Treat as unverified.">?</span>`;
   return ids.map(id=>{const s=SOURCES[id];if(!s)return"";
     const lbl=s.l||s.a.toUpperCase();
-    return `<span class="src t${s.t}" title="${esc(s.a)} — ${esc(s.b)} (${s.d}). Tier ${s.t}.">${lbl}</span>`;
+    /* The tier still sets the colour via t${s.t}, but is not spelled out: the
+       Sources page no longer explains what a tier is, so a bare "Tier 3" in a
+       tooltip would be a number the reader has no way to interpret. */
+    return `<span class="src t${s.t}" title="${esc(s.a)} — ${esc(s.b)} (${s.d})">${lbl}</span>`;
   }).join("");
 }
 const alt=o=>o&&o.alt?`<span class="alt" title="This entity is written differently by different sources. Both are shown so a name from either guide finds it.">also: ${esc(o.alt)}</span>`:"";
@@ -2164,71 +2167,29 @@ function pSeason(){
 }
 
 function pSources(){
-  const byTier=[0,1,2,3,4].map(t=>[t,Object.entries(SOURCES).filter(([,s])=>s.t===t)]).filter(([,l])=>l.length);
+  /* Publishers, most-trusted first. This page deliberately does NOT print the
+     tier numbers — ordering carries the same information without turning a
+     reader-facing page into a description of our own methodology. The tiers
+     still exist in SOURCES.t and still drive the source marks. A publisher
+     with no entry here falls back to its own author name, so adding one to
+     SOURCES cannot silently drop it off this page. */
+  const GROUPS=[["blizzard","Blizzard"],["journal","Blizzard Encounter Journal"],
+                ["capture","In-game capture"],["wowhead","Wowhead"],
+                ["icyveins","Icy Veins"],["creator","Tactyks"]];
+  const seen=new Set(GROUPS.map(([k])=>k));
+  const extra=[...new Set(Object.values(SOURCES).map(s=>s.k))].filter(k=>!seen.has(k))
+                .map(k=>[k,(Object.values(SOURCES).find(s=>s.k===k)||{}).a||k]);
+  const groups=[...GROUPS,...extra]
+    .map(([k,label])=>[label,Object.values(SOURCES).filter(s=>s.k===k)])
+    .filter(([,l])=>l.length);
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Sources</em></div>
   <h1>Where all of this came from</h1>
-  <p class="lede">The word "authoritative" is earned by showing your working, not by writing more words than the
-  next guide. Every factual claim in this compendium carries a source mark. Hover one anywhere on the site to see
-  who said it, when, and at what tier.</p>
-  <div class="sec"><h2>The tier system</h2><span class="n">How much weight a source gets</span></div>
-  <table><thead><tr><th>Tier</th><th>Sources</th><th>Treatment</th></tr></thead><tbody>
-  <tr><td class="mono">1</td><td>Blizzard directly — patch notes, hotfixes, the in-game Encounter Journal</td><td>Settles a question outright.</td></tr>
-  <tr><td class="mono">2</td><td>Wowhead · Icy Veins</td><td>Reliable, not infallible.</td></tr>
-  <tr><td class="mono">3</td><td>Established creators</td><td>Strong on synthesis and on what patch notes omit; weak on citation. Numbers drift with hotfixes.</td></tr>
-  <tr><td class="mono">4</td><td>SEO and boosting sites</td><td>Contradict each other freely. Corroboration only, never load-bearing.</td></tr>
-  </tbody></table>
-  ${byTier.map(([t,l])=>`<div class="sec"><h2>Tier ${t}</h2><span class="n">${l.length} source${l.length>1?"s":""}</span></div>
-    <table><thead><tr><th>Author</th><th>Item</th><th>Date</th></tr></thead><tbody>
-    ${l.map(([,s])=>`<tr><td>${esc(s.a)}</td><td>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${esc(s.b)}</a>`:esc(s.b)}</td><td class="mono">${s.d}</td></tr>`).join("")}
+  <p class="lede">Every factual claim in this compendium carries a source mark. Hover one anywhere on the
+  site to see who said it and when. The sources are listed here in the order they are trusted.</p>
+  ${groups.map(([label,l])=>`<div class="sec"><h2>${esc(label)}</h2><span class="n">${l.length} item${l.length>1?"s":""}</span></div>
+    <table><thead><tr><th>Item</th><th>Date</th></tr></thead><tbody>
+    ${l.map(s=>`<tr><td>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${esc(s.b)}</a>`:esc(s.b)}${s.a&&s.a!==label?` <span class="n">${esc(s.a)}</span>`:""}</td><td class="mono">${esc(s.d||"—")}</td></tr>`).join("")}
     </tbody></table>`).join("")}
-  <div class="sec"><h2>The honest problem with this edition</h2><span class="n">Read it</span></div>
-  <p class="note"><b>Edition 4.</b> Every dungeon now carries a timer, a location, a teleport, a loot table and a
-  call sheet. The compendium's largest structural gap — six unknown timers — is closed, and the assignment tables
-  turn each dungeon page into something you can actually read out loud before a pull. Four source families now
-  underpin the work: Blizzard directly, two tier-2 publishers, and one creator channel.</p>
-  <p class="note"><b>Edition 3.</b> Blizzard's own Encounter Journal now underpins every boss in all eight dungeons —
-  28 encounters, nothing missing. That is tier-1 text, and where it disagreed with a guide it won: it settled two open
-  disputes, corrected roughly forty mechanics, and overturned nearly every contested boss name. Trash and routing
-  remain guide-sourced, which is why the coverage badge on each dungeon page now reports the two layers separately.</p>
-  <p class="note">The earlier caveat, kept for the record: the first edition ran on <b>one channel</b>, and said so. A second,
-  independent tier-2 source now covers <b>seven of the eight dungeons</b> — so those pages carry two sets of eyes
-  and the coverage badge says <em>corroborated</em>. <b>Temple of Sethraliss is the exception</b>: that publisher
-  has no guide for it, so the page remains one person's pre-launch testing and is badged accordingly. The merge
-  did not simply add words. It surfaced dozens of proper-noun conflicts, three new open disputes, and several
-  mechanics the first source omitted entirely — all of which is listed below rather than quietly absorbed.</p>
-  <div class="sec"><h2>Editorial correction</h2><span class="n">Edition 5</span></div>
-  <p class="note">Earlier editions quoted the Encounter Journal's exact damage figures. That was a mistake for a
-  Mythic+ reference: those values are measured at one difficulty and scale with key level and affixes, so they read
-  as precision that does not survive contact with an actual key. Ninety-six ability descriptions have been converted
-  to a <a href="#/glossary">six-step qualitative scale</a>. Static values — percentages, durations, radii, stack
-  thresholds — are untouched and remain quoted exactly, because those genuinely do not move.</p>
-  <div class="sec"><h2>What the dungeon overviews changed</h2><span class="n">Edition 4</span></div>
-  <table><thead><tr><th>Outcome</th><th>What happened</th></tr></thead><tbody>
-  <tr><td class="mono"><b>Gap closed</b></td><td><b>All eight timers.</b> Six were unknown and two rested on tier-4 guesses. Murder Row 34, King's Rest 33, Temple of Sethraliss 33, Den of Nalorakk 32, Blinding Vale 31, Voidscar 30, Altar of Fangs 29, Ruby Life Pools 28. The two tier-4 guesses were both correct, and Altar of Fangs is confirmed independently by two sources.</td></tr>
-  <tr><td class="mono"><b>New capability</b></td><td>A <b>call sheet</b> on every dungeon — every interrupt, dispel and purge with the mob and where it appears, straight from the publisher's own assignment tables. This is the page to read in the sixty seconds before a pull, and it is what the print stylesheet was built for.</td></tr>
-  <tr><td class="mono"><b>Added</b></td><td>Locations, waypoints and the teleport spell name for all eight. Profession recipes, the Mummified Raptor Skull mount from King Dazar, and the Viable Cobra Egg pet from Merektha. <b>Temple of Sethraliss finally has a loot table</b>, which closes the last loot gap in the pool.</td></tr>
-  <tr><td class="mono"><b>Corrected</b></td><td><b>Rav'i's Regurgitate is dispellable</b>, confirming what the journal's Disease tag implied — so disease removal matters in two dungeons, not one. <b>Insatiable Hunger is a removable curse</b>, which neither creator guide mentions and which defuses the worst pack in Den of Nalorakk. <b>T'zala's Savage Maul is dispellable</b>, changing the tank's answer on King Dazar. Murder in a Row's bleed is cleansable.</td></tr>
-  <tr><td class="mono"><b>New dispute</b></td><td>Whether Lightwarden Ruia's <b>Pulverizing Strikes can be dodged</b>. The creator guide says move when marked; the tier-2 overview says the cones lock on and you should stand still. If the second is right, the first advice actively drags the cone across your allies.</td></tr>
-  <tr><td class="mono"><b>Sharpened</b></td><td>The King's Rest trash count gained a tier-2 voice for "pull every mob" — but that source predates the routing video claiming it changed, so <b>date order beats tier</b> and the dispute stays open. It is now the oldest unanswered question here and the cheapest to settle.</td></tr>
-  <tr><td class="mono"><b>Source quality</b></td><td>Noted, not merged: the tier-2 loot tables list <b>Atroxus</b> — a Voidscar boss — as dropping a Murder Row item, and give the same weapon name to two different slots on two different bosses. Their own headings misspell Melidrussa and Erkhart. Reliable, not infallible, exactly as the tier system says.</td></tr>
-  </tbody></table>
-  <div class="sec"><h2>What the Encounter Journal changed</h2><span class="n">Edition 3</span></div>
-  <table><thead><tr><th>Outcome</th><th>What happened</th></tr></thead><tbody>
-  <tr><td class="mono"><b>Settled</b></td><td>Kyrakka joins at <b>40%</b>, not 50% — and the threshold applies to whichever boss reaches it first, which no guide mentions. <b>Axegrinder does clear Ritual Venom</b>, because Bloodletting triggers on Zul'jan's Physical abilities. Both moved out of the open list and into the record.</td></tr>
-  <tr><td class="mono"><b>Renamed</b></td><td>The tier-2 guide was right on essentially every contested name, and the journal confirms it: Kystia Manaheart, Zaen Bladesorrow, Xathuux, Lithiel Cinderfury, Ikuzz, Lightwarden Ruia, Ziekket, Taz'Rah, Atroxus, Charonus, King Dazar, Adderis, Galvazzt. Primary names now follow the journal; the caption spellings survive as aliases so either one still finds the page.</td></tr>
-  <tr><td class="mono"><b>Corrected</b></td><td>Xathuux's Legion Strike reduces healing received by <b>80% for 8 seconds</b>. Galvazzt's beam is <b>250%</b> physical damage taken, not 200%. The Avatar's Corruption is <b>+300%</b> physical taken and −33% healing done, and Tormentors are siphoned at 25% for 0.7% each — not "3% per wave". Sentinel of Winter's squalls <b>roam for 90 seconds</b> rather than briefly rotating. Charonus spawns an orb near <b>every player</b>, not three. The Writhing Coil's adds are its health bar, and Undermining fires <b>where each add dies</b>, not from the centre.</td></tr>
-  <tr><td class="mono"><b>Added</b></td><td>Rav'i's Ravenous Stomp breaks stalactites that <b>stun for 2 seconds</b> — and the skewered Twinfangs are where Fresh Meat comes from. The Lightblossom trio <b>share one health bar</b> via Thicket's Trinity. Nibbles becomes your <b>ally</b> in her light form rather than simply dying. Merektha's Burrow and party-wide Burrowquake. Ziekket's lashers go <b>dormant, not dead</b>, and reawaken immune to crowd control. Mchimba opens the wrong crypts first, faster each time.</td></tr>
-  <tr><td class="mono"><b>New dimension</b></td><td>The journal marks which abilities are <b>Mythic only</b>. Twenty-odd exist solely in your keys — now chipped as such throughout, so a Heroic run and a +12 no longer read the same.</td></tr>
-  <tr><td class="mono"><b>Still open</b></td><td>The journal covers bosses, not trash or routing. King's Rest trash count, the Voidscar buff value and path choice, and the Blinding Vale freedom question are all trash-layer and remain unsettled.</td></tr>
-  </tbody></table>
-  <div class="sec"><h2>What the second source changed</h2><span class="n">Edition 2</span></div>
-  <table><thead><tr><th>Outcome</th><th>What happened</th></tr></thead><tbody>
-  <tr><td class="mono"><b>Corroborated</b></td><td>Boss rosters, phase structures and the season reward table all agree across sources. The affix bands match Blizzard's published values, including Lindormi's Guidance running +2 to +4 — which settles it against a tier-4 site claiming +2 to +5.</td></tr>
-  <tr><td class="mono"><b>Added</b></td><td>Loot tables for seven dungeons. Murder Row's Belath Dawnblade disguise gate and the four tavern roles, absent from the first source entirely. Named vendor items. Voidscar's Sycophantic Tarasek, whose Melt Armor lands on the tank and appears in neither the creator guide nor the routes video. The Snowdrift immunity strategy on Sentinel of Winter.</td></tr>
-  <tr><td class="mono"><b>Contradicted</b></td><td>Three new disputes: which Voidscar path to take, when Kyrakka joins the final Ruby Life Pools fight, and whether Axegrinder can clear Ritual Venom stacks. All three are live and shown on their dungeon pages.</td></tr>
-  <tr><td class="mono"><b>Refined</b></td><td>Ruby Life Pools' Rolling Thunder was recorded here as "dispelling applies a party dot". It is worse than that: dispelling delivers the full expiry damage immediately, so the dispel is a timing tool for splitting one lethal hit into two, not a save. Corrected.</td></tr>
-  <tr><td class="mono"><b>Noted, not merged</b></td><td>The tier-2 season overview twice refers to Season 2 rating requirements as belonging to "The War Within" rather than Midnight. Almost certainly a copy-paste artefact, but it is the kind of thing worth knowing about a source before leaning on its numbers.</td></tr>
-  </tbody></table>
   <div class="sec"><h2>Settled</h2><span class="n">${RESOLVED.length}</span></div>
   ${RESOLVED.map(x=>`<div class="card" style="border-left:3px solid var(--tier1)"><h3>${esc(x.q)}</h3>
     <div class="meta" style="color:var(--tier1)">Answer: ${esc(x.won)} ${srcMark(x.by)} · ${esc(x.d)}</div>
