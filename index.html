@@ -2157,7 +2157,11 @@ const secChip=x=>{
   if(!tot||a[1]/tot<0.55) return `<span class="secs">${esc(a[0])} / ${esc(b[0])} <i>even</i></span>`;
   return `<span class="secs"><b>big ${esc(a[0])}</b> <i>little ${esc(b[0])}</i></span>`;
 };
-const cantrip=x=>x.ty!=="Trinket"&&(x.u||x.e)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
+/* One definition, because the badge and the Cantrips facet must agree. A
+   trinket is not a cantrip: every one of the 27 has an effect, that is what a
+   trinket is, and they already have their own slot in the filter above. */
+const isCantrip=i=>i.ty!=="Trinket"&&!!(i.u||i.e);
+const cantrip=x=>isCantrip(x)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
 const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
   <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
   <td>${secChip(x.x)}</td></tr>
@@ -2491,7 +2495,7 @@ function lmatch(o,skip){
   if(skip!=="x"&&F.x.size){const have=(i.x||[]).map(v=>v[0]);
     for(const v of F.x) if(!have.includes(v)) return false;}
   if(skip!=="big"&&F.big&&!((i.x||[]).length&&i.x[0][0]===F.big)) return false;
-  if(skip!=="fx"&&F.fx==="1"&&!(i.u||i.e)) return false;
+  if(skip!=="fx"&&F.fx==="1"&&!isCantrip(i)) return false;
   return true;
 }
 function pLoot(){
@@ -2533,8 +2537,8 @@ function pLoot(){
       ${LSEC.map(v=>opt("x",v,v,liveX)).join("")}</div></div>
     <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
       ${LSEC.map(v=>opt("big",v,v,liveBig)).join("")}</div></div>
-    <div class="fgroup"><h4>Carries an effect <span class="fany">not just stats</span></h4><div class="fopts">
-      ${opt("fx","1","Cantrip or use effect",null)}</div></div>
+    <div class="fgroup"><h4>Cantrips</h4><div class="fopts">
+      ${opt("fx","1","Cantrips",null)}</div></div>
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
       ${DUNGEONS.map(d=>opt("dg",d.id,d.short,null)).join("")}</div></div>
   </div>
