@@ -392,7 +392,6 @@ td.li{display:flex;align-items:center;gap:.5rem}
 .trinkets{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:.7rem;margin-bottom:1rem}
 .fx{font-size:.88rem;color:var(--ink-muted);margin:.3rem 0 0;max-width:60ch}
 .fx b{font-family:var(--face-term);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:.35rem}
-.nostat{font-family:var(--face-term);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);margin:.45rem 0 0}
 .card.trink{margin:0;border-left:3px solid var(--d-accent,var(--accent))}
 .card.trink h3{font-size:1rem;margin:0}
 .card.trink .mobtop{margin-bottom:.4rem}
@@ -2218,8 +2217,7 @@ const lootTable=d=>{
     <div class="mobtop">${itemIcon(x)}<h3>${esc(x.n)}</h3>${primChip(x.p)}${roleChips(x)}</div>
     ${x.x&&x.x.length?`<div class="n">${secChip(x.x)}</div>`:""}
     ${x.u?`<p class="fx"><b>Use</b> ${esc(x.u)}</p>`:""}
-    ${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}
-    ${!x.p||!x.p.length?`<p class="nostat">No primary stat — judge it by the effect.</p>`:""}</div>`).join("")}</div>`:""}
+    ${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}</div>`).join("")}</div>`:""}
 
   ${ARMOURS.map(a=>{const l=I.filter(x=>x.ty===a).sort((p,q)=>slotRank(p.sl)-slotRank(q.sl));
     return l.length?`<div class="sec"><h2>${a}</h2><span class="n">${l.length}</span></div>${table(l)}`:"";}).join("")}
