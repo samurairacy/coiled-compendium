@@ -55,16 +55,24 @@
   /* ── dispel families. WoW's own debuff-border hues, lightened for this
         ground. Players already read these off raid frames, so the colour is
         free to learn. Never the only cue: every chip keeps its full label. ── */
-  --dis-magic:   #4FA8FF;
+  /* Magic and purge are both magic-school removal and started only ~23° apart,
+     with Sethraliss' cyan accent sitting between them. Magic moves to a deeper
+     royal blue and purge to a bright aqua, ~50° apart now. */
+  --dis-magic:   #4C7BFF;
   --dis-curse:   #B478FF;
   --dis-poison:  #4FBF4F;
   /* The game's disease brown is a near-match for this site's gold accent, which
      every other counter already wears — it disappeared. Pushed to a pallid
      yellow: same sickly reading, and the one hue this palette had free. */
   --dis-disease: #E3DA5E;
-  --dis-bleed:   #E0665A;
-  --dis-enrage:  #E08A3C;
-  --dis-purge:   #4FD3E4;
+  --dis-bleed:   #FF6A45;
+  /* Enrage reads orange in game, but orange is the busiest hue on this site:
+     the base accent, Nalorakk and Blinding Vale all live there, and counters
+     inherit the dungeon accent — so soothe vanished on exactly the pages that
+     needed it. Magenta is the only region no accent and no other dispel
+     occupies, sitting clear of curse purple and the two red dungeons. */
+  --dis-enrage:  #E86FC8;
+  --dis-purge:   #3FDCC8;
 
   /* ── source tiers ─────────────────────────────────────────────────── */
   --tier1: #7FB4D8;
@@ -290,13 +298,20 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
    the defensive dispels that take something off your own side, solid for the
    offensive ones that strip an enemy. The label is always present, so the
    colour is a shortcut and never the carrier. */
-.chip.x-magic  {border-color:var(--dis-magic);  color:var(--dis-magic)}
-.chip.x-curse  {border-color:var(--dis-curse);  color:var(--dis-curse)}
-.chip.x-poison {border-color:var(--dis-poison); color:var(--dis-poison)}
-.chip.x-disease{border-color:var(--dis-disease);color:var(--dis-disease)}
-.chip.x-bleedcl{border-color:var(--dis-bleed);  color:var(--dis-bleed)}
-.chip.x-soothe {border-color:var(--dis-enrage); color:var(--dis-enrage); border-style:solid}
-.chip.x-purge  {border-color:var(--dis-purge);  color:var(--dis-purge);  border-style:solid}
+/* Every dispel chip is FILLED, generic counters stay outline-only. That is the
+   load-bearing cue: counters inherit the dungeon accent, and three dispels sit
+   within dE 20 of some dungeon's colour (disease/Blinding Vale, bleed/Ruby,
+   purge/King's Rest). Hue alone would blend on exactly those pages; a fill
+   does not, and it costs the dungeon palettes nothing. */
+.chip.x-magic,.chip.x-curse,.chip.x-poison,.chip.x-disease,
+.chip.x-bleedcl,.chip.x-soothe,.chip.x-purge{font-weight:600}
+.chip.x-magic  {border-color:var(--dis-magic);  color:var(--dis-magic);  background:color-mix(in srgb,var(--dis-magic) 15%,transparent)}
+.chip.x-curse  {border-color:var(--dis-curse);  color:var(--dis-curse);  background:color-mix(in srgb,var(--dis-curse) 15%,transparent)}
+.chip.x-poison {border-color:var(--dis-poison); color:var(--dis-poison); background:color-mix(in srgb,var(--dis-poison) 15%,transparent)}
+.chip.x-disease{border-color:var(--dis-disease);color:var(--dis-disease);background:color-mix(in srgb,var(--dis-disease) 15%,transparent)}
+.chip.x-bleedcl{border-color:var(--dis-bleed);  color:var(--dis-bleed);  background:color-mix(in srgb,var(--dis-bleed) 15%,transparent)}
+.chip.x-soothe {border-color:var(--dis-enrage); color:var(--dis-enrage); background:color-mix(in srgb,var(--dis-enrage) 18%,transparent); border-style:solid}
+.chip.x-purge  {border-color:var(--dis-purge);  color:var(--dis-purge);  background:color-mix(in srgb,var(--dis-purge) 18%,transparent); border-style:solid}
 /* the dispel glyph carries the hue too, rather than staying muted accent */
 .chip[class*="x-magic"] svg,.chip[class*="x-curse"] svg,.chip[class*="x-poison"] svg,
 .chip[class*="x-disease"] svg,.chip[class*="x-bleedcl"] svg,.chip[class*="x-soothe"] svg,
