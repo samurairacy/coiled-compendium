@@ -391,7 +391,17 @@ td.li{display:flex;align-items:center;gap:.5rem}
 .secs i{font-style:normal;opacity:.72}
 .trinkets{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:.7rem;margin-bottom:1rem}
 .fx{font-size:.88rem;color:var(--ink-muted);margin:.3rem 0 0;max-width:60ch}
-.fx b{font-family:var(--face-term);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:.35rem}
+/* Use and Equip are opposite kinds of thing and used to look identical. They
+   now split on fill, the same grammar the dispel chips use: filled means you
+   press it, outlined means it simply happens. Both are bigger and heavier than
+   before so the eyebrow actually reads as a label rather than fine print. */
+.fx b{
+  display:inline-block;font-family:var(--face-term);font-size:.6rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;padding:.14rem .42rem;border-radius:2px;
+  margin-right:.5rem;border:1px solid transparent;vertical-align:.08em
+}
+.fx.use b{background:var(--d-accent,var(--accent));color:var(--d-ink,#14120E)}
+.fx.equip b{border-color:var(--accent-deep);color:var(--accent)}
 .card.trink{margin:0;border-left:3px solid var(--d-accent,var(--accent))}
 .card.trink h3{font-size:1rem;margin:0}
 .card.trink .mobtop{margin-bottom:.4rem}
@@ -2182,8 +2192,8 @@ const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x
   <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
   <td>${secChip(x.x)}</td></tr>
   ${x.ty!=="Trinket"&&(x.u||x.e)?`<tr class="fxrow"><td colspan="4">
-    ${x.u?`<p class="fx"><b>Use</b> ${esc(x.u)}</p>`:""}
-    ${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`;
+    ${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}
+    ${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`;
 const lootTable=d=>{
   const I=d.loot.i, n=I.length;
   const trink=I.filter(x=>x.ty==="Trinket");
@@ -2216,8 +2226,8 @@ const lootTable=d=>{
   <div class="trinkets">${trink.map(x=>`<div class="card trink">
     <div class="mobtop">${itemIcon(x)}<h3>${esc(x.n)}</h3>${primChip(x.p)}${roleChips(x)}</div>
     ${x.x&&x.x.length?`<div class="n">${secChip(x.x)}</div>`:""}
-    ${x.u?`<p class="fx"><b>Use</b> ${esc(x.u)}</p>`:""}
-    ${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}</div>`).join("")}</div>`:""}
+    ${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}
+    ${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</div>`).join("")}</div>`:""}
 
   ${ARMOURS.map(a=>{const l=I.filter(x=>x.ty===a).sort((p,q)=>slotRank(p.sl)-slotRank(q.sl));
     return l.length?`<div class="sec"><h2>${a}</h2><span class="n">${l.length}</span></div>${table(l)}`:"";}).join("")}
@@ -2229,7 +2239,7 @@ const lootTable=d=>{
     <table><thead><tr><th>Item</th><th>Type</th><th>Primary</th><th>Secondaries</th></tr></thead><tbody>
     ${weap.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td><td class="mono">${esc(x.ty)}</td>
       <td>${primChip(x.p)||`<span class="n">—</span>`}</td><td>${secChip(x.x)}</td></tr>
-      ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`).join("")}
+      ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`).join("")}
     </tbody></table>`:""}`;
 };
 function callsBlock(d){
@@ -2537,8 +2547,8 @@ function pLoot(){
       <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
       <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
       ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
-    ${o.i.u?`<p class="fx"><b>Use</b> ${esc(o.i.u)}</p>`:""}
-    ${o.i.e?`<p class="fx"><b>Equip</b> ${esc(o.i.e)}</p>`:""}</div>`;
+    ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
+    ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}</div>`;
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Loot</em></div>
   <h1>Every item in the season</h1>
   <p class="lede">${LOOTALL.length} items across eight dungeons. Mythic+ pays out from one chest at the end of a run,
