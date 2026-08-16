@@ -50,8 +50,10 @@ assertion. Contradictions are especially welcome; they usually mean something mo
 
 ## Technical
 
-One self-contained HTML file. No build step, no dependencies, no tracking, no
-analytics. Works offline once loaded.
+One HTML file, plus a folder of ability icons. No build step, no dependencies, no
+tracking, no analytics. The page's own text, data and boss imagery are inline, so
+the only things fetched alongside it are the icons for abilities actually on
+screen and a Google Fonts stylesheet.
 
 ## Licensing and attribution
 
@@ -59,8 +61,11 @@ This is a non-commercial fan project and is not affiliated with, endorsed by, or
 sponsored by Blizzard Entertainment.
 
 World of Warcraft and all associated names, imagery and game data are the property
-of Blizzard Entertainment, Inc. Screenshots and game data are used here under
-Blizzard's fan content policy.
+of Blizzard Entertainment, Inc. Screenshots, ability icons and game data are used
+here under Blizzard's fan content policy. The ability icons in `assets/icons/` are
+Blizzard's own art, identified by matching ability names against Wowhead's spell
+database and served from this repository so the page makes no third-party
+requests for them.
 
 Source material from third-party guides is **paraphrased, never reproduced**, and
 attributed with links back to the originals in the site's source ledger. If you

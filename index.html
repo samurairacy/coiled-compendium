@@ -283,6 +283,14 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .abil.sev3{border-left:3px solid var(--signal-urgent);padding-left:.85rem;background:linear-gradient(90deg,rgba(240,80,60,.07),transparent 42%)}
 .abil.sev2{border-left:3px solid var(--signal-warn);padding-left:.85rem}
 .abil .an{font-family:var(--face-term);font-size:.93rem;font-weight:600;color:var(--ink);word-break:break-word}
+/* Blizzard ability icon. Fixed box so a slow/blocked image never reflows the
+   row, and a sunken plate so the gap reads as deliberate while it loads. */
+.aicon{
+  width:22px;height:22px;border-radius:3px;border:1px solid var(--rule);
+  background:var(--ground-sunken);vertical-align:-5px;margin-right:.42rem
+}
+/* Holds the column when no icon exists, without drawing an empty plate. */
+.aicon.none{display:inline-block;border-color:transparent;background:none}
 .abil .tags{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.38rem}
 .abil .effect{font-size:.92rem;margin:0;max-width:62ch}
 .abil .read{
@@ -1536,6 +1544,165 @@ loot:{s:["wh_dg"],b:[
         {t:"Limited routing — you have to pull a large majority of the mobs you encounter to reach count.",by:"Tactyks",d:"2026-08-15",s:["tk_rt"]}]}
 ];
 
+/* ═══ ABILITY ICONS ══════════════════════════════════════════════════════
+   Ability name → Blizzard icon slug, resolved against Wowhead's spell
+   database. Files live in assets/icons/<slug>.jpg. 259 of the 329 ability
+   names in DUNGEONS resolved to a spell of exactly that name; the rest are
+   new Midnight content Wowhead has no entry for, or are not abilities at
+   all (adds and structural notes that sit in the same arrays). A name that
+   is absent here simply renders without an icon — never a broken image.
+   ═══════════════════════════════════════════════════════════════════════ */
+const ICONS={
+ "Accumulate Charge":"spell_chargepositive","Addle Mind":"spell_shadow_mindflay",
+ "Ancestral Fury":"spell_totem_wardofdraining","Arc Lightning":"spell_nature_chainlightning",
+ "Arrow Barrage":"inv_misc_ammo_arrow_05","Awakening Slam":"spell_necro_deathsdoor",
+ "Axe Toss":"ability_warrior_titansgrip","Back to Work":"inv_hammer_09",
+ "Barrel Through":"ability_monk_clashingoxcharge","Bedrock Slam":"spell_nature_earthquake",
+ "Belch Spores":"spell_nature_corrosivebreath","Bestial Wrath":"ability_druid_ferociousbite",
+ "Blade Combo":"ability_ironmaidens_bladerush","Blade Dance":"ability_demonhunter_bladedance",
+ "Blaze of Glory":"inv_ember","Blazing Rush":"spell_deathknight_butcher2",
+ "Blood Sacrifice":"ability_warrior_bloodfrenzy","Bloodletting":"ability_skeer_bloodletting",
+ "Bloodthirsty Axe":"spell_druid_bloodythrash","Bloodthirsty Gaze":"ability_fixated_state_red",
+ "Bloodthorn Roots":"inv_-misc_herb_marrowroot_leaf",
+ "Bound by Shadow":"spell_shadow_summonvoidwalker",
+ "Brutal Slams":"ability_warrior_decisivestrike","Brutalize":"ability_warrior_devastate",
+ "Bullet Seeds":"spell_shaman_convection","Burning Corruption":"spell_fire_blueflamebreath",
+ "Burnout":"spell_fire_soulburn","Call of the Elements":"ability_shaman_echooftheelements",
+ "Caustic Stomp":"inv_ability_poison_nova",
+ "Champion Spear":"inv_ability_warrior_championsspear",
+ "Chaos Barrage":"spell_fire_felrainoffire","Chaos Bolt":"ability_warlock_chaosbolt",
+ "Chop Down":"ability_criticalstrike","Cold Claws":"ability_mage_wintersgrasp",
+ "Concussive Slam":"ability_warrior_decisivestrike",
+ "Corroding Spittle":"inv_fabric_felcloth_ebon","Corrosive Essence":"inv_ability_poison_orb",
+ "Corrosive Fangs":"spell_nature_nullifypoison","Cosmic Crash":"inv_cosmicvoid_groundsate",
+ "Crushing Smash":"spell_shaman_earthquake","Curse of Doom":"spell_shadow_auraofdarkness",
+ "Cytotoxin":"ability_hunter_cobrastrikes",
+ "Dark Bloom":"inv_ability_voidweaverpriest_entropicrift","Dark Pact":"spell_shadow_deathpact",
+ "Dark Revelation":"ability_priest_clarityofpower","Dark Waves":"inv_cosmicvoid_wave",
+ "Death Rattle":"inv_sonic_debuff","Debilitating Backhand":"inv_relics_totemofrage",
+ "Deep Corruption":"priest_icon_chakra_red","Defiled Slam":"spell_fire_felimmolation",
+ "Demonic Frenzy":"spell_fel_incinerate","Demonic Rage":"ability_warlock_demonicempowerment",
+ "Demoralizing Shout":"ability_warrior_warcry","Devour":"inv_12_dh_void_ability_devourerbite",
+ "Dimensional Shred":"ability_rogue_masterofsubtlety","Dismember":"ability_criticalstrike",
+ "Disorienting Screech":"inv_111_hunter_ability_harrierscall",
+ "Drain Fluids":"inv_misc_volatilewater","Drain Life":"spell_shadow_lifedrain02",
+ "Earthbound's Imprint":"inv_ore_blackrock_ore","Earthquake":"spell_shaman_earthquake",
+ "Empowerment":"spell_nature_elementalprecision_1","Entomb":"achievement_bg_xkills_avgraveyard",
+ "Envenom":"ability_rogue_disembowel","Essence Disruption":"inv_elemental_mote_shadow01",
+ "Evolve":"inv_121_trinket_raid_ulatek_heart","Excavating Blast":"spell_nature_earthquake",
+ "Eye Beam":"ability_demonhunter_eyebeam","Feast of Misery":"spell_shadow_lifedrain02_purple",
+ "Fel Beam":"spell_fire_felflamestrike","Fel Missiles":"spell_fire_felrainoffire",
+ "Fel Nova":"spell_fire_felflamering","Fel Rage":"ability_creature_felfrenzy",
+ "Fel Shield":"trade_engineering","Fel Spray":"spell_fire_felflamebreath",
+ "Fel Steps":"ability_bossfellord_felfissure","Felfire Burst":"spell_fire_felflamebolt",
+ "Feral Rage":"artifactability_feraldruid_ashamanesbite","Ferocious Leap":"ability_heroicleap",
+ "Fingers of Gul'dan":"ability_warlock_handofguldan","Fire Bomb":"inv_eng_bombfire",
+ "Fire Maw":"ability_warrior_dragonroar","Fixate":"ability_fixated_state_blue",
+ "Flame Shock":"spell_fire_flameshock","Flay":"inv_archaeology_70_demon_flayedskinchronicle",
+ "Forceful Slam":"inv_misc_bearpaw_red","Forked Lightning":"spell_lightning_lightningbolt01",
+ "Frigid Roar":"inv_amanibearmount_witherbark","Frigid Shard":"spell_frost_iceshard",
+ "Frost Bite":"ability_mage_coldasice","Frost Overload":"spell_fire_blueflamering",
+ "Frost Shock":"spell_frost_frostshock","Frozen Tempest":"spell_frost_ring-of-frost",
+ "Fury of the War God":"spell_nature_shamanrage","Gale Force":"ability_skyreach_four_wind",
+ "Gilded Destruction":"inv_sword_2h_zandalarquest_b_01","Glacial Tomb":"ability_mage_coldasice",
+ "Glacial Torment":"inv12_apextalent_mage_handoffrost",
+ "Glaive Toss":"ability_upgrademoonglaive","Gravitic Orbs":"inv_enchant_voidsphere",
+ "Grievous Gash":"inv_ability_druidoftheclawdruid_ravage",
+ "Grievous Thrash":"spell_druid_bloodythrash","Ground Pound":"ability_smash",
+ "Hailburst":"spell_frost_frostshock","Harsh Winds":"spell_nature_earthbind",
+ "Head Bash":"inv_fellessergronnmount","Healing Breeze":"spell_frost_windwalkon",
+ "Healing Tide Totem":"ability_shaman_healingtide","Health Funnel":"spell_shadow_lifedrain",
+ "Heavy Slams":"inv_11_arenaboss_conductionslam","Hex":"spell_shaman_hex",
+ "Hex Volley":"warlock_curse_shadow","Hulking Claw":"ability_creature_poison_03",
+ "Hunting Leap":"ability_druid_ravage","Ice Shield":"ability_mage_coldasice",
+ "Icebolt":"spell_frost_frostbolt02","Imbued Conduction":"spell_nature_stormreach",
+ "Induction":"ability_thunderking_overcharge","Infernal Crash":"spell_shadow_summoninfernal",
+ "Inferno":"ability_warlock_inferno","Inferno Spit":"spell_fire_firebolt",
+ "Infest":"ability_hunter_snaketrap","Insidious Aura":"ability_warlock_burningembersgreen",
+ "Killing Spree":"inv_112_rogue_betweentheeyes","Laced Edge":"inv_sword_2h_ulatek_d_01",
+ "Latent Hex":"inv_shoulder_armor_hextroll_d_01","Legion Strike":"inv_axe_09",
+ "Light Bolt":"spell_holy_holybolt","Light Bolt Volley":"ability_priest_flashoflight",
+ "Light Fire":"trade_engineering","Lightbloom Pollination":"spell_holy_surgeoflight",
+ "Lightfall":"inv_ability_holyfire_missile",
+ "Lightning Bite":"ability_thunderking_balllightning","Lightning Bolt":"spell_nature_lightning",
+ "Lightning Rod":"inv_rod_enchantedcobalt","Lightning Torrent":"spell_shaman_thunderstorm",
+ "Living Bomb":"ability_mage_livingbomb","Lucre's Call":"spell_holy_purifyingpower",
+ "Maelstrom":"spell_nature_unrelentingstorm","Magma Totem":"spell_fire_selfdestruct",
+ "Malefic Wave":"ability_felarakkoa_feldetonation_green",
+ "Mass Envenom":"inv_ability_poison_missile","Melt Armor":"spell_fire_firebolt02",
+ "Mending Void":"inv_cosmicvoid_buff","Mirror Images":"spell_magic_lesserinvisibilty",
+ "Molten Blood":"spell_shaman_spewlava","Molten Boulder":"spell_mage_flameorb",
+ "Monstrous Roar":"ability_racial_darkflight","Mother's Wrath":"inv_misc_monsterfang_02",
+ "Nether Dash":"ability_mount_voidelfstridermount",
+ "Noxious Breath":"ability_creature_poison_05","Noxious Spray":"inv_ability_poison_beam",
+ "Null Eruption":"inv_cosmicvoid_orb","Oozing Xylem":"inv_ability_holyfire_nova",
+ "Over-infused":"inv_ore_feliron","Overload":"spell_nature_callstorm",
+ "Overwhelming Onslaught":"spell_druid_thrash","Paralyzing Shot":"ability_poisonsting",
+ "Piercing Hiss":"inv_sonic_wave","Poison Nova":"ability_creature_disease_02",
+ "Poison Spear Volley":"inv_spear_02","Poison Splash":"spell_nature_corrosivebreath",
+ "Poisoned Cheap Shot":"ability_cheapshot",
+ "Pool of Darkness":"inv_misc_food_legion_gooamberpink_pool",
+ "Primal Echo":"spell_druid_stamedingroar","Pulverize":"ability_smash",
+ "Pulverizing Strikes":"ability_druid_swipe",
+ "Punishing Might":"inv_sword_1h_artifactfelomelorn_d_03dual",
+ "Purification Strike":"spell_shaman_lavasurge","Quaking Leap":"ability_heroicleap",
+ "Raging Squall":"ability_deathknight_frozencenter","Rattle":"inv_sonic_wave",
+ "Ravenous":"ability_evoker_dragonrage2","Ravenous Bellow":"ability_druid_challangingroar",
+ "Ravenous Stomp":"ability_earthen_pillar","Ravenous Swarm":"inv_ability_druid_adaptiveswarm",
+ "Razor Dive":"inv_10_specialreagentfoozles_tuskclaw_fire",
+ "Regurgitate":"inv_ability_poison_wave","Release Charge":"spell_chargenegative",
+ "Rip and Slice":"inv_10_specialreagentfoozles_tuskclaw-black",
+ "Ritual Venom":"inv_ability_poison_beam",
+ "Ritual of the Fang":"inv_achievement_dungeon_altaroffangs",
+ "Roaring Flame Breath":"inv_summerfest_firespirit",
+ "Rolling Thunder":"spell_nature_lightningoverload","Rotten Supplies":"inv_misc_food_91",
+ "Savage Leap":"ability_druid_tigersroar","Scavenge":"inv_vulturemount_black",
+ "Scavenging":"inv_misc_potionbag_special","Searing Blows":"ability_shaman_lavalash",
+ "Searing Fel Flame":"spell_fire_felfirenova","Seduction":"spell_shadow_seduction",
+ "Seismic Upheaval":"ability_rogue_kidneyshot",
+ "Septic Spatter":"ability_deathknight_roilingblood",
+ "Serpentine Gust":"ability_skyreach_four_wind",
+ "Serrated Charge":"inv_artifact_bloodoftheassassinated",
+ "Shadow Barrage":"spell_priest_mindspike","Shadow Bite":"spell_shadow_soulleech_3",
+ "Shadow Bolt Volley":"spell_shadow_shadowbolt","Shadow Lash":"inv_misc_volatileshadow",
+ "Shadow Whirlwind":"spell_necro_deathsknell","Shell Guard":"inv_cape_special_turtleshell_c_01",
+ "Shield Bash":"ability_warrior_shieldbash","Shred Armor":"ability_druid_rake",
+ "Shred Defense":"ability_druid_ravage","Shredding Claw":"inv_misc_monsterclaw_03",
+ "Sickening Bite":"ability_creature_poison_01","Sky Strike":"ability_racial_wingbuffet",
+ "Smashing Charge":"inv_fellessergronnmount","Solar Breath":"ability_skyreach_solar_burst",
+ "Soul Crush":"inv_ability_warlock_soulrot","Spark Step":"spell_shaman_crashlightning",
+ "Spectral Slash":"ability_druid_supriseattack","Spit Gold":"ability_creature_amber_01",
+ "Spoiled Supplies":"ability_creature_disease_01",
+ "Starvation Effigy":"inv_archaeology_80_zandalari_sanguinetotem",
+ "Static Shock":"spell_nature_chainlightning","Steel Barrage":"inv_axe_1h_deathwingraiddw_d_01",
+ "Storm Blessed":"spell_nature_lightningshield","Sunder Slam":"ability_warrior_shieldbreak",
+ "Suppression Slam":"ability_golemthunderclap",
+ "Synchronized Venom":"inv_ability_poison_missile",
+ "Tail Scythe":"inv_knife_1h_felfireraid_d_04","Tail Thrash":"ability_hunter_pet_windserpent",
+ "Tectonic Strike":"inv_axe_2h_earthendungeon_c_01",
+ "Tempest Winds":"achievement_raidprimalist_windelemental",
+ "Thicket's Trinity":"inv_herbalism_70_dreamleaf",
+ "Thorncaller Roar":"inv_misc_herb_nightmarevine",
+ "Thunder Blast":"warrior_talent_icon_bloodandthunder","Thunder Jaw":"inv_misc_stormdragonpale",
+ "Thunder Stomper":"ability_thunderclap",
+ "Thunder and Lightning":"warrior_talent_icon_thunderstruck",
+ "Thundering Storm":"spell_shaman_thunderstorm","Thunderstorm":"spell_shaman_thunderstorm",
+ "Tongue Toss":"ability_vehicle_launchplayer","Toxic Atrophy":"spell_shadow_requiem",
+ "Toxic Breath":"spell_fire_felflamebreath","Toxic Spew":"spell_nature_corrosivebreath",
+ "Toxic Surge":"inv_ability_poison_wave","Triple Shot":"spell_nature_corrosivebreath",
+ "Umbral Rupture":"inv_cosmicvoid_groundstate","Unstable Totem":"ability_shaman_stoneskintotem",
+ "Uproot":"inv_herb_earthroot","Venom Burst":"inv_ability_poison_groundstate",
+ "Venom Spit":"ability_creature_poison_02","Venomous Slash":"ability_rogue_disembowel",
+ "Venomous Spit":"spell_nature_corrosivebreath","Verdant Stomp":"inv_raptortravelform",
+ "Vigilant Defense":"creatureportrait_blackrockv2_shieldgong_02",
+ "Vile Fiend":"inv_argusfelstalkermount","Vindictive Onslaught":"spell_nature_earthquake",
+ "Virulent Whirl":"inv_ability_poison_groundstate","Void Beam":"inv_cosmicvoid_beam",
+ "Void Blast":"inv_cosmicvoid_missile","Void Cascade":"inv_cosmicvoid_missile",
+ "Volatile Totem":"spell_fire_totemofwrath","Warden's Wrath":"spell_nature_wispsplodegreen",
+ "Whirling Axes":"ability_butcher_whirl","Winds of Change":"spell_shaman_unleashweapon_wind",
+ "Wretched Discharge":"spell_festergutgas"
+};
+
 /* ═══════════════════════════════════════════════════════════════════════
    ENGINE — domain-agnostic. Router · renderers · facets · search.
    Content never appears in markup above; it is all rendered from DATA.
@@ -1543,6 +1710,13 @@ loot:{s:["wh_dg"],b:[
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const ic=(id,sz)=>`<svg width="${sz||12}" height="${sz||12}" aria-hidden="true"><use href="#${id}"/></svg>`;
+/* Decorative only — the ability name always sits next to it, so alt is empty.
+   No icon still emits an empty box of the same size: 70 of the 329 names have
+   no Wowhead entry, and without the spacer their titles would hang a glyph's
+   width left of every other row in the column. */
+const abilIcon=n=>{const s=ICONS[n];
+  return s?`<img class="aicon" src="assets/icons/${s}.jpg" alt="" loading="lazy" decoding="async" width="22" height="22">`
+          :`<span class="aicon none" aria-hidden="true"></span>`;};
 const D=Object.fromEntries(DUNGEONS.map(d=>[d.id,d]));
 
 /* ── source marks ── every factual claim carries one ── */
@@ -1568,7 +1742,7 @@ function abilityRow(a,roleFilter){
   const ctrs=(a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("");
   const roles=(a.r||[]).map(roleChip).join("");
   return `<div class="abil ${a.sev===3?"sev3":a.sev===2?"sev2":""}">
-    <div><div class="an">${esc(a.n)}${alt(a)}</div><div class="tags">${tags}${roles}</div></div>
+    <div><div class="an">${abilIcon(a.n)}${esc(a.n)}${alt(a)}</div><div class="tags">${tags}${roles}</div></div>
     <div><p class="effect">${esc(a.e)}${srcMark(a.s)}</p>
       ${ctrs?`<div class="tags">${ctrs}</div>`:""}
       ${a.h?`<p class="read">${esc(a.h)}</p>`:""}</div></div>`;
@@ -1894,7 +2068,7 @@ function pMechanics(){
   ${res.length>CAP?`<p class="note">${ic("i-info",13)} Capped at ${CAP} results so the page stays usable. Add a filter to narrow it — that is what this page is for.</p>`:""}
   ${res.length?res.slice(0,CAP).map(x=>`<div class="mres"><div class="mtop">
       <a class="mdg" href="#/d/${x.d.id}" data-dungeon="${x.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(x.d.short)}</a>
-      <span class="mn">${esc(x.a.n)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}</span>
+      <span class="mn">${abilIcon(x.a.n)}${esc(x.a.n)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}</span>
       ${x.a.sev===3?`<span class="chip" style="border-color:var(--signal-urgent);color:var(--signal-urgent)">${ic("i-warn")}Sev 3</span>`:""}</div>
     <div class="tags" style="margin-top:.35rem">${(x.a.t||[]).map(t=>chip(t,TAGS,t==="myth"?"c-myth":t==="noarmor"?"c-noarmor":"")).join("")}${(x.a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("")}</div>
     <p>${esc(x.a.e)}${srcMark(x.a.s)}</p></div>`).join("")
