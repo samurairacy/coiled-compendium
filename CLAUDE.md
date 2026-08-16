@@ -4,7 +4,7 @@ The Coiled Compendium: a sourced Mythic+ reference for World of Warcraft:
 Midnight, patch 12.1, Season 2. Published as a static site on GitHub Pages at
 **https://samurairacy.github.io/coiled-compendium/**.
 
-Technically the whole site is **one file** — `index.html`, ~964 KB, with CSS,
+Technically the whole site is **one file** — `index.html`, ~978 KB, with CSS,
 JavaScript, the dungeon data and every image (base64 WebP) inline. No build
 step in this repository, no dependencies, no backend. The only external request
 is the Google Fonts stylesheet in `<head>`.
@@ -55,7 +55,7 @@ GitHub's own Pages builder.
 
 - `.nojekyll` stops Jekyll processing. Keep it: it costs nothing, and Jekyll has
   opinions about files whose names begin with an underscore.
-- `.gitattributes` pins `*.html text eol=lf` so a 2,168-line single-file diff
+- `.gitattributes` pins `*.html text eol=lf` so a ~2,180-line single-file diff
   stays readable on Windows. The source file is already pure LF.
 - No `CNAME` — no custom domain as of 2026-08-16.
 - No bare `LICENSE` file, deliberately. The repository mixes original writing,
