@@ -563,6 +563,9 @@ th,td{text-align:left;padding:.52rem .7rem;border-bottom:1px solid var(--rule-so
 th{font-family:var(--face-term);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border-bottom-color:var(--rule)}
 tbody tr:hover{background:var(--ground-raised)}
 td .mono,.mono{font-family:var(--face-term)}
+.unv{font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;
+ border:1px dashed var(--ink-faint);border-radius:3px;padding:0 .3em;
+ margin-left:.35em;white-space:nowrap;opacity:.8}
 
 /* ═══ FACETS (mechanics index) ═══════════════════════════════════════ */
 .facets{background:var(--ground-raised);border:1px solid var(--rule);padding:1rem 1.1rem;margin-bottom:1.3rem}
@@ -930,14 +933,14 @@ const DUNGEONS=[
   {n:"Ritual Venom expiry",w:"Zul'jan. Eight stacks that kill you outright if they run out. The whole encounter is a stack-management puzzle wearing a boss costume.",s:["tk_aof"]}],
  areas:[
   {n:"The Totem Grounds",mobs:[
-   {n:"Twin Fang Harrower",alt:"Twinfang Harrower",k:"lt",a:[
+   {n:"Twinfang Harrower",k:"lt",a:[
     {n:"Paralyzing Shot",t:["dot","debuff"],c:["magic","freedom"],r:["healer"],sev:2,e:"Magic damage-over-time and a ramping slow on two random players.",h:"A healer dispel covers one; spare magic dispels or a freedom effect cover the other. An immunity also clears it, and any movement-impairment removal works — Blessing of Freedom and Tiger's Lust are both named.",s:["tk_aof","iv_aof"]},
-    {n:"Toxic Breath",t:["frontal"],c:["position"],r:["tank"],sev:2,alt:"Toxic Breath",e:"A frontal line towards the tank that then sweeps across.",h:"Face this mob away from the group and the sweep becomes trivial to dodge.",s:["tk_aof"]}]},
+    {n:"Toxic Breath",t:["frontal"],c:["position"],r:["tank"],sev:2,e:"A frontal line towards the tank that then sweeps across.",h:"Face this mob away from the group and the sweep becomes trivial to dodge.",s:["tk_aof"]}]},
    {n:"Ravenous Descendant",k:"trash",a:[
     {n:"Ravenous",t:["enrage","stacking"],c:["soothe","cc","kite"],r:["tank","dps"],sev:2,e:"Auto-attacks stack a short-duration enrage that heavily empowers their melee swings.",h:"Soothe them, or use AoE slows and crowd control to buy a window for the stacks to fall off before re-engaging.",s:["tk_aof"]}]},
    {n:"Primal Serpent",k:"caster",a:[
     {n:"Piercing Hiss",t:["debuff","groupdmg"],c:["interrupt","cc"],r:["dps","healer","tank"],sev:3,e:"Party-wide haste reduction of roughly 30% if the cast completes.",h:"Assign one player per serpent before the pull. There are enough of these that a tank cannot solo-kick them.",s:["tk_aof","tk_pool"]},
-    {n:"Venom Spit",alt:"Fetid Spit",t:["dot"],c:["poison","defensive"],r:["healer"],sev:1,e:"Random-target damage when they have nothing better to cast.",s:["tk_aof","iv_aof"]}]},
+    {n:"Venom Spit",t:["dot"],c:["poison","defensive"],r:["healer"],sev:1,e:"Random-target damage when they have nothing better to cast.",s:["tk_aof","iv_aof"]}]},
    {n:"Ritual Chieftain",k:"lt",a:[
     {n:"Unstable Totem",t:["totem","groupdmg"],c:["focus"],r:["dps"],sev:3,e:"Summons a totem that pulses party-wide damage until the Chieftain itself is dead.",h:"This is why the mob is the priority kill in the area, not just a source of one scary cast.",s:["iv_aof"]},
     {n:"Blood Sacrifice",t:["groupdmg","absorb"],c:["topoff"],r:["healer"],sev:3,e:"AoE damage plus a large healing absorb on all five players.",h:"The scariest AoE in the area. Chew through the absorb quickly or the follow-up damage lands on shields that are not there.",s:["tk_aof"]},
@@ -950,7 +953,7 @@ const DUNGEONS=[
     {n:"Rattle",t:["channel","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Channelled heavy damage over the full duration. Not interruptible.",h:"Very dangerous stacked with any interrupt you missed elsewhere in the pull.",s:["tk_aof"]},
     {n:"Corrosive Fangs",t:["tankbuster","amp"],c:["defensive"],r:["tank"],sev:2,e:"Tank hit that applies a damage-taken amplifier.",s:["tk_aof"]}]},
    {n:"Bloodletter",k:"trash",a:[
-    {n:"Bloodletting",alt:"Caustic Ichor",t:["denial"],c:["cc","dodge"],r:["tank"],sev:1,e:"Drops puddles nearby on melee swings.",h:"Crowd control stops it landing a swing at all, which is cleaner than dancing round the puddles.",s:["tk_aof","iv_aof"]}]},
+    {n:"Bloodletting",t:["denial"],c:["cc","dodge"],r:["tank"],sev:1,e:"Drops puddles nearby on melee swings.",h:"Crowd control stops it landing a swing at all, which is cleaner than dancing round the puddles.",s:["tk_aof","iv_aof"]}]},
    {n:"Venom Leech",k:"fodder",a:[
     {n:"Septic Spatter",t:["death","denial"],c:["position"],r:["dps","tank"],sev:1,e:"These smaller mobs leave a patch of ground ichor where their corpse falls.",h:"Kill them somewhere you do not need to stand.",s:["iv_aof"]}]},
    {n:"Venomous Hatchling",k:"trash",a:[
@@ -970,25 +973,25 @@ const DUNGEONS=[
  encounters:[
   {n:"Rav'i",o:1,img:"aof-ravi",sub:"Bone piles and a shield you cannot afford",shape:"One phase, cyclical",lv:2,brief:"One phase, but it never stops cycling. She feeds at whichever Carrion Pile is nearest, shielding herself and bleeding the party until that shield breaks — so the tank spends the whole fight steering her away from fresh meat while everyone else burns it off. Between feeds it is spread for Triple Shot and step out of the wave. Nothing escalates; it repeats until she dies.",a:[
    {n:"Ravenous Stomp",t:["groupdmg"],c:["unavoidable"],r:["healer"],sev:1,e:"Heavy Nature damage to all players, and breaks stalactites from the ceiling — each inflicts very heavy damage within 5 yards and STUNS for 2 seconds. Flying Twinfangs skewered by the falling rock are what drop Fresh Meat into the Carrion Piles.",h:"Neither guide mentions the stun or the falling rock. Do not be standing under a stalactite marker when this lands, and note the meat placement is not random — it follows the rocks.",s:["wh_ej","tk_aof"]},
-   {n:"Scavenging",t:["shield","dot","soak"],c:["position","preposition"],r:["tank"],sev:3,alt:"Ssscavenging · Feeding Frenzy",t:["shield","dot","soak","noarmor"],e:"She feasts at the nearest Carrion Pile behind a shield that absorbs ALL damage, applying stacking Carrion Burst every 3 seconds until the shield breaks. If that pile holds Fresh Meat she enters Feeding Frenzy instead — same thing every 1.5 seconds — and gains Scent of Blood, +30% attack speed on the tank.",h:"Two jobs at once. The tank drags her to a clean pile; everyone else breaks the shield, because breaking it is the only thing that stops the damage.",s:["wh_ej","tk_aof","iv_aof"]},
+   {n:"Scavenging",t:["shield","dot","soak"],c:["position","preposition"],r:["tank"],sev:3,t:["shield","dot","soak","noarmor"],e:"She feasts at the nearest Carrion Pile behind a shield that absorbs ALL damage, applying stacking Carrion Burst every 3 seconds until the shield breaks. If that pile holds Fresh Meat she enters Feeding Frenzy instead — same thing every 1.5 seconds — and gains Scent of Blood, +30% attack speed on the tank.",h:"Two jobs at once. The tank drags her to a clean pile; everyone else breaks the shield, because breaking it is the only thing that stops the damage.",s:["wh_ej","tk_aof","iv_aof"]},
    {n:"Triple Shot",t:["dot","spread"],c:["spread"],r:["dps","healer"],sev:2,e:"Globs of venom at 3 players: significant damage on impact plus moderate damage to anyone within 5 yards every second for 10 seconds.",h:"Loosely spread. The journal says three enemies, not tank-plus-two — so nobody is exempt.",s:["wh_ej","tk_aof"]},
    {n:"Regurgitate",t:["line","debuff","groupdmg"],c:["dodge","disease"],r:["dps","healer"],sev:2,e:"Three waves of stomach acid in lines toward a player: very heavy Nature damage, and anyone caught is slowed 50% AND has damage done reduced by 50%. The journal tags it Disease.",h:"Both creator guides call this a minor dodge. It is not: a 50% damage cut is a timer problem, and it is confirmed dispellable by the published assignment table — so the season has two dungeons where disease removal does real work, not one.",s:["wh_ej","wh_dg"]},
    {n:"Hydro Strike",t:["tankbuster"],c:["defensive"],r:["tank"],sev:2,e:"Her melee hits notably hard with this up.",s:["tk_aof"]}]},
   {n:"The Writhing Coil",o:2,img:"aof-the-writhing-coil",sub:"Split it apart, and whatever the pieces have left is what comes back",shape:"Boss and split intermission",lv:3,brief:"A two-part loop rather than a health-gated fight. It alternates between the boss and an intermission where it splits into five Uncoiled Writhes, and the health they have left when they reform is the health it comes back with — so the intermission is where the fight is won or lost. Interrupts must cover Toxic Atrophy in both halves, which is what makes it awkward with a thin kick roster.",a:[
    {n:"Synchronized Venom",t:["dot","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Party debuff early in the boss phase that ticks for most of its duration.",s:["tk_aof"]},
-   {n:"Toxic Atrophy",t:["debuff"],c:["interrupt"],r:["dps"],sev:3,alt:"Toxic Barrage",e:"Toxic Barrage prepares three castings in succession. Each landing reduces party damage done by 20% and movement speed by 20%, and it stacks.",h:"All three need kicking. Three of the five split adds cast it too — plan interrupt cooldowns across both phases.",s:["tk_aof"]},
+   {n:"Toxic Atrophy",t:["debuff"],c:["interrupt"],r:["dps"],sev:3,e:"Toxic Barrage prepares three castings in succession. Each landing reduces party damage done by 20% and movement speed by 20%, and it stacks.",h:"All three need kicking. Three of the five split adds cast it too — plan interrupt cooldowns across both phases.",s:["tk_aof"]},
    {n:"Vindictive Onslaught",t:["line","frontal"],c:["dodge","position"],r:["dps","healer"],sev:2,e:"Burrowing Charge line attack on a random player, immediately followed by the Venom Jet frontal.",h:"Step out of the line, then point the frontal away if you can.",s:["tk_aof"]},
    {n:"Tail Scythe",t:["tankbuster"],c:["defensive"],r:["tank"],sev:1,e:"Massive Physical damage on the tank. Both guides call this mild; it is the largest single tank hit on the encounter.",s:["wh_ej","tk_aof"]},
-   {n:"Death Rattle",t:["channel","groupdmg"],c:["position","mobility"],r:["dps","healer","tank"],sev:3,alt:"Vine Grip",t:["channel","groupdmg","stacking"],e:"Light Physical damage every second, gaining an extra application every second until pulled apart. Orweyna attaches Vine Grip to all players; every attached player moving 10 yards further out triggers Uncoil, which itself hits for heavy damage.",h:"Save a movement ability for this. Every second someone is slow to pull is damage the healer eats.",s:["tk_aof"]},
-   {n:"Uncoiled Writhe",t:["adds","fixate"],c:["cc","focus"],r:["dps"],sev:2,alt:"Uncoil · Spiteful Hunt",t:["adds","fixate","myth"],e:"The boss splits into Uncoiled Writhes, each carrying a portion of its health. After 20 seconds they cast Assimilation and it reforms with their COMBINED remaining health — so this is not a damage-transfer phase, it is the boss's health bar. The journal states plainly that they are susceptible to crowd control. Spiteful Hunt, the fixate, is Mythic only.",h:"Group them, lock them down, and pop damage cooldowns — this is the phase your damage counts double.",s:["tk_aof"]},
-   {n:"Undermining Shockwave",t:["line"],c:["position"],r:["dps","healer","tank"],sev:1,alt:"Undermining",e:"Each Uncoiled Writhe destabilises the earth WHERE IT DIES, knocking back anyone above it.",h:"Both guides describe this as shockwave lines forming from the centre at the end of the phase. The journal says it is per-add, on death, under your feet. Kill them where you can afford a knockback.",s:["wh_ej"]}]},
+   {n:"Death Rattle",t:["channel","groupdmg"],c:["position","mobility"],r:["dps","healer","tank"],sev:3,t:["channel","groupdmg","stacking"],e:"Light Physical damage every second, gaining an extra application every second until pulled apart. Orweyna attaches Vine Grip to all players; every attached player moving 10 yards further out triggers Uncoil, which itself hits for heavy damage.",h:"Save a movement ability for this. Every second someone is slow to pull is damage the healer eats.",s:["tk_aof"]},
+   {n:"Uncoil",t:["adds","fixate"],c:["cc","focus"],r:["dps"],sev:2,t:["adds","fixate","myth"],e:"The boss splits into Uncoiled Writhes, each carrying a portion of its health. After 20 seconds they cast Assimilation and it reforms with their COMBINED remaining health — so this is not a damage-transfer phase, it is the boss's health bar. The journal states plainly that they are susceptible to crowd control. Spiteful Hunt, the fixate, is Mythic only.",h:"Group them, lock them down, and pop damage cooldowns — this is the phase your damage counts double.",s:["tk_aof"]},
+   {n:"Undermining",t:["line"],c:["position"],r:["dps","healer","tank"],sev:1,e:"Each Uncoil destabilises the earth WHERE IT DIES, knocking back anyone above it.",h:"Both guides describe this as shockwave lines forming from the centre at the end of the phase. The journal says it is per-add, on death, under your feet. Kill them where you can afford a knockback.",s:["wh_ej"]}]},
   {n:"Zul'jan",o:3,img:"aof-zuljan",sub:"A stack counter that kills you if it empties",shape:"One phase, 50-second ritual loop",lv:3,brief:"One arena, one fifty-second loop, and everything orbits a stack counter. The ritual opens the fight and then repeats: intercept a beam, take eight stacks of Ritual Venom, and spend the next fifty seconds keeping them topped up before they expire on you. Boneslicer and the spinning axes are how you clear stacks, and every clear drops a puddle you then have to work around. Hard to learn, extremely rhythmic once you have.",a:[
    {n:"Ritual of the Fang",t:["soak","groupdmg"],c:["preposition","soak"],r:["dps","healer","tank"],sev:3,e:"An 8-second channel. Unintercepted, he gains Fang Empowered — significant damage to all players every second, stacking. Intercepting a beam deals moderate damage per second to the soaker and applies Ritual Venom.",h:"Pre-position on the lines before you engage, and return to the same line every time the ritual repeats. Consistency beats cleverness here.",s:["tk_aof"]},
    {n:"Ritual Venom",t:["stacking","debuff"],c:["unavoidable"],r:["dps","healer","tank"],sev:3,t:["stacking","debuff","myth"],e:"Dormant toxins for 50 seconds. On expiry the venom bursts for very heavy Nature damage. It only stacks on Mythic.",h:"The creator guide says expiry kills you outright. The journal says it bursts for damage — which at high keys amounts to the same thing with eight stacks up, but it means a single stack is survivable.",s:["wh_ej","tk_aof"]},
    {n:"Bloodletting",t:["debuff","denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Zul'jan's Physical abilities make you hemorrhage, removing applications of Ritual Venom and leaving blood pools that deal significant Nature damage every second.",h:"The puddles are the real constraint. Clear stacks away from the beam lines or you cannot soak the next ritual.",s:["tk_aof"]},
-   {n:"Bone Slicer",t:["line","dot"],c:["position"],r:["dps","healer"],sev:2,alt:"Boneslicer",t:["line","dot","noarmor"],e:"Heavy damage to everyone in the axe's path plus moderate damage every second for 7 seconds, ignoring armour. Each tick removes a stack, so one hit clears all eight.",h:"The intended clear method for most players. Get hit by one of the two and you survive — but do not send everyone at once or the healer drowns in the dot.",s:["tk_aof"]},
+   {n:"Boneslicer",t:["line","dot"],c:["position"],r:["dps","healer"],sev:2,t:["line","dot","noarmor"],e:"Heavy damage to everyone in the axe's path plus moderate damage every second for 7 seconds, ignoring armour. Each tick removes a stack, so one hit clears all eight.",h:"The intended clear method for most players. Get hit by one of the two and you survive — but do not send everyone at once or the healer drowns in the dot.",s:["tk_aof"]},
    {n:"Chop Down",t:["tankbuster"],c:["defensive","position"],r:["tank"],sev:2,e:"Two strikes of massive Physical damage, which also clear stacks and therefore drop puddles.",h:"Tanks have to think about puddle placement on their own buster. Do not take it standing on a beam line.",s:["tk_aof"]},
-   {n:"Axe Grinder",t:["denial"],c:["dodge"],r:["dps","healer","tank"],sev:1,alt:"Axegrinder",t:["denial","noarmor"],c:["dodge","soak"],e:"Spinning axes that ricochet around the arena for up to significant damage x5, ignoring armour, doing less damage as they lose speed.",h:"Settled by the journal: Bloodletting triggers on Zul'jan's Physical abilities and these are Physical, so they DO clear Ritual Venom. That makes them your backup when Boneslicer is aimed at someone else — and a slowed, ricocheting axe is a cheap clear.",s:["wh_ej","iv_aof"]}]}],
+   {n:"Axegrinder",t:["denial"],c:["dodge"],r:["dps","healer","tank"],sev:1,t:["denial","noarmor"],c:["dodge","soak"],e:"Spinning axes that ricochet around the arena for up to significant damage x5, ignoring armour, doing less damage as they lose speed.",h:"Settled by the journal: Bloodletting triggers on Zul'jan's Physical abilities and these are Physical, so they DO clear Ritual Venom. That makes them your backup when Boneslicer is aimed at someone else — and a slowed, ricocheting axe is a cheap clear.",s:["wh_ej","iv_aof"]}]}],
 loot:{s:["iv_aof"],i:[
   {n:"Hydraspine Twinblade",ic:"inv_glaive_1h_outdooramaniloa_c_01",id:273793,sl:"One-hand",ty:"Warglaive",b:"Rav'i",p:["Agi","Int"],x:[["Mastery",5],["Vers",4]]},
   {n:"Venom-Etched Crescent",ic:"inv_axe_1h_outdooramaniloa_c_01",id:273780,sl:"One-hand",ty:"Axe",b:"Rav'i",p:["Int"],x:[["Crit",5],["Mastery",5]]},
@@ -1017,7 +1020,7 @@ loot:{s:["iv_aof"],i:[
  route:[
   {n:1,t:"Opening lust pull",m:"Primal Serpents, Twin Fang Harrowers, Ravenous Descendants",d:2,lust:true,p:"One kick assigned to each Primal Serpent; cover the rest with crowd control. They die fast enough under lust that the haste debuff never lands.",s:["tk_rt"]},
   {n:2,t:"Totem sweep",m:"Ravenous Descendants pulled forward",d:1,p:"Tag the extra Descendants into this pull to raise the count and keep the later pack from stacking six of them at once.",s:["tk_rt"]},
-  {n:3,t:"Harrower split",m:"Twin Fang Harrower",d:1,p:"Taunt one Harrower from range without proccing any abilities and it pulls apart from its pair. Worked for the whole PTR and makes the pack dramatically easier.",s:["tk_rt"]},
+  {n:3,t:"Harrower split",m:"Twinfang Harrower",d:1,p:"Taunt one Harrower from range without proccing any abilities and it pulls apart from its pair. Worked for the whole PTR and makes the pack dramatically easier.",s:["tk_rt"]},
   {n:4,t:"Down to Rav'i",m:"Remaining totem guards",d:2,p:"Finish the six totems, then drop into the arena.",s:["tk_rt"]},
   {n:5,t:"Boss exit pull",m:"Evolution Halls trash",d:2,p:"Tag from across the central altar and drag into the corner for safety.",s:["tk_rt"]},
   {n:6,t:"Run through",m:"Rattling Wraiths and casters",d:2,p:"Run the middle, pull back to the caster, then into the boss room.",s:["tk_rt"]},
@@ -1045,7 +1048,7 @@ loot:{s:["iv_aof"],i:[
  killers:[
   {n:"Legion Strike",w:"Xathuux the Annihilator. A tank frontal that applies an eight-second healing reduction. You need a defensive that covers the whole window, not a big heal at the end of it.",s:["tk_mr"]},
   {n:"Curse of Doom",w:"Corrupted Warlock. If the targeted player dies to the unsoaked hit, a Doomguard spawns with a large health pool and spams bolts. A curse dispel deletes the problem outright.",s:["tk_mr"]},
-  {n:"Blade Dance",w:"Fel Master Luxay. A stacking party damage-over-time that becomes lethal the moment it overlaps anything else you have pulled.",s:["tk_mr"]}],
+  {n:"Blade Dance",w:"Felmaster Lucsei. A stacking party damage-over-time that becomes lethal the moment it overlaps anything else you have pulled.",s:["tk_mr"]}],
  areas:[
   {n:"The Row",mobs:[
    {n:"Row Hooligan",k:"fodder",a:[
@@ -1058,10 +1061,10 @@ loot:{s:["iv_aof"],i:[
    {n:"Bribed Captain",k:"lt",a:[
     {n:"Deep Corruption",t:["debuff"],c:["focus"],r:["dps"],sev:2,e:"Passive. Your AoE damage is reduced while this mob lives.",h:"Focus it down first or the whole pull takes twice as long.",s:["tk_mr"]}]},
    {n:"Street Sneak",k:"trash",a:[
-    {n:"Heart Stop Poison",t:["dot","debuff"],c:["poison"],r:["tank","healer"],sev:2,alt:"Heartstop Poison",e:"Applies a poison to the tank carrying significant maximum-health reduction.",h:"One of the two dungeons where a poison dispel is doing direct tank-survival work.",s:["tk_mr"]}]},
-   {n:"Seductive Succubus",alt:"Seductive Sayaad",k:"trash",a:[
+    {n:"Heartstop Poison",t:["dot","debuff"],c:["poison"],r:["tank","healer"],sev:2,e:"Applies a poison to the tank carrying significant maximum-health reduction.",h:"One of the two dungeons where a poison dispel is doing direct tank-survival work.",s:["tk_mr"]}]},
+   {n:"Seductive Sayaad",k:"trash",a:[
     {n:"Seduction",t:["channel"],c:["interrupt","cc"],r:["dps"],sev:1,e:"Channels into a random player.",h:"Interrupt it, or let it start and crowd control to break the channel.",s:["tk_mr"]}]},
-   {n:"Massive Fel Worm",alt:"Massive Felwyrm",k:"mini",a:[
+   {n:"Massive Felwyrm",k:"mini",a:[
     {n:"Over-infused",t:["groupdmg","death"],c:["unavoidable"],r:["healer"],sev:2,e:"Constantly pulses party damage, and leaves a large AoE on death.",s:["tk_mr"]},
     {n:"Corroding Spittle",t:["dot"],c:["magic"],r:["healer"],sev:1,e:"Magic damage-over-time on a random player.",s:["tk_mr"]}]}]},
   {n:"The Warehouse",mobs:[
@@ -1089,29 +1092,29 @@ loot:{s:["iv_aof"],i:[
     {n:"Drain Life",t:["channel"],c:["drop","defensive"],r:["healer"],sev:2,e:"Channels into a random target and cannot be interrupted.",h:"A combat drop cancels it outright. Otherwise it is a defensive.",s:["tk_mr"]},
     {n:"Dark Pact",t:["shield"],c:["focus"],r:["dps"],sev:1,e:"Sacrifices some health for a fairly large shield. Multiple casts keep them alive a long time.",s:["tk_mr"]},
     {n:"Curse of Doom",t:["soak","adds"],c:["curse","soak"],r:["healer","dps"],sev:3,e:"Places a soak on a random player. If the player dies to it, a Doomguard spawns with a large health pool.",h:"Dispelling the curse removes it entirely. Without a curse dispel the whole group soaks.",s:["tk_mr"]}]},
-   {n:"Fel Master Luxay",alt:"Felmaster Lucsei",k:"mini",a:[
+   {n:"Felmaster Lucsei",k:"mini",a:[
     {n:"Blade Dance",t:["dot","stacking","groupdmg"],c:["defensive"],r:["healer"],sev:3,e:"Stacks a damage-over-time on the whole party.",h:"Lethal if it overlaps anything else. Hold a party cooldown for it.",s:["tk_mr"]},
     {n:"Eye Beam",t:["frontal"],c:["position","dodge"],r:["tank"],sev:2,e:"Frontal that shoots towards the tank.",h:"Point him away and then step out of it yourself.",s:["tk_mr"]}]}]}],
  encounters:[
-  {n:"Kystia Manaheart",alt:"Xy'exa Manahar",o:1,img:"mr-kystia-manaheart",sub:"Burn Nibbles, not the boss",shape:"Three burn windows",lv:2,brief:"A burn-window fight in disguise. She sits behind an 80% damage reduction and cannot be meaningfully hurt until you drain the fel out of Nibbles, who then turns on her — stunning her for twenty seconds at heavily increased damage taken. That window is the fight, three times over, and her shield cap drops with each one. Everything between windows is survival.",a:[
-   {n:"Fel Shield",t:["shield"],c:["focus"],r:["dps"],sev:3,alt:"Felshield · Illicit Infusion · Light Infusion",e:"Illicit Infusion keeps Nibbles hostile while she is above 20% health, and Felshield cuts Kystia's damage taken by 80%. Drain the fel from Nibbles and she reverts to her LIGHT form and turns on Kystia: Light Infusion stuns Kystia for 20 seconds, increases all damage she takes by 115%, weakens Felshield, and pulses moderate Chaos damage to the party throughout.",h:"Neither guide explains that Nibbles becomes your ally rather than simply dying. You are not killing a pet, you are freeing one — and the 115% window is where the entire fight happens.",s:["wh_ej","tk_mr","iv_mr"]},
+  {n:"Kystia Manaheart",o:1,img:"mr-kystia-manaheart",sub:"Burn Nibbles, not the boss",shape:"Three burn windows",lv:2,brief:"A burn-window fight in disguise. She sits behind an 80% damage reduction and cannot be meaningfully hurt until you drain the fel out of Nibbles, who then turns on her — stunning her for twenty seconds at heavily increased damage taken. That window is the fight, three times over, and her shield cap drops with each one. Everything between windows is survival.",a:[
+   {n:"Fel Shield",t:["shield"],c:["focus"],r:["dps"],sev:3,e:"Illicit Infusion keeps Nibbles hostile while she is above 20% health, and Felshield cuts Kystia's damage taken by 80%. Drain the fel from Nibbles and she reverts to her LIGHT form and turns on Kystia: Light Infusion stuns Kystia for 20 seconds, increases all damage she takes by 115%, weakens Felshield, and pulses moderate Chaos damage to the party throughout.",h:"Neither guide explains that Nibbles becomes your ally rather than simply dying. You are not killing a pet, you are freeing one — and the 115% window is where the entire fight happens.",s:["wh_ej","tk_mr","iv_mr"]},
    {n:"Chaos Barrage",t:["groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Spammed at the tank, then jumps to other players for reduced damage. The main source of group damage.",s:["tk_mr"]},
    {n:"Corroding Spittle",t:["dot"],c:["magic"],r:["healer"],sev:1,e:"Magic damage-over-time.",s:["tk_mr"]},
    {n:"Fel Spray",t:["frontal"],c:["position","dodge"],r:["tank"],sev:2,e:"Frontal that starts on the tank and sweeps across the room.",h:"Point Nibbles away from the group and this becomes easy.",s:["tk_mr"]},
-   {n:"Fel Nova",t:["denial"],c:["dodge"],r:["dps","healer"],sev:1,alt:"Fel Nova",t:["denial","knockback"],e:"She teleports to a random player's location and detonates for very heavy Fire damage, knocking players back.",h:"Confirmed by the journal against the creator guide, which placed it on the boss. Run out and watch where the knockback sends you.",s:["wh_ej","iv_mr"]},
-   {n:"Mirror Images",t:["adds","groupdmg"],c:["interrupt","cc","spread"],r:["dps"],sev:2,alt:"Felstorm",e:"Copies of herself, each channelling Felstorm for light Fire damage to all nearby players every second. The channel is interruptible.",h:"Spread out and cover them fast — every second is party damage.",s:["tk_mr"]}]},
-  {n:"Zaen Bladesorrow",alt:"Zane Bladesorrow",o:2,img:"mr-zaen-bladesorrow",sub:"Barrel economy",shape:"One phase, resource management",lv:2,brief:"One phase with an economy problem. He throws barrels, and those barrels are your cover for Murder in a Row, which shoots everyone in his line of sight. Fire Bombs destroy barrels, so the group has to spend them deliberately — take out the fel-infused freight, leave enough ordinary crates standing to hide behind. Burn too many and somebody eats the line in the open.",a:[
-   {n:"Fel Freight",t:["groupdmg","denial"],c:["focus"],r:["dps"],sev:2,alt:"Same-Day Delivery · Forbidden Freight",t:["groupdmg","denial","myth"],e:"Warehouse workers hurl Forbidden Freight for very heavy Fire damage and a knockback. The crates are your cover. On Mythic they are Fel-Infused, ticking moderate damage to the party every 3 seconds while they stand — and on Heroic and above, one struck by Fire Bomb or Murder in a Row explodes 5 seconds later.",s:["tk_mr"]},
+   {n:"Fel Nova",t:["denial"],c:["dodge"],r:["dps","healer"],sev:1,t:["denial","knockback"],e:"She teleports to a random player's location and detonates for very heavy Fire damage, knocking players back.",h:"Confirmed by the journal against the creator guide, which placed it on the boss. Run out and watch where the knockback sends you.",s:["wh_ej","iv_mr"]},
+   {n:"Mirror Images",t:["adds","groupdmg"],c:["interrupt","cc","spread"],r:["dps"],sev:2,e:"Copies of herself, each channelling Felstorm for light Fire damage to all nearby players every second. The channel is interruptible.",h:"Spread out and cover them fast — every second is party damage.",s:["tk_mr"]}]},
+  {n:"Zaen Bladesorrow",o:2,img:"mr-zaen-bladesorrow",sub:"Barrel economy",shape:"One phase, resource management",lv:2,brief:"One phase with an economy problem. He throws barrels, and those barrels are your cover for Murder in a Row, which shoots everyone in his line of sight. Fire Bombs destroy barrels, so the group has to spend them deliberately — take out the fel-infused freight, leave enough ordinary crates standing to hide behind. Burn too many and somebody eats the line in the open.",a:[
+   {n:"Same-Day Delivery",t:["groupdmg","denial"],c:["focus"],r:["dps"],sev:2,t:["groupdmg","denial","myth"],e:"Warehouse workers hurl Forbidden Freight for very heavy Fire damage and a knockback. The crates are your cover. On Mythic they are Fel-Infused, ticking moderate damage to the party every 3 seconds while they stand — and on Heroic and above, one struck by Fire Bomb or Murder in a Row explodes 5 seconds later.",s:["tk_mr"]},
    {n:"Fire Bomb",t:["denial"],c:["position"],r:["dps","healer"],sev:2,e:"AoE on two random players that explodes after a short delay, destroying barrels it touches.",h:"One targeted player takes out the fel freight. The other must avoid clipping the normal barrels — you need those.",s:["tk_mr"]},
    {n:"Murder in a Row",t:["line","dot"],c:["los","immune","position"],r:["dps","healer","tank"],sev:3,t:["line","dot","noarmor"],e:"At 100 energy he takes aim and shoots every player IN HIS LINE OF SIGHT for very heavy Physical damage plus massive bleed damage over 15 seconds. Cover breaks the line of sight, and the bleed itself is cleansable if someone has to eat the shot.",h:"Everyone picks a barrel, making sure the second fel freight is one that gets hit. If you have burned too many, the tank or a player with an immunity takes it in the open alone.",s:["tk_mr"]},
    {n:"Killing Spree",t:["channel","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Moderate Physical damage to all players every half second for 3 seconds, ignoring armour.",s:["wh_ej"]},
    {n:"Envenom",t:["tankbuster","dot","debuff"],c:["poison","defensive"],r:["tank","healer"],sev:2,e:"Very heavy Physical damage plus Heartstop Poison: maximum health reduced by 30% and massive Nature damage over 15 seconds. The same poison the Street Sneaks apply.",h:"A 30% max-health cut on the tank going into any other damage is the death here. This is the poison dispel that matters most in the dungeon.",s:["wh_ej","tk_mr"]}]},
-  {n:"Xathuux the Annihilator",alt:"Z'thux the Annihilator",o:3,img:"mr-xathuux-the-annihilator",sub:"A small circle that keeps getting smaller",shape:"One phase, escalating denial",lv:2,brief:"One phase in a room that gets physically smaller. Demonic Rage lays puddles under him every second for fifteen seconds and they last two minutes, so by the third cast most of the arena is gone unless the tank has been overlapping them. Legion Strike is the sharp end — an eight-second window at 80% reduced healing, which is a defensive problem rather than a healing one.",a:[
+  {n:"Xathuux the Annihilator",o:3,img:"mr-xathuux-the-annihilator",sub:"A small circle that keeps getting smaller",shape:"One phase, escalating denial",lv:2,brief:"One phase in a room that gets physically smaller. Demonic Rage lays puddles under him every second for fifteen seconds and they last two minutes, so by the third cast most of the arena is gone unless the tank has been overlapping them. Legion Strike is the sharp end — an eight-second window at 80% reduced healing, which is a defensive problem rather than a healing one.",a:[
    {n:"Legion Strike",t:["tankbuster","frontal","healred"],c:["defensive","position"],r:["tank"],sev:3,e:"Massive Physical damage and REDUCES HEALING RECEIVED BY 80% FOR 8 SECONDS.",h:"Confirmed by the journal, and worse than either guide implied. Eighty percent for eight seconds is the single most punishing tank window in the pool — a defensive that reduces damage works, a plan that relies on being healed through it does not.",s:["wh_ej","tk_mr"]},
-   {n:"Axe Toss",t:["denial","adds"],c:["stack","focus"],r:["dps"],sev:2,alt:"Axe Toss · Fel Lightning",e:"Heavy Chaos damage to anyone within 60 yards of the impact, then the axe sits there channelling Fel Lightning at ALL players for light damage every second, stacking, until destroyed.",h:"Run into melee when targeted so everyone can cleave it immediately.",s:["tk_mr"]},
-   {n:"Infernal Crash",t:["spread"],c:["spread"],r:["dps","healer"],sev:2,alt:"Infernal Crush",e:"Eight-yard AoE around every player, with heavy impact worth a defensive.",h:"Loosely spread. If the axe is still up during this, use party cooldowns.",s:["tk_mr"]},
-   {n:"Demonic Rage",t:["groupdmg","amp","denial"],c:["position"],r:["tank","dps"],sev:3,alt:"Burning Steps",e:"Large party hit, +75% attack speed, and he takes 30% more damage while dropping puddles under himself every second for 15 seconds. Puddles last two minutes, so the first set expires around the third cast.",h:"Tanks move him slowly and overlap the puddles so less than half the room is gone each time. Everyone else lines up damage cooldowns for the amp.",s:["tk_mr"]}]},
-  {n:"Lithiel Cinderfury",alt:"Lith'iel Cinder Fury",o:4,img:"mr-lithiel-cinderfury",sub:"Add control in a room that is on fire",shape:"One phase, constant add control",lv:3,brief:"The messiest encounter in the dungeon and the only genuinely chaotic one. An unkillable infernal fixates the tank from pull to kill while fire pulses passively on everyone, imps spawn from circles under each player, and Malefic Wave sweeps the room after she gateways across it. Nothing is individually hard; the overlap is what kills, and the tank is directing traffic throughout.",a:[
+   {n:"Axe Toss",t:["denial","adds"],c:["stack","focus"],r:["dps"],sev:2,e:"Heavy Chaos damage to anyone within 60 yards of the impact, then the axe sits there channelling Fel Lightning at ALL players for light damage every second, stacking, until destroyed.",h:"Run into melee when targeted so everyone can cleave it immediately.",s:["tk_mr"]},
+   {n:"Infernal Crash",t:["spread"],c:["spread"],r:["dps","healer"],sev:2,e:"Eight-yard AoE around every player, with heavy impact worth a defensive.",h:"Loosely spread. If the axe is still up during this, use party cooldowns.",s:["tk_mr"]},
+   {n:"Demonic Rage",t:["groupdmg","amp","denial"],c:["position"],r:["tank","dps"],sev:3,e:"Large party hit, +75% attack speed, and he takes 30% more damage while dropping puddles under himself every second for 15 seconds. Puddles last two minutes, so the first set expires around the third cast.",h:"Tanks move him slowly and overlap the puddles so less than half the room is gone each time. Everyone else lines up damage cooldowns for the amp.",s:["tk_mr"]}]},
+  {n:"Lithiel Cinderfury",o:4,img:"mr-lithiel-cinderfury",sub:"Add control in a room that is on fire",shape:"One phase, constant add control",lv:3,brief:"The messiest encounter in the dungeon and the only genuinely chaotic one. An unkillable infernal fixates the tank from pull to kill while fire pulses passively on everyone, imps spawn from circles under each player, and Malefic Wave sweeps the room after she gateways across it. Nothing is individually hard; the overlap is what kills, and the tank is directing traffic throughout.",a:[
    {n:"Unkillable Infernal",t:["fixate","denial"],c:["kite","position"],r:["tank"],sev:3,e:"Summoned on pull, cannot be killed, fixates the tank and pulses damage to anyone nearby.",h:"The tank spends the whole encounter managing where this thing stands so it is not blocking anyone's path — including the gateway later.",s:["tk_mr"]},
    {n:"Vile Fiend",t:["adds","tankbuster"],c:["defensive"],r:["tank"],sev:1,e:"Adds that deal bonus shadow damage on melee.",s:["tk_mr"]},
    {n:"Fingers of Gul'dan",t:["adds","spread"],c:["stack","cc"],r:["dps"],sev:2,e:"AoE around every player, each spawning a wild imp on impact.",h:"Overlap the circles in melee range so the imps spawn clustered, then AoE stun and cleave.",s:["tk_mr"]},
@@ -1150,7 +1153,7 @@ loot:{s:["iv_mr"],i:[
   {n:3,t:"Snitches and crystals",m:"Scattered",d:1,p:"Five crystals exist for the vendor buffs. The rally vendor sits in the top-left corner.",s:["tk_rt"]},
   {n:4,t:"Tavern event",m:"—",d:1,p:"Second lust window. Many groups pull the pre-boss pack into the boss: a DPS or healer opens the door while the tank gathers, then take everything in with the event buff up.",s:["tk_rt"]},
   {n:5,t:"Right side to the third boss",m:"Warehouse and demon packs",d:2,p:"The mobs on the elevated platform look close but are not a threat.",s:["tk_rt"]},
-  {n:6,t:"Mini-boss pull",m:"Fel Master Luxay",d:3,p:"Does a lot of damage. Take it clean.",s:["tk_rt"]},
+  {n:6,t:"Mini-boss pull",m:"Felmaster Lucsei",d:3,p:"Does a lot of damage. Take it clean.",s:["tk_rt"]},
   {n:7,t:"Final approach",m:"Demons and imps",d:2,p:"Take it slow. Imps are awkward to group, but they melt if you pull a pack on top of them.",s:["tk_rt"]}],
  reads:[{t:"The tavern event is a pacing problem in a timed format. Either cut it and adjust the timer, or make the buff last long enough to be worth the interruption — four minutes is not.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]},
         {t:"Murder Row carries the season's only relevant curse, and even that one is counterable without a curse dispel.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]}]},
@@ -1171,17 +1174,17 @@ loot:{s:["iv_mr"],i:[
  rewards:[["Formula: Enchant Chest - Mark of Nalorakk","Enchanting","Nalorakk"]],
  killers:[
   {n:"Insatiable",w:"Starvation Effigy, summoned by the Spirits of Hunger. A curse on the entire party reducing maximum health — and it lands right before the same mob channels Feast of Misery for party damage. The combination is what kills.",s:["tk_don"]},
-  {n:"Healing Breeze",w:"Earth Whisper Tender. A magic heal-over-time on every nearby enemy. Miss it and the pull does not die.",s:["tk_don"]},
+  {n:"Healing Breeze",w:"Earthwhisper Tender. A magic heal-over-time on every nearby enemy. Miss it and the pull does not die.",s:["tk_don"]},
   {n:"Frozen Tempest",w:"Sentinel of Winter. Constant pushback on an ice floor while the arena ticks for damage. Without a snow pile to stand on it is close to unmanageable.",s:["tk_don"]}],
  areas:[
   {n:"The Forest",mobs:[
    {n:"Keen-Eyed Striker",k:"trash",a:[
     {n:"Scavenge",t:["channel"],c:["interrupt"],r:["dps"],sev:2,e:"Steals berries from a nearby bush. If it completes, that offering is gone.",h:"Only matters near the bushes, but there it matters a lot.",s:["tk_don"]},
     {n:"Razor Dive",t:["dot"],c:["bleedcl","defensive"],r:["healer"],sev:1,e:"Random-target leap that leaves a bleed.",s:["tk_don"]}]},
-   {n:"Thorn Claw Gatherer",alt:"Thornclaw Gatherer",k:"trash",a:[
-    {n:"Shredding Claw",alt:"Shredding Claws",t:["stacking","amp"],c:["cc","kite"],r:["tank"],sev:2,e:"Passive that stacks an armour reduction on the tank.",h:"Nasty if you are pulling several. Watch the stacks and kite briefly to drop them.",s:["tk_don","iv_don"]},
+   {n:"Thornclaw Gatherer",k:"trash",a:[
+    {n:"Shredding Claws",t:["stacking","amp"],c:["cc","kite"],r:["tank"],sev:2,e:"Passive that stacks an armour reduction on the tank.",h:"Nasty if you are pulling several. Watch the stacks and kite briefly to drop them.",s:["tk_don","iv_don"]},
     {n:"Rotten Supplies",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:1,e:"Leaves patches of ground ichor around the pack.",s:["iv_don"]}]},
-   {n:"Earth Whisper Tender",alt:"Earthwhisper Tender",k:"caster",a:[
+   {n:"Earthwhisper Tender",k:"caster",a:[
     {n:"Healing Breeze",t:["heal"],c:["interrupt","purge"],r:["dps"],sev:3,e:"Magic heal-over-time on all nearby enemies.",h:"Priority interrupt in the area — both sources call it the one cast you must never let through. A mass dispel or purge works in a pinch, and spare kicks go on their Earth Bolt.",s:["tk_don","iv_don"]}]},
    {n:"Territorial Matriarch",k:"trash",a:[
     {n:"Mother's Wrath",t:["enrage","stacking"],c:["soothe"],r:["tank","dps"],sev:2,e:"Harmless alone, but gains stacking rage whenever her cubs die.",h:"Kill order matters. Left up, this gets very ugly for the tank — an enrage dispel is the clean answer if anyone has one.",s:["tk_don","iv_don"]}]},
@@ -1205,32 +1208,32 @@ loot:{s:["iv_mr"],i:[
    {n:"Winter Squall",k:"mini",a:[
     {n:"Master of the Winds",t:["env"],c:["focus"],r:["dps","healer","tank"],sev:2,e:"Controls the harsh winds. Killing it stops them permanently.",h:"You have to be close to it in the storm to have visibility, which means everyone stands in the damage-taken increase to fight it.",s:["tk_don"]}]}]},
   {n:"The Waking Path",mobs:[
-   {n:"Storm-Bound Mystic",alt:"Stormbound Mystic",k:"caster",a:[
+   {n:"Stormbound Mystic",k:"caster",a:[
     {n:"Arc Lightning",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:3,e:"Arcs from the target to additional players.",h:"Interrupt every cast. Spare kicks go on their Lightning Bolt.",s:["tk_don"]}]},
-   {n:"Ruthless Totem Caller",alt:"Ruthless Totemcaller",k:"trash",a:[
+   {n:"Ruthless Totemcaller",k:"trash",a:[
     {n:"Magma Totem",t:["totem","groupdmg"],c:["focus"],r:["dps"],sev:2,e:"Spawns totems that pulse AoE while alive.",s:["tk_don"]}]},
    {n:"Grizzled Warbringer",k:"lt",a:[
     {n:"Primal Echo",t:["groupdmg","dot"],c:["unavoidable"],r:["healer"],sev:2,e:"A large hit plus a damage-over-time on the party.",s:["tk_don"]},
     {n:"Poison Spear Volley",t:["denial"],c:["dodge"],r:["dps","healer"],sev:1,e:"Drops circles on the ground.",s:["tk_don"]}]},
-   {n:"Bonded Beast Tamer",alt:"Bonded Beasttamer",k:"trash",a:[
+   {n:"Bonded Beasttamer",k:"trash",a:[
     {n:"Bestial Wrath",t:["enrage"],c:["soothe"],r:["tank","dps"],sev:2,e:"Their Loyal Saber Fang companion occasionally enrages.",s:["tk_don"]},
     {n:"Shred Armor",t:["stacking","amp"],c:["cc","kite"],r:["tank"],sev:2,e:"The saber fang stacks armour reduction on the tank.",h:"Same problem as the forest gatherers — with several out you need a kite window.",s:["tk_don"]}]},
-   {n:"Loa Speaker Nanaea",alt:"Loa Speaker Nanea",k:"mini",a:[
+   {n:"Loa Speaker Nanea",k:"mini",a:[
     {n:"Earthquake",t:["denial","spread"],c:["spread"],r:["dps","healer"],sev:2,e:"Applies to two random players, cleaving nearby and leaving a puddle.",h:"Spread out and give yourself room; the puddles eat the arena otherwise.",s:["tk_don"]},
     {n:"Volatile Totem",t:["totem","groupdmg"],c:["focus"],r:["dps"],sev:2,e:"Three totems pulse AoE damage. Unlike the magma totems these have real health.",h:"Drag the boss over them for cleave if you can.",s:["tk_don"]}]}]}],
  encounters:[
   {n:"The Hoardmonger",o:1,img:"don-the-hoardmonger",sub:"Three piles, three permanent upgrades — you choose the order",shape:"Three empowerments, your order",lv:2,brief:"Three checkpoints, and you choose what happens at each. At 90, 70 and 40 percent he raids the nearest pile and permanently upgrades an ability — meat adds a knockback, bone leaves slowing spikes, mushrooms flood the room with soaks. On Mythic every upgrade sticks, so by the last third he has all three. Meat first and mushrooms last: that one you want live for the shortest time.",a:[
-   {n:"Empowerment",t:["debuff"],c:["preposition"],r:["dps","healer","tank"],sev:3,alt:"Resourceful Measures",e:"At 90%, 70% and 40% health he gathers from the nearest pile, REPLACING one of his abilities. He can only hold one at a time — but on Mythic every ability he picks up is permanent, so by 40% he has all three.",h:"Meat first, then bone, mushrooms last — the mushroom empowerment translates to the most unavoidable damage, so you want it live for the shortest time.",s:["tk_don"]},
-   {n:"Ravenous Bellow",t:["groupdmg","dot","knockback"],c:["unavoidable"],r:["healer"],sev:2,alt:"Hearty Bellow",t:["groupdmg","dot","knockback","noarmor"],e:"Heavy Physical damage plus moderate damage every second for 10 seconds, IGNORING ARMOUR. The meat pile replaces it with Hearty Bellow, which adds a knockback.",s:["wh_ej","tk_don"]},
-   {n:"Earth Shatter Slam",t:["frontal","denial"],c:["position","dodge"],r:["tank"],sev:2,alt:"Earthshatter Slam · Bonespike Slam",e:"Massive Nature damage in a frontal cone. The bone pile replaces it with Bonespike Slam, which additionally leaves spikes for 45 seconds dealing light damage every half second and slowing 50%.",h:"The area denial matters most because of what the mushrooms do next.",s:["tk_don"]},
-   {n:"Spoiled Supplies",t:["soak","dot"],c:["soak","poison"],r:["dps","healer","tank"],sev:3,alt:"Rotten Mushrooms · Toxic Spores",e:"He tosses rotten food over 7 seconds, hitting targeted players directly for significant damage and littering Rotten Mushrooms. Each grows for 12 seconds then detonates in Putrid Burst, covering everyone in Toxic Spores. Touching one transfers the spores to you instead and destroys it. The mushroom pile grants Overflowing Supplies — many more mushrooms.",h:"The journal is explicit that Toxic Spores is removable by poison cleansing, so a poison dispeller can soak far more than their share.",s:["wh_ej","tk_don","iv_don"]}]},
+   {n:"Empowerment",t:["debuff"],c:["preposition"],r:["dps","healer","tank"],sev:3,e:"At 90%, 70% and 40% health he gathers from the nearest pile, REPLACING one of his abilities. He can only hold one at a time — but on Mythic every ability he picks up is permanent, so by 40% he has all three.",h:"Meat first, then bone, mushrooms last — the mushroom empowerment translates to the most unavoidable damage, so you want it live for the shortest time.",s:["tk_don"]},
+   {n:"Ravenous Bellow",t:["groupdmg","dot","knockback"],c:["unavoidable"],r:["healer"],sev:2,t:["groupdmg","dot","knockback","noarmor"],e:"Heavy Physical damage plus moderate damage every second for 10 seconds, IGNORING ARMOUR. The meat pile replaces it with Hearty Bellow, which adds a knockback.",s:["wh_ej","tk_don"]},
+   {n:"Earthshatter Slam",t:["frontal","denial"],c:["position","dodge"],r:["tank"],sev:2,e:"Massive Nature damage in a frontal cone. The bone pile replaces it with Bonespike Slam, which additionally leaves spikes for 45 seconds dealing light damage every half second and slowing 50%.",h:"The area denial matters most because of what the mushrooms do next.",s:["tk_don"]},
+   {n:"Spoiled Supplies",t:["soak","dot"],c:["soak","poison"],r:["dps","healer","tank"],sev:3,e:"He tosses rotten food over 7 seconds, hitting targeted players directly for significant damage and littering Rotten Mushrooms. Each grows for 12 seconds then detonates in Putrid Burst, covering everyone in Toxic Spores. Touching one transfers the spores to you instead and destroys it. The mushroom pile grants Overflowing Supplies — many more mushrooms.",h:"The journal is explicit that Toxic Spores is removable by poison cleansing, so a poison dispeller can soak far more than their share.",s:["wh_ej","tk_don","iv_don"]}]},
   {n:"Sentinel of Winter",o:2,img:"don-sentinel-of-winter",sub:"An ice floor, and you slide",shape:"One phase, environmental",lv:3,brief:"The most positioning-heavy encounter in the pool. You fight on ice, so you slide, and Frozen Tempest then shoves everyone constantly while the arena ticks. The adds are the answer — each Shivercore leaves a Snowdrift when it dies, and standing in one makes you immune to forced movement. Kill one early, hold the second, and time its death to the Tempest; the whole fight softens.",a:[
    {n:"Glacial Torment",t:["dot"],c:["magic"],r:["healer"],sev:2,e:"Magic damage-over-time on three players.",h:"Dispel fast, then focus healing into whoever still has it.",s:["tk_don"]},
    {n:"Raging Squall",t:["denial"],c:["stack","position"],r:["dps","healer","tank"],sev:2,e:"Very heavy Frost damage on impact, then the squalls WANDER the arena for a minute and a half, hitting for heavy damage and knocking players back.",h:"Both guides describe a brief rotation you step around. The journal says these persist for 90 seconds and roam — so they accumulate, and late in the fight the arena is genuinely crowded. Stack so they spawn together and the cluster stays walkable.",s:["wh_ej","tk_don"]},
-   {n:"Shattering Frost Spikes",t:["adds"],c:["interrupt","position"],r:["dps","tank"],sev:3,alt:"Shattering Frostspike",t:["adds","myth"],e:"Two icicles splinter for very heavy damage within 4 yards, revealing Fractured Shivercores that spam Winter's Shroud — significant damage plus 10% increased Frost damage taken for 20 seconds, stacking. On death each bursts a Rimeshatter that lands 6 seconds later within 5 yards; if nobody is standing there, Rime Detonation hits the party for heavy damage and roots for 4 seconds. Each also leaves a Snowdrift: 40% slow, immune to forced movement.",h:"Kill the first Shivercore fast, soak the Rimeshatter, then deliberately hold the second one and time its death to line up with Frozen Tempest — the Snowdrift it leaves makes you immune to forced movement for the channel.",s:["tk_don","iv_don"]},
+   {n:"Shattering Frostspike",t:["adds"],c:["interrupt","position"],r:["dps","tank"],sev:3,t:["adds","myth"],e:"Two icicles splinter for very heavy damage within 4 yards, revealing Fractured Shivercores that spam Winter's Shroud — significant damage plus 10% increased Frost damage taken for 20 seconds, stacking. On death each bursts a Rimeshatter that lands 6 seconds later within 5 yards; if nobody is standing there, Rime Detonation hits the party for heavy damage and roots for 4 seconds. Each also leaves a Snowdrift: 40% slow, immune to forced movement.",h:"Kill the first Shivercore fast, soak the Rimeshatter, then deliberately hold the second one and time its death to line up with Frozen Tempest — the Snowdrift it leaves makes you immune to forced movement for the channel.",s:["tk_don","iv_don"]},
    {n:"Frozen Tempest",t:["env","knockback","groupdmg"],c:["position"],r:["dps","healer","tank"],sev:3,e:"Moderate Frost damage to everyone every second, pushing them away. Players OUTSIDE the eye of the storm take an additional heavy damage every second on top.",h:"The journal confirms the Snowdrift trick outright: standing in one makes you immune to forced movement. So hold the second Shivercore and time its death to the Tempest — that is the whole encounter solved.",s:["wh_ej","tk_don","iv_don"]}]},
   {n:"Nalorakk",o:3,img:"don-nalorakk",sub:"Echo management, with a second boss interfering",shape:"One phase, energy-driven cycle",lv:3,brief:"An echo-placement puzzle with a second boss interfering. Echoes land under marked players and stay there, and every new set detonates every old one — so sloppy early placement compounds until it is unsurvivable. At full energy he charges them at Zul'jarra and you body-block; she then raises a shield to hide behind, and the instant it drops the tank must be back for Forceful Slam.",a:[
-   {n:"Echoing Maw",t:["denial","adds"],c:["position"],r:["dps","healer","tank"],sev:2,alt:"Echoing Maul",e:"Marks players for 4 seconds, then sends an Echo to each marked position — and EVERY echo already on the floor immediately hits for heavy damage within 8 yards.",h:"Overlap your circles without cleaving each other, and drop them near existing echoes so they cluster.",s:["tk_don"]},
+   {n:"Echoing Maul",t:["denial","adds"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Marks players for 4 seconds, then sends an Echo to each marked position — and EVERY echo already on the floor immediately hits for heavy damage within 8 yards.",h:"Overlap your circles without cleaving each other, and drop them near existing echoes so they cluster.",s:["tk_don"]},
    {n:"Spectral Slash",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Knocks the player back and lingers for significant damage every 2 seconds for 12 seconds, stacking.",h:"Because every existing echo pulses each time a new set lands, echo placement compounds — a sloppy first set makes the fourth set unsurvivable.",s:["wh_ej","tk_don"]},
    {n:"Fury of the War God",t:["amp","adds"],c:["position"],r:["dps","healer","tank"],sev:3,e:"He headbutts Zul'jarra into a Concussive Shock, then sends the echoes charging at her. Blocking one costs you significant Nature damage; letting one reach her costs the party heavy damage, ignoring armour, plus a stacking 10% damage-taken increase. Each echo lingers for one further Fury of the War God, then vanishes.",h:"Block their path instead of letting them connect, and drop the echoes into a corner earlier so every charge comes from the same direction.",s:["tk_don","iv_don"]},
    {n:"Overwhelming Onslaught",t:["channel","groupdmg","knockback"],c:["los","position"],r:["healer","tank"],sev:3,t:["channel","groupdmg","knockback","noarmor","myth"],e:"very heavy damage every second for 3 seconds, ignoring armour. Zul'jarra's Defensive Stance reduces it by 80% for anyone standing behind her — not immunity, an 80% cut. The final hit stuns her and knocks everyone back.",h:"Tanks own the shield's placement. Getting knocked into an echo is how this goes wrong.",s:["tk_don"]},
@@ -1284,26 +1287,26 @@ loot:{s:["iv_don"],i:[
  rewards:[["Pattern: Primal Spore Binding","Leatherworking","Ziekket"],["Pattern: World Tender's Trunkplate","Leatherworking","Ziekket"]],
  killers:[
   {n:"Light Fire into Grievous Thrash",w:"Light Warden Ruya. The bear-phase group bleed landing on top of the caster-phase dot is the combination that ends pulls. Hold party cooldowns for it.",s:["tk_bv"]},
-  {n:"Spouting Florid",w:"Sporeblight Belcher. Very high pulsing damage over six seconds, and there is an extra one of these on the left path.",s:["tk_bv","tk_rt"]},
-  {n:"Awaken the Light Bloom",w:"Xyzzyx. Lashers that do not die when killed — miss the frontal that removes them and they come back with a haste boost.",s:["tk_bv"]}],
+  {n:"Spouting Floret",w:"Sporeblight Belcher. Very high pulsing damage over six seconds, and there is an extra one of these on the left path.",s:["tk_bv","tk_rt"]},
+  {n:"Awaken the Lightbloom",w:"Xyzzyx. Lashers that do not die when killed — miss the frontal that removes them and they come back with a haste boost.",s:["tk_bv"]}],
  areas:[
   {n:"The Grove",mobs:[
    {n:"Lasher",k:"trash",a:[
     {n:"Four-Spined",t:["dot","stacking"],c:["magic","freedom"],r:["tank","healer"],sev:2,e:"Stacks a magic damage-over-time on the tank through melee swings.",h:"Removable by magic dispel or by a freedom effect, so you have two ways to clear it more often. Note the pool video contests whether freedoms work — see the disputes list.",s:["tk_bv"]}]},
-   {n:"Light Gorged Lasher",alt:"Lightgorged Lasher",k:"trash",a:[
+   {n:"Lightgorged Lasher",k:"trash",a:[
     {n:"Lightbloom Pollination",t:["shield","heal"],c:["focus"],r:["dps"],sev:2,e:"Buffs and heals nearby allies while the shield holds.",h:"Focus it the moment it happens — the written guide treats this as an interrupt target, so if you can stop the cast outright, do.",s:["tk_bv","iv_bv"]}]},
-   {n:"Radiant Spell Sower",alt:"Radiant Spellsower",k:"caster",a:[
+   {n:"Radiant Spellsower",k:"caster",a:[
     {n:"Light Bolt Volley",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:3,e:"AoE hit on the party.",h:"Always interrupted. These are the mobs that make the left path interrupt-heavy.",s:["tk_bv"]},
-    {n:"Rouse",t:["adds"],c:["cc","focus"],r:["dps"],sev:2,alt:"Frantic Blooming",e:"At low health they automatically walk to the nearest dormant lasher camp and wake it.",h:"Slow it and kill it before it arrives. Both sources call this the most important caster in the dungeon.",s:["tk_bv","iv_bv"]}]},
+    {n:"Frantic Blooming",t:["adds"],c:["cc","focus"],r:["dps"],sev:2,e:"At low health they automatically walk to the nearest dormant lasher camp and wake it.",h:"Slow it and kill it before it arrives. Both sources call this the most important caster in the dungeon.",s:["tk_bv","iv_bv"]}]},
    {n:"Underbrush Stalker",k:"trash",a:[
-    {n:"Thorn Blade",alt:"Thornblade",t:["dot","stacking"],c:["bleedcl","defensive"],r:["healer"],sev:2,e:"Teleports to a random player and applies a bleed, which stacks if several of these are in the pack.",h:"Count how many are in a pull before you take it — the stack count is the danger, not the single application.",s:["tk_bv","iv_bv"]}]},
-   {n:"Virid Grove Keeper",alt:"Virid Grovekeeper",k:"lt",a:[
+    {n:"Thornblade",t:["dot","stacking"],c:["bleedcl","defensive"],r:["healer"],sev:2,e:"Teleports to a random player and applies a bleed, which stacks if several of these are in the pack.",h:"Count how many are in a pull before you take it — the stack count is the danger, not the single application.",s:["tk_bv","iv_bv"]}]},
+   {n:"Virid Grovekeeper",k:"lt",a:[
     {n:"Earth Rupture Strike",t:["tankbuster","denial"],c:["defensive","position"],r:["tank"],sev:2,e:"Tank hit that drops a puddle where you are standing.",h:"Do not take it on top of your group.",s:["tk_bv"]},
     {n:"Uproot",t:["knockback"],c:["position"],r:["dps","healer","tank"],sev:2,e:"AoE hit and knockback. Not dangerous alone, but there are edges here.",s:["tk_bv"]}]},
    {n:"Sporeblight Belcher",k:"lt",a:[
-    {n:"Spouting Florid",t:["groupdmg","channel"],c:["unavoidable","defensive"],r:["healer"],sev:3,alt:"Spouting Floret",e:"Self-buff that pulses very high damage over six seconds.",h:"The scariest lieutenant in the dungeon and the one place both sources independently say to commit a major defensive. Never take two at once.",s:["tk_bv","iv_bv"]},
+    {n:"Spouting Floret",t:["groupdmg","channel"],c:["unavoidable","defensive"],r:["healer"],sev:3,e:"Self-buff that pulses very high damage over six seconds.",h:"The scariest lieutenant in the dungeon and the one place both sources independently say to commit a major defensive. Never take two at once.",s:["tk_bv","iv_bv"]},
     {n:"Belch Spores",t:["denial"],c:["dodge"],r:["dps","healer"],sev:2,e:"Spawns circles under every player over a few seconds.",s:["tk_bv"]}]},
-   {n:"Thorny Scepter",alt:"Thorny Saptor",k:"trash",a:[
+   {n:"Thorny Saptor",k:"trash",a:[
     {n:"Hunting Leap",t:["frontal","channel"],c:["cc","dodge"],r:["dps","healer"],sev:1,e:"Leaps to a random player and channels a frontal through them.",h:"Crowd control cancels the channel outright.",s:["tk_bv"]}]},
    {n:"Lightfeather Petalwing",k:"trash",a:[
     {n:"Disorienting Screech",t:["debuff"],c:["interrupt"],r:["dps"],sev:2,e:"Party disorient if it lands.",h:"Assign one player.",s:["tk_bv"]}]},
@@ -1316,35 +1319,35 @@ loot:{s:["iv_don"],i:[
    {n:"Luminous Thornmaw",k:"lt",a:[
     {n:"Grievous Gash",t:["tankbuster","dot"],c:["topoff","defensive"],r:["tank","healer"],sev:3,e:"A tank bleed that is removed by healing the tank to full health.",h:"Save your big self-healing for this, and the healer should push into the tank hard. It clears the moment you top off.",s:["tk_bv"]},
     {n:"Solar Breath",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Random-target frontal.",s:["tk_bv"]}]},
-   {n:"Toad Matriarch",alt:"Potatoad Matriarch",k:"mini",a:[
+   {n:"Potatoad Matriarch",k:"mini",a:[
     {n:"Tongue Toss",t:["tankbuster","knockback"],c:["defensive","position"],r:["tank"],sev:2,e:"Tank buster that launches the tank up and over the mob itself.",h:"Watch where you land — being thrown into another pack is the failure here.",s:["tk_bv"]},
     {n:"Toxic Spew",t:["dot","groupdmg"],c:["poison"],r:["healer"],sev:2,e:"Poison damage-over-time on the whole party.",s:["tk_bv"]},
-    {n:"Toad Spawn",t:["adds"],c:["focus"],r:["dps"],sev:2,alt:"Toadspawn",e:"Summons three eggs that hatch after a short delay into tadpoles which toss players around.",h:"Kill the eggs. Cleaning up hatchlings under the mini-boss is worse.",s:["tk_bv","iv_bv"]}]}]}],
+    {n:"Toadspawn",t:["adds"],c:["focus"],r:["dps"],sev:2,e:"Summons three eggs that hatch after a short delay into tadpoles which toss players around.",h:"Kill the eggs. Cleaning up hatchlings under the mini-boss is worse.",s:["tk_bv","iv_bv"]}]}]}],
  encounters:[
-  {n:"Lightblossom Trinity",alt:"The Light Blossom Trinity",o:1,img:"tbv-lightblossom-trinity",sub:"Left path. Meittik, Lekshi and Kezkitt — and they share a health bar",shape:"One phase, shared health bar",lv:2,brief:"Three bosses on a single health bar, which means no target swapping and free cleave. The loop is fixed: Meittik ruptures loam, Lekshi dashes between the patches sowing blossoms, Kezkitt channels a beam into each one — and standing in the beam is what stops it growing. Miss the interceptions and the blossoms return heavily empowered. Simple shape, punishing arithmetic.",a:[
+  {n:"Lightblossom Trinity",o:1,img:"tbv-lightblossom-trinity",sub:"Left path. Meittik, Lekshi and Kezkitt — and they share a health bar",shape:"One phase, shared health bar",lv:2,brief:"Three bosses on a single health bar, which means no target swapping and free cleave. The loop is fixed: Meittik ruptures loam, Lekshi dashes between the patches sowing blossoms, Kezkitt channels a beam into each one — and standing in the beam is what stops it growing. Miss the interceptions and the blossoms return heavily empowered. Simple shape, punishing arithmetic.",a:[
    {n:"Thicket's Trinity",t:["shield"],c:["focus"],r:["dps"],sev:3,e:"Meittik, Lekshi and Kezkitt are bonded and share ALL damage taken.",h:"Neither guide mentions this. It means you never need to target-swap — hit whichever is convenient and cleave freely. It reframes the whole encounter.",s:["wh_ej"]},
    {n:"Light Bolt",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:2,e:"Kezkitt casts significant Holy damage at a player. Interruptible.",h:"Keep an interrupt rotation on it.",s:["wh_ej","tk_bv","iv_bv"]},
    {n:"Bedrock Slam",t:["tankbuster","dot","denial"],c:["defensive"],r:["tank","healer"],sev:2,e:"Meittik strikes for heavy Nature damage and massive Physical damage, rupturing topsoil into patches of Fertile Loam — 50% slow and significant damage per second. On Mythic it also triggers Bedrock Surge, moderate damage to the party every second for 8 seconds.",s:["wh_ej","tk_bv"]},
    {n:"Light Sower's Dash",t:["line"],c:["dodge"],r:["dps","healer","tank"],sev:2,e:"Lekshi dashes between the Fertile Loam patches for heavy Holy damage to anyone in the path, sowing a Lightblossom at each destination.",s:["wh_ej"]},
-   {n:"Light Blossom Beam",t:["soak","groupdmg"],c:["preposition","soak"],r:["dps","healer","tank"],sev:3,alt:"Lightblossom Beam · Light-Gorged",e:"Kezkitt channels a beam into each seed for 8 seconds. Standing in the beam stifles it and prevents Light-Gorged, which is +50% damage per application. At the end the blossom casts Lightbloom Overgrowth — light Holy damage to everyone every second for 8 seconds — and the loam withers into Light-Scorched Earth at significant damage per second.",h:"Pre-position beside the loam circles before the beam starts and you can prevent every tick. Start near an edge and rotate as the room fills.",s:["tk_bv"]},
-   {n:"Thorn Blade",t:["dot","spread"],c:["spread","bleedcl","dodge"],r:["dps","healer"],sev:2,e:"A large circle on a player, a damage-over-time, then the Fan of Thorns immediately after.",h:"Move the circle away from the group, cleanse or defensive the dot, and step out of the fan.",s:["tk_bv"]}]},
-  {n:"Ikuzz the Light Hunter",alt:"Aku'mai the Light Hunter",o:2,img:"tbv-ikuzz",sub:"Right path. Roots, and the space to fight in",shape:"One phase, frenzy at 50%",lv:2,brief:"The simplest of the four, and the only one a single talent choice really changes. Roots fill the arena and hold you until they are destroyed — but his own fixate crushes every root he walks over, so a good kite clears the floor for you. At half health he speeds up and pulses damage until he dies. A freedom effect turns this from awkward into easy.",a:[
+   {n:"Lightblossom Beam",t:["soak","groupdmg"],c:["preposition","soak"],r:["dps","healer","tank"],sev:3,e:"Kezkitt channels a beam into each seed for 8 seconds. Standing in the beam stifles it and prevents Light-Gorged, which is +50% damage per application. At the end the blossom casts Lightbloom Overgrowth — light Holy damage to everyone every second for 8 seconds — and the loam withers into Light-Scorched Earth at significant damage per second.",h:"Pre-position beside the loam circles before the beam starts and you can prevent every tick. Start near an edge and rotate as the room fills.",s:["tk_bv"]},
+   {n:"Thornblade",t:["dot","spread"],c:["spread","bleedcl","dodge"],r:["dps","healer"],sev:2,e:"A large circle on a player, a damage-over-time, then the Fan of Thorns immediately after.",h:"Move the circle away from the group, cleanse or defensive the dot, and step out of the fan.",s:["tk_bv"]}]},
+  {n:"Ikuzz the Light Hunter",o:2,img:"tbv-ikuzz",sub:"Right path. Roots, and the space to fight in",shape:"One phase, frenzy at 50%",lv:2,brief:"The simplest of the four, and the only one a single talent choice really changes. Roots fill the arena and hold you until they are destroyed — but his own fixate crushes every root he walks over, so a good kite clears the floor for you. At half health he speeds up and pulses damage until he dies. A freedom effect turns this from awkward into easy.",a:[
    {n:"Bloodthorn Roots",t:["root","denial"],c:["freedom","focus"],r:["dps","healer","tank"],sev:3,e:"Moderate Nature damage and rooted in place until the roots are destroyed.",h:"This is the fight where a freedom effect is worth a talent point — you can simply run over the roots to clear them.",s:["tk_bv"]},
    {n:"Thorncaller Roar",t:["groupdmg","adds"],c:["unavoidable"],r:["healer"],sev:2,e:"Spawns roots into the arena and deals a decent chunk of damage over its duration.",s:["tk_bv"]},
    {n:"Verdant Stomp",t:["knockback","root"],c:["position","freedom"],r:["dps","healer","tank"],sev:3,t:["knockback","root","myth"],e:"heavy damage and a knockback, then Bloodthorn Roots emerge at every player's location 4 seconds later.",h:"Without freedom, loosely spread in melee range so your roots get cleaved off fast — while making sure the initial spawn hit does not cleave allies.",s:["tk_bv"]},
-   {n:"Bloodthirsty Gaze",t:["fixate"],c:["kite"],r:["dps","healer"],sev:2,alt:"Bloodthirsty Gaze · Incise · Crunched",e:"He pursues one player for 10 seconds. His Crushing Footfalls deal moderate damage and crush any Bloodthorn Roots within 7 yards every second. Catching you means Incise — heavy damage bleed per second for 3 seconds — then Crunched, a 5-second stun.",h:"It is the FOOTFALLS that clear roots, not the chase line. Walk him deliberately over root clusters and you clear the arena for free.",s:["wh_ej","tk_bv","iv_bv"]},
+   {n:"Bloodthirsty Gaze",t:["fixate"],c:["kite"],r:["dps","healer"],sev:2,e:"He pursues one player for 10 seconds. His Crushing Footfalls deal moderate damage and crush any Bloodthorn Roots within 7 yards every second. Catching you means Incise — heavy damage bleed per second for 3 seconds — then Crunched, a 5-second stun.",h:"It is the FOOTFALLS that clear roots, not the chase line. Walk him deliberately over root clusters and you clear the arena for free.",s:["wh_ej","tk_bv","iv_bv"]},
    {n:"Light Crazed Frenzy",t:["enrage","groupdmg"],c:["defensive"],r:["healer"],sev:2,e:"He absorbs the Lightbloom fully: +20% movement speed and moderate Holy damage pulsing every 2 seconds.",h:"Harder to kite and Thorncaller Roar gets much worse. Save party cooldowns for after the transition.",s:["tk_bv"]}]},
-  {n:"Lightwarden Ruia",alt:"Light Warden Ruya",o:3,img:"tbv-lightwarden-ruia",sub:"Three phases by health, then all of them at once",shape:"Three phases, 70% and 40%",lv:3,brief:"Genuinely three-phase, and the odyssey of the dungeon. He opens as a caster dropping silencing Lightfire beams, shifts to bear at 70% for a party bleed that only clears by topping everyone to full, then returns at 40% and channels spirits that cycle all four abilities every eight seconds. The last phase is where it kills — Lightfire landing into Grievous Thrash is the overlap to hold cooldowns for.",a:[
+  {n:"Lightwarden Ruia",o:3,img:"tbv-lightwarden-ruia",sub:"Three phases by health, then all of them at once",shape:"Three phases, 70% and 40%",lv:3,brief:"Genuinely three-phase, and the odyssey of the dungeon. He opens as a caster dropping silencing Lightfire beams, shifts to bear at 70% for a party bleed that only clears by topping everyone to full, then returns at 40% and channels spirits that cycle all four abilities every eight seconds. The last phase is where it kills — Lightfire landing into Grievous Thrash is the overlap to hold cooldowns for.",a:[
    {n:"Warden's Wrath",t:["tankbuster"],c:["interrupt"],r:["dps"],sev:2,e:"Spammed at the tank in the opening Moonkin form.",h:"Keep interrupts on it.",s:["tk_bv"]},
-   {n:"Light Fire",t:["dot","spread","silence"],c:["spread","dodge"],r:["dps","healer"],sev:3,alt:"Lightfire · Lightfire Beams",e:"Moderate Radiant damage every second for 6 seconds. On expiry, Lightfire BEAMS emerge at the afflicted player's location — moderate damage per second and a 6-second silence to anyone standing in them.",h:"Both guides describe tornadoes; the journal says beams that persist where you were standing. Move before it expires and leave the beams somewhere nobody needs to walk.",s:["wh_ej","tk_bv"]},
+   {n:"Light Fire",t:["dot","spread","silence"],c:["spread","dodge"],r:["dps","healer"],sev:3,e:"Moderate Radiant damage every second for 6 seconds. On expiry, Lightfire BEAMS emerge at the afflicted player's location — moderate damage per second and a 6-second silence to anyone standing in them.",h:"Both guides describe tornadoes; the journal says beams that persist where you were standing. Move before it expires and leave the beams somewhere nobody needs to walk.",s:["wh_ej","tk_bv"]},
    {n:"Lightfall",t:["denial"],c:["dodge"],r:["dps","healer","tank"],sev:1,e:"A set of circles to avoid.",s:["tk_bv"]},
    {n:"Grievous Thrash",t:["groupdmg","dot"],c:["topoff"],r:["healer","dps"],sev:3,e:"Heavy damage plus a bleed of light damage per second lasting FORTY seconds or until the target is fully healed. It stacks.",h:"Healer and debuffed players have to work together to top everyone off — this is not a heal-when-convenient bleed.",s:["tk_bv"]},
    {n:"Pulverizing Strikes",t:["frontal","amp"],c:["spread","dodge"],r:["dps","healer"],sev:2,e:"He marks several targets and fires a cone at each every 2 seconds for 6 seconds. Being struck applies Pulverized: +100% damage from Pulverizing Strikes for 6 seconds.",h:"The amplifier is specifically against this ability, so eating the first cone doubles the next two. Move the instant you are marked.",s:["wh_ej","tk_bv"]},
    {n:"Spirits of the Veil",t:["channel","adds"],c:["defensive"],r:["dps","healer","tank"],sev:3,e:"At 40% he returns to Haranir form and channels until defeated, casting Lightfire, Lightfall, Pulverizing Strikes and Grievous Thrash every 8 seconds.",h:"The Light Fire into Grievous Thrash sequence is where you commit defensives and healing cooldowns.",s:["tk_bv"]}]},
-  {n:"Ziekket",alt:"Xyzzyx",o:4,img:"tbv-ziekket",sub:"Lashers that do not stay dead",shape:"One phase, no downtime",lv:3,brief:"One phase with no breathing room: Oozing Xylem pulses on the party from pull to kill. Lashers sprout and refuse to die, going dormant rather than dropping, and only a frontal sweep liquifies them — any you leave reawaken immune to crowd control. Meanwhile orbs drift toward him and each one that lands gives a stacking shield and damage buff. Tank on an edge, cleave, sweep, move, repeat.",a:[
+  {n:"Ziekket",o:4,img:"tbv-ziekket",sub:"Lashers that do not stay dead",shape:"One phase, no downtime",lv:3,brief:"One phase with no breathing room: Oozing Xylem pulses on the party from pull to kill. Lashers sprout and refuse to die, going dormant rather than dropping, and only a frontal sweep liquifies them — any you leave reawaken immune to crowd control. Meanwhile orbs drift toward him and each one that lands gives a stacking shield and damage buff. Tank on an edge, cleave, sweep, move, repeat.",a:[
    {n:"Oozing Xylem",t:["groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Moderate Holy damage to all players every 3 seconds for the entire encounter. There is no break.",s:["wh_ej","tk_bv"]},
-   {n:"Awaken the Light Bloom",t:["adds"],c:["interrupt","cc","position"],r:["dps","tank"],sev:3,alt:"Awaken the Lightbloom · Vicious Regrowth",e:"Lightspawn Lashers sprout and bolt at players. At 1% health they go DORMANT — submerged, immune to everything — rather than dying. Concentrated Lightbeam liquifies dormant ones into Lightsap (heavy damage every 2 seconds, 40% slow). Any left dormant reawaken with Vicious Regrowth: +30% haste and damage, AND immune to interrupts and crowd control.",h:"Tank on the edge, cleave the lashers there, then shift towards the centre so the frontal line sweeps all of them. Move to a new edge and repeat.",s:["tk_bv"]},
-   {n:"Light Bloom's Essence",t:["soak","dot"],c:["soak"],r:["dps","healer"],sev:3,alt:"Lightbloom's Essence",t:["soak","dot","myth"],e:"Orbs drift towards him; arrival triggers Fluorescent Outburst — significant damage to the party and a Fluorescent Shield absorbing significant amount of with +10% damage done, STACKING. Touching one instead grants Lightbloom's Might: +10% damage and healing while taking light Holy damage per second for 12 seconds, stacking.",h:"Letting orbs through is not just a hit — it gives him a stacking shield and a stacking damage buff. Every orb matters more than either guide implies.",s:["wh_ej","tk_bv","iv_bv"]},
+   {n:"Awaken the Lightbloom",t:["adds"],c:["interrupt","cc","position"],r:["dps","tank"],sev:3,e:"Lightspawn Lashers sprout and bolt at players. At 1% health they go DORMANT — submerged, immune to everything — rather than dying. Concentrated Lightbeam liquifies dormant ones into Lightsap (heavy damage every 2 seconds, 40% slow). Any left dormant reawaken with Vicious Regrowth: +30% haste and damage, AND immune to interrupts and crowd control.",h:"Tank on the edge, cleave the lashers there, then shift towards the centre so the frontal line sweeps all of them. Move to a new edge and repeat.",s:["tk_bv"]},
+   {n:"Lightbloom's Essence",t:["soak","dot"],c:["soak"],r:["dps","healer"],sev:3,t:["soak","dot","myth"],e:"Orbs drift towards him; arrival triggers Fluorescent Outburst — significant damage to the party and a Fluorescent Shield absorbing significant amount of with +10% damage done, STACKING. Touching one instead grants Lightbloom's Might: +10% damage and healing while taking light Holy damage per second for 12 seconds, stacking.",h:"Letting orbs through is not just a hit — it gives him a stacking shield and a stacking damage buff. Every orb matters more than either guide implies.",s:["wh_ej","tk_bv","iv_bv"]},
    {n:"Thorn Spike",t:["tankbuster","dot"],c:["defensive","bleedcl"],r:["tank"],sev:2,e:"Heavy Holy damage, a knockback, and a bleed of moderate damage per second for 10 seconds.",h:"The knockback is not in either guide. Do not take it with your back to the lasher pack.",s:["wh_ej","tk_bv"]}]}],
 loot:{s:["iv_bv"],i:[
   {n:"Pruning Lance",ic:"inv_polearm_2h_rutaani_b_01",id:251181,sl:"Two-hand",ty:"Polearm",b:"Lightblossom Trinity",p:["Str"],x:[["Haste",8],["Vers",6]]},
@@ -1395,13 +1398,13 @@ loot:{s:["iv_bv"],i:[
         {t:"Clear several waves of trash in the arena before the first boss can be engaged.",s:["tk_vsa"]},
         {t:"Defeat all three Devouring Brutalizers before the final boss.",s:["tk_vsa"]}],
  buffs:[{n:"Proof of Endurance",e:"Versatility for the party for the rest of the dungeon. Amount contested — see disputes.",w:"Everyone — kill the left mini-boss, Aegyra the Unyielding",loc:"Left path",s:["tk_vsa","tk_rt"]},
-        {n:"Proof of Mastery",e:"Five mastery points per player, so its real value scales with your spec's mastery modifier.",w:"Everyone — kill the right mini-boss, Rajh'Cath the Spellstorm",loc:"Right path",s:["tk_vsa"]}],
+        {n:"Proof of Mastery",e:"Five mastery points per player, so its real value scales with your spec's mastery modifier.",w:"Everyone — kill the right mini-boss, Raj'kess the Spellstorm",loc:"Right path",s:["tk_vsa"]}],
  loc:{zone:"The Voidstorm, in Slayer's Rise to the north",way:"/way #2444 53.6 34.4",tp:"Path of the Brutal Combatant",lvl:90,note:"Portal to the Voidstorm from Silvermoon City at /way #2393 35.3 65.3."},
  calls:{s:["wh_dg"],i:[["Demoralizing Shout", "Dominated Brawler", "T1"], ["Shadowbolt Volley", "Voidtouched Magi", "T1"], ["Violent Sand", "Angry Krolusk", "T1"], ["Mad Shriek", "Killvore Screamer", "T2"], ["Mending Void", "Voidminder", "T3"]],d:[["Melt Armor", "Sycophantic Tarasek", "T1"], ["Corrosive Essence", "Agitated Voidscythe", "T2"], ["Mind-Numbing Poison", "Atroxus", "B2 — only if you stood in a pool"]],p:[["Bolster", "Longtooth Tuskarr", "T1"]]},
  rewards:[["Design: Voidstone Shielding Array","Jewelcrafting","Charonus"]],
  killers:[
   {n:"Sickening Bite",w:"Toxic Creeper on Ataraxis. Stacks on the tank, amplifies all AoE damage on the encounter, and turns Hulking Claw — which is entirely nature damage — into a genuine threat.",s:["tk_vsa"]},
-  {n:"Mass Shriek",w:"Kil'vore Screamer. Fears the whole party. Assign it before the pull.",s:["tk_vsa"]},
+  {n:"Mad Shriek",w:"Kilivore Screamer. Fears the whole party. Assign it before the pull.",s:["tk_vsa"]},
   {n:"Devour",w:"Devouring Brutalizer. If it finishes eating a low-health mob it heals for half its health and gains a large damage increase.",s:["tk_vsa"]}],
  areas:[
   {n:"The Entrance Halls",mobs:[
@@ -1419,19 +1422,19 @@ loot:{s:["iv_bv"],i:[
    {n:"Brutal Overseer",k:"lt",a:[
     {n:"Brutal Slams",t:["channel","shield","groupdmg"],c:["focus"],r:["dps"],sev:3,e:"Damage continues for as long as the shield on them holds.",h:"Focus the moment the channel starts. Left alone this is very dangerous.",s:["tk_vsa"]},
     {n:"Maelstrom",t:["fixate"],c:["dodge"],r:["dps","healer"],sev:1,e:"Whirlwind attack and a player fixate.",s:["tk_vsa"]}]},
-   {n:"Void-Touched Magus",alt:"Voidtouched Magi",k:"lt",a:[
+   {n:"Voidtouched Magi",k:"lt",a:[
     {n:"Shadow Bolt Volley",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:2,e:"AoE hit on the party.",s:["tk_vsa"]},
     {n:"Null Eruption",t:["denial"],c:["position"],r:["dps","healer"],sev:2,e:"AoE on a player that leaves a puddle on expiry.",h:"Walk it away from the group before it drops.",s:["tk_vsa"]}]},
    {n:"Aegyra the Unyielding",k:"mini",a:[
     {n:"Ferocious Leap",t:["dot"],c:["bleedcl"],r:["healer"],sev:1,e:"Random-target leap and bleed.",s:["tk_vsa"]},
     {n:"Earth Splitter",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:1,e:"AoE that leaves a large puddle.",h:"If you were the leap target you can bait this towards the outside of the arena.",s:["tk_vsa"]},
     {n:"Champion Spear",t:["spread","adds"],c:["focus","freedom","spread"],r:["dps","healer","tank"],sev:3,e:"Throws a spear that tethers everyone, then places AoE circles around every player. Stacked and unbroken, they explode together.",h:"Focus the spear down. If it will not break in time, use movement speed or freedom to separate before the circles land.",s:["tk_vsa","bz0813"]}]},
-   {n:"Rajh'Cath the Spellstorm",alt:"Raj'kess the Spellstorm",k:"mini",a:[
+   {n:"Raj'kess the Spellstorm",k:"mini",a:[
     {n:"Forked Lightning",t:["groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Spammed at the tank, bouncing to two random players.",s:["tk_vsa"]},
     {n:"Orbs of Disruption",t:["totem","debuff"],c:["focus"],r:["dps"],sev:2,e:"Spawns orbs with a long cast. If it completes you get a haste debuff.",h:"Long cast means there is no excuse.",s:["tk_vsa"]},
     {n:"Thundering Storm",t:["channel","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Heavy channelled damage.",s:["tk_vsa"]}]}]},
   {n:"The Arena Waves",mobs:[
-   {n:"Chiltara",alt:"Chitigoth",k:"mini",a:[
+   {n:"Chitigoth",k:"mini",a:[
     {n:"Insidious Aura",t:["channel","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Channelled AoE damage.",s:["tk_vsa"]},
     {n:"Ravenous Swarm",t:["denial"],c:["dodge"],r:["dps","healer"],sev:1,e:"Circles that roam the area.",s:["tk_vsa"]}]},
    {n:"Protective Turtle",k:"trash",a:[
@@ -1446,12 +1449,12 @@ loot:{s:["iv_bv"],i:[
    {n:"Watchful Harrower",k:"lt",a:[
     {n:"Sky Strike",t:["soak","knockup"],c:["soak","position"],r:["dps","healer","tank"],sev:2,e:"Random-target soak that splits the damage, followed by a knock-up and an AoE hit.",h:"Everyone gets in for the split, then runs out of the follow-up.",s:["tk_vsa"]},
     {n:"Void Beam",t:["channel"],c:["drop","defensive"],r:["healer"],sev:2,e:"Channels into a random player.",h:"Extra healing, a defensive, or a combat drop to stop it entirely.",s:["tk_vsa"]}]},
-   {n:"Agitated Void Side",alt:"Agitated Voidscythe",k:"lt",a:[
+   {n:"Agitated Voidscythe",k:"lt",a:[
     {n:"Corrosive Essence",t:["dot"],c:["poison"],r:["healer"],sev:2,e:"Poison damage-over-time on three random players — their main source of damage.",h:"This whole path becomes easy with even one poison dispel in the group.",s:["tk_vsa","tk_rt"]},
     {n:"Rip and Slice",t:["tankbuster","dot"],c:["bleedcl","defensive"],r:["tank"],sev:2,e:"Bleed on the tank.",s:["tk_vsa"]}]},
-   {n:"Kil'vore Screamer",alt:"Kilivore Screamer",k:"trash",a:[
-    {n:"Mass Shriek",t:["fear"],c:["interrupt"],r:["dps"],sev:3,alt:"Mad Shriek",e:"Fears every player.",h:"The most important interrupt in the area. Assign it by name.",s:["tk_vsa","iv_vsa"]}]},
-   {n:"Savage Shred Claw",alt:"Savage Shredclaw",k:"trash",a:[
+   {n:"Kilivore Screamer",k:"trash",a:[
+    {n:"Mad Shriek",t:["fear"],c:["interrupt"],r:["dps"],sev:3,e:"Fears every player.",h:"The most important interrupt in the area. Assign it by name.",s:["tk_vsa","iv_vsa"]}]},
+   {n:"Savage Shredclaw",k:"trash",a:[
     {n:"Shred Defense",t:["amp","stacking"],c:["defensive","kite"],r:["tank"],sev:2,e:"Applies a ten-second damage-taken increase to the tank, and it stacks.",h:"Track the stack count rather than your health bar.",s:["tk_vsa"]}]},
    {n:"Devouring Brutalizer",k:"lt",a:[
     {n:"Devour",t:["heal","amp"],c:["focus"],r:["dps"],sev:3,e:"A fairly long cast on a nearby low-health mob. If it completes, the Brutalizer eats it, heals for 50% of its health and gains a large damage increase.",h:"Swap to whichever mob is being devoured the instant it starts.",s:["tk_vsa"]},
@@ -1461,21 +1464,21 @@ loot:{s:["iv_bv"],i:[
     {n:"Mending Void",t:["channel","heal"],c:["interrupt","cc"],r:["dps"],sev:2,e:"Channels healing into a nearby mob.",s:["tk_vsa"]},
     {n:"Dimensional Shred",t:["dot"],c:["defensive"],r:["healer"],sev:1,e:"Damage on random players.",s:["tk_vsa"]}]}]}],
  encounters:[
-  {n:"Taz'Rah",alt:"Taz'grah",o:1,img:"va-tazrah",sub:"Five shades and a shrinking floor",shape:"One phase, shrinking floor",lv:2,brief:"One phase in a room that keeps shrinking. Five shades dash lines through the party and then leave two-minute puddles beneath themselves, so the group stays loosely together, takes the dash as one, and rotates around the arena edge as the floor fills. Dark Bloom later detonates those puddles, which turns a dodge check into a healing check.",a:[
+  {n:"Taz'Rah",o:1,img:"va-tazrah",sub:"Five shades and a shrinking floor",shape:"One phase, shrinking floor",lv:2,brief:"One phase in a room that keeps shrinking. Five shades dash lines through the party and then leave two-minute puddles beneath themselves, so the group stays loosely together, takes the dash as one, and rotates around the arena edge as the floor fills. Dark Bloom later detonates those puddles, which turns a dodge check into a healing check.",a:[
    {n:"Nether Dash",t:["line","dot","spread"],c:["spread"],r:["dps","healer","tank"],sev:2,e:"Each Ethereal Shade dashes through its target for significant damage plus moderate damage every second for a full 15 seconds.",h:"Contested emphasis: the creator guide says loosely spread to avoid cleaving, the written guide says stay closer together so the puddles that follow land in a manageable cluster. Both agree the puddles are the real problem — err towards grouped.",s:["tk_vsa","iv_vsa"]},
    {n:"Umbral Rupture",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:3,t:["denial","myth"],e:"very heavy Shadow damage within 10 yards of impact, leaving Void Fissures that eat away at heavy damage per second.",h:"Always follows Nether Dash, which is why you do not over-spread. Stay grouped along the arena edge and rotate around as puddles form.",s:["tk_vsa"]},
    {n:"Void Blast",t:["tankbuster","knockback"],c:["defensive"],r:["tank"],sev:2,e:"Tank hit and knockback.",s:["tk_vsa"]},
    {n:"Dark Bloom",t:["denial"],c:["dodge"],r:["dps","healer"],sev:2,e:"A wave of void energy for heavy damage to everyone, which also erupts the Void Fissures for a further heavy damage to anyone caught.",h:"Both guides describe orbs shooting from puddles. The journal describes a party-wide hit that detonates the fissures — so it is a healing check plus a dodge, not just a dodge.",s:["wh_ej","tk_vsa"]}]},
-  {n:"Atroxus",alt:"Ataraxis",o:2,img:"va-atroxus",sub:"Area denial, and a creeper that must be kited",shape:"One phase, tank kiting",lv:3,brief:"A kiting fight that the tank decides. Every roar spawns a Toxic Creeper that fixates the tank and drops puddles as it walks, and each melee swing it lands stacks a large nature vulnerability that lasts five minutes and does not fall off inside the encounter. Those stacks then feed Hulking Claw, which is pure nature damage. Kite it cleanly and this is routine; eat the stacks and the buster becomes lethal.",a:[
+  {n:"Atroxus",o:2,img:"va-atroxus",sub:"Area denial, and a creeper that must be kited",shape:"One phase, tank kiting",lv:3,brief:"A kiting fight that the tank decides. Every roar spawns a Toxic Creeper that fixates the tank and drops puddles as it walks, and each melee swing it lands stacks a large nature vulnerability that lasts five minutes and does not fall off inside the encounter. Those stacks then feed Hulking Claw, which is pure nature damage. Kite it cleanly and this is routine; eat the stacks and the buster becomes lethal.",a:[
    {n:"Poison Splash",t:["groupdmg","denial","channel"],c:["unavoidable","dodge"],r:["healer","dps"],sev:3,e:"Ticks heavy party damage and spawns poison puddles that reduce haste on contact.",s:["tk_vsa"]},
    {n:"Noxious Breath",t:["frontal"],c:["dodge","position"],r:["dps","healer"],sev:2,e:"A large random-target frontal.",h:"Ranged should play closer to melee than usual so it is easier to step out of.",s:["tk_vsa"]},
-   {n:"Monstrous Roar",t:["adds"],c:["focus"],r:["dps"],sev:2,alt:"Monstrous Roar · Toxic Aura",e:"Significant Physical damage to the party, ignoring armour, and agitates a pool into a Toxic Creeper. On Mythic its Toxic Aura hits everyone within 100 yards for light damage every half second — there is no outranging it.",h:"DPS swap immediately to cut the area denial short.",s:["tk_vsa"]},
+   {n:"Monstrous Roar",t:["adds"],c:["focus"],r:["dps"],sev:2,e:"Significant Physical damage to the party, ignoring armour, and agitates a pool into a Toxic Creeper. On Mythic its Toxic Aura hits everyone within 100 yards for light damage every half second — there is no outranging it.",h:"DPS swap immediately to cut the area denial short.",s:["tk_vsa"]},
    {n:"Sickening Bite",t:["stacking","amp"],c:["kite"],r:["tank"],sev:3,e:"+50% Nature damage taken per stack, lasting FIVE MINUTES. It stacks, and it does not fall off within the encounter.",h:"Kite it and do not let it melee you at all — the written guide is blunt that eating these is simply death. Everything else on this fight is negotiable; this is not.",s:["tk_vsa","iv_vsa"]},
    {n:"Hulking Claw",t:["tankbuster"],c:["defensive"],r:["tank"],sev:3,e:"Heavy Nature damage plus moderate damage per second for 10 seconds — tagged Poison, so the follow-up is dispellable.",h:"Magic mitigation matters here in a way it does not on most busters in the pool, and it scales with your Sickening Bite stacks. The follow-up poison is dispellable — worth telling your healer.",s:["tk_vsa","iv_vsa"]}]},
-  {n:"Charonus",alt:"Chronus",o:3,img:"va-charonus",sub:"Three singularities, an orb each, and nowhere safe in the middle",shape:"One phase, positional puzzle",lv:3,brief:"A spatial puzzle where everybody has a job. Three singularities drag players inward and lock anyone who touches them out of the fight for fifteen seconds, and an orb spawns near every player that dies only by being walked into one. So each person claims a singularity, feeds their orb into it, and the group stays loosely spread for Cosmic Crash without drifting toward the middle.",a:[
-   {n:"Unstable Singularities",t:["denial","groupdmg","pacify"],c:["position"],r:["dps","healer","tank"],sev:3,alt:"Unstable Singularity / Atomized",e:"Light Shadow damage per second to everyone, slowly dragging players toward the centre. Touching one applies Atomized: unable to attack or use any ability for FIFTEEN seconds.",h:"Fighting the pull is easier the closer to the centre of the formation you stand.",s:["tk_vsa"]},
+  {n:"Charonus",o:3,img:"va-charonus",sub:"Three singularities, an orb each, and nowhere safe in the middle",shape:"One phase, positional puzzle",lv:3,brief:"A spatial puzzle where everybody has a job. Three singularities drag players inward and lock anyone who touches them out of the fight for fifteen seconds, and an orb spawns near every player that dies only by being walked into one. So each person claims a singularity, feeds their orb into it, and the group stays loosely spread for Cosmic Crash without drifting toward the middle.",a:[
+   {n:"Unstable Singularity",t:["denial","groupdmg","pacify"],c:["position"],r:["dps","healer","tank"],sev:3,e:"Light Shadow damage per second to everyone, slowly dragging players toward the centre. Touching one applies Atomized: unable to attack or use any ability for FIFTEEN seconds.",h:"Fighting the pull is easier the closer to the centre of the formation you stand.",s:["tk_vsa"]},
    {n:"Cosmic Crash",t:["spread","dot"],c:["spread"],r:["dps","healer"],sev:3,e:"Void comets at every player: significant damage within 8 yards, then light damage per second for 20 seconds, plus a knockback.",h:"You cannot stack. Loosely spread shortly after the singularities form — and mind the knockback, because being shoved into a singularity is a 15-second Atomize.",s:["wh_ej","tk_vsa"]},
-   {n:"Gravitic Orbs",t:["fixate","dot"],c:["kite","position"],r:["dps"],sev:3,alt:"Condensed Mass",e:"One orb spawns near EVERY player, each stacking light damage per second and a 2% slow. An orb within 6 yards of a singularity is destroyed.",h:"Both guides were wrong here — one said three DPS, the other three random players. The journal says one per player, so everybody has a job. Pre-position beside a singularity before the cast and there is no scramble.",s:["wh_ej","tk_vsa","iv_vsa"]},
+   {n:"Gravitic Orbs",t:["fixate","dot"],c:["kite","position"],r:["dps"],sev:3,e:"One orb spawns near EVERY player, each stacking light damage per second and a 2% slow. An orb within 6 yards of a singularity is destroyed.",h:"Both guides were wrong here — one said three DPS, the other three random players. The journal says one per player, so everybody has a job. Pre-position beside a singularity before the cast and there is no scramble.",s:["wh_ej","tk_vsa","iv_vsa"]},
    {n:"Dark Waves",t:["frontal","tankbuster"],c:["defensive","position"],r:["tank"],sev:2,e:"Frontal at the tank.",h:"Point it away from anyone kiting an orb.",s:["tk_vsa"]},
    {n:"Void Cascade",t:["line"],c:["kite","position"],r:["dps","healer"],sev:2,t:["line","myth"],e:"Condensed cosmic power projected at nearby players: very heavy Shadow damage and a knockback to anyone it contacts. Dodgeable, and it does not home.",h:"Create distance and outrun them. Everyone else stands behind the boss so they do not intercept.",s:["tk_vsa"]}]}],
 loot:{s:["iv_vsa"],i:[
@@ -1506,7 +1509,7 @@ loot:{s:["iv_vsa"],i:[
   {n:2,t:"Mini-boss",m:"Path mini-boss and buff",d:2,p:"Take the buff, then move into the arena.",s:["tk_rt"]},
   {n:3,t:"Arena waves",m:"Spawned packs",d:2,p:"Packs spawn as you tag. Tag them in to chain, but let the second mini-boss sit until you are ready — he charges quickly, so you can aim him into a pack.",s:["tk_rt"]},
   {n:4,t:"After Taz'grah, go right",m:"Agitated Void Sides, Kil'vore Screamers",d:2,p:"With even one poison dispel in the group this side is far easier. Without any, there is an argument for the other path.",s:["tk_rt"]},
-  {n:5,t:"Screamer packs",m:"Screamers and shamans",d:2,p:"One player permanently assigned to Mass Shriek; spares onto the shamans. Focus any Overseer that shields.",s:["tk_rt"]},
+  {n:5,t:"Screamer packs",m:"Screamers and shamans",d:2,p:"One player permanently assigned to Mad Shriek; spares onto the shamans. Focus any Overseer that shields.",s:["tk_rt"]},
   {n:6,t:"Final area, right side",m:"Brutalizers and void minders",d:3,p:"Better pack composition on the right and fewer casters. Two of these packs patrol in a circle — pull them when they reach a good spot.",s:["tk_rt"]}],
  reads:[{t:"The versatility buff is generally the better of the two, and worth the slightly harder mini-boss for most groups — though the routing video later leans on poison dispels as the deciding factor for the second fork.",by:"Tactyks",d:"2026-08-05",s:["tk_vsa"]},
         {t:"Reported to have the most lenient timer of the eight.",by:"Community consensus",d:"2026-08-15",s:["tk_pool"]}]},
@@ -1514,7 +1517,7 @@ loot:{s:["iv_vsa"],i:[
 /* ───────────────────────────── KING'S REST ────────────────────────── */
 {id:"kings-rest",name:"King's Rest",short:"King's Rest",banner:"kings-rest",sigil:"i-tomb",origin:"BfA",
  timer:{v:"33 min",s:["wh_dg"]},bosses:4,routing:"locked",
- blurb:"The Zandalari royal mausoleum, back from Battle for Azeroth with a static third-boss order and a much less dangerous Shade of Zul. Trash count is the contested question of the season.",
+ blurb:"The Zandalari royal mausoleum, back from Battle for Azeroth with a static third-boss order and a much less dangerous Shadow of Zul. Trash count is the contested question of the season.",
  cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 33 minutes, replacing the unverified figure with the same number from a written guide. The trash requirement remains the compendium's oldest open question.",cov2:true,
  dispels:{poison:2,magic:2,curse:3,disease:2,enrage:2,bleed:3},
  gates:[{t:"Trash requirement contested — pre-launch guides state 100% of trash; two later sources indicate it was relaxed during the PTR. See the disputes list.",s:["bz_game","tk_rt","wh_dt"]},
@@ -1532,14 +1535,14 @@ loot:{s:["iv_vsa"],i:[
    {n:"Minion of Zul",k:"trash",a:[
     {n:"Bound by Shadow",t:["shield"],c:["purge"],r:["dps"],sev:2,e:"A protective shield — but removing it kills the mob outright.",h:"Free value if anyone has a purge. Otherwise stay away from them.",s:["tk_kr"]},
     {n:"Fixate and Fear",t:["fixate","fear"],c:["cc","kite"],r:["dps","healer","tank"],sev:2,e:"They fixate random players and let out an AoE fear if they reach melee range.",h:"AoE slows and stuns, cleave from distance.",s:["tk_kr"]}]},
-   {n:"Animated Golem",alt:"Animated Guardian",k:"lt",a:[
+   {n:"Animated Golem",k:"lt",a:[
     {n:"Heavy Slams",t:["groupdmg"],c:["unavoidable"],r:["healer","tank"],sev:2,e:"Passive. Melee swings deal a small AoE hit. Appears on several mobs throughout the dungeon.",h:"Scales with how many you pull, which is the whole tension of this dungeon's routing.",s:["tk_kr"]},
     {n:"Released Inhibitors",t:["enrage"],c:["defensive"],r:["tank","healer"],sev:2,e:"At 50% health their attack speed increases — which means more Heavy Slams AoE for everyone.",s:["tk_kr"]},
     {n:"Suppression Slam",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Random-target frontal.",s:["tk_kr"]}]},
    {n:"Risen Hexer",k:"caster",a:[
     {n:"Hex Volley",t:["groupdmg","debuff"],c:["interrupt","curse"],r:["dps"],sev:3,e:"AoE hit and a curse on the entire group.",h:"Every single cast. Spare kicks go on their Shadowfrost Bolt.",s:["tk_kr","iv_kr"]}]},
-   {n:"Shadowborne Champion",alt:"Shadow-Borne Champion",k:"lt",a:[
-    {n:"Shadow Whirlwind",t:["groupdmg","denial"],c:["dodge"],r:["dps","healer"],sev:2,alt:"Necrotic Energy",e:"AoE hit that also leaves circles on the ground.",h:"Much more dangerous if the mob is still enraged — an enrage dispel on Ancestral Fury is the cheapest fix.",s:["tk_kr","iv_kr"]},
+   {n:"Shadow-Borne Champion",k:"lt",a:[
+    {n:"Shadow Whirlwind",t:["groupdmg","denial"],c:["dodge"],r:["dps","healer"],sev:2,e:"AoE hit that also leaves circles on the ground.",h:"Much more dangerous if the mob is still enraged — an enrage dispel on Ancestral Fury is the cheapest fix.",s:["tk_kr","iv_kr"]},
     {n:"Vigilant Defense",t:["shield","frontal"],c:["position"],r:["dps"],sev:2,e:"Points a frontal shield towards a random player.",h:"Circle to its back and keep hitting.",s:["tk_kr"]},
     {n:"Ancestral Fury",t:["enrage"],c:["soothe","defensive"],r:["tank","dps"],sev:2,e:"Occasional enrage.",s:["tk_kr"]}]}]},
   {n:"The Embalming Chambers",mobs:[
@@ -1568,8 +1571,8 @@ loot:{s:["iv_vsa"],i:[
    {n:"King Rahu'ai",t:["groupdmg","adds"],c:["purge","interrupt","cc"],r:["dps","healer"],sev:2,e:"Spams Fork Lightning at random players and drops an Overload AoE. His escort is the real threat: Guard Captain Atu's Captain's Bulwark puts a magic damage reduction on the other two mobs, and Seneschal Imbara casts Unholy Mending.",h:"Purge the Bulwark if you can, or delay it with crowd control. One player permanently on the Mending interrupt.",s:["tk_kr"]},
    {n:"King T'Maji",t:["spread","denial"],c:["spread","interrupt","kite"],r:["dps","healer"],sev:2,e:"Erupting Slam is a random-target AoE; his blade storm needs kiting. Inwashi casts Soul Bolt and Bind Soul.",h:"Every Bind Soul must be prevented. Spare kicks onto Soul Bolt.",s:["tk_kr"]},
    {n:"Queen Phat'ta",t:["dot","denial","enrage"],c:["poison","soothe","dodge"],r:["healer","dps"],sev:2,e:"Drops circles and leaps at a random player with Serpent Strike, applying a poison. Her raptor is occasionally sent into Bestial Berserk and uses Hunting Leap with a frontal.",h:"A soothe on the raptor and a poison dispel on the leap target cover most of this pack.",s:["tk_kr"]},
-   {n:"King Akul",alt:"see concordance — the four royal packs are named differently by each source",t:["tankbuster","healred","dot"],c:["defensive","bleedcl"],r:["tank","healer"],sev:3,e:"Mortal Bleed is a tank bleed that reduces healing taken. Blood Drain then deals damage to every player carrying a bleed — including the Sudden Rupture bleeds from his Bloodsworn Assassins — and heals him based on that damage.",h:"The healing reduction is called out as very dangerous for certain tank specs. Bleed cleanses cut the Blood Drain hit as well as the tank damage.",s:["tk_kr"]}]},
-   {n:"Shade of Zul",alt:"Shadow of Zul",k:"mini",sub:"Mini-boss before the final encounter",shape:"Mini-boss, soak and spread",lv:1,brief:"A short mini-boss built on two soaks and a spread. Both Pools of Darkness need a body or they pulse the party, so the tank takes one and anyone takes the other. Dark Revelation then wants distance and spawns a minion from each hit. The barrage running underneath cannot be interrupted, so it is a defensive rather than a kick.",a:[
+   {n:"King Akul",t:["tankbuster","healred","dot"],c:["defensive","bleedcl"],r:["tank","healer"],sev:3,e:"Mortal Bleed is a tank bleed that reduces healing taken. Blood Drain then deals damage to every player carrying a bleed — including the Sudden Rupture bleeds from his Bloodsworn Assassins — and heals him based on that damage.",h:"The healing reduction is called out as very dangerous for certain tank specs. Bleed cleanses cut the Blood Drain hit as well as the tank damage.",s:["tk_kr"]}]},
+   {n:"Shadow of Zul",k:"mini",sub:"Mini-boss before the final encounter",shape:"Mini-boss, soak and spread",lv:1,brief:"A short mini-boss built on two soaks and a spread. Both Pools of Darkness need a body or they pulse the party, so the tank takes one and anyone takes the other. Dark Revelation then wants distance and spawns a minion from each hit. The barrage running underneath cannot be interrupted, so it is a defensive rather than a kick.",a:[
    {n:"Shadow Barrage",t:["dot"],c:["defensive"],r:["healer"],sev:2,e:"Random target and not interruptible at all.",h:"If it targets you while you are also handling something else, that is your defensive moment.",s:["tk_kr"]},
    {n:"Pool of Darkness",t:["soak"],c:["soak"],r:["tank","dps"],sev:2,e:"Two soaks that pulse party damage if left empty.",h:"Tank takes one, any other player takes the second.",s:["tk_kr"]},
    {n:"Dark Revelation",t:["spread","adds"],c:["spread","purge"],r:["dps","healer"],sev:2,e:"Large AoE on two players; each hit spawns a Minion of Zul.",h:"Spread, then purge or kill the minions before they reach a target.",s:["tk_kr"]}]}]}],
@@ -1580,7 +1583,7 @@ loot:{s:["iv_vsa"],i:[
    {n:"Serpentine Gust",t:["channel","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"A five-second gust: moderate Nature damage to everyone every second, pushing them back.",s:["wh_ej","tk_kr"]},
    {n:"Tail Thrash",t:["tankbuster"],c:["defensive"],r:["tank"],sev:1,e:"Massive Physical damage. Both guides call this mild — it is not a small number.",s:["wh_ej","tk_kr"]}]},
   {n:"Mchimba the Embalmer",o:2,img:"kr-mchimba-the-embalmer",sub:"Sarcophagi, now four of them",shape:"One phase, rescue race",lv:2,brief:"A rescue race rather than a damage race. He seals a player in a crypt then opens the others one at a time — starting deliberately with the wrong ones, getting faster with each, and releasing a mummy from every coffin he opens. Freeing the trapped player interrupts the entire ritual, so speed beats damage here. Drain Fluids landing on top of it is a combat drop or a hard top-off.",a:[
-   {n:"Drain Fluids",t:["channel","debuff"],c:["drop","topoff","defensive"],r:["healer"],sev:3,alt:"Desiccation · Explosive Acids",e:"Significant damage every 2 seconds AND Explosive Acids landing for heavy damage within 4 yards throughout. It ends in Desiccation: 50% less damage done and 50% slower until healed above 90%.",h:"A combat drop cancels the channel. Otherwise get the debuffed player topped fast — any personal self-heal shortens it considerably.",s:["tk_kr","iv_kr"]},
+   {n:"Drain Fluids",t:["channel","debuff"],c:["drop","topoff","defensive"],r:["healer"],sev:3,e:"Significant damage every 2 seconds AND Explosive Acids landing for heavy damage within 4 yards throughout. It ends in Desiccation: 50% less damage done and 50% slower until healed above 90%.",h:"A combat drop cancels the channel. Otherwise get the debuffed player topped fast — any personal self-heal shortens it considerably.",s:["tk_kr","iv_kr"]},
    {n:"Awakening Slam",t:["groupdmg","adds"],c:["focus"],r:["tank","dps"],sev:2,e:"Heavy Shadow damage to the party, opening random crypts to release Half-Finished Mummies.",h:"Tank grabs them and cleaves under the boss. They keep Wretched Discharge — Deadly, interruptible, significant damage every 2 seconds for 12 seconds — so assign kicks.",s:["wh_ej","tk_kr"]},
    {n:"Entomb",t:["channel","adds"],c:["focus"],r:["dps","healer"],sev:3,e:"He seals a player in a crypt and then opens the others ONE AT A TIME, starting with the ones that do not hold the player — each opened coffin releases a Finished Mummy and makes the next open faster. Freeing the entombed player interrupts the whole ritual.",h:"So the search accelerates against you. The trapped player struggles to signal which crypt; getting that one open immediately is worth more than any damage you could be doing.",s:["wh_ej","tk_kr","iv_kr"]},
    {n:"Burning Corruption",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Large flame puddle under a random player on expiry.",h:"Drop these at the front or back of the room so they never block the path to a sarcophagus.",s:["tk_kr"]}]},
@@ -1590,10 +1593,10 @@ loot:{s:["iv_vsa"],i:[
    {n:"Debilitating Backhand",t:["tankbuster","knockback","amp"],c:["kite","defensive","position"],r:["tank"],sev:3,e:"Massive Physical damage, a knockback, and Shattered Defenses: +200% Physical damage taken.",h:"Either kite for the full duration or commit a strong defensive to survive the empowered melees — and do not get pushed off the platform.",s:["tk_kr"]},
    {n:"Call of the Elements",t:["totem"],c:["focus","interrupt"],r:["dps"],sev:3,e:"Three totems. Explosive detonates for very heavy Fire damage to the whole party. Thundering fires Disruption, interrupting every player for 4 seconds. Torrent spews heavy Frost damage within 3 yards with a knockback.",h:"Explosive first, always — both sources say letting it resolve is a wipe. Kite Xanzal next to each totem so the group cleaves boss and totem together.",s:["tk_kr","iv_kr"]},
    {n:"Poison Nova",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:3,e:"Significant Nature damage every 2 seconds for 12 seconds to the entire party. The journal flags it Deadly.",s:["wh_ej","tk_kr"]}]},
-  {n:"King Dazar",alt:"Dazar, The First King",o:4,img:"kr-king-dazar",sub:"Two targets on one health bar, under a ceiling that keeps falling",shape:"One phase, mounts at 80%",lv:3,brief:"Two targets sharing one health bar, under a ceiling that keeps falling. Reban joins on pull and should die immediately; T'zala arrives at 80% and Eternal Bond makes cleaving both of them free. Spears rain throughout, and Gilded Destruction adds a flame frontal to his melee swings — so the tank is dodging while keeping him pointed away, which is the hardest positioning in the dungeon.",a:[
+  {n:"King Dazar",o:4,img:"kr-king-dazar",sub:"Two targets on one health bar, under a ceiling that keeps falling",shape:"One phase, mounts at 80%",lv:3,brief:"Two targets sharing one health bar, under a ceiling that keeps falling. Reban joins on pull and should die immediately; T'zala arrives at 80% and Eternal Bond makes cleaving both of them free. Spears rain throughout, and Gilded Destruction adds a flame frontal to his melee swings — so the tank is dodging while keeping him pointed away, which is the hardest positioning in the dungeon.",a:[
    {n:"Impaling Spears",t:["env","dot"],c:["dodge"],r:["dps","healer","tank"],sev:2,e:"Heavy damage within 7 yards of each impact plus a bleed of moderate damage per second for 5 seconds.",s:["wh_ej","tk_kr"]},
-   {n:"Rabond",t:["frontal","fear"],c:["interrupt","position","focus"],r:["tank","dps"],sev:2,alt:"Reban · Deathly Roar",e:"Hunting Leap does significant damage plus moderate damage per second for 4 seconds, then a series of gutripping cone attacks at heavy damage each. Deathly Roar is significant Shadow damage and a 4-second fear, and it is interruptible.",h:"Tank away from the group for the leap, interrupt the roar, and focus Rabond down on pull — he has little health and is a persistent nuisance.",s:["tk_kr"]},
-   {n:"Tazala",alt:"T'zala",t:["amp"],c:["focus"],r:["dps"],sev:2,e:"At 80% he mounts her. Eternal Bond makes them share 100% of all damage taken, so cleaving both is genuinely free.",s:["wh_ej","tk_kr"]},
+   {n:"Deathly Roar",t:["frontal","fear"],c:["interrupt","position","focus"],r:["tank","dps"],sev:2,e:"Hunting Leap does significant damage plus moderate damage per second for 4 seconds, then a series of gutripping cone attacks at heavy damage each. Deathly Roar is significant Shadow damage and a 4-second fear, and it is interruptible.",h:"Tank away from the group for the leap, interrupt the roar, and focus Deathly Roar down on pull — he has little health and is a persistent nuisance.",s:["tk_kr"]},
+   {n:"Tazala",t:["amp"],c:["focus"],r:["dps"],sev:2,e:"At 80% he mounts her. Eternal Bond makes them share 100% of all damage taken, so cleaving both is genuinely free.",s:["wh_ej","tk_kr"]},
    {n:"Quaking Leap",t:["spread","groupdmg"],c:["spread","drop"],r:["dps","healer"],sev:3,e:"T'zala leaps at targeted players for heavy damage within 8 yards; Dazar's own version is Aerial Smash, same shape. The journal gives no distance-scaled party hit — that claim appears only in the creator guide and should be treated as unconfirmed.",h:"Move further away to soften it, but stay in healer range. A combat drop while he is midair cancels the remaining jumps entirely.",s:["tk_kr"]},
    {n:"Blade Combo",t:["tankbuster","channel"],c:["defensive","bleedcl","magic"],r:["tank","healer"],sev:3,e:"A series of strikes doing increasing damage. T'zala's Savage Maul precedes it: heavy damage, a bleed of moderate damage per second, and +10% Physical damage taken for 10 seconds — a damage amplifier, not an armour reduction as the creator guide has it. The published assignment table lists Savage Maul as DISPELLABLE, which changes the tank's answer entirely.",h:"Cleanse the bleed if you can, or press your defensive early so it covers both abilities.",s:["tk_kr"]},
    {n:"Gilded Destruction",t:["dot","frontal","env"],c:["position","dodge"],r:["tank","healer"],sev:3,t:["dot","frontal","env","myth"],e:"heavy Fire damage to everyone plus light damage for 15 seconds, and his melee swings gain Searing Gold — a wave of molten gold in front of him for significant damage.",h:"Tanks have to move quickly to dodge spears while keeping the boss pointed away. The hardest positioning moment in the dungeon.",s:["tk_kr"]}]}],
@@ -1639,8 +1642,8 @@ loot:{s:["iv_kr"],i:[
   {n:4,t:"The common wipe",m:"Construct into the next pack",d:3,p:"Pulling this mob into the following pack was a frequent PTR wipe. Work over slowly, slam it into the wall so the fire puddle lands there, and chain forward only once it is nearly dead.",s:["tk_rt"]},
   {n:5,t:"Slimes and constructs",m:"Mixed",d:2,p:"The number of slimes per pull does not matter as long as you only bring one construct at a time.",s:["tk_rt"]},
   {n:6,t:"Upstairs",m:"Spirit hall packs",d:2,p:"Pull mobs that stand together, together. One pack has two interrupts in it; the next has one.",s:["tk_rt"]},
-  {n:7,t:"Shade of Zul",m:"Mini-boss",d:1,p:"Considerably easier than it was. Definitely not a lust target.",s:["tk_rt"]}],
- reads:[{t:"Probably the lower end of the pool. The static third-boss order and the Shade of Zul adjustments were good changes, but the trash needed more work — there is still a lot of empty space and low-density area, and the king and queen roleplay after the first boss feels very slow.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]},
+  {n:7,t:"Shadow of Zul",m:"Mini-boss",d:1,p:"Considerably easier than it was. Definitely not a lust target.",s:["tk_rt"]}],
+ reads:[{t:"Probably the lower end of the pool. The static third-boss order and the Shadow of Zul adjustments were good changes, but the trash needed more work — there is still a lot of empty space and low-density area, and the king and queen roleplay after the first boss feels very slow.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]},
         {t:"Would not be surprised if it ends up my least favourite dungeon of the season.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]}]},
 
 /* ────────────────────────── RUBY LIFE POOLS ───────────────────────── */
@@ -1649,16 +1652,16 @@ loot:{s:["iv_kr"],i:[
  blurb:"The Dragonflight return, described as meaningfully softened — the patrolling mini-bosses are grounded now, and several encounters gained counterplay they did not have.",
  cov:"Three independent sources plus a Blizzard hotfix. The Kyrakka threshold dispute is settled at 40% by the Encounter Journal. Timer confirmed at 28 minutes — the shortest in the pool.",cov2:true,
  dispels:{poison:0,magic:3,curse:0,disease:0,enrage:0,bleed:0},
- gates:[{t:"Kill the Defiler Draghar mini-boss to bring down the flame wall in front of the first boss.",s:["tk_rlp"]},
+ gates:[{t:"Kill the Defier Draghar mini-boss to bring down the flame wall in front of the first boss.",s:["tk_rlp"]},
         {t:"Destroy all four Blaze-Bound Destroyers on the upper platform to unlock the second boss.",s:["tk_rlp"]},
-        {t:"Kill High Channeler Riveti before the final boss can be summoned.",s:["tk_rlp"]}],
+        {t:"Kill High Channeler Ryvati before the final boss can be summoned.",s:["tk_rlp"]}],
  buffs:[],
  loc:{zone:"The Waking Shores, to the south-east",way:"/way #2022 60.0 75.7",tp:"Path of the Clutch Defender",lvl:90,note:"Centre portal in the Timeways room. The shortest timer in the pool."},
  calls:{s:["wh_dg"],i:[["Ice Shield", "Flashfrost Chillweaver", "T1"], ["Frigid Shard", "Melidrussa Chillworn", "B1"], ["Fiery Blast", "Blazebound Destroyer", "T2"], ["Blaze Volley", "Blazebound Firestorm", "B2"]],d:[["Cold Claws", "Infused Whelp", "T1 and B1"], ["Rolling Thunder", "Thunderhead", "T2 — stagger these, never together"], ["Stormslam", "Erkhart Stormvein", "B3"]],p:[["Blaze of Glory", "Ashseer Flamelasher", "T2"], ["Stormcloud Barrier", "Primal Thundercloud", "T3"]]},
  rewards:[["Housing decor","Drop","Kyrakka and Erkhart Stormvein"]],
  killers:[
   {n:"Cold Claws at 20 stacks",w:"Infused Welps. Reaching twenty stacks freezes and stuns the tank. Magic dispels or freedom effects clear them, which makes this a group responsibility rather than a tank one.",s:["tk_rlp"]},
-  {n:"Flame Dancer",w:"Ash Seer Flame Dancer. A channel into the tank that deals very heavy damage. Crowd control stops it outright — nothing else will.",s:["tk_rlp"]},
+  {n:"Flame Dance",w:"Primalist Flamedancer. A channel into the tank that deals very heavy damage. Crowd control stops it outright — nothing else will.",s:["tk_rlp"]},
   {n:"Rolling Thunder",w:"Thunderhead. Dispelling the magic dot applies a dot to the whole party. Two dispels at once is how healers kill their own group here.",s:["tk_rlp"]}],
  areas:[
   {n:"The Lower Pools",mobs:[
@@ -1672,24 +1675,24 @@ loot:{s:["iv_kr"],i:[
    {n:"Flashfrost Chillweaver",k:"caster",a:[
     {n:"Ice Shield",t:["channel","shield"],c:["interrupt","cc"],r:["dps"],sev:3,e:"Channels a shield into a random mob. The longer the channel runs, the larger the shield.",h:"Stop it early rather than late — the value scales with time channelled, so a late kick still costs you.",s:["tk_rlp","iv_rlp"]},
     {n:"Icebolt",t:["dot"],c:["interrupt"],r:["dps"],sev:1,e:"Single-target cast; the spare-kick target on this mob.",s:["iv_rlp"]}]},
-   {n:"Infused Whelp",alt:"Infused Welp",k:"trash",a:[
-    {n:"Cold Claws",t:["stacking","stun"],c:["magic","freedom"],r:["tank","healer"],sev:3,alt:"Primal Chill · Frozen Solid",e:"A Magic affliction applied to their current target. At 20 applications it becomes Frozen Solid — a 5-second stun.",h:"Magic dispels or freedom effects clear stacks. Note the trigger: any player OR any enemy walking over a dragon egg spawns them, so watch where you drag a pack.",s:["tk_rlp","iv_rlp"]}]},
-   {n:"Defiler Draghar",alt:"Defier Draghar",k:"mini",a:[
+   {n:"Infused Whelp",k:"trash",a:[
+    {n:"Cold Claws",t:["stacking","stun"],c:["magic","freedom"],r:["tank","healer"],sev:3,e:"A Magic affliction applied to their current target. At 20 applications it becomes Frozen Solid — a 5-second stun.",h:"Magic dispels or freedom effects clear stacks. Note the trigger: any player OR any enemy walking over a dragon egg spawns them, so watch where you drag a pack.",s:["tk_rlp","iv_rlp"]}]},
+   {n:"Defier Draghar",k:"mini",a:[
     {n:"Steel Barrage",t:["channel","tankbuster","groupdmg","denial"],c:["defensive","dodge"],r:["tank","healer","dps"],sev:3,e:"Heavy tank channel that also pulses AoE, dropping a molten steel fragment on the ground with every tick that damages on contact.",h:"Made significantly scarier for Season 2. Tank defensive, healer ready, everyone dodging — all three at once.",s:["tk_rlp","iv_rlp"]},
     {n:"Blazing Rush",t:["line"],c:["dodge","position"],r:["dps","healer"],sev:2,e:"Charge at a random player that deals massive damage and leaves a bleed on contact.",h:"Stack near a wall and bait it — that keeps melee uptime high instead of scattering the group. Aim it away from mobs you have not pulled.",s:["tk_rlp","iv_rlp"]}]}]},
   {n:"The Upper Platform",mobs:[
-   {n:"Blaze-Bound Destroyer",alt:"Blazebound Destroyer",k:"lt",a:[
+   {n:"Blazebound Destroyer",k:"lt",a:[
     {n:"Inferno",t:["groupdmg","dot"],c:["unavoidable","defensive"],r:["healer"],sev:2,e:"Hit plus a damage-over-time on every player.",s:["tk_rlp"]},
     {n:"Burnout",t:["death"],c:["position","dodge"],r:["dps","healer","tank"],sev:2,e:"A twenty-yard explosion on death.",h:"Run out before it dies, not after.",s:["tk_rlp"]}]},
    {n:"Primalist Cinder Weaver",k:"caster",a:[
     {n:"Living Bomb",t:["spread"],c:["spread"],r:["dps","healer"],sev:2,e:"Heavy damage that cleaves nearby players.",h:"Move away from allies the moment you are targeted.",s:["tk_rlp"]}]},
-   {n:"Ash Seer Flame Dancer",alt:"Primalist Flamedancer",k:"trash",a:[
-    {n:"Flame Dancer",t:["channel","tankbuster"],c:["cc"],r:["dps","tank"],sev:3,alt:"Flame Dance",e:"Channels into the tank for very heavy damage.",h:"Both sources agree: interrupts do not work on it. Stuns and other disruption effects do.",s:["tk_rlp","iv_rlp"]},
+   {n:"Primalist Flamedancer",k:"trash",a:[
+    {n:"Flame Dance",t:["channel","tankbuster"],c:["cc"],r:["dps","tank"],sev:3,e:"Channels into the tank for very heavy damage.",h:"Both sources agree: interrupts do not work on it. Stuns and other disruption effects do.",s:["tk_rlp","iv_rlp"]},
     {n:"Blaze of Glory",t:["death","denial","shield"],c:["purge","dodge"],r:["dps"],sev:2,e:"On death they do not actually die — they gain a shield and cast this, spawning swirls and an AoE.",h:"Purge to destroy them immediately, or dodge and wait it out.",s:["tk_rlp"]}]},
    {n:"Ruinous Storm Ringer",k:"caster",a:[
     {n:"Lightning Rod",t:["dot"],c:["defensive"],r:["healer"],sev:2,e:"Heavy damage on the debuffed player.",s:["tk_rlp"]},
     {n:"Thunderstorm",t:["groupdmg","knockback"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Party hit and knockback at 100 energy — but only a twenty-yard range.",h:"Ranged players can simply stand outside it. Genuinely useful to know.",s:["tk_rlp"]}]},
-   {n:"Flame Gullet",alt:"Flamegullet",k:"mini",a:[
+   {n:"Flamegullet",k:"mini",a:[
     {n:"Fire Maw",t:["tankbuster"],c:["defensive"],r:["tank"],sev:2,e:"Hits quite hard.",s:["tk_rlp"]},
     {n:"Molten Blood",t:["stacking","groupdmg"],c:["defensive"],r:["healer","dps"],sev:2,e:"From 50% health, stacks on the mob and pulses escalating damage to everyone within 60 yards until it dies. It cannot be dispelled.",h:"Hold damage and healing cooldowns for the back half rather than opening with them — the stacks are a clock, so the burn is the whole fight.",s:["tk_rlp","iv_rlp"]}]},
    {n:"Thunderhead",k:"mini",a:[
@@ -1697,32 +1700,32 @@ loot:{s:["iv_kr"],i:[
     {n:"Rolling Thunder",t:["dot","groupdmg"],c:["magic"],r:["healer"],sev:3,e:"Always applies to exactly two random players. On expiry it deals heavy damage to everyone within 100 yards — and dispelling it delivers that same damage immediately rather than preventing it.",h:"So the dispel is a timing tool, not a save. Dispel one, let the second expire naturally, and you have split one lethal hit into two survivable ones. Two dispels together is how healers wipe their own group here.",s:["tk_rlp","iv_rlp"]}]}]},
   {n:"The Final Balcony",mobs:[
    {n:"Primal Thundercloud",k:"trash",a:[
-    {n:"Storm Cloud Detonation",alt:"Tempest Barrier",t:["shield","groupdmg"],c:["purge"],r:["dps"],sev:2,e:"Shielded for most of their health. Purging the shield makes them charge a random player and immediately explode.",h:"Both sources call the purge the fast way through these.",s:["tk_rlp","iv_rlp"]}]},
+    {n:"Tempest Barrier",t:["shield","groupdmg"],c:["purge"],r:["dps"],sev:2,e:"Shielded for most of their health. Purging the shield makes them charge a random player and immediately explode.",h:"Both sources call the purge the fast way through these.",s:["tk_rlp","iv_rlp"]}]},
    {n:"Storm Warrior",k:"trash",a:[
-    {n:"Thunder Stomper",alt:"Thunderclap",t:["groupdmg","debuff"],c:["position"],r:["healer","dps"],sev:2,e:"Hits everyone within five yards, reducing haste by 10% and movement speed by 20%.",h:"Short range, so ranged simply stand outside it. Melee will always eat it — plan for that rather than trying to dodge.",s:["tk_rlp","iv_rlp"]}]},
+    {n:"Thunder Stomper",t:["groupdmg","debuff"],c:["position"],r:["healer","dps"],sev:2,e:"Hits everyone within five yards, reducing haste by 10% and movement speed by 20%.",h:"Short range, so ranged simply stand outside it. Melee will always eat it — plan for that rather than trying to dodge.",s:["tk_rlp","iv_rlp"]}]},
    {n:"Tempest Channeler",k:"caster",a:[
     {n:"Lightning Torrent",t:["channel"],c:["defensive","drop"],r:["healer"],sev:3,e:"Channels a lot of damage into a random player.",s:["tk_rlp"]},
     {n:"Thunder Blast",t:["tankbuster"],c:["interrupt"],r:["dps"],sev:1,e:"Bolt aimed at the tank — a spare-interrupt target.",s:["tk_rlp"]}]},
-   {n:"High Channeler Riveti",alt:"High Channeler Ryvati",k:"mini",a:[
+   {n:"High Channeler Ryvati",k:"mini",a:[
     {n:"Tempest Storm Shield",t:["shield","groupdmg"],c:["focus"],r:["dps"],sev:3,e:"Gains a shield. If it expires before you break it, it bursts for AoE damage scaled to the shield remaining.",h:"Everything on this mob while the shield holds.",s:["tk_rlp"]},
     {n:"Summon Thunderclouds",t:["adds"],c:["focus"],r:["tank","dps"],sev:2,e:"Summons roughly four Primal Thunderclouds at once rather than one.",s:["tk_rlp"]}]}]}],
  encounters:[
   {n:"Melidrussa Chillworn",o:1,img:"rlp-melidrussa",sub:"Stack, rotate, and break the shield",shape:"Two burn checks, 66% and 33%",lv:2,brief:"Two hard checkpoints in an otherwise steady fight. Hailbombs land permanently and Chillstorm pulls then shoves, so the arena slowly fills and the group rotates as one body. At 66% and 33% she wakes ten whelps and shields herself — the whelps stack toward a stun on the tank while the shield pulses escalating damage. Both are burn checks with a dispel requirement bolted on.",a:[
    {n:"Frigid Shard",t:["tankbuster"],c:["interrupt"],r:["dps"],sev:2,e:"Massive Physical damage at the tank, and interruptible.",h:"Confirmed by the journal. At that number a missed kick is most of a tank's health bar, so this is not an optional interrupt.",s:["wh_ej","tk_rlp"]},
-   {n:"Hailburst",t:["denial"],c:["stack","position"],r:["dps","healer","tank"],sev:2,alt:"Hailbombs",e:"Significant Frost damage to everyone, then launches mines at each player. A mine detonates for heavy damage within 4 yards, knocks you UPWARD, and cuts haste by 50% for 20 seconds.",h:"Stay stacked so they all land together, then rotate as a group. Space is a finite resource here — the written guide treats bad bomb placement as the main failure mode.",s:["tk_rlp","iv_rlp"]},
-   {n:"Chill Storm",t:["denial","groupdmg"],c:["spread"],r:["dps","healer"],sev:2,alt:"Chillstorm · Storm's Eye",e:"A storm at the target's location pulling everyone toward the Storm's Eye, dealing moderate damage every 1.5 seconds. After 7 seconds it explodes for significant damage and pushes players away. Anyone standing in the eye takes 100% increased Frost damage.",h:"Step out of the centre if you are targeted. Everyone should be topped before the explosion, and watch where the pushback sends you — landing in a Hailbomb is the usual death.",s:["tk_rlp","iv_rlp"]},
+   {n:"Hailburst",t:["denial"],c:["stack","position"],r:["dps","healer","tank"],sev:2,e:"Significant Frost damage to everyone, then launches mines at each player. A mine detonates for heavy damage within 4 yards, knocks you UPWARD, and cuts haste by 50% for 20 seconds.",h:"Stay stacked so they all land together, then rotate as a group. Space is a finite resource here — the written guide treats bad bomb placement as the main failure mode.",s:["tk_rlp","iv_rlp"]},
+   {n:"Chillstorm",t:["denial","groupdmg"],c:["spread"],r:["dps","healer"],sev:2,e:"A storm at the target's location pulling everyone toward the Storm's Eye, dealing moderate damage every 1.5 seconds. After 7 seconds it explodes for significant damage and pushes players away. Anyone standing in the eye takes 100% increased Frost damage.",h:"Step out of the centre if you are targeted. Everyone should be topped before the explosion, and watch where the pushback sends you — landing in a Hailbomb is the usual death.",s:["tk_rlp","iv_rlp"]},
    {n:"Awaken Welps",t:["adds","stacking"],c:["magic","freedom","focus"],r:["tank","healer"],sev:3,e:"At 66% and 33% health she summons ten Infused Welps, which bring Cold Claws with them.",h:"Tank picks them up fast and the group watches the stack count — twenty means a stunned tank in the middle of the next mechanic.",s:["tk_rlp"]},
    {n:"Frost Overload",t:["shield","groupdmg","myth"],c:["focus"],r:["dps","healer"],sev:3,e:"She encases herself in an Ice Bulwark absorbing 10% of her maximum health; while it holds she deals moderate damage every 1.5 seconds and increases damage taken FROM THIS ABILITY by 5% for 3 seconds, stacking.",h:"Save some combination of damage and healing cooldowns. The shield must break before the healer is overwhelmed.",s:["tk_rlp"]}]},
   {n:"Kokia Blazehoof",o:2,img:"rlp-kokia-blazehoof",sub:"Space management with a baitable boulder",shape:"One phase, space management",lv:2,brief:"Energy-driven, and entirely about floor space. At full energy she binds a Blazebound Firestorm to a player's head and that player chooses where it lands — drop it onto existing fire and the arena stays usable, drop it somewhere fresh and it will not. Molten Boulder is baitable the same way. There are no phases here; there is only how much room you have left.",a:[
-   {n:"Ritual of Blaze Binding",t:["adds","denial"],c:["position","interrupt"],r:["dps"],sev:3,alt:"Ritual of Blazebinding",e:"At 100 energy a Blazebound Firestorm spawns at a player's location, searing everyone within 12 yards for heavy damage. It casts Blaze Volley (significant damage to all, interruptible) and Inferno (significant damage plus moderate damage per second for 8 seconds, stacking). Its Burnout on death does massive damage within 20 yards and leaves Scorched Earth on Mythic.",h:"Drop it near existing puddles to conserve space. Kick Blaze Volley late in the cast to delay the Inferno.",s:["tk_rlp"]},
+   {n:"Ritual of Blazebinding",t:["adds","denial"],c:["position","interrupt"],r:["dps"],sev:3,e:"At 100 energy a Blazebound Firestorm spawns at a player's location, searing everyone within 12 yards for heavy damage. It casts Blaze Volley (significant damage to all, interruptible) and Inferno (significant damage plus moderate damage per second for 8 seconds, stacking). Its Burnout on death does massive damage within 20 yards and leaves Scorched Earth on Mythic.",h:"Drop it near existing puddles to conserve space. Kick Blaze Volley late in the cast to delay the Inferno.",s:["tk_rlp"]},
    {n:"Molten Boulder",t:["line","denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Very heavy damage within 6 yards in front of her, then it rolls up to 40 yards and explodes for massive damage within 12 yards, knocking back anyone it touches.",h:"The written guide adds a 3-second stun; the journal does not mention one. Treat the stun as unconfirmed.",h:"Fully baitable. Aim it opposite to where you plan to move, or straight into existing fire.",s:["tk_rlp","iv_rlp"]},
    {n:"Searing Blows",t:["channel","tankbuster","dot"],c:["defensive"],r:["tank"],sev:2,e:"Four strikes over 3 seconds at 150% weapon damage, each applying Searing Wounds — light damage every half second for 8 seconds, stacking.",h:"Active mitigation for the channel, and be aware the bleed outlives it.",s:["tk_rlp","iv_rlp"]}]},
   {n:"Kyrakka and Erkhart Stormvein",o:3,img:"rlp-kyrakka-and-erkhart",sub:"Predictable winds, if you learn the order",shape:"Two phases, joins at 40%",lv:3,brief:"Two phases. Kyrakka circles overhead while Erkhart intercepts on the ground, and when either of them reaches 40% she lands so he can remount. Winds of Change is the mechanic that decides it: the hurricane shoves both players and Kyrakka's fire in one of four directions, and the order is fixed — so puddles can be placed deliberately to be blown away from the group rather than through it.",a:[
    {n:"Two-phase structure",t:["adds"],c:["focus"],r:["dps"],sev:3,e:"Kyrakka starts airborne while Erkhart intercepts on the ground. When EITHER of them reaches 40% health she lands so he can remount, and the second phase begins.",h:"Settled by the journal at 40%, against the written guide's 50% — and note the threshold applies to whichever boss reaches it first, which neither guide mentions. Chunk Kyrakka whenever she is grounded.",s:["wh_ej","tk_rlp"]},
-   {n:"Inferno Spit",t:["dot","denial"],c:["position"],r:["dps","healer"],sev:2,alt:"Inferno Spit · Flaming Embers",e:"Moderate Fire damage per second for 6 seconds. On REMOVAL the flames explode for moderate damage within 8 yards and leave Flaming Embers burning at significant damage per second.",h:"Drop these away from the group.",s:["tk_rlp"]},
+   {n:"Inferno Spit",t:["dot","denial"],c:["position"],r:["dps","healer"],sev:2,e:"Moderate Fire damage per second for 6 seconds. On REMOVAL the flames explode for moderate damage within 8 yards and leave Flaming Embers burning at significant damage per second.",h:"Drop these away from the group.",s:["tk_rlp"]},
    {n:"Winds of Change",t:["knockback","env"],c:["preposition","position"],r:["dps","healer","tank"],sev:3,e:"A localised hurricane doing light Nature damage per second for 8 seconds that pushes players AND Kyrakka's Flaming Embers. The journal confirms the ember-pushing; the fixed north-west, south-west, south-east, north-east order comes only from the creator guide and is not corroborated.",h:"Learn the order and you can deliberately place puddles so they are blown away from the group rather than through it. The single highest-value fact on this encounter.",s:["tk_rlp"]},
    {n:"Roaring Flame Breath",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Kyrakka lands near a random player and channels a frontal through them.",h:"While she is grounded she takes full damage — focus her.",s:["tk_rlp"]},
-   {n:"Storm Slam",t:["tankbuster","amp"],c:["magic","defensive"],r:["tank","healer"],sev:2,alt:"Stormslam",e:"Very heavy Physical damage and heavy Nature damage, applying a stacking, dispellable +100% Nature damage taken for 30 seconds. Mythic adds a further vulnerability.",h:"Dispel after every application. At 100% per stack this is not a nice-to-have — an undispelled tank walking into the next one is the standard death on this boss.",s:["tk_rlp","iv_rlp"]},
+   {n:"Stormslam",t:["tankbuster","amp"],c:["magic","defensive"],r:["tank","healer"],sev:2,e:"Very heavy Physical damage and heavy Nature damage, applying a stacking, dispellable +100% Nature damage taken for 30 seconds. Mythic adds a further vulnerability.",h:"Dispel after every application. At 100% per stack this is not a nice-to-have — an undispelled tank walking into the next one is the standard death on this boss.",s:["tk_rlp","iv_rlp"]},
    {n:"Interrupting Cloud Burst",t:["silence"],c:["position"],r:["dps","healer"],sev:1,t:["silence","groupdmg","myth"],e:"significant Nature damage to everyone and interrupts casts for 2 seconds.",h:"Stop casting when you see it.",s:["wh_ej","tk_rlp"]}]}],
 loot:{s:["iv_rlp"],i:[
   {n:"Chillworn's Infusion Staff",ic:"inv_staff_2h_dragondungeon_c_02",id:193761,sl:"Two-hand",ty:"Staff",b:"Melidrussa Chillworn",p:["Int"],x:[["Crit",13],["Mastery",8]]},
@@ -1750,7 +1753,7 @@ loot:{s:["iv_rlp"],i:[
   {n:2,t:"Second Juggernaut",m:"Three-pack",d:2,p:"Once it dies, move across and take the caster plus the group beyond.",s:["tk_rt"]},
   {n:3,t:"Patrolling Juggernaut",m:"Patrol",d:1,p:"This one patrols rather than standing still, so it is much easier to tag cleanly.",s:["tk_rt"]},
   {n:4,t:"Draghar",m:"Mini-boss",d:2,p:"The boss room does not open until it dies — you can no longer drag it inside and fight there.",s:["tk_rt"]},
-  {n:5,t:"Upstairs, go right",m:"Flame Gullet route",d:2,lust:true,p:"Slightly the easier of the two mini-bosses, though both were softened. Lust around Flame Gullet so you have damage for the sub-50% phase.",s:["tk_rt"]},
+  {n:5,t:"Upstairs, go right",m:"Flamegullet route",d:2,lust:true,p:"Slightly the easier of the two mini-bosses, though both were softened. Lust around Flamegullet so you have damage for the sub-50% phase.",s:["tk_rt"]},
   {n:6,t:"Destroyers and patrol",m:"Blaze-Bound Destroyers",d:2,p:"Both mini-bosses are grounded now and patrol their own areas — watch where they are and go around the other way.",s:["tk_rt"]},
   {n:7,t:"Kokia",m:"Boss",d:2,p:"Drop fire towards the mini-boss you did not pull, then move in the opposite direction.",s:["tk_rt"]},
   {n:8,t:"Balcony clear",m:"Casters and storm warriors, then Riveti",d:2,p:"The thunderclouds are not needed for count, but clearing them stops you accidentally pulling one onto the boss.",s:["tk_rt"]}],
@@ -1813,13 +1816,13 @@ loot:{s:["iv_rlp"],i:[
     {n:"Venomous Slash",t:["tankbuster"],c:["defensive"],r:["tank"],sev:3,e:"A large tank buster.",h:"Spawns when you interact with an eye, so you know exactly when it is coming.",s:["tk_tos"]}]},
    {n:"Temple Disruptor",k:"trash",a:[
     {n:"Essence Disruption",t:["channel"],c:["interrupt","cc"],r:["dps"],sev:2,e:"Two spawn at 50% eye energy and channel to stop the eye charging.",h:"Hard crowd control one — a trap or a paralysis holds for a full minute so you can ignore it entirely — and keep interrupts on the other.",s:["tk_tos"]}]},
-   {n:"Twisted Hexxer",alt:"Twisted Hexer",k:"caster",a:[
+   {n:"Twisted Hexxer",k:"caster",a:[
     {n:"Flame Shock",t:["dot"],c:["interrupt"],r:["dps"],sev:2,e:"Cast at random players.",s:["tk_tos"]},
-    {n:"Latent Hex",t:["denial","debuff"],c:["position"],r:["dps","healer"],sev:2,alt:"Latent Hex · Hex Muck",e:"A 4-second debuff at moderate Shadow damage per second. On removal it bursts for significant damage within 10 yards and leaves Hex Muck, which turns players inside into a frog — unable to attack or cast — at significant damage every 2 seconds.",h:"Walk it to the edge before it expires. Being frogged in the middle of the eye room is how runs end.",s:["wh_ej","tk_tos"]}]},
-   {n:"Faithless Tormentor",alt:"Faceless Tormentor",k:"trash",a:[
+    {n:"Latent Hex",t:["denial","debuff"],c:["position"],r:["dps","healer"],sev:2,e:"A 4-second debuff at moderate Shadow damage per second. On removal it bursts for significant damage within 10 yards and leaves Hex Muck, which turns players inside into a frog — unable to attack or cast — at significant damage every 2 seconds.",h:"Walk it to the edge before it expires. Being frogged in the middle of the eye room is how runs end.",s:["wh_ej","tk_tos"]}]},
+   {n:"Faithless Tormentor",k:"trash",a:[
     {n:"Shadow Lash",t:["fixate","stacking"],c:["cc","kite"],r:["dps","healer"],sev:2,e:"Fixates a random player, favouring healers if they are in range, and stacks a debuff on whoever it reaches.",h:"Lock them down and cleave them under the hexer.",s:["tk_tos"]}]}]}],
  encounters:[
-  {n:"Adderis and Aspix",alt:"Adarrah and Aspix",o:1,sub:"Wall positioning beats every mechanic here",shape:"One phase, alternating immunity",lv:2,brief:"Two bosses passing a single immunity back and forth as they take damage, so you swap targets repeatedly rather than once. The sequence to learn is Gale Force into Thunder and Lightning — line up against a wall to catch the knockback, then get back fast, because the first half of what follows is a split soak and being alone in it is fatal.",a:[
+  {n:"Adderis and Aspix",o:1,sub:"Wall positioning beats every mechanic here",shape:"One phase, alternating immunity",lv:2,brief:"Two bosses passing a single immunity back and forth as they take damage, so you swap targets repeatedly rather than once. The sequence to learn is Gale Force into Thunder and Lightning — line up against a wall to catch the knockback, then get back fast, because the first half of what follows is a split soak and being alone in it is fatal.",a:[
    {n:"Storm Blessed",t:["shield"],c:["focus"],r:["dps"],sev:2,e:"Storm Blessed grants full damage immunity, and the pair TRANSFER it between themselves as they get injured — it is not a single handover at 40%. Losing one sends the survivor into Frenzy.",h:"The creator guide describes one swap at 40%. The journal describes repeated transfers, so expect to switch targets several times.",s:["wh_ej","tk_tos"]},
    {n:"Tempest Winds",t:["denial","pacify"],c:["position"],r:["dps","healer"],sev:2,t:["denial","pacify","silence","myth"],e:"Targets multiple players: significant damage within 8 yards, and the winds coalesce into tempest zones lasting TWO MINUTES that silence and pacify anyone touching them for 4 seconds.",h:"Two-minute zones means the arena shrinks permanently. Drop these towards the centre and keep the walls clear.",s:["wh_ej","tk_tos"]},
    {n:"Gale Force",t:["line","knockback"],c:["los","position"],r:["dps","healer","tank"],sev:3,e:"Aspix launches gale-force winds for significant Nature damage and pushes players away.",h:"Line up against a wall to catch yourself. Otherwise you are thrown across the room or into trash.",s:["tk_tos"]},
@@ -1829,16 +1832,16 @@ loot:{s:["iv_rlp"],i:[
    {n:"Lightning Bite",t:["tankbuster","dot"],c:["defensive"],r:["tank"],sev:3,e:"Massive Physical damage plus moderate Nature damage per second for 7 seconds.",s:["wh_ej","tk_tos"]},
    {n:"Knot of Snakes",t:["stun"],c:["stack"],r:["dps","healer"],sev:2,t:["stun","myth"],e:"Snakes wrap the target, preventing all action and suffocating them for moderate damage each second. DESTROYING OR INCAPACITATING the knot frees them — and the clump then unravels and attacks.",h:"Crowd control frees a trapped ally just as well as damage does, which is faster if your damage is committed elsewhere.",s:["wh_ej","tk_tos"]},
    {n:"Add Phase",t:["adds"],c:["interrupt","poison","focus"],r:["dps"],sev:2,e:"She burrows through the ground for very heavy damage to anyone in her path, knocking them up and stunning for 4 seconds, while Burrowquake shakes the party for light damage each second. Eggs hatch into Toxic Vipers (Poison Spit, interruptible) and a Storm Serpent (Storm Catalyst, leaving Lingering Storm at significant damage per second).",h:"Neither the burrow damage nor the party-wide quake appears in the creator guide. Do not stand in her path.",s:["wh_ej","tk_tos"]}]},
-  {n:"Galvazzt",alt:"Galvazt",o:3,sub:"Three spires, and a soak that hurts to take",shape:"One phase, energy race",lv:3,brief:"An energy race with a body cost. Spires form and beam power into him, and the only way to stop it is to stand in the beam — which carries a 250% increase to physical damage taken for as long as you hold it. He also bleeds energy passively, so a clean interception phase can stop Consume Charge outright. Rotate who blocks, and never let the tank hold a beam into a melee swing.",a:[
+  {n:"Galvazzt",o:3,sub:"Three spires, and a soak that hurts to take",shape:"One phase, energy race",lv:3,brief:"An energy race with a body cost. Spires form and beam power into him, and the only way to stop it is to stand in the beam — which carries a 250% increase to physical damage taken for as long as you hold it. He also bleeds energy passively, so a clean interception phase can stop Consume Charge outright. Rotate who blocks, and never let the tank hold a beam into a melee swing.",a:[
    {n:"Lightning Spires",t:["soak","groupdmg"],c:["soak","position"],r:["dps","healer","tank"],sev:3,e:"Spires form from lightning strikes that deal very heavy damage within 5 yards and knock back. Each then energises him unless a player blocks the connection and becomes Galvanized. He passively loses energy over time, so blocking buys real ground.",h:"Mythic creates multiple spires. The passive energy decay means a clean intercept phase can stop Consume Charge entirely.",s:["wh_ej","tk_tos"]},
    {n:"Consumed Charge",t:["groupdmg","amp","debuff"],c:["soak"],r:["dps","healer","tank"],sev:3,e:"Heavy Nature damage to everyone and a 50% reduction in party damage done for 20 seconds — plus a stack of Capacitance, permanently raising his damage by 25%.",s:["wh_ej","tk_tos"]},
-   {n:"Charged Vulnerability",t:["amp"],c:["defensive"],r:["tank"],sev:3,alt:"Galvanized",e:"Light Nature damage every half second, and the blocker takes 250% increased PHYSICAL damage.",h:"The creator guide says 200%; the journal says 250%. Either way, a tank blocking a beam and then eating a melee is the standard death — rotate blockers rather than letting the tank hold one.",s:["wh_ej","tk_tos"]},
+   {n:"Galvanized",t:["amp"],c:["defensive"],r:["tank"],sev:3,e:"Light Nature damage every half second, and the blocker takes 250% increased PHYSICAL damage.",h:"The creator guide says 200%; the journal says 250%. Either way, a tank blocking a beam and then eating a melee is the standard death — rotate blockers rather than letting the tank hold one.",s:["wh_ej","tk_tos"]},
    {n:"Induction",t:["groupdmg","denial"],c:["position"],r:["dps","healer","tank"],sev:1,e:"Heavy Nature damage to everyone, leaving an Induction Field at significant damage per second.",h:"Rotate around the room, but do not agonise over space.",s:["wh_ej","tk_tos"]}]},
   {n:"Avatar of Sethraliss",o:4,sub:"A trash fight that ends when the boss is healed to full",shape:"Two stages, healing objective",lv:3,brief:"Not a damage fight at all — you win by restoring her to full health, and it runs in two stages. First, Essence Defilers block all external healing while Corrupted Guardians drop Life Force orbs that two DPS soak in strict alternation, because the debuff cuts healing done and multiplies physical damage taken. Then the taint lifts, tormentors fixate the healer, and you push each to 25% so she siphons them. Unusual, and it punishes improvisation.",a:[
-   {n:"Essence Defiler",t:["channel","adds"],c:["focus"],r:["dps"],sev:3,alt:"Defiling Taint",e:"Essence Defilers channel Defiling Taint into the Avatar, preventing ALL external healing. Killing every Defiler cleanses it and ends Stage One.",h:"Do not waste globals healing her while one lives.",s:["wh_ej","tk_tos"]},
-   {n:"Corrupted Guardian",t:["adds","dot","death"],c:["defensive","soak"],r:["tank","healer"],sev:2,alt:"Unstable Corruption",e:"Tainted Strike hits the tank for massive Physical damage plus moderate Shadow damage per second for 10 seconds, stacking. Vile Charge does significant damage plus moderate damage per second for 8 seconds to a random player. Unstable Corruption erupts for massive damage within 20 yards and forms Corrupted Lifeforce — multiple orbs on Mythic.",s:["wh_ej","tk_tos"]},
+   {n:"Defiling Taint",t:["channel","adds"],c:["focus"],r:["dps"],sev:3,e:"Essence Defilers channel Defiling Taint into the Avatar, preventing ALL external healing. Killing every Defiler cleanses it and ends Stage One.",h:"Do not waste globals healing her while one lives.",s:["wh_ej","tk_tos"]},
+   {n:"Unstable Corruption",t:["adds","dot","death"],c:["defensive","soak"],r:["tank","healer"],sev:2,e:"Tainted Strike hits the tank for massive Physical damage plus moderate Shadow damage per second for 10 seconds, stacking. Vile Charge does significant damage plus moderate damage per second for 8 seconds to a random player. Unstable Corruption erupts for massive damage within 20 yards and forms Corrupted Lifeforce — multiple orbs on Mythic.",s:["wh_ej","tk_tos"]},
    {n:"Corrupted Life Force",t:["soak","debuff"],c:["soak"],r:["dps"],sev:3,e:"Touching one cleanses it so the Avatar can consume it, healing her 2% plus a regeneration. The soaker takes Corruption: moderate damage per second, healing done reduced 33%, and PHYSICAL DAMAGE TAKEN INCREASED BY 300% for 15 seconds, stacking. An uncleansed orb bursts for heavy damage to everyone and raises damage from that burst by 100% for 3 seconds.",h:"+300% physical damage taken is why this can never be the tank, and −33% healing done is why it can never be the healer. Two DPS, strictly alternating, never overlapping — the 3-second burst vulnerability is what kills groups that stagger badly.",s:["wh_ej","tk_tos"]},
-   {n:"Faceless Tormentor waves",t:["adds","fixate"],c:["cc","kite"],r:["dps","healer","tank"],sev:3,alt:"Shadowlash · Siphon the Weak",e:"Faithless Tormentors fixate the closest healer, and each strike reduces that healer's healing done by 5%, stacking. You do not kill them: damage them below 25% and the Avatar SIPHONS them, killing them instantly and healing herself for 0.7% of her maximum health. Agony of Sethraliss also jolts the chamber for heavy damage within 4.5 yards.",h:"The creator guide says each wave killed heals her 3%. The journal says 0.7% per Tormentor siphoned below 25% — so the job is to push several to 25% quickly rather than to finish any of them.",s:["wh_ej","tk_tos"]}]}],
+   {n:"Siphon the Weak",t:["adds","fixate"],c:["cc","kite"],r:["dps","healer","tank"],sev:3,e:"Faithless Tormentors fixate the closest healer, and each strike reduces that healer's healing done by 5%, stacking. You do not kill them: damage them below 25% and the Avatar SIPHONS them, killing them instantly and healing herself for 0.7% of her maximum health. Agony of Sethraliss also jolts the chamber for heavy damage within 4.5 yards.",h:"The creator guide says each wave killed heals her 3%. The journal says 0.7% per Tormentor siphoned below 25% — so the job is to push several to 25% quickly rather than to finish any of them.",s:["wh_ej","tk_tos"]}]}],
 loot:{s:["wh_dg"],i:[
   {n:"Bindings of the Slithering Current",ic:"inv_bracer_cloth_zandalardungeon_c_01",id:159263,sl:"Wrist",ty:"Cloth",b:"Adderis and Aspix",p:["Int"],x:[["Crit",4],["Vers",3]]},
   {n:"Sandswept Sandals",ic:"inv_boot_cloth_zandalardungeon_c_01",id:159259,sl:"Feet",ty:"Cloth",b:"Adderis and Aspix",p:["Int"],x:[["Crit",5],["Haste",3]]},
@@ -1895,154 +1898,293 @@ loot:{s:["wh_dg"],i:[
    is absent here simply renders without an icon — never a broken image.
    ═══════════════════════════════════════════════════════════════════════ */
 const ICONS={
- "Accumulate Charge":"spell_chargepositive","Addle Mind":"spell_shadow_mindflay",
- "Ancestral Fury":"spell_totem_wardofdraining","Arc Lightning":"spell_nature_chainlightning",
- "Arrow Barrage":"inv_misc_ammo_arrow_05","Awakening Slam":"spell_necro_deathsdoor",
- "Axe Toss":"ability_warrior_titansgrip","Back to Work":"inv_hammer_09",
- "Barrel Through":"ability_monk_clashingoxcharge","Bedrock Slam":"spell_nature_earthquake",
- "Belch Spores":"spell_nature_corrosivebreath","Bestial Wrath":"ability_druid_ferociousbite",
- "Blade Combo":"ability_ironmaidens_bladerush","Blade Dance":"ability_demonhunter_bladedance",
- "Blaze of Glory":"inv_ember","Blazing Rush":"spell_deathknight_butcher2",
- "Blood Sacrifice":"ability_warrior_bloodfrenzy","Bloodletting":"ability_skeer_bloodletting",
- "Bloodthirsty Axe":"spell_druid_bloodythrash","Bloodthirsty Gaze":"ability_fixated_state_red",
- "Bloodthorn Roots":"inv_-misc_herb_marrowroot_leaf",
- "Bound by Shadow":"spell_shadow_summonvoidwalker",
- "Brutal Slams":"ability_warrior_decisivestrike","Brutalize":"ability_warrior_devastate",
- "Bullet Seeds":"spell_shaman_convection","Burning Corruption":"spell_fire_blueflamebreath",
- "Burnout":"spell_fire_soulburn","Call of the Elements":"ability_shaman_echooftheelements",
- "Caustic Stomp":"inv_ability_poison_nova",
- "Champion Spear":"inv_ability_warrior_championsspear",
- "Chaos Barrage":"spell_fire_felrainoffire","Chaos Bolt":"ability_warlock_chaosbolt",
- "Chop Down":"ability_criticalstrike","Cold Claws":"ability_mage_wintersgrasp",
- "Concussive Slam":"ability_warrior_decisivestrike",
- "Corroding Spittle":"inv_fabric_felcloth_ebon","Corrosive Essence":"inv_ability_poison_orb",
- "Corrosive Fangs":"spell_nature_nullifypoison","Cosmic Crash":"inv_cosmicvoid_groundsate",
- "Crushing Smash":"spell_shaman_earthquake","Curse of Doom":"spell_shadow_auraofdarkness",
- "Cytotoxin":"ability_hunter_cobrastrikes",
- "Dark Bloom":"inv_ability_voidweaverpriest_entropicrift","Dark Pact":"spell_shadow_deathpact",
- "Dark Revelation":"ability_priest_clarityofpower","Dark Waves":"inv_cosmicvoid_wave",
- "Death Rattle":"inv_sonic_debuff","Debilitating Backhand":"inv_relics_totemofrage",
- "Deep Corruption":"priest_icon_chakra_red","Defiled Slam":"spell_fire_felimmolation",
- "Demonic Frenzy":"spell_fel_incinerate","Demonic Rage":"ability_warlock_demonicempowerment",
- "Demoralizing Shout":"ability_warrior_warcry","Devour":"inv_12_dh_void_ability_devourerbite",
- "Dimensional Shred":"ability_rogue_masterofsubtlety","Dismember":"ability_criticalstrike",
- "Disorienting Screech":"inv_111_hunter_ability_harrierscall",
- "Drain Fluids":"inv_misc_volatilewater","Drain Life":"spell_shadow_lifedrain02",
- "Earthbound's Imprint":"inv_ore_blackrock_ore","Earthquake":"spell_shaman_earthquake",
- "Empowerment":"spell_nature_elementalprecision_1","Entomb":"achievement_bg_xkills_avgraveyard",
- "Envenom":"ability_rogue_disembowel","Essence Disruption":"inv_elemental_mote_shadow01",
- "Evolve":"inv_121_trinket_raid_ulatek_heart","Excavating Blast":"spell_nature_earthquake",
- "Eye Beam":"ability_demonhunter_eyebeam","Feast of Misery":"spell_shadow_lifedrain02_purple",
- "Fel Beam":"spell_fire_felflamestrike","Fel Missiles":"spell_fire_felrainoffire",
- "Fel Nova":"spell_fire_felflamering","Fel Rage":"ability_creature_felfrenzy",
- "Fel Shield":"trade_engineering","Fel Spray":"spell_fire_felflamebreath",
- "Fel Steps":"ability_bossfellord_felfissure","Felfire Burst":"spell_fire_felflamebolt",
- "Feral Rage":"artifactability_feraldruid_ashamanesbite","Ferocious Leap":"ability_heroicleap",
- "Fingers of Gul'dan":"ability_warlock_handofguldan","Fire Bomb":"inv_eng_bombfire",
- "Fire Maw":"ability_warrior_dragonroar","Fixate":"ability_fixated_state_blue",
- "Flame Shock":"spell_fire_flameshock","Flay":"inv_archaeology_70_demon_flayedskinchronicle",
- "Forceful Slam":"inv_misc_bearpaw_red","Forked Lightning":"spell_lightning_lightningbolt01",
- "Frigid Roar":"inv_amanibearmount_witherbark","Frigid Shard":"spell_frost_iceshard",
- "Frost Bite":"ability_mage_coldasice","Frost Overload":"spell_fire_blueflamering",
- "Frost Shock":"spell_frost_frostshock","Frozen Tempest":"spell_frost_ring-of-frost",
- "Fury of the War God":"spell_nature_shamanrage","Gale Force":"ability_skyreach_four_wind",
- "Gilded Destruction":"inv_sword_2h_zandalarquest_b_01","Glacial Tomb":"ability_mage_coldasice",
- "Glacial Torment":"inv12_apextalent_mage_handoffrost",
- "Glaive Toss":"ability_upgrademoonglaive","Gravitic Orbs":"inv_enchant_voidsphere",
- "Grievous Gash":"inv_ability_druidoftheclawdruid_ravage",
- "Grievous Thrash":"spell_druid_bloodythrash","Ground Pound":"ability_smash",
- "Hailburst":"spell_frost_frostshock","Harsh Winds":"spell_nature_earthbind",
- "Head Bash":"inv_fellessergronnmount","Healing Breeze":"spell_frost_windwalkon",
- "Healing Tide Totem":"ability_shaman_healingtide","Health Funnel":"spell_shadow_lifedrain",
- "Heavy Slams":"inv_11_arenaboss_conductionslam","Hex":"spell_shaman_hex",
- "Hex Volley":"warlock_curse_shadow","Hulking Claw":"ability_creature_poison_03",
- "Hunting Leap":"ability_druid_ravage","Ice Shield":"ability_mage_coldasice",
- "Icebolt":"spell_frost_frostbolt02","Imbued Conduction":"spell_nature_stormreach",
- "Induction":"ability_thunderking_overcharge","Infernal Crash":"spell_shadow_summoninfernal",
- "Inferno":"ability_warlock_inferno","Inferno Spit":"spell_fire_firebolt",
- "Infest":"ability_hunter_snaketrap","Insidious Aura":"ability_warlock_burningembersgreen",
- "Killing Spree":"inv_112_rogue_betweentheeyes","Laced Edge":"inv_sword_2h_ulatek_d_01",
- "Latent Hex":"inv_shoulder_armor_hextroll_d_01","Legion Strike":"inv_axe_09",
- "Light Bolt":"spell_holy_holybolt","Light Bolt Volley":"ability_priest_flashoflight",
- "Light Fire":"trade_engineering","Lightbloom Pollination":"spell_holy_surgeoflight",
- "Lightfall":"inv_ability_holyfire_missile",
- "Lightning Bite":"ability_thunderking_balllightning","Lightning Bolt":"spell_nature_lightning",
- "Lightning Rod":"inv_rod_enchantedcobalt","Lightning Torrent":"spell_shaman_thunderstorm",
- "Living Bomb":"ability_mage_livingbomb","Lucre's Call":"spell_holy_purifyingpower",
- "Maelstrom":"spell_nature_unrelentingstorm","Magma Totem":"spell_fire_selfdestruct",
- "Malefic Wave":"ability_felarakkoa_feldetonation_green",
- "Mass Envenom":"inv_ability_poison_missile","Melt Armor":"spell_fire_firebolt02",
- "Mending Void":"inv_cosmicvoid_buff","Mirror Images":"spell_magic_lesserinvisibilty",
- "Molten Blood":"spell_shaman_spewlava","Molten Boulder":"spell_mage_flameorb",
- "Monstrous Roar":"ability_racial_darkflight","Mother's Wrath":"inv_misc_monsterfang_02",
- "Nether Dash":"ability_mount_voidelfstridermount",
- "Noxious Breath":"ability_creature_poison_05","Noxious Spray":"inv_ability_poison_beam",
- "Null Eruption":"inv_cosmicvoid_orb","Oozing Xylem":"inv_ability_holyfire_nova",
- "Over-infused":"inv_ore_feliron","Overload":"spell_nature_callstorm",
- "Overwhelming Onslaught":"spell_druid_thrash","Paralyzing Shot":"ability_poisonsting",
- "Piercing Hiss":"inv_sonic_wave","Poison Nova":"ability_creature_disease_02",
- "Poison Spear Volley":"inv_spear_02","Poison Splash":"spell_nature_corrosivebreath",
- "Poisoned Cheap Shot":"ability_cheapshot",
- "Pool of Darkness":"inv_misc_food_legion_gooamberpink_pool",
- "Primal Echo":"spell_druid_stamedingroar","Pulverize":"ability_smash",
- "Pulverizing Strikes":"ability_druid_swipe",
- "Punishing Might":"inv_sword_1h_artifactfelomelorn_d_03dual",
- "Purification Strike":"spell_shaman_lavasurge","Quaking Leap":"ability_heroicleap",
- "Raging Squall":"ability_deathknight_frozencenter","Rattle":"inv_sonic_wave",
- "Ravenous":"ability_evoker_dragonrage2","Ravenous Bellow":"ability_druid_challangingroar",
- "Ravenous Stomp":"ability_earthen_pillar","Ravenous Swarm":"inv_ability_druid_adaptiveswarm",
- "Razor Dive":"inv_10_specialreagentfoozles_tuskclaw_fire",
- "Regurgitate":"inv_ability_poison_wave","Release Charge":"spell_chargenegative",
- "Rip and Slice":"inv_10_specialreagentfoozles_tuskclaw-black",
- "Ritual Venom":"inv_ability_poison_beam",
- "Ritual of the Fang":"inv_achievement_dungeon_altaroffangs",
- "Roaring Flame Breath":"inv_summerfest_firespirit",
- "Rolling Thunder":"spell_nature_lightningoverload","Rotten Supplies":"inv_misc_food_91",
- "Savage Leap":"ability_druid_tigersroar","Scavenge":"inv_vulturemount_black",
- "Scavenging":"inv_misc_potionbag_special","Searing Blows":"ability_shaman_lavalash",
- "Searing Fel Flame":"spell_fire_felfirenova","Seduction":"spell_shadow_seduction",
- "Seismic Upheaval":"ability_rogue_kidneyshot",
- "Septic Spatter":"ability_deathknight_roilingblood",
- "Serpentine Gust":"ability_skyreach_four_wind",
- "Serrated Charge":"inv_artifact_bloodoftheassassinated",
- "Shadow Barrage":"spell_priest_mindspike","Shadow Bite":"spell_shadow_soulleech_3",
- "Shadow Bolt Volley":"spell_shadow_shadowbolt","Shadow Lash":"inv_misc_volatileshadow",
- "Shadow Whirlwind":"spell_necro_deathsknell","Shell Guard":"inv_cape_special_turtleshell_c_01",
- "Shield Bash":"ability_warrior_shieldbash","Shred Armor":"ability_druid_rake",
- "Shred Defense":"ability_druid_ravage","Shredding Claw":"inv_misc_monsterclaw_03",
- "Sickening Bite":"ability_creature_poison_01","Sky Strike":"ability_racial_wingbuffet",
- "Smashing Charge":"inv_fellessergronnmount","Solar Breath":"ability_skyreach_solar_burst",
- "Soul Crush":"inv_ability_warlock_soulrot","Spark Step":"spell_shaman_crashlightning",
- "Spectral Slash":"ability_druid_supriseattack","Spit Gold":"ability_creature_amber_01",
- "Spoiled Supplies":"ability_creature_disease_01",
- "Starvation Effigy":"inv_archaeology_80_zandalari_sanguinetotem",
- "Static Shock":"spell_nature_chainlightning","Steel Barrage":"inv_axe_1h_deathwingraiddw_d_01",
- "Storm Blessed":"spell_nature_lightningshield","Sunder Slam":"ability_warrior_shieldbreak",
- "Suppression Slam":"ability_golemthunderclap",
- "Synchronized Venom":"inv_ability_poison_missile",
- "Tail Scythe":"inv_knife_1h_felfireraid_d_04","Tail Thrash":"ability_hunter_pet_windserpent",
- "Tectonic Strike":"inv_axe_2h_earthendungeon_c_01",
- "Tempest Winds":"achievement_raidprimalist_windelemental",
- "Thicket's Trinity":"inv_herbalism_70_dreamleaf",
- "Thorncaller Roar":"inv_misc_herb_nightmarevine",
- "Thunder Blast":"warrior_talent_icon_bloodandthunder","Thunder Jaw":"inv_misc_stormdragonpale",
- "Thunder Stomper":"ability_thunderclap",
- "Thunder and Lightning":"warrior_talent_icon_thunderstruck",
- "Thundering Storm":"spell_shaman_thunderstorm","Thunderstorm":"spell_shaman_thunderstorm",
- "Tongue Toss":"ability_vehicle_launchplayer","Toxic Atrophy":"spell_shadow_requiem",
- "Toxic Breath":"spell_fire_felflamebreath","Toxic Spew":"spell_nature_corrosivebreath",
- "Toxic Surge":"inv_ability_poison_wave","Triple Shot":"spell_nature_corrosivebreath",
- "Umbral Rupture":"inv_cosmicvoid_groundstate","Unstable Totem":"ability_shaman_stoneskintotem",
- "Uproot":"inv_herb_earthroot","Venom Burst":"inv_ability_poison_groundstate",
- "Venom Spit":"ability_creature_poison_02","Venomous Slash":"ability_rogue_disembowel",
- "Venomous Spit":"spell_nature_corrosivebreath","Verdant Stomp":"inv_raptortravelform",
- "Vigilant Defense":"creatureportrait_blackrockv2_shieldgong_02",
- "Vile Fiend":"inv_argusfelstalkermount","Vindictive Onslaught":"spell_nature_earthquake",
- "Virulent Whirl":"inv_ability_poison_groundstate","Void Beam":"inv_cosmicvoid_beam",
- "Void Blast":"inv_cosmicvoid_missile","Void Cascade":"inv_cosmicvoid_missile",
- "Volatile Totem":"spell_fire_totemofwrath","Warden's Wrath":"spell_nature_wispsplodegreen",
- "Whirling Axes":"ability_butcher_whirl","Winds of Change":"spell_shaman_unleashweapon_wind",
- "Wretched Discharge":"spell_festergutgas"
+"Accumulate Charge":"spell_chargepositive",
+"Addle Mind":"spell_shadow_mindflay",
+"Ancestral Fury":"spell_totem_wardofdraining",
+"Arc Lightning":"spell_nature_chainlightning",
+"Arrow Barrage":"inv_misc_ammo_arrow_05",
+"Awaken the Lightbloom":"inv_desertlasherorchid_yellow",
+"Awakening Slam":"spell_necro_deathsdoor",
+"Axe Toss":"ability_warrior_titansgrip",
+"Axegrinder":"ability_warrior_bladestorm",
+"Back to Work":"inv_hammer_09",
+"Barrel Through":"ability_monk_clashingoxcharge",
+"Bedrock Slam":"spell_nature_earthquake",
+"Belch Spores":"spell_nature_corrosivebreath",
+"Bestial Wrath":"ability_druid_ferociousbite",
+"Blade Combo":"ability_ironmaidens_bladerush",
+"Blade Dance":"ability_demonhunter_bladedance",
+"Blaze of Glory":"inv_ember",
+"Blazing Rush":"spell_deathknight_butcher2",
+"Blood Sacrifice":"ability_warrior_bloodfrenzy",
+"Bloodletting":"ability_skeer_bloodletting",
+"Bloodthirsty Axe":"spell_druid_bloodythrash",
+"Bloodthirsty Gaze":"ability_fixated_state_red",
+"Bloodthorn Roots":"inv_-misc_herb_marrowroot_leaf",
+"Boneslicer":"ability_hunter_swiftstrike",
+"Bound by Shadow":"spell_shadow_summonvoidwalker",
+"Brutal Slams":"ability_warrior_decisivestrike",
+"Brutalize":"ability_warrior_devastate",
+"Bullet Seeds":"spell_shaman_convection",
+"Burning Corruption":"spell_fire_blueflamebreath",
+"Burnout":"spell_fire_soulburn",
+"Call of the Elements":"ability_shaman_echooftheelements",
+"Caustic Stomp":"inv_ability_poison_nova",
+"Champion Spear":"inv_ability_warrior_championsspear",
+"Chaos Barrage":"spell_fire_felrainoffire",
+"Chaos Bolt":"ability_warlock_chaosbolt",
+"Chillstorm":"spell_shadow_soulleech_2",
+"Chop Down":"ability_criticalstrike",
+"Cold Claws":"ability_mage_wintersgrasp",
+"Concussive Slam":"ability_warrior_decisivestrike",
+"Corroding Spittle":"inv_fabric_felcloth_ebon",
+"Corrosive Essence":"inv_ability_poison_orb",
+"Corrosive Fangs":"spell_nature_nullifypoison",
+"Cosmic Crash":"inv_cosmicvoid_groundsate",
+"Crushing Smash":"spell_shaman_earthquake",
+"Curse of Doom":"spell_shadow_auraofdarkness",
+"Cytotoxin":"ability_hunter_cobrastrikes",
+"Dark Bloom":"inv_ability_voidweaverpriest_entropicrift",
+"Dark Pact":"spell_shadow_deathpact",
+"Dark Revelation":"ability_priest_clarityofpower",
+"Dark Waves":"inv_cosmicvoid_wave",
+"Death Rattle":"inv_sonic_debuff",
+"Deathly Roar":"ability_hunter_beastmastery",
+"Debilitating Backhand":"inv_relics_totemofrage",
+"Deep Corruption":"priest_icon_chakra_red",
+"Defiled Slam":"spell_fire_felimmolation",
+"Defiling Taint":"ability_creature_disease_05",
+"Demonic Frenzy":"spell_fel_incinerate",
+"Demonic Rage":"ability_warlock_demonicempowerment",
+"Demoralizing Shout":"ability_warrior_warcry",
+"Devour":"inv_12_dh_void_ability_devourerbite",
+"Dimensional Shred":"ability_rogue_masterofsubtlety",
+"Dismember":"ability_criticalstrike",
+"Disorienting Screech":"inv_111_hunter_ability_harrierscall",
+"Drain Fluids":"inv_misc_volatilewater",
+"Drain Life":"spell_shadow_lifedrain02",
+"Earthbound's Imprint":"inv_ore_blackrock_ore",
+"Earthquake":"spell_shaman_earthquake",
+"Earthshatter Slam":"spell_shaman_earthquake",
+"Echoing Maul":"inv_ability_druidoftheclawdruid_ravage",
+"Empowerment":"spell_nature_elementalprecision_1",
+"Entomb":"achievement_bg_xkills_avgraveyard",
+"Envenom":"ability_rogue_disembowel",
+"Essence Disruption":"inv_elemental_mote_shadow01",
+"Evolve":"inv_121_trinket_raid_ulatek_heart",
+"Excavating Blast":"spell_nature_earthquake",
+"Eye Beam":"ability_demonhunter_eyebeam",
+"Feast of Misery":"spell_shadow_lifedrain02_purple",
+"Fel Beam":"spell_fire_felflamestrike",
+"Fel Missiles":"spell_fire_felrainoffire",
+"Fel Nova":"spell_fire_felflamering",
+"Fel Rage":"ability_creature_felfrenzy",
+"Fel Shield":"trade_engineering",
+"Fel Spray":"spell_fire_felflamebreath",
+"Fel Steps":"ability_bossfellord_felfissure",
+"Felfire Burst":"spell_fire_felflamebolt",
+"Feral Rage":"artifactability_feraldruid_ashamanesbite",
+"Ferocious Leap":"ability_heroicleap",
+"Fingers of Gul'dan":"ability_warlock_handofguldan",
+"Fire Bomb":"inv_eng_bombfire",
+"Fire Maw":"ability_warrior_dragonroar",
+"Fixate":"ability_fixated_state_blue",
+"Flame Dance":"trade_engineering",
+"Flame Shock":"spell_fire_flameshock",
+"Flay":"inv_archaeology_70_demon_flayedskinchronicle",
+"Forceful Slam":"inv_misc_bearpaw_red",
+"Forked Lightning":"spell_lightning_lightningbolt01",
+"Frantic Blooming":"inv_desertlasherorchid_yellow",
+"Frigid Roar":"inv_amanibearmount_witherbark",
+"Frigid Shard":"spell_frost_iceshard",
+"Frost Bite":"ability_mage_coldasice",
+"Frost Overload":"spell_fire_blueflamering",
+"Frost Shock":"spell_frost_frostshock",
+"Frozen Tempest":"spell_frost_ring-of-frost",
+"Fury of the War God":"spell_nature_shamanrage",
+"Gale Force":"ability_skyreach_four_wind",
+"Galvanized":"spell_shaman_staticshock",
+"Gilded Destruction":"inv_sword_2h_zandalarquest_b_01",
+"Glacial Tomb":"ability_mage_coldasice",
+"Glacial Torment":"inv12_apextalent_mage_handoffrost",
+"Glaive Toss":"ability_upgrademoonglaive",
+"Gravitic Orbs":"inv_enchant_voidsphere",
+"Grievous Gash":"inv_ability_druidoftheclawdruid_ravage",
+"Grievous Thrash":"spell_druid_bloodythrash",
+"Ground Pound":"ability_smash",
+"Hailburst":"spell_frost_frostshock",
+"Harsh Winds":"spell_nature_earthbind",
+"Head Bash":"inv_fellessergronnmount",
+"Healing Breeze":"spell_frost_windwalkon",
+"Healing Tide Totem":"ability_shaman_healingtide",
+"Health Funnel":"spell_shadow_lifedrain",
+"Heartstop Poison":"ability_boss_kilrogg_heartseeker",
+"Heavy Slams":"inv_11_arenaboss_conductionslam",
+"Hex":"spell_shaman_hex",
+"Hex Volley":"warlock_curse_shadow",
+"Hulking Claw":"ability_creature_poison_03",
+"Hunting Leap":"ability_druid_ravage",
+"Ice Shield":"ability_mage_coldasice",
+"Icebolt":"spell_frost_frostbolt02",
+"Imbued Conduction":"spell_nature_stormreach",
+"Induction":"ability_thunderking_overcharge",
+"Infernal Crash":"spell_shadow_summoninfernal",
+"Inferno":"ability_warlock_inferno",
+"Inferno Spit":"spell_fire_firebolt",
+"Infest":"ability_hunter_snaketrap",
+"Insidious Aura":"ability_warlock_burningembersgreen",
+"Killing Spree":"inv_112_rogue_betweentheeyes",
+"Laced Edge":"inv_sword_2h_ulatek_d_01",
+"Latent Hex":"inv_shoulder_armor_hextroll_d_01",
+"Legion Strike":"inv_axe_09",
+"Light Bolt":"spell_holy_holybolt",
+"Light Bolt Volley":"ability_priest_flashoflight",
+"Light Fire":"trade_engineering",
+"Lightbloom Pollination":"spell_holy_surgeoflight",
+"Lightbloom's Essence":"inv_ability_holyfire_orb",
+"Lightblossom Beam":"ability_paladin_infusionoflight",
+"Lightfall":"inv_ability_holyfire_missile",
+"Lightning Bite":"ability_thunderking_balllightning",
+"Lightning Bolt":"spell_nature_lightning",
+"Lightning Rod":"inv_rod_enchantedcobalt",
+"Lightning Torrent":"spell_shaman_thunderstorm",
+"Living Bomb":"ability_mage_livingbomb",
+"Lucre's Call":"spell_holy_purifyingpower",
+"Mad Shriek":"spell_shadow_psychicscream",
+"Maelstrom":"spell_nature_unrelentingstorm",
+"Magma Totem":"spell_fire_selfdestruct",
+"Malefic Wave":"ability_felarakkoa_feldetonation_green",
+"Mass Envenom":"inv_ability_poison_missile",
+"Melt Armor":"spell_fire_firebolt02",
+"Mending Void":"inv_cosmicvoid_buff",
+"Mirror Images":"spell_magic_lesserinvisibilty",
+"Molten Blood":"spell_shaman_spewlava",
+"Molten Boulder":"spell_mage_flameorb",
+"Monstrous Roar":"ability_racial_darkflight",
+"Mother's Wrath":"inv_misc_monsterfang_02",
+"Nether Dash":"ability_mount_voidelfstridermount",
+"Noxious Breath":"ability_creature_poison_05",
+"Noxious Spray":"inv_ability_poison_beam",
+"Null Eruption":"inv_cosmicvoid_orb",
+"Oozing Xylem":"inv_ability_holyfire_nova",
+"Over-infused":"inv_ore_feliron",
+"Overload":"spell_nature_callstorm",
+"Overwhelming Onslaught":"spell_druid_thrash",
+"Paralyzing Shot":"ability_poisonsting",
+"Piercing Hiss":"inv_sonic_wave",
+"Poison Nova":"ability_creature_disease_02",
+"Poison Spear Volley":"inv_spear_02",
+"Poison Splash":"spell_nature_corrosivebreath",
+"Poisoned Cheap Shot":"ability_cheapshot",
+"Pool of Darkness":"inv_misc_food_legion_gooamberpink_pool",
+"Primal Echo":"spell_druid_stamedingroar",
+"Pulverize":"ability_smash",
+"Pulverizing Strikes":"ability_druid_swipe",
+"Punishing Might":"inv_sword_1h_artifactfelomelorn_d_03dual",
+"Purification Strike":"spell_shaman_lavasurge",
+"Quaking Leap":"ability_heroicleap",
+"Raging Squall":"ability_deathknight_frozencenter",
+"Rattle":"inv_sonic_wave",
+"Ravenous":"ability_evoker_dragonrage2",
+"Ravenous Bellow":"ability_druid_challangingroar",
+"Ravenous Stomp":"ability_earthen_pillar",
+"Ravenous Swarm":"inv_ability_druid_adaptiveswarm",
+"Razor Dive":"inv_10_specialreagentfoozles_tuskclaw_fire",
+"Regurgitate":"inv_ability_poison_wave",
+"Release Charge":"spell_chargenegative",
+"Rip and Slice":"inv_10_specialreagentfoozles_tuskclaw-black",
+"Ritual Venom":"inv_ability_poison_beam",
+"Ritual of Blazebinding":"spell_fire_totemofwrath",
+"Ritual of the Fang":"inv_achievement_dungeon_altaroffangs",
+"Roaring Flame Breath":"inv_summerfest_firespirit",
+"Rolling Thunder":"spell_nature_lightningoverload",
+"Rotten Supplies":"inv_misc_food_91",
+"Same-Day Delivery":"achievement_brewery_2",
+"Savage Leap":"ability_druid_tigersroar",
+"Scavenge":"inv_vulturemount_black",
+"Scavenging":"inv_misc_potionbag_special",
+"Searing Blows":"ability_shaman_lavalash",
+"Searing Fel Flame":"spell_fire_felfirenova",
+"Seduction":"spell_shadow_seduction",
+"Seismic Upheaval":"ability_rogue_kidneyshot",
+"Septic Spatter":"ability_deathknight_roilingblood",
+"Serpentine Gust":"ability_skyreach_four_wind",
+"Serrated Charge":"inv_artifact_bloodoftheassassinated",
+"Shadow Barrage":"spell_priest_mindspike",
+"Shadow Bite":"spell_shadow_soulleech_3",
+"Shadow Bolt Volley":"spell_shadow_shadowbolt",
+"Shadow Lash":"inv_misc_volatileshadow",
+"Shadow Whirlwind":"spell_necro_deathsknell",
+"Shattering Frostspike":"ability_deathknight_pillaroffrost",
+"Shell Guard":"inv_cape_special_turtleshell_c_01",
+"Shield Bash":"ability_warrior_shieldbash",
+"Shred Armor":"ability_druid_rake",
+"Shred Defense":"ability_druid_ravage",
+"Shredding Claws":"inv_misc_monsterclaw_03",
+"Sickening Bite":"ability_creature_poison_01",
+"Siphon the Weak":"spell_holy_consumemagic",
+"Sky Strike":"ability_racial_wingbuffet",
+"Smashing Charge":"inv_fellessergronnmount",
+"Solar Breath":"ability_skyreach_solar_burst",
+"Soul Crush":"inv_ability_warlock_soulrot",
+"Spark Step":"spell_shaman_crashlightning",
+"Spectral Slash":"ability_druid_supriseattack",
+"Spit Gold":"ability_creature_amber_01",
+"Spoiled Supplies":"ability_creature_disease_01",
+"Spouting Floret":"inv_enchant_essenceastrallarge",
+"Starvation Effigy":"inv_archaeology_80_zandalari_sanguinetotem",
+"Static Shock":"spell_nature_chainlightning",
+"Steel Barrage":"inv_axe_1h_deathwingraiddw_d_01",
+"Storm Blessed":"spell_nature_lightningshield",
+"Stormslam":"ability_shaman_stormstrike",
+"Sunder Slam":"ability_warrior_shieldbreak",
+"Suppression Slam":"ability_golemthunderclap",
+"Synchronized Venom":"inv_ability_poison_missile",
+"Tail Scythe":"inv_knife_1h_felfireraid_d_04",
+"Tail Thrash":"ability_hunter_pet_windserpent",
+"Tectonic Strike":"inv_axe_2h_earthendungeon_c_01",
+"Tempest Barrier":"inv_shield_1h_artifactstormfist_d_04",
+"Tempest Winds":"achievement_raidprimalist_windelemental",
+"Thicket's Trinity":"inv_herbalism_70_dreamleaf",
+"Thornblade":"spell_nature_thorns",
+"Thorncaller Roar":"inv_misc_herb_nightmarevine",
+"Thunder Blast":"warrior_talent_icon_bloodandthunder",
+"Thunder Jaw":"inv_misc_stormdragonpale",
+"Thunder Stomper":"ability_thunderclap",
+"Thunder and Lightning":"warrior_talent_icon_thunderstruck",
+"Thundering Storm":"spell_shaman_thunderstorm",
+"Thunderstorm":"spell_shaman_thunderstorm",
+"Toadspawn":"inv_egg_08",
+"Tongue Toss":"ability_vehicle_launchplayer",
+"Toxic Atrophy":"spell_shadow_requiem",
+"Toxic Breath":"spell_fire_felflamebreath",
+"Toxic Spew":"spell_nature_corrosivebreath",
+"Toxic Surge":"inv_ability_poison_wave",
+"Triple Shot":"spell_nature_corrosivebreath",
+"Umbral Rupture":"inv_cosmicvoid_groundstate",
+"Uncoil":"ability_hunter_snaketrap",
+"Undermining":"spell_shaman_earthquake",
+"Unstable Corruption":"spell_mage_supernova_nightborne",
+"Unstable Singularity":"inv_ability_voidweaverpriest_entropicrift",
+"Unstable Totem":"ability_shaman_stoneskintotem",
+"Uproot":"inv_herb_earthroot",
+"Venom Burst":"inv_ability_poison_groundstate",
+"Venom Spit":"ability_creature_poison_02",
+"Venomous Slash":"ability_rogue_disembowel",
+"Venomous Spit":"spell_nature_corrosivebreath",
+"Verdant Stomp":"inv_raptortravelform",
+"Vigilant Defense":"creatureportrait_blackrockv2_shieldgong_02",
+"Vile Fiend":"inv_argusfelstalkermount",
+"Vindictive Onslaught":"spell_nature_earthquake",
+"Virulent Whirl":"inv_ability_poison_groundstate",
+"Void Beam":"inv_cosmicvoid_beam",
+"Void Blast":"inv_cosmicvoid_missile",
+"Void Cascade":"inv_cosmicvoid_missile",
+"Volatile Totem":"spell_fire_totemofwrath",
+"Warden's Wrath":"spell_nature_wispsplodegreen",
+"Whirling Axes":"ability_butcher_whirl",
+"Winds of Change":"spell_shaman_unleashweapon_wind",
+"Wretched Discharge":"spell_festergutgas"
 };
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -2072,7 +2214,11 @@ function srcMark(ids){
     return `<span class="src t${s.t}" title="${esc(s.a)} — ${esc(s.b)} (${s.d})">${lbl}</span>`;
   }).join("");
 }
-const alt=o=>o&&o.alt?`<span class="alt" title="This entity is written differently by different sources. Both are shown so a name from either guide finds it.">also: ${esc(o.alt)}</span>`:"";
+/* Kept, and kept harmless. Every alt in the data was settled against Wowhead
+   and removed, so this renders nothing today — but the concordance is the
+   place wrong names live now, and a future import that carries an alt should
+   still display rather than silently drop it. */
+const alt=o=>o&&o.alt?`<span class="alt" title="A name some sources use for this. The heading is the one Wowhead lists.">also: ${esc(o.alt)}</span>`:"";
 /* The id rides along as a class so a single vocabulary entry can be themed
    without touching any of the four places chips are rendered. */
 const chip=(id,map,cls)=>{const t=(map||TAGS)[id];if(!t)return"";
@@ -2753,8 +2899,76 @@ function pSources(){
     <p class="read">${esc(x.r)}</p></div>`).join("")}`;
 }
 
+const CORRECTIONS=[
+ ["Axegrinder","Axe Grinder","Altar of Fangs","ability",0],
+ ["Boneslicer","Bone Slicer","Altar of Fangs","ability",0],
+ ["Twinfang Harrower","Twin Fang Harrower","Altar of Fangs","lt",0],
+ ["Uncoil","Uncoiled Writhe","Altar of Fangs","ability",0],
+ ["Undermining","Undermining Shockwave","Altar of Fangs","ability",0],
+ ["Bonded Beasttamer","Bonded Beast Tamer","Den of Nalorakk","trash",0],
+ ["Earthshatter Slam","Earth Shatter Slam","Den of Nalorakk","ability",0],
+ ["Earthwhisper Tender","Earth Whisper Tender","Den of Nalorakk","caster",0],
+ ["Echoing Maul","Echoing Maw","Den of Nalorakk","ability",0],
+ ["Loa Speaker Nanea","Loa Speaker Nanaea","Den of Nalorakk","mini",0],
+ ["Ruthless Totemcaller","Ruthless Totem Caller","Den of Nalorakk","trash",0],
+ ["Shattering Frostspike","Shattering Frost Spikes","Den of Nalorakk","ability",0],
+ ["Shredding Claws","Shredding Claw","Den of Nalorakk","ability",0],
+ ["Stormbound Mystic","Storm-Bound Mystic","Den of Nalorakk","caster",0],
+ ["Thornclaw Gatherer","Thorn Claw Gatherer","Den of Nalorakk","trash",0],
+ ["Deathly Roar","Rabond","King's Rest","ability",0],
+ ["Shadow of Zul","Shade of Zul","King's Rest","mini",0],
+ ["Shadow-Borne Champion","Shadowborne Champion","King's Rest","lt",0],
+ ["Tazala","T'zala","King's Rest","ability",1],
+ ["Felmaster Lucsei","Fel Master Luxay","Murder Row","mini",0],
+ ["Heartstop Poison","Heart Stop Poison","Murder Row","ability",0],
+ ["Massive Felwyrm","Massive Fel Worm","Murder Row","mini",0],
+ ["Same-Day Delivery","Fel Freight","Murder Row","ability",0],
+ ["Seductive Sayaad","Seductive Succubus","Murder Row","trash",0],
+ ["Blazebound Destroyer","Blaze-Bound Destroyer","Ruby Life Pools","lt",0],
+ ["Chillstorm","Chill Storm","Ruby Life Pools","ability",0],
+ ["Defier Draghar","Defiler Draghar","Ruby Life Pools","mini",0],
+ ["Flame Dance","Flame Dancer","Ruby Life Pools","ability",0],
+ ["Flamegullet","Flame Gullet","Ruby Life Pools","mini",0],
+ ["High Channeler Ryvati","High Channeler Riveti","Ruby Life Pools","mini",0],
+ ["Primalist Flamedancer","Ash Seer Flame Dancer","Ruby Life Pools","trash",0],
+ ["Ritual of Blazebinding","Ritual of Blaze Binding","Ruby Life Pools","ability",0],
+ ["Stormslam","Storm Slam","Ruby Life Pools","ability",0],
+ ["Tempest Barrier","Storm Cloud Detonation","Ruby Life Pools","ability",0],
+ ["Adderis and Aspix","Adarrah and Aspix","Temple of Sethraliss","boss",1],
+ ["Defiling Taint","Essence Defiler","Temple of Sethraliss","ability",0],
+ ["Galvanized","Charged Vulnerability","Temple of Sethraliss","ability",0],
+ ["Siphon the Weak","Faceless Tormentor waves","Temple of Sethraliss","ability",0],
+ ["Unstable Corruption","Corrupted Guardian","Temple of Sethraliss","ability",0],
+ ["Awaken the Lightbloom","Awaken the Light Bloom","The Blinding Vale","ability",0],
+ ["Frantic Blooming","Rouse","The Blinding Vale","ability",0],
+ ["Lightbloom's Essence","Light Bloom's Essence","The Blinding Vale","ability",0],
+ ["Lightblossom Beam","Light Blossom Beam","The Blinding Vale","ability",0],
+ ["Lightblossom Trinity","The Light Blossom Trinity","The Blinding Vale","boss",1],
+ ["Lightgorged Lasher","Light Gorged Lasher","The Blinding Vale","trash",0],
+ ["Potatoad Matriarch","Toad Matriarch","The Blinding Vale","mini",0],
+ ["Radiant Spellsower","Radiant Spell Sower","The Blinding Vale","caster",0],
+ ["Spouting Floret","Spouting Florid","The Blinding Vale","ability",0],
+ ["Thornblade","Thorn Blade","The Blinding Vale","ability",0],
+ ["Thorny Saptor","Thorny Scepter","The Blinding Vale","trash",0],
+ ["Toadspawn","Toad Spawn","The Blinding Vale","ability",0],
+ ["Virid Grovekeeper","Virid Grove Keeper","The Blinding Vale","lt",0],
+ ["Agitated Voidscythe","Agitated Void Side","Voidscar Arena","lt",0],
+ ["Chitigoth","Chiltara","Voidscar Arena","mini",0],
+ ["Kilivore Screamer","Kil'vore Screamer","Voidscar Arena","trash",0],
+ ["Mad Shriek","Mass Shriek","Voidscar Arena","ability",0],
+ ["Raj'kess the Spellstorm","Rajh'Cath the Spellstorm","Voidscar Arena","mini",0],
+ ["Savage Shredclaw","Savage Shred Claw","Voidscar Arena","trash",0],
+ ["Unstable Singularity","Unstable Singularities","Voidscar Arena","ability",0],
+ ["Voidtouched Magi","Void-Touched Magus","Voidscar Arena","lt",0]
+];
 function pGlossary(){
-  const conc=[];
+  /* Was derived from the alt fields, which have now been settled against
+     Wowhead and removed from the cards. The wrong names still belong here —
+     this is the page someone lands on having heard one in a video — so they
+     are recorded explicitly, with the real name first. Every pair below was
+     verified: the left column exists in Wowhead's database, the right one
+     does not. */
+  const conc=CORRECTIONS.slice();
   DUNGEONS.forEach(d=>{
     d.encounters.forEach(e=>{if(e.alt)conc.push([e.n,e.alt,d.short,"Boss"]);});
     d.areas.forEach(ar=>ar.mobs.forEach(m=>{if(m.alt)conc.push([m.n,m.alt,d.short,KINDS[m.k]]);}));
@@ -2763,7 +2977,7 @@ function pGlossary(){
    ["San'layn","Sand Lane, Sand Lion","Blood Death Knight hero tree"],
    ["Brutok","Brew talk","Voidscar Arena mini-boss — spelling confirmed by Blizzard hotfix"],
    ["Aegyra the Unyielding","Agyira","Voidscar Arena left-path mini-boss — confirmed by Blizzard hotfix"],
-   ["Uncoiled Writhe","uncoiled rides","The Writhing Coil's split adds — confirmed by Blizzard hotfix"],
+   ["Uncoil","uncoiled rides","The Writhing Coil's split adds — confirmed by Blizzard hotfix"],
    ["Mchimba the Embalmer","Machimbra","King's Rest second boss — confirmed by Blizzard hotfix"],
    ["Den of Nalorakk","Den of Neltharion, Dana Nalarak","The dungeon. Neltharion is a real, different place."],
    ["Zul'jan","Zul'jin","Altar of Fangs final boss. Zul'jin is his dead father — a real, different character."],
@@ -2790,7 +3004,7 @@ function pGlossary(){
   than deleted, because a reader arriving from any guide should still land on the right page, and because the record
   of what was wrong is itself useful. Search matches either form.</p>
   <table><thead><tr><th>Used here</th><th>Also written as</th><th>Where</th><th>Kind</th></tr></thead><tbody>
-  ${conc.map(([a,b,d,k])=>`<tr><td class="mono"><b>${esc(a)}</b></td><td class="mono" style="color:var(--ink-muted)">${esc(b)}</td><td>${esc(d)}</td><td style="color:var(--ink-faint)">${esc(k)}</td></tr>`).join("")}
+  ${conc.map(([a,b,d,k,u])=>`<tr><td class="mono"><b>${esc(a)}</b></td><td class="mono" style="color:var(--ink-muted)">${esc(b)}</td><td>${esc(d)}</td><td style="color:var(--ink-faint)">${esc(KINDS[k]||k.charAt(0).toUpperCase()+k.slice(1))}${u?` <span class="unv" title="Neither spelling appears in Wowhead\u2019s database yet, so this pair is recorded but not settled.">unverified</span>`:""}</td></tr>`).join("")}
   </tbody></table>
   <div class="sec"><h2>Caption decoder</h2><span class="n">${decoder.length} known manglings</span></div>
   <table><thead><tr><th>Correct</th><th>Seen as</th><th>Note</th></tr></thead><tbody>

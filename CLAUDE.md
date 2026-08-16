@@ -42,6 +42,23 @@ If a fresh build lands, re-apply those rather than assuming they survived.
   trash. An earlier revision of this file recorded that mismatch as deliberate.
   It was a defect. **If `bosses:` and `encounters.length` ever diverge again,
   treat it as a misfiled encounter and not as intent.**
+- **Names are Wowhead's, and there is no second opinion in the data.** Entities
+  used to carry an `alt:` field holding a rival spelling, rendered on the card
+  as "also: …". All 103 were adjudicated against Wowhead on 2026-08-17 by
+  looking up both spellings: 57 were straightforward errors in the guide (the
+  primary did not exist, the alt did) and were renamed across 81 occurrences;
+  the rest were dropped as noise. **No encounter was renamed**, so `loot.i[].b`
+  still resolves. The wrong names are not lost — they moved to `CORRECTIONS`,
+  a flat `[right, wrong, dungeon, kind, unverified]` table that feeds the
+  glossary concordance, which is the page someone lands on having heard the
+  wrong name in a video. `kind` is a data key rendered through `KINDS`, so it
+  is `lt` and not `Lieutenant`; the fifth field is a status and not a kind,
+  which is why it is a separate column rather than a value of the fourth.
+  Three of the 60 pairs carry it: neither spelling exists in Wowhead yet, and
+  that is recorded honestly rather than guessed.
+  `alt()` still exists and still renders, deliberately — nothing sets `alt`
+  today, but an import that carries one should show it, not silently eat it.
+  **Add new names against Wowhead, not against the guide's prose.**
 - **Loot is a flat table per dungeon, not a per-boss list.** `loot.i` holds every
   item with `sl` (slot), `ty` (armour or weapon type), `p` (primary stats), `x`
   (secondaries as `[name, value]`, sorted high first) and `b` (the boss it hangs
@@ -75,13 +92,20 @@ If a fresh build lands, re-apply those rather than assuming they survived.
   week N" after it. A homepage that looks stale is usually just the calendar.
 - **Ability icons** are keyed by ability *name*, not by ID. `ICONS` maps a name
   to a Blizzard icon slug and `abilIcon()` renders `assets/icons/<slug>.jpg`.
-  259 of the 329 distinct names resolved against Wowhead's spell database; the
-  other 70 are new Midnight content Wowhead has no entry for, or are not
-  abilities at all (adds and structural notes sitting in the same arrays).
+  287 of the 329 distinct names resolved against Wowhead's spell database. The
+  remaining 42 were each queried individually on 2026-08-17 and **none of them
+  is a spell**: three resolve as NPCs (*King Rahu'ai*, *Knot of Snakes*,
+  *Swarming Krolusk* — adds filed into an ability array), and the rest are
+  structural notes wearing an ability's clothes (*Add Phase*, *Two-phase
+  structure*, *Murder in a Row*) or Midnight content Wowhead has no entry for.
+  Don't re-run that sweep expecting a different answer; 287 is the ceiling
+  until Wowhead's database moves.
   **A name absent from `ICONS` renders an empty box of identical size, not
   nothing** — drop the spacer and every unmatched title jumps a glyph's width
   left of the column. Matching is by exact name, so renaming an ability in
-  `DUNGEONS` silently costs it its icon; update both together.
+  `DUNGEONS` silently costs it its icon; update both together. That coupling is
+  why the 2026-08-17 rename sweep raised the count by 28: those abilities had
+  been carrying the guide's wrong names, which matched nothing.
 
 ## Repository conventions
 
