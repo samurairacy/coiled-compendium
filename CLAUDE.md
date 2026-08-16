@@ -140,6 +140,13 @@ item icons keyed by Blizzard slug.
   modules without a second stylesheet. The raid palette is a descent
   measured in Lab — venom green (`--r-accent`, dE≥39 from all eight
   dungeon accents) down through drowned cyan into abyssal violet, L* 70→58.
+- **Raid boss imagery is plumbed but empty.** `pBoss` renders an `hban`
+  banner when a boss carries `img:` keying into `IMG` — the same contract
+  as dungeons. No raid boss has one yet because the M+ captures were the
+  owner's own in-game screenshots (`img` source, nameplates visible) and
+  shipping a guide site's screenshots would break the README's
+  paraphrase-never-reproduce position. To add: capture in game, drop
+  `va-<boss>.webp` in `assets/img/`, add the `IMG` entry and `img:` field.
 - **The homepage status line computes live** against the Season 2 start of
   18 Aug 2026 (the raid opens the same week). A stale-looking homepage is
   usually just the calendar.

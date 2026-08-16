@@ -292,6 +292,7 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
   color:var(--ink-faint);padding:.15rem .2rem .05rem
 }
 
+.printmeta{display:none}
 .lenses{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
 .rlens .dseg{display:inline-flex;align-items:center;gap:.32rem}
 
@@ -745,6 +746,15 @@ footer a{color:var(--ink-muted)}
   .chip{border-color:#999;color:#000} a{color:#000;text-decoration:none}
   .src{display:none}
   .tban,.hban,.dswitch,.bossmedia{display:none!important}
+  /* raid pages print as the assignment sheet they want to be: the lens
+     chrome goes, the chosen difficulty and role state prints as a header */
+  .lenses,.dtoggle,.rlens,.modtabs,.linklike{display:none!important}
+  .printmeta{display:block!important;font-family:var(--face-term);font-size:9pt;
+    letter-spacing:.06em;border-bottom:1px solid #000;padding-bottom:4pt;margin:0 0 10pt}
+  .area-h{break-after:avoid;color:#000}
+  .mres,.rboss{break-inside:avoid;border-color:#bbb}
+  .rboss .rnum{background:#000;color:#fff}
+  .read.hh b{color:#000}
   .bosscard{break-inside:avoid;border:1px solid #bbb;border-left:3px solid #000;background:#fff}
   .bossid{background:#000;color:#fff}
   .bossbody{grid-template-columns:1fr}

@@ -625,7 +625,7 @@ const lootNote=(shown,total,slice)=>{
   return milestone(shown,total,[ty.slice(0,6).join(", ")+(ty.length>6?"…":""),fx?`${fx} with an effect`:""]);
 };
 let LRES=[];
-const lootIdxRow=o=>`<div class="mres"><div class="mtop">
+const lootIdxRow=o=>`${o.hdr?`<div class="area-h" data-boss="${o.hdr.id}"><a href="#/r/${o.hdr.id}" style="color:inherit;text-decoration:none">${esc(o.hdr.n)}</a> <span class="n" style="text-transform:none;letter-spacing:0">· ${esc(o.hdr.pos)}</span></div>`:""}<div class="mres"><div class="mtop">
       ${o.mod==="r"
         ?`<a class="mdg" href="#/r/${o.b.id}/loot" data-boss="${o.b.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.b.short)}</a>`
         :`<a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>`}
@@ -672,6 +672,15 @@ function lmatch(o,skip){
 function pLoot(){
   const res=LOOTALL.filter(o=>lmatch(o)); LRES=res;
   const F=LFACETS;
+  /* Raid loot is per boss — that is the whole point of it — so with the raid
+     filter on, the feed groups by boss in kill order, chased items first
+     within each. M+ keeps its flat pool: the chest doesn't care. */
+  if(F.mod==="r"){
+    const ord=Object.fromEntries(RAID.bosses.map((b,i)=>[b.id,i]));
+    res.sort((a,b)=>(ord[a.b.id]-ord[b.b.id])||(featRank(a.i)-featRank(b.i)));
+    let last=null;
+    res.forEach(o=>{o.hdr=o.b.id!==last?o.b:null; last=o.b.id;});
+  } else res.forEach(o=>{o.hdr=null;});
   const n=Object.values(F).reduce((k,v)=>k+(v instanceof Set?v.size:(v?1:0)),0);
   const reach=(key,get)=>{const live=new Set();
     LOOTALL.filter(o=>lmatch(o,key)).forEach(o=>get(o.i).forEach(v=>live.add(v)));return live;};
@@ -829,6 +838,15 @@ function pPrep(){
   than guessed at now.</p>`;
 }
 
+/* Featured-loot ranking, shared by boss pages and the loot index: trinkets,
+   jewellery, cantrip-carriers, tier tokens — the chased stuff first,
+   everything else in listing order. */
+const featRank=x=>x.ty==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?3:5;
+/* who a token is for: these are armour-typed tokens, so the share is the
+   armour class roster; the Curio is everyone by design */
+const TOKCLS={Cloth:"Mage · Priest · Warlock",Leather:"Druid · Rogue · Monk · Demon Hunter",
+  Mail:"Hunter · Shaman · Evoker",Plate:"Warrior · Paladin · Death Knight",All:"Every class — trade for any set piece"};
+
 /* The difficulty the reader is on. Persists — a Heroic raider stays on
    Heroic all night — and rides the URL as ?d=h so a link carries it. Built
    as a segmented control so a third segment is a data change, not a rebuild. */
@@ -861,11 +879,6 @@ function pBoss(id,tab){
   /* Featured first: trinkets, jewellery, cantrip-carriers, then tier tokens —
      the pieces people chase all season lead the table instead of trailing it.
      Everything else keeps its listing order. */
-  const featRank=x=>x.ty==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?3:5;
-  /* who a token is for: these are armour-typed tokens, so the share is the
-     armour class roster; the Curio is everyone by design */
-  const TOKCLS={Cloth:"Mage · Priest · Warlock",Leather:"Druid · Rogue · Monk · Demon Hunter",
-    Mail:"Hunter · Shaman · Evoker",Plate:"Warrior · Paladin · Death Knight",All:"Every class — trade for any set piece"};
   const loot=(b.loot||[]).slice().sort((a,c)=>featRank(a)-featRank(c));
   const lootRows=loot.length?`
   <div class="sec"><h2>Loot</h2><span class="n">${loot.length} items · the chased stuff first</span></div>
@@ -880,6 +893,7 @@ function pBoss(id,tab){
       the tooltip carries no Use or Equip text yet; it lands here when the database has it.</p></td></tr>`:""}`).join("")}
   </tbody></table>`:"";
   return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>${esc(b.n)}</em></div>
+  <p class="printmeta">The Coiled Compendium — ${esc(b.n)} · ${DIFFL[DIFF]}${ROLEF?` · viewing as ${({tank:"Tank",healer:"Healer",mdps:"Melee DPS",rdps:"Ranged DPS"})[ROLEF]}`:""} · samurairacy.github.io/coiled-compendium</p>
   <nav class="dswitch" id="dswitch" aria-label="Switch boss">${RAID.bosses.map(x=>
     `<a href="#/r/${x.id}" data-boss="${x.id}" ${x.id===b.id?'aria-current="page"':""}
       title="${esc(x.pos)} — ${esc(x.n)}"><span class="rnum">${x.o}</span>${esc(x.short)}</a>`).join("")}</nav>
@@ -889,6 +903,7 @@ function pBoss(id,tab){
     ${wing?`<span class="pill">${esc(wing.n)}</span>`:""}
     ${abilCount(b)?`<span class="pill">${ic("i-boss")}${abilCount(b)} abilities</span>`:""}
     <span class="pill warn">${ic("i-warn")}Pre-launch data</span></div>
+  ${b.img&&IMG[b.img]?`<div class="hban"><img src="${IMG[b.img]}" alt="${esc(b.n)} in game" decoding="async"></div>`:""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
   ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
   ${b.brief?`<p>${esc(b.brief)}</p>`:""}
