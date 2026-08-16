@@ -504,6 +504,20 @@ td.li{display:flex;align-items:center;gap:.5rem}
 .rochip.r-healer{border-color:#4E8F6B;color:#7DC49A}
 .rochip.r-rdps{border-color:#5C7FB8;color:#8FB0DE}
 .rochip.r-mdps{border-color:#A6693C;color:#D69A63}
+/* A chunk boundary. Rule through the middle, the position sitting on it, so a
+   long list reads as sections without pretending they are real divisions. */
+.milestone{
+  display:flex;align-items:center;gap:.7rem;margin:1.5rem 0 1.1rem;
+  font-family:var(--face-term);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase
+}
+.milestone::before,.milestone::after{content:"";height:1px;background:var(--rule);flex:1}
+.milestone::before{flex:0 0 1.4rem}
+.mspos{color:var(--accent);font-weight:600;white-space:nowrap}
+.mspos i{font-style:normal;color:var(--ink-faint);font-weight:400}
+.msbits{color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.milestone.end .mspos{color:var(--ink-muted)}
+.milestone.end::before,.milestone.end::after{background:var(--accent-deep)}
+.feedsent{height:1px}
 tr.fxrow td{padding-top:0;border-top:none}
 tr.fxrow .fx{margin:0 0 .35rem}
 .chip.c-noarmor{border-color:var(--signal-warn);color:var(--signal-warn)}
@@ -2444,7 +2458,44 @@ function pDungeon(id,tab){
 }
 
 /* ── the mechanics index — the reason to build this at all ── */
-const CAP=80;
+/* ═══ FEED ═══ Both indexes used to stop dead at a cap and tell the reader to
+   go and filter. They now stream: a chunk renders, and the next arrives as the
+   sentinel comes near the viewport. Every chunk closes with a milestone, which
+   is what keeps a long scroll legible — it says where you are, and what you
+   just scrolled past, so the list reads as sections rather than as one slab.
+   A single FEED at a time is enough: only one index is ever on screen. ══════ */
+const CHUNK=40;
+let FEED=null;
+function feedStop(){ if(FEED&&FEED.obs) FEED.obs.disconnect(); FEED=null; }
+function feedMore(){
+  if(!FEED||FEED.shown>=FEED.items.length) return;
+  const from=FEED.shown, to=Math.min(from+CHUNK,FEED.items.length);
+  const slice=FEED.items.slice(from,to);
+  FEED.shown=to;
+  FEED.host.insertAdjacentHTML("beforeend",
+    slice.map(FEED.row).join("")+FEED.note(to,FEED.items.length,slice));
+  if(FEED.shown>=FEED.items.length){ if(FEED.obs) FEED.obs.disconnect(); }
+  else FEED.host.appendChild(FEED.sentinel);   /* appendChild MOVES it to the end */
+}
+function feedStart(sel,items,row,note){
+  feedStop();
+  const host=$(sel); if(!host||!items.length) return;
+  const sentinel=document.createElement("div"); sentinel.className="feedsent";
+  FEED={items,row,note,host,shown:0,sentinel,obs:null};
+  feedMore();
+  if(FEED.shown<items.length){
+    host.appendChild(sentinel);
+    /* generous rootMargin so the next chunk lands before the reader hits the gap */
+    FEED.obs=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting))feedMore();},{rootMargin:"900px"});
+    FEED.obs.observe(sentinel);
+  }
+}
+const milestone=(shown,total,bits)=>shown>=total
+  ? `<div class="milestone end"><span class="mspos">all ${total} shown</span>
+      <span class="msbits">${bits.filter(Boolean).join(" &nbsp;·&nbsp; ")}</span></div>`
+  : `<div class="milestone"><span class="mspos">${shown} <i>of</i> ${total}</span>
+      <span class="msbits">${bits.filter(Boolean).join(" &nbsp;·&nbsp; ")}</span></div>`;
+
 let FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null};
 const ALL=DUNGEONS.flatMap(d=>[
   ...d.areas.flatMap(ar=>ar.mobs.flatMap(m=>(m.a||[]).map(a=>({d,src:m.n,kind:KINDS[m.k],a})))),
@@ -2459,8 +2510,22 @@ function matches(x){
   for(const c of FACETS.ctr) if(!(a.c||[]).includes(c)) return false;
   return true;
 }
+const mechRow=x=>`<div class="mres"><div class="mtop">
+      <a class="mdg" href="#/d/${x.d.id}" data-dungeon="${x.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(x.d.short)}</a>
+      <span class="mn">${abilIcon(x.a.n)}${esc(x.a.n)}${mythBadge(x.a)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}</span>
+      ${x.a.sev===3?`<span class="chip" style="border-color:var(--signal-urgent);color:var(--signal-urgent)">${ic("i-warn")}Sev 3</span>`:""}</div>
+    <div class="tags" style="margin-top:.35rem">${(x.a.t||[]).filter(t=>t!=="myth").map(t=>chip(t,TAGS,t==="noarmor"?"c-noarmor":"")).join("")}${(x.a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("")}</div>
+    <p>${esc(x.a.e)}${srcMark(x.a.s)}</p></div>`;
+/* What a reader wants at a chunk boundary: how far in they are, which dungeons
+   that stretch covered, and whether any of it will end a run. */
+const mechNote=(shown,total,slice)=>{
+  const dg=[...new Set(slice.map(x=>x.d.short))];
+  const s3=slice.filter(x=>x.a.sev===3).length;
+  return milestone(shown,total,[dg.join(", "),s3?`${s3} will end runs`:""]);
+};
+let MRES=[];
 function pMechanics(){
-  const res=ALL.filter(matches);
+  const res=ALL.filter(matches); MRES=res;
   const live=new Set(res.flatMap(x=>x.a.t||[])), liveC=new Set(res.flatMap(x=>x.a.c||[]));
   const n=Object.values(FACETS).reduce((k,v)=>k+(v instanceof Set?v.size:(v?1:0)),0);
   const opts=(map,key,liveSet)=>Object.entries(map).map(([k,v])=>{
@@ -2481,15 +2546,9 @@ function pMechanics(){
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
       ${DUNGEONS.map(d=>`<button class="fopt" data-f="dg" data-v="${d.id}" aria-pressed="${FACETS.dg===d.id}">${esc(d.short)}</button>`).join("")}</div></div>
   </div>
-  <div class="fstate">Showing <b>${Math.min(res.length,CAP)}</b>${res.length>CAP?` of ${res.length} matches`:``} · ${ALL.length} abilities indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
+  <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${ALL.length} abilities indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearf">Clear all</button>`:""}</div>
-  ${res.length>CAP?`<p class="note">${ic("i-info",13)} Capped at ${CAP} results so the page stays usable. Add a filter to narrow it — that is what this page is for.</p>`:""}
-  ${res.length?res.slice(0,CAP).map(x=>`<div class="mres"><div class="mtop">
-      <a class="mdg" href="#/d/${x.d.id}" data-dungeon="${x.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(x.d.short)}</a>
-      <span class="mn">${abilIcon(x.a.n)}${esc(x.a.n)}${mythBadge(x.a)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}</span>
-      ${x.a.sev===3?`<span class="chip" style="border-color:var(--signal-urgent);color:var(--signal-urgent)">${ic("i-warn")}Sev 3</span>`:""}</div>
-    <div class="tags" style="margin-top:.35rem">${(x.a.t||[]).filter(t=>t!=="myth").map(t=>chip(t,TAGS,t==="noarmor"?"c-noarmor":"")).join("")}${(x.a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("")}</div>
-    <p>${esc(x.a.e)}${srcMark(x.a.s)}</p></div>`).join("")
+  ${res.length?`<div id="mfeed"></div>`
     :`<p class="note">Nothing matches that combination. Filters stack, so two counters means abilities answered by
       <em>both</em>. Clear one and try again.</p>`}`;
 }
@@ -2498,7 +2557,21 @@ function pMechanics(){
    run means the whole season's table is one pool, and the questions a player
    actually has are cross-dungeon: what Mail exists with mastery on it, which
    Agility trinkets are worth setting loot spec for. ═══════════════════════ */
-const LCAP=60;
+/* Which slots that stretch covered, and how much of it actually does something
+   beyond its stat line — the two things worth knowing mid-scroll. */
+const lootNote=(shown,total,slice)=>{
+  const ty=[...new Set(slice.map(o=>o.i.ty))];
+  const fx=slice.filter(o=>o.i.u||o.i.e).length;
+  return milestone(shown,total,[ty.slice(0,6).join(", ")+(ty.length>6?"…":""),fx?`${fx} with an effect`:""]);
+};
+let LRES=[];
+const lootIdxRow=o=>`<div class="mres"><div class="mtop">
+      <a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>
+      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
+      <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
+      ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
+    ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
+    ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}</div>`;
 /* Within a group the options are OR, across groups AND — "Mail or Plate, with
    crit" is the query people mean. Secondaries are the exception and stack as
    AND, because every item carries exactly two and picking both is how you ask
@@ -2529,7 +2602,7 @@ function lmatch(o,skip){
   return true;
 }
 function pLoot(){
-  const res=LOOTALL.filter(o=>lmatch(o));
+  const res=LOOTALL.filter(o=>lmatch(o)); LRES=res;
   const F=LFACETS;
   const n=Object.values(F).reduce((k,v)=>k+(v instanceof Set?v.size:(v?1:0)),0);
   const reach=(key,get)=>{const live=new Set();
@@ -2542,13 +2615,6 @@ function pLoot(){
     const on=F[key] instanceof Set?F[key].has(v):F[key]===v;
     const dis=!on&&live&&!live.has(v);
     return `<button class="fopt" data-lf="${key}" data-v="${esc(v)}" aria-pressed="${on}" ${dis?"disabled":""}>${esc(label||v)}</button>`;};
-  const row=o=>`<div class="mres"><div class="mtop">
-      <a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>
-      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
-      <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
-      ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
-    ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
-    ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}</div>`;
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Loot</em></div>
   <h1>Every item in the season</h1>
   <p class="lede">${LOOTALL.length} items across eight dungeons. Mythic+ pays out from one chest at the end of a run,
@@ -2575,13 +2641,17 @@ function pLoot(){
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
       ${DUNGEONS.map(d=>opt("dg",d.id,d.short,null)).join("")}</div></div>
   </div>
-  <div class="fstate">Showing <b>${Math.min(res.length,LCAP)}</b>${res.length>LCAP?` of ${res.length} matches`:``} · ${LOOTALL.length} items indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
+  <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${LOOTALL.length} items indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearl">Clear all</button>`:""}</div>
-  ${res.length>LCAP?`<p class="note">${ic("i-info",13)} Capped at ${LCAP} results so the page stays usable. Add a filter to narrow it.</p>`:""}
-  ${res.length?res.slice(0,LCAP).map(row).join("")
+  ${res.length?`<div id="lfeed"></div>`
     :`<p class="note">Nothing matches that combination. Slot, armour and primary stack as <em>any of</em>;
       secondaries stack as <em>all of</em>, so picking three of the four can never match — every item has two.</p>`}`;
 }
+
+/* Paint helpers exist so no call site can render an index and forget to mount
+   its feed — that would show one chunk and never load another. */
+function paintMech(){ $("#p-mechanics").innerHTML=pMechanics(); feedStart("#mfeed",MRES,mechRow,mechNote); }
+function paintLoot(){ $("#p-loot").innerHTML=pLoot(); feedStart("#lfeed",LRES,lootIdxRow,lootNote); }
 
 function pRoutes(){
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Routes</em></div>
@@ -2752,7 +2822,10 @@ function route(){
   else if(key==="sources"){page="sources";html=pSources();}
   else if(key==="glossary"){page="glossary";html=pGlossary();}
   else{page="home";html=pHome();}
+  feedStop();
   const el=$(`#p-${page}`); el.innerHTML=html; el.classList.add("on");
+  if(page==="mechanics") feedStart("#mfeed",MRES,mechRow,mechNote);
+  else if(page==="loot") feedStart("#lfeed",LRES,lootIdxRow,lootNote);
   const cur=el.querySelector(".dswitch a[aria-current]");
   if(cur&&cur.parentElement.scrollWidth>cur.parentElement.clientWidth)
     cur.parentElement.scrollLeft=cur.offsetLeft-cur.parentElement.clientWidth/2+cur.offsetWidth/2;
@@ -2772,19 +2845,19 @@ document.addEventListener("click",e=>{
     const {f:key,v}=f.dataset;
     if(FACETS[key] instanceof Set){FACETS[key].has(v)?FACETS[key].delete(v):FACETS[key].add(v);}
     else FACETS[key]=FACETS[key]===v?null:(key==="sev"?+v:v);
-    const el=$("#p-mechanics"); el.innerHTML=pMechanics(); return;
+    paintMech(); return;
   }
   if(e.target.closest("#clearf")){FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null};
-    $("#p-mechanics").innerHTML=pMechanics(); return;}
+    paintMech(); return;}
   const l=e.target.closest("[data-lf]");
   if(l&&!l.disabled){
     const {lf:key,v}=l.dataset;
     if(LFACETS[key] instanceof Set){LFACETS[key].has(v)?LFACETS[key].delete(v):LFACETS[key].add(v);}
     else LFACETS[key]=LFACETS[key]===v?null:v;
-    $("#p-loot").innerHTML=pLoot(); return;
+    paintLoot(); return;
   }
   if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null};
-    $("#p-loot").innerHTML=pLoot();}
+    paintLoot();}
 });
 
 /* ═══ SEARCH ═════════════════════════════════════════════════════════ */
