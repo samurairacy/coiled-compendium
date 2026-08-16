@@ -74,6 +74,13 @@
   --dis-enrage:  #E86FC8;
   --dis-purge:   #3FDCC8;
 
+  /* Caster. Chosen by measuring against every colour a mob card can sit near —
+     the gravity tags, the badges, the dispel chips and all eight dungeon
+     accents — and taking the best-separated hue that still reads as casting.
+     Clears the mythic badge and the magic-dispel chip by an equal margin
+     rather than hugging either. */
+  --kind-caster: #388CE0;
+
   /* ── source tiers ─────────────────────────────────────────────────── */
   --tier1: #7FB4D8;
   --tier2: #8FBE88;
@@ -370,6 +377,16 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .kindtag.k-mini{background:var(--d-accent,var(--accent));color:var(--d-ink,#14120E);border-color:transparent;font-weight:700}
 .card.mob.k-lt{border-left-color:var(--accent-deep)}
 .kindtag.k-lt{border-color:var(--accent-deep);color:var(--accent)}
+/* Caster was grey, identical to plain trash, and disappeared — for the one
+   kind that always has a cast someone has to stop. It now wears the tinted
+   fill the dispel chips use, because it is the same kind of statement: this
+   one demands an action. Still short of the mini-boss solid fill, so the
+   gravity ladder is unchanged — this is a demand, not a promotion. */
+.kindtag.k-caster{
+  border-color:var(--kind-caster);color:var(--kind-caster);
+  background:color-mix(in srgb,var(--kind-caster) 16%,transparent);font-weight:700
+}
+.kindtag.k-caster svg{opacity:1}
 .card.mob.k-fodder{
   background:none;border-style:dashed;border-color:var(--rule-soft);
   padding:.75rem 1rem
