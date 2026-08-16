@@ -3104,6 +3104,18 @@ const INDEX=[
  {t:"Source ledger",m:"Who said what, and when",h:"#/sources"},
  {t:"Caption decoder",m:"Glossary · names that are wrong everywhere",h:"#/glossary"}
 ];
+/* The wrong names were the whole reason someone reaches for search: they heard
+   "Luxay" in a video and it is spelled Lucsei here. That used to work because
+   every entity carried its rival spelling in `alt` and the index read it. The
+   alts are gone — settled against Wowhead — so the concordance has to carry
+   the weight instead, or a wrong name silently finds nothing and the glossary's
+   promise that search matches either form becomes untrue.
+   Each alias borrows the href of the real entry rather than recomputing one,
+   so an alias can never point somewhere the canonical name doesn't. */
+CORRECTIONS.forEach(([right,wrong,d])=>{
+  const hit=INDEX.find(i=>i.t===right);
+  if(hit)INDEX.push({t:wrong,m:`Named ${right} here · ${d}`,h:hit.h});
+});
 let SEL=0;
 function runSearch(){
   const q=$("#q").value.trim().toLowerCase();
