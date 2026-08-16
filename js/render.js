@@ -502,30 +502,42 @@ const milestone=(shown,total,bits)=>shown>=total
   : `<div class="milestone"><span class="mspos">${shown} <i>of</i> ${total}</span>
       <span class="msbits">${bits.filter(Boolean).join(" &nbsp;·&nbsp; ")}</span></div>`;
 
-let FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null};
-const ALL=DUNGEONS.flatMap(d=>[
-  ...d.areas.flatMap(ar=>ar.mobs.flatMap(m=>(m.a||[]).map(a=>({d,src:m.n,kind:KINDS[m.k],a})))),
-  ...d.encounters.flatMap(e=>(e.a||[]).map(a=>({d,src:e.n,kind:"Boss",a})))
-]);
+let FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null,mod:null};
+/* One index, both modules. Every row carries mod:"d"|"r"; dungeon rows have
+   x.d, raid rows have x.b. The dungeon facet only ever matches dungeon rows,
+   so "this dungeon" and "the raid" cannot both be claimed at once. */
+const ALL=[
+  ...DUNGEONS.flatMap(d=>[
+    ...d.areas.flatMap(ar=>ar.mobs.flatMap(m=>(m.a||[]).map(a=>({mod:"d",d,src:m.n,kind:KINDS[m.k],a})))),
+    ...d.encounters.flatMap(e=>(e.a||[]).map(a=>({mod:"d",d,src:e.n,kind:"Boss",a})))]),
+  ...RAID.bosses.flatMap(b=>(b.phases?b.phases.flatMap(p=>(p.a||[]).map(a=>({mod:"r",b,src:b.n,kind:"Boss",ph:p.n,a})))
+    :(b.a||[]).map(a=>({mod:"r",b,src:b.n,kind:"Boss",a}))))
+];
 function matches(x){
   const a=x.a;
-  if(FACETS.dg&&x.d.id!==FACETS.dg) return false;
+  if(FACETS.mod&&x.mod!==FACETS.mod) return false;
+  if(FACETS.dg&&(x.mod!=="d"||x.d.id!==FACETS.dg)) return false;
   if(FACETS.role&&!(a.r||[]).includes(FACETS.role)) return false;
   if(FACETS.sev&&a.sev<FACETS.sev) return false;
   for(const t of FACETS.tag) if(!(a.t||[]).includes(t)) return false;
   for(const c of FACETS.ctr) if(!(a.c||[]).includes(c)) return false;
   return true;
 }
+/* The origin chip: a dungeon's short in its accent, or the boss's short in its
+   depth colour. Either way it links to where the ability lives. */
+const mechChip=x=>x.mod==="r"
+  ?`<a class="mdg" href="#/r/${x.b.id}" data-boss="${x.b.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(x.b.short)}</a>`
+  :`<a class="mdg" href="#/d/${x.d.id}" data-dungeon="${x.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(x.d.short)}</a>`;
 const mechRow=x=>`<div class="mres"><div class="mtop">
-      <a class="mdg" href="#/d/${x.d.id}" data-dungeon="${x.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(x.d.short)}</a>
-      <span class="mn">${abilIcon(x.a.n)}${esc(x.a.n)}${mythBadge(x.a)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}</span>
+      ${mechChip(x)}
+      <span class="mn">${abilIcon(x.a.n)}${esc(x.a.n)}${mythBadge(x.a)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}${x.ph?` · ${esc(x.ph)}`:""}</span>
       ${x.a.sev===3?`<span class="chip" style="border-color:var(--signal-urgent);color:var(--signal-urgent)">${ic("i-warn")}Sev 3</span>`:""}</div>
     <div class="tags" style="margin-top:.35rem">${(x.a.t||[]).filter(t=>t!=="myth").map(t=>chip(t,TAGS,t==="noarmor"?"c-noarmor":"")).join("")}${(x.a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("")}</div>
     <p>${esc(x.a.e)}${srcMark(x.a.s)}</p></div>`;
 /* What a reader wants at a chunk boundary: how far in they are, which dungeons
    that stretch covered, and whether any of it will end a run. */
 const mechNote=(shown,total,slice)=>{
-  const dg=[...new Set(slice.map(x=>x.d.short))];
+  const dg=[...new Set(slice.map(x=>x.mod==="r"?RAID.short:x.d.short))];
   const s3=slice.filter(x=>x.a.sev===3).length;
   return milestone(shown,total,[dg.join(", "),s3?`${s3} will end runs`:""]);
 };
@@ -538,12 +550,16 @@ function pMechanics(){
     const on=FACETS[key] instanceof Set?FACETS[key].has(k):FACETS[key]===k;
     const dis=!on&&!liveSet.has(k);
     return `<button class="fopt" data-f="${key}" data-v="${k}" aria-pressed="${on}" ${dis?"disabled":""}>${ic(v.i)}${esc(v.l)}</button>`;}).join("");
+  const nR=ALL.filter(x=>x.mod==="r").length;
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Mechanics</em></div>
   <h1>Every mechanic in the season</h1>
-  <p class="lede">${ALL.length} abilities across eight dungeons, tagged by what they are and by what stops them.
-  This is the view no published guide gives you: filter by a counter you actually have, and see the whole season
-  through it.</p>
+  <p class="lede">${ALL.length} abilities across ${DUNGEONS.length} dungeons${nR?` and ${RAID.bosses.length} raid bosses`:" — raid abilities land as the boss guides are written"}, tagged by
+  what they are and by what stops them. This is the view no published guide gives you: filter by a counter you
+  actually have, and see the whole season through it.</p>
   <div class="facets">
+    <div class="fgroup"><h4>From</h4><div class="fopts">
+      <button class="fopt" data-f="mod" data-v="d" aria-pressed="${FACETS.mod==="d"}">${ic("i-gate")}Dungeons</button>
+      <button class="fopt" data-f="mod" data-v="r" aria-pressed="${FACETS.mod==="r"}">${ic("i-serpent")}Raid</button></div></div>
     <div class="fgroup"><h4>What stops it</h4><div class="fopts">${opts(CTRS,"ctr",liveC)}</div></div>
     <div class="fgroup"><h4>What it is</h4><div class="fopts">${opts(TAGS,"tag",live)}</div></div>
     <div class="fgroup"><h4>Whose problem</h4><div class="fopts">
@@ -572,7 +588,9 @@ const lootNote=(shown,total,slice)=>{
 };
 let LRES=[];
 const lootIdxRow=o=>`<div class="mres"><div class="mtop">
-      <a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>
+      ${o.mod==="r"
+        ?`<a class="mdg" href="#/r/${o.b.id}/loot" data-boss="${o.b.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.b.short)}</a>`
+        :`<a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>`}
       <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
       <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
       ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
@@ -582,8 +600,10 @@ const lootIdxRow=o=>`<div class="mres"><div class="mtop">
    crit" is the query people mean. Secondaries are the exception and stack as
    AND, because every item carries exactly two and picking both is how you ask
    for a specific pairing. Each group says which it is. */
-let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null};
-const LOOTALL=DUNGEONS.flatMap(d=>(d.loot?d.loot.i:[]).map(i=>({d,i})));
+let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null,mod:null};
+const LOOTALL=[
+  ...DUNGEONS.flatMap(d=>(d.loot?d.loot.i:[]).map(i=>({mod:"d",d,i}))),
+  ...RAID.bosses.flatMap(b=>(b.loot||[]).map(i=>({mod:"r",b,i})))];
 const LSLOT=["Head","Shoulder","Back","Chest","Wrist","Hands","Waist","Legs","Feet",
   "Neck","Ring","Trinket","One-hand","Two-hand","Off-hand","Ranged"];
 const LARM=["Cloth","Leather","Mail","Plate"];
@@ -596,7 +616,8 @@ const inData=(arr,f)=>arr.filter(v=>LOOTALL.some(o=>f(o.i,v)));
    which is what keeps an OR group from disabling its own siblings. */
 function lmatch(o,skip){
   const i=o.i, F=LFACETS;
-  if(skip!=="dg"&&F.dg&&o.d.id!==F.dg) return false;
+  if(skip!=="mod"&&F.mod&&o.mod!==F.mod) return false;
+  if(skip!=="dg"&&F.dg&&(o.mod!=="d"||o.d.id!==F.dg)) return false;
   if(skip!=="sl"&&F.sl.size&&!F.sl.has(i.sl)) return false;
   if(skip!=="ty"&&F.ty.size&&!F.ty.has(i.ty)) return false;
   if(skip!=="p"&&F.p.size&&!(i.p||[]).some(v=>F.p.has(v))) return false;
@@ -621,12 +642,16 @@ function pLoot(){
     const on=F[key] instanceof Set?F[key].has(v):F[key]===v;
     const dis=!on&&live&&!live.has(v);
     return `<button class="fopt" data-lf="${key}" data-v="${esc(v)}" aria-pressed="${on}" ${dis?"disabled":""}>${esc(label||v)}</button>`;};
+  const nR=LOOTALL.filter(o=>o.mod==="r").length;
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Loot</em></div>
   <h1>Every item in the season</h1>
-  <p class="lede">${LOOTALL.length} items across eight dungeons. Mythic+ pays out from one chest at the end of a run,
-  so a dungeon's whole table is a single pool and the useful questions cross dungeons: what Mail exists with mastery
-  on it, which Agility trinkets are worth setting loot specialisation for, where the crit/haste boots are.</p>
+  <p class="lede">${LOOTALL.length} items${nR?` — the Mythic+ chest pool and the raid's per-boss tables`:" across the dungeon pool; raid tables land as the boss guides are written"}.
+  Mythic+ pays out from one chest at the end of a run, so a dungeon's whole table is a single pool and the useful
+  questions cross dungeons: what Mail exists with mastery on it, which Agility trinkets are worth setting loot
+  specialisation for. The raid is the opposite — the boss is the loot table, once a week.</p>
   <div class="facets">
+    <div class="fgroup"><h4>From</h4><div class="fopts">
+      ${opt("mod","d","Dungeons",null)}${opt("mod","r","Raid",null)}</div></div>
     <div class="fgroup"><h4>Slot <span class="fany">any of</span></h4><div class="fopts">
       ${inData(LSLOT,(i,v)=>i.sl===v).map(v=>opt("sl",v,v,liveSl)).join("")}</div></div>
     <div class="fgroup"><h4>Armour <span class="fany">any of</span></h4><div class="fopts">

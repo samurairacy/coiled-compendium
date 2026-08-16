@@ -4,8 +4,12 @@
 
 let ROLE=null;
 function route(){
-  const h=(location.hash||"#/").slice(2).split("/").filter(Boolean);
+  /* the hash may carry a facet query: #/mechanics?from=r&ctr=poison */
+  const [pathStr,qs]=(location.hash||"#/").slice(2).split("?");
+  const h=pathStr.split("/").filter(Boolean);
   const key=h[0]||"home";
+  if(qs!==undefined&&key==="mechanics") facetsFromQS(qs);
+  if(qs!==undefined&&key==="loot") lfacetsFromQS(qs);
   $$(".page").forEach(p=>p.classList.remove("on"));
   document.body.removeAttribute("data-dungeon");
   document.body.removeAttribute("data-raid");
@@ -45,6 +49,37 @@ function route(){
 }
 addEventListener("hashchange",route);
 
+/* ── facet state ⇄ URL ── a filtered view is a thing worth sharing, so the
+   filters live in the hash query: #/mechanics?from=r&ctr=poison. Written with
+   replaceState so painting never triggers a re-route; read only when a query
+   is actually present, so plain #/mechanics keeps whatever you had. Sets are
+   dot-joined — the values are slugs, and dots survive URLs unencoded. */
+const qsWrite=(base,p)=>{const q=p.toString().replace(/%2C/g,",");
+  history.replaceState(null,"","#/"+base+(q?"?"+q:""));};
+function mechQS(){const p=new URLSearchParams();
+  if(FACETS.mod)p.set("from",FACETS.mod);
+  if(FACETS.dg)p.set("dg",FACETS.dg);
+  if(FACETS.role)p.set("role",FACETS.role);
+  if(FACETS.sev)p.set("sev",FACETS.sev);
+  if(FACETS.tag.size)p.set("tag",[...FACETS.tag].join("."));
+  if(FACETS.ctr.size)p.set("ctr",[...FACETS.ctr].join("."));
+  qsWrite("mechanics",p);}
+function facetsFromQS(qs){const p=new URLSearchParams(qs);
+  const set=k=>new Set((p.get(k)||"").split(".").filter(Boolean));
+  FACETS={tag:set("tag"),ctr:set("ctr"),role:p.get("role")||null,
+    sev:p.get("sev")?+p.get("sev"):null,dg:p.get("dg")||null,mod:p.get("from")||null};}
+function lootQS(){const p=new URLSearchParams();
+  if(LFACETS.mod)p.set("from",LFACETS.mod);
+  if(LFACETS.dg)p.set("dg",LFACETS.dg);
+  if(LFACETS.big)p.set("big",LFACETS.big);
+  if(LFACETS.fx)p.set("fx",LFACETS.fx);
+  for(const k of ["sl","ty","p","x","ro"]) if(LFACETS[k].size)p.set(k,[...LFACETS[k]].join("."));
+  qsWrite("loot",p);}
+function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
+  const set=k=>new Set((p.get(k)||"").split(".").filter(Boolean));
+  LFACETS={sl:set("sl"),ty:set("ty"),p:set("p"),x:set("x"),ro:set("ro"),
+    big:p.get("big")||null,dg:p.get("dg")||null,fx:p.get("fx")||null,mod:p.get("from")||null};}
+
 /* facet clicks — delegated, so re-renders never lose the handler */
 document.addEventListener("click",e=>{
   /* Loot reuses .fopt for styling but keys off data-lf, so the mechanics branch
@@ -54,29 +89,37 @@ document.addEventListener("click",e=>{
     const {f:key,v}=f.dataset;
     if(FACETS[key] instanceof Set){FACETS[key].has(v)?FACETS[key].delete(v):FACETS[key].add(v);}
     else FACETS[key]=FACETS[key]===v?null:(key==="sev"?+v:v);
-    paintMech(); return;
+    paintMech(); mechQS(); return;
   }
-  if(e.target.closest("#clearf")){FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null};
-    paintMech(); return;}
+  if(e.target.closest("#clearf")){FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null,mod:null};
+    paintMech(); mechQS(); return;}
   const l=e.target.closest("[data-lf]");
   if(l&&!l.disabled){
     const {lf:key,v}=l.dataset;
     if(LFACETS[key] instanceof Set){LFACETS[key].has(v)?LFACETS[key].delete(v):LFACETS[key].add(v);}
     else LFACETS[key]=LFACETS[key]===v?null:v;
-    paintLoot(); return;
+    paintLoot(); lootQS(); return;
   }
-  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null};
-    paintLoot();}
+  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null,mod:null};
+    paintLoot(); lootQS();}
 });
 
 /* ═══ SEARCH ═════════════════════════════════════════════════════════ */
 const INDEX=[
  ...DUNGEONS.map(d=>({t:d.name,m:`Dungeon · ${d.origin} · ${d.bosses} bosses`,h:`#/d/${d.id}`})),
- ...ALL.map(x=>({t:x.a.n,m:`${x.a.alt?"also "+x.a.alt+" · ":""}${x.src} · ${x.kind} · ${x.d.name}`,h:`#/d/${x.d.id}/${x.kind==="Boss"?"bosses":"trash"}`})),
+ /* ability rows carry their module: dungeon rows point into the dungeon,
+    raid rows into the boss page */
+ ...ALL.map(x=>x.mod==="r"
+   ?{t:x.a.n,m:`${x.src} · ${x.kind} · ${RAID.name}`,h:`#/r/${x.b.id}`}
+   :{t:x.a.n,m:`${x.a.alt?"also "+x.a.alt+" · ":""}${x.src} · ${x.kind} · ${x.d.name}`,h:`#/d/${x.d.id}/${x.kind==="Boss"?"bosses":"trash"}`}),
  ...DUNGEONS.flatMap(d=>d.loot?d.loot.i.map(x=>({t:x.n,m:`${x.ty} · ${x.sl} · ${d.name}`,h:`#/d/${d.id}/loot`})):[]),
+ ...RAID.bosses.flatMap(b=>(b.loot||[]).map(x=>({t:x.n,m:`${x.ty} · ${x.sl} · ${b.n} · ${RAID.name}`,h:`#/r/${b.id}/loot`}))),
  ...DUNGEONS.flatMap(d=>[...d.areas.flatMap(a=>a.mobs),...d.encounters].flatMap(m=>{
    const e={t:m.n,m:`${KINDS[m.k]||"Boss"} · ${d.name}`,h:`#/d/${d.id}/${m.o?"bosses":"trash"}`};
    return m.alt?[e,{t:m.alt,m:`Alternate name for ${m.n} · ${d.name}`,h:e.h}]:[e];})),
+ ...RAID.bosses.map(b=>({t:b.n,m:`Boss ${b.o} of ${RAID.bosses.length} · ${RAID.name}`,h:`#/r/${b.id}`})),
+ {t:RAID.name,m:`Raid · ${RAID.bosses.length} bosses · Normal and Heroic`,h:"#/raid"},
+ {t:"Raid prep",m:"Lockout, schedule, what to bring",h:"#/raid/prep"},
  ...DUNGEONS.flatMap(d=>d.buffs.map(b=>({t:b.n,m:`Interactable · ${d.name}`,h:`#/d/${d.id}`}))),
  {t:"Every poison in the season",m:"Mechanics index · filtered",h:"#/mechanics"},
  {t:"Source ledger",m:"Who said what, and when",h:"#/sources"},
@@ -95,9 +138,16 @@ CORRECTIONS.forEach(([right,wrong,d])=>{
   if(hit)INDEX.push({t:wrong,m:`Named ${right} here · ${d}`,h:hit.h});
 });
 let SEL=0;
+/* Context orders, never filters: inside the raid module, raid results rise;
+   elsewhere they sink. A raid ability is always findable from a dungeon page
+   — it just doesn't outrank the dungeon's own. Sort is stable, so ties keep
+   index order. (#/r/ not #/r — "#/routes" is not a raid context.) */
+const isRaidHref=h=>h.startsWith("#/r/")||h.startsWith("#/raid");
 function runSearch(){
   const q=$("#q").value.trim().toLowerCase();
   const r=q?INDEX.filter(i=>i.t.toLowerCase().includes(q)||i.m.toLowerCase().includes(q)).slice(0,40):INDEX.slice(0,10);
+  const inRaid=isRaidHref(location.hash);
+  r.sort((a,b)=>(isRaidHref(b.h)===inRaid)-(isRaidHref(a.h)===inRaid));
   SEL=0;
   $("#qr").innerHTML=r.length?r.map((i,n)=>`<a href="${i.h}" class="${n===0?"sel":""}"><div class="rt">${esc(i.t)}</div><div class="rm">${esc(i.m)}</div></a>`).join("")
     :`<div class="ovempty">Nothing matches "${esc(q)}". Try an ability name, a mob, or a dungeon.</div>`;
