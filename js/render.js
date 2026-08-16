@@ -844,9 +844,13 @@ function pBoss(id,tab){
       <button class="linklike" data-diff="h">switch to Heroic</button> to see ${hidden>1?"them":"it"}.</p>`:""}
     ${roleHid?`<p class="note hnote">${ic("i-info",13)} ${roleHid} abilit${roleHid>1?"ies":"y"} hidden by the role
       lens — <button class="linklike" data-role="">show everyone's view</button>.</p>`:""}`;};
-  const loot=b.loot||[];
+  /* Featured first: trinkets, then jewellery, then anything with a cantrip —
+     the pieces people chase all season lead the table instead of trailing it.
+     Everything else keeps its listing order; tokens close the table. */
+  const featRank=x=>x.ty==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?9:5;
+  const loot=(b.loot||[]).slice().sort((a,c)=>featRank(a)-featRank(c));
   const lootRows=loot.length?`
-  <div class="sec"><h2>Loot</h2><span class="n">${loot.length} items · once a week per difficulty</span></div>
+  <div class="sec"><h2>Loot</h2><span class="n">${loot.length} items · the chased stuff first</span></div>
   ${loot.some(x=>x.ty==="Token")?`<p class="note">The <b>Token</b> rows are tier-set pieces: they drop as class tokens and trade for the set piece of that slot.</p>`:""}
   <table><thead><tr><th>Item</th><th>Slot</th><th>Type</th><th>Stats</th></tr></thead><tbody>
   ${loot.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
