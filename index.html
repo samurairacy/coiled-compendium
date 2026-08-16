@@ -477,6 +477,15 @@ td.li{display:flex;align-items:center;gap:.5rem}
   background:var(--tier1);color:var(--ground);margin-left:.45rem
 }
 .mythonly svg{opacity:.85}
+/* Gear that does something beyond its stat line. Rare — four items in the
+   season — and worth spotting, because margins are where keys are won. */
+.cantrip{
+  display:inline-block;font-family:var(--face-term);font-size:.55rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;padding:.08rem .32rem;border-radius:2px;
+  background:var(--signal-ok);color:var(--ground);margin-left:.45rem;vertical-align:middle
+}
+tr.fxrow td{padding-top:0;border-top:none}
+tr.fxrow .fx{margin:0 0 .35rem}
 .chip.c-noarmor{border-color:var(--signal-warn);color:var(--signal-warn)}
 .cov.ok{border-left-color:var(--tier1)} .cov.ok svg{color:var(--tier1)}
 .cov.thin{border-left-color:var(--signal-warn)} .cov.thin svg{color:var(--signal-warn)}
@@ -945,8 +954,8 @@ loot:{s:["iv_aof"],i:[
   {n:"Aged Interwoven Scaleplate",ic:"inv_chest_plate_outdooramaniloa_c_01",id:273787,sl:"Chest",ty:"Plate",b:"The Writhing Coil",p:["Str","Int"],x:[["Crit",10],["Vers",9]]},
   {n:"Leggings of Entwined Serpents",ic:"inv_pant_cloth_outdooramaniloa_c_01",id:273786,sl:"Legs",ty:"Cloth",b:"The Writhing Coil",p:["Int"],x:[["Crit",11],["Haste",9]]},
   {n:"Knot of Writhing Serpents",ic:"inv_121_trinket_dungeon_ulatek_writhe",id:273794,sl:"Trinket",ty:"Trinket",b:"The Writhing Coil",p:["Int"],e:"Your harmful spells have a chance to ensorcell a serpent into spewing venom at your target, inflicting Nature damage split between nearby enemies. Damage increased by 30% per additional enemy, up to 150%. The primary target also suffers an additional Nature damage over 15 sec."},
-  {n:"Polished Lightwood Channeler",ic:"inv_knife_1h_zuljin_d_01",id:273778,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Int"],x:[["Haste",5],["Mastery",4]]},
-  {n:"Sharpened Lightwood Slasher",ic:"inv_knife_1h_zuljin_d_01",id:275070,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Agi"],x:[["Crit",31],["Haste",23]]},
+  {n:"Polished Lightwood Channeler",ic:"inv_knife_1h_zuljin_d_01",id:273778,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Int"],x:[["Haste",5],["Mastery",4]],e:"Your damaging spells have a chance to launch a mote of light towards your target, inflicting Holy damage split among nearby enemies. Damage increased by 30% per additional enemy, up to 150%."},
+  {n:"Sharpened Lightwood Slasher",ic:"inv_knife_1h_zuljin_d_01",id:275070,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Agi"],x:[["Crit",31],["Haste",23]],e:"Your damaging attacks and abilities have a chance to sear your target for Holy damage."},
   {n:"Ancestral Amani Recurve",ic:"inv_bow_1h_outdooramaniloa_c_01",id:273784,sl:"Ranged",ty:"Bow",b:"Zul'jan",p:["Agi"],x:[["Haste",11],["Mastery",8]]},
   {n:"Spare Speaker's Hood",ic:"inv_helm_leather_outdooramaniloa_c_01",id:273791,sl:"Head",ty:"Leather",b:"Zul'jan",p:["Agi","Int"],x:[["Haste",11],["Crit",8]]},
   {n:"Chestguard of Corroded Scales",ic:"inv_chest_mail_outdooramaniloa_c_01",id:273789,sl:"Chest",ty:"Mail",b:"Zul'jan",p:["Agi","Int"],x:[["Haste",10],["Crit",9]]},
@@ -1556,12 +1565,12 @@ loot:{s:["iv_kr"],i:[
   {n:"Crackling Jade Kilij",ic:"inv_sword_1h_battledungeon_c_02",id:160216,sl:"One-hand",ty:"Sword",b:"The Council of Tribes",p:["Int"],x:[["Crit",3],["Mastery",2]]},
   {n:"Jeweled Dagger of Subjugation",ic:"inv_knife_1h_battledungeon_c_01",id:159136,sl:"One-hand",ty:"Dagger",b:"The Council of Tribes",p:["Agi"],x:[["Haste",3],["Mastery",3]]},
   {n:"Crossbow of Forgotten Majesty",ic:"inv_bow_2h_crossbow_pandaraid_d_01",id:159643,sl:"Ranged",ty:"Crossbow",b:"The Council of Tribes",p:["Agi"],x:[["Haste",7],["Mastery",5]]},
-  {n:"Cloak of the Restless Tribes",ic:"inv_cape_mail_zandalardungeon_c_01",id:159288,sl:"Back",ty:"Cloak",b:"The Council of Tribes",p:["Str","Agi","Int"],x:[["Vers",4],["Mastery",3]]},
+  {n:"Cloak of the Restless Tribes",ic:"inv_cape_mail_zandalardungeon_c_01",id:159288,sl:"Back",ty:"Cloak",b:"The Council of Tribes",p:["Str","Agi","Int"],x:[["Vers",4],["Mastery",3]],e:"Standing still for 4 sec increases your Speed. Lasts for 4 sec once you start moving."},
   {n:"Kula's Butchering Wristwraps",ic:"inv_bracer_leather_zandalardungeon_c_01",id:159300,sl:"Wrist",ty:"Leather",b:"The Council of Tribes",p:["Agi","Int"],x:[["Crit",4],["Vers",2]]},
   {n:"Girdle of Pestilent Purification",ic:"inv_belt_plate_zandalardungeon_c_01",id:159418,sl:"Waist",ty:"Plate",b:"The Council of Tribes",p:["Str","Int"],x:[["Haste",5],["Mastery",3]]},
   {n:"Boots of the Headlong Conqueror",ic:"inv_boot_mail_zandalardungeon_c_01",id:159371,sl:"Feet",ty:"Mail",b:"The Council of Tribes",p:["Agi","Int"],x:[["Vers",5],["Mastery",4]]},
   {n:"Sandals of Wise Voodoo",ic:"inv_boot_cloth_zandalardungeon_c_01",id:159243,sl:"Feet",ty:"Cloth",b:"The Council of Tribes",p:["Int"],x:[["Vers",6],["Haste",3]]},
-  {n:"Geti'ikku, Cut of Death",ic:"inv_sword_2h_battledungeon_c_01",id:159644,sl:"Two-hand",ty:"Sword",b:"King Dazar",p:["Str"]},
+  {n:"Geti'ikku, Cut of Death",ic:"inv_sword_2h_battledungeon_c_01",id:159644,sl:"Two-hand",ty:"Sword",b:"King Dazar",p:["Str"],e:"Your melee attacks have a chance to make the enemy bleed for Physical damage over 12 sec. You are healed when an enemy dies while bleeding from Geti'ikku."},
   {n:"Headcracker of Supplication",ic:"inv_mace_1h_battledungeon_c_01",id:159645,sl:"One-hand",ty:"Mace",b:"King Dazar",p:["Agi"],x:[["Mastery",3],["Crit",2]]},
   {n:"Headdress of the First Empire",ic:"inv_helm_cloth_zandalardungeon_c_01",id:239047,sl:"Head",ty:"Cloth",b:"King Dazar",p:["Int"],x:[["Vers",7],["Crit",5]]},
   {n:"Helm of the Raptor King",ic:"inv_helm_plate_zandalardungeon_c_01",id:239050,sl:"Head",ty:"Plate",b:"King Dazar",p:["Str","Int"],x:[["Vers",7],["Haste",5]]},
@@ -2148,9 +2157,13 @@ const secChip=x=>{
   if(!tot||a[1]/tot<0.55) return `<span class="secs">${esc(a[0])} / ${esc(b[0])} <i>even</i></span>`;
   return `<span class="secs"><b>big ${esc(a[0])}</b> <i>little ${esc(b[0])}</i></span>`;
 };
-const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b></td>
+const cantrip=x=>x.ty!=="Trinket"&&(x.u||x.e)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
+const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
   <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
-  <td>${secChip(x.x)}</td></tr>`;
+  <td>${secChip(x.x)}</td></tr>
+  ${x.ty!=="Trinket"&&(x.u||x.e)?`<tr class="fxrow"><td colspan="4">
+    ${x.u?`<p class="fx"><b>Use</b> ${esc(x.u)}</p>`:""}
+    ${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`;
 const lootTable=d=>{
   const I=d.loot.i, n=I.length;
   const trink=I.filter(x=>x.ty==="Trinket");
@@ -2191,8 +2204,9 @@ const lootTable=d=>{
 
   ${weap.length?`<div class="sec"><h2>Weapons and off-hands</h2><span class="n">${weap.length}</span></div>
     <table><thead><tr><th>Item</th><th>Type</th><th>Primary</th><th>Secondaries</th></tr></thead><tbody>
-    ${weap.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b></td><td class="mono">${esc(x.ty)}</td>
-      <td>${primChip(x.p)||`<span class="n">—</span>`}</td><td>${secChip(x.x)}</td></tr>`).join("")}
+    ${weap.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td><td class="mono">${esc(x.ty)}</td>
+      <td>${primChip(x.p)||`<span class="n">—</span>`}</td><td>${secChip(x.x)}</td></tr>
+      ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`).join("")}
     </tbody></table>`:""}`;
 };
 function callsBlock(d){
@@ -2456,7 +2470,7 @@ const LCAP=60;
    crit" is the query people mean. Secondaries are the exception and stack as
    AND, because every item carries exactly two and picking both is how you ask
    for a specific pairing. Each group says which it is. */
-let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null};
+let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null,fx:null};
 const LOOTALL=DUNGEONS.flatMap(d=>(d.loot?d.loot.i:[]).map(i=>({d,i})));
 const LSLOT=["Head","Shoulder","Back","Chest","Wrist","Hands","Waist","Legs","Feet",
   "Neck","Ring","Trinket","One-hand","Two-hand","Off-hand","Ranged"];
@@ -2477,6 +2491,7 @@ function lmatch(o,skip){
   if(skip!=="x"&&F.x.size){const have=(i.x||[]).map(v=>v[0]);
     for(const v of F.x) if(!have.includes(v)) return false;}
   if(skip!=="big"&&F.big&&!((i.x||[]).length&&i.x[0][0]===F.big)) return false;
+  if(skip!=="fx"&&F.fx==="1"&&!(i.u||i.e)) return false;
   return true;
 }
 function pLoot(){
@@ -2494,7 +2509,7 @@ function pLoot(){
     return `<button class="fopt" data-lf="${key}" data-v="${esc(v)}" aria-pressed="${on}" ${dis?"disabled":""}>${esc(label||v)}</button>`;};
   const row=o=>`<div class="mres"><div class="mtop">
       <a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>
-      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}</span>
+      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
       <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
       ${primChip(o.i.p)}${secChip(o.i.x)}</div>
     ${o.i.u?`<p class="fx"><b>Use</b> ${esc(o.i.u)}</p>`:""}
@@ -2518,6 +2533,8 @@ function pLoot(){
       ${LSEC.map(v=>opt("x",v,v,liveX)).join("")}</div></div>
     <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
       ${LSEC.map(v=>opt("big",v,v,liveBig)).join("")}</div></div>
+    <div class="fgroup"><h4>Carries an effect <span class="fany">not just stats</span></h4><div class="fopts">
+      ${opt("fx","1","Cantrip or use effect",null)}</div></div>
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
       ${DUNGEONS.map(d=>opt("dg",d.id,d.short,null)).join("")}</div></div>
   </div>
@@ -2729,7 +2746,7 @@ document.addEventListener("click",e=>{
     else LFACETS[key]=LFACETS[key]===v?null:v;
     $("#p-loot").innerHTML=pLoot(); return;
   }
-  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null};
+  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null,fx:null};
     $("#p-loot").innerHTML=pLoot();}
 });
 
