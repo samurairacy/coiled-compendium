@@ -296,7 +296,8 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .rlens .dseg{display:inline-flex;align-items:center;gap:.32rem}
 
 /* ═══ DIFFICULTY TOGGLE ═══ segmented; built to take a third segment ═══ */
-.dtoggle{display:inline-flex;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin:.4rem 0 1rem}
+.dtoggle{display:inline-flex;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin:.4rem 0 1rem;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.dtoggle::-webkit-scrollbar{display:none}
 .dseg{
   padding:.42rem 1.05rem;font-family:var(--face-term);font-size:.74rem;letter-spacing:.08em;
   text-transform:uppercase;color:var(--ink-muted);background:none;
@@ -501,7 +502,7 @@ td.li{display:flex;align-items:center;gap:.5rem}
 .secs{font-family:var(--face-term);font-size:.72rem;letter-spacing:.04em;color:var(--ink-muted);white-space:nowrap}
 .secs b{color:var(--ink);font-weight:600}
 .secs i{font-style:normal;opacity:.72}
-.trinkets{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:.7rem;margin-bottom:1rem}
+.trinkets{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(430px,100%),1fr));gap:.7rem;margin-bottom:1rem}
 .fx{font-size:.88rem;color:var(--ink-muted);margin:.3rem 0 0;max-width:60ch}
 /* Use and Equip are opposite kinds of thing and used to look identical. They
    now split on fill, the same grammar the dispel chips use: filled means you
@@ -654,6 +655,14 @@ tr.tr td{background:rgba(200,148,52,.07)} tr.tr td b{color:var(--d-accent,var(--
 
 /* ═══ TABLES ═════════════════════════════════════════════════════════ */
 table{width:100%;border-collapse:collapse;font-size:.9rem;margin:0 0 1.2rem}
+/* Narrow screens: a table becomes its own horizontal scroller rather than
+   dragging the whole page wide. Cells keep wrapping internally; only tables
+   that genuinely cannot fit will scroll. The page body never pans sideways. */
+@media(max-width:700px){
+  table{display:block;overflow-x:auto;max-width:100%}
+  .dseg{padding:.38rem .7rem;font-size:.68rem}
+  .lenses{gap:.4rem}
+}
 th,td{text-align:left;padding:.52rem .7rem;border-bottom:1px solid var(--rule-soft);vertical-align:top}
 th{font-family:var(--face-term);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);border-bottom-color:var(--rule)}
 tbody tr:hover{background:var(--ground-raised)}
