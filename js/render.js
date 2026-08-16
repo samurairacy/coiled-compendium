@@ -631,7 +631,10 @@ const lootIdxRow=o=>`<div class="mres"><div class="mtop">
       <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
       ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
     ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
-    ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}</div>`;
+    ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}
+    ${o.mod==="r"&&o.i.ty==="Trinket"&&!o.i.u&&!o.i.e?`<p class="fx pending">Effect not yet published —
+      Wowhead's tooltip for this item carries no Use or Equip text yet. Every raid trinket will do something;
+      the text lands here the day the database has it.</p>`:""}</div>`;
 /* Within a group the options are OR, across groups AND — "Mail or Plate, with
    crit" is the query people mean. Secondaries are the exception and stack as
    AND, because every item carries exactly two and picking both is how you ask
@@ -848,8 +851,10 @@ function pBoss(id,tab){
   <table><thead><tr><th>Item</th><th>Slot</th><th>Type</th><th>Stats</th></tr></thead><tbody>
   ${loot.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
     <td class="mono">${esc(x.sl)}</td><td class="mono">${esc(x.ty)}${x.tc?` · ${esc(x.tc)}`:""}</td>
-    <td>${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}</td></tr>
-    ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`).join("")}
+    <td class="statcell">${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}</td></tr>
+    ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`
+      :x.ty==="Trinket"?`<tr class="fxrow"><td colspan="4"><p class="fx pending">Effect not yet published —
+      the tooltip carries no Use or Equip text yet; it lands here when the database has it.</p></td></tr>`:""}`).join("")}
   </tbody></table>`:"";
   return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>${esc(b.n)}</em></div>
   <nav class="dswitch" id="dswitch" aria-label="Switch boss">${RAID.bosses.map(x=>

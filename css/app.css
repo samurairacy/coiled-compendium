@@ -309,6 +309,10 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .linklike:hover{color:var(--ink)}
 .read.hh b{color:var(--d-accent)}
 .hnote{border-left:2px solid var(--d-accent);padding-left:.7rem}
+td.statcell{white-space:normal}
+td.statcell .chip{margin-right:.4rem;margin-bottom:.15rem}
+td.statcell .lean{margin-left:.15rem}
+.fx.pending{color:var(--ink-faint);font-style:italic;border-left:2px dashed var(--rule);padding-left:.6rem}
 .mythonly.hb{background:var(--d-accent);color:var(--d-ink)}
 .cov.warn{border-color:var(--signal-urgent)}
 .cov.warn svg{color:var(--signal-urgent)}
