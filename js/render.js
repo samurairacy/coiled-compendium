@@ -844,10 +844,10 @@ function pBoss(id,tab){
       <button class="linklike" data-diff="h">switch to Heroic</button> to see ${hidden>1?"them":"it"}.</p>`:""}
     ${roleHid?`<p class="note hnote">${ic("i-info",13)} ${roleHid} abilit${roleHid>1?"ies":"y"} hidden by the role
       lens — <button class="linklike" data-role="">show everyone's view</button>.</p>`:""}`;};
-  /* Featured first: trinkets, then jewellery, then anything with a cantrip —
+  /* Featured first: trinkets, jewellery, cantrip-carriers, then tier tokens —
      the pieces people chase all season lead the table instead of trailing it.
-     Everything else keeps its listing order; tokens close the table. */
-  const featRank=x=>x.ty==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?9:5;
+     Everything else keeps its listing order. */
+  const featRank=x=>x.ty==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?3:5;
   const loot=(b.loot||[]).slice().sort((a,c)=>featRank(a)-featRank(c));
   const lootRows=loot.length?`
   <div class="sec"><h2>Loot</h2><span class="n">${loot.length} items · the chased stuff first</span></div>
