@@ -484,6 +484,17 @@ td.li{display:flex;align-items:center;gap:.5rem}
   letter-spacing:.12em;text-transform:uppercase;padding:.08rem .32rem;border-radius:2px;
   background:var(--signal-ok);color:var(--ground);margin-left:.45rem;vertical-align:middle
 }
+/* Dashed, because it is inference rather than a sourced fact — the same
+   visual grammar the counter chips already use for "this is a call". */
+.rochip{
+  display:inline-block;font-family:var(--face-term);font-size:.58rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;padding:.1rem .36rem;margin-left:.3rem;
+  border:1px dashed var(--rule);border-radius:2px;color:var(--ink-muted);white-space:nowrap
+}
+.rochip.r-tank{border-color:#8C6BC4;color:#B79BE4}
+.rochip.r-healer{border-color:#4E8F6B;color:#7DC49A}
+.rochip.r-rdps{border-color:#5C7FB8;color:#8FB0DE}
+.rochip.r-mdps{border-color:#A6693C;color:#D69A63}
 tr.fxrow td{padding-top:0;border-top:none}
 tr.fxrow .fx{margin:0 0 .35rem}
 .chip.c-noarmor{border-color:var(--signal-warn);color:var(--signal-warn)}
@@ -944,8 +955,8 @@ loot:{s:["iv_aof"],i:[
   {n:"Primordial Robe of Rites",ic:"inv_robe_cloth_outdooramaniloa_c_01",id:273785,sl:"Chest",ty:"Cloth",b:"Rav'i",p:["Int"],x:[["Haste",10],["Mastery",9]]},
   {n:"Hydra Scale Wristguards",ic:"inv_bracer_mail_outdooramaniloa_c_01",id:273775,sl:"Wrist",ty:"Mail",b:"Rav'i",p:["Agi","Int"],x:[["Mastery",6],["Vers",5]]},
   {n:"Poison-Proof Stompers",ic:"inv_boot_plate_outdooramaniloa_c_01",id:273777,sl:"Feet",ty:"Plate",b:"Rav'i",p:["Str","Int"],x:[["Haste",8],["Vers",7]]},
-  {n:"Coiled Fangstone",ic:"inv_121_trinket_dungeon_ulatek_fangstone",id:273795,sl:"Trinket",ty:"Trinket",b:"Rav'i",p:["Str"],u:"Unleash 3 Envenomed Bites centered on your target, inflicting a total Nature damage split between nearby enemies. Damage increased by 30% per additional enemy, up to 150%. (1 Min Cooldown)"},
-  {n:"Vile Vial of Volatile Venom",ic:"inv_121_trinket_dungeon_ulatek_vile",id:273796,sl:"Trinket",ty:"Trinket",b:"Rav'i",p:["Str","Agi","Int"],u:"Take a small sip of venom, gaining a random secondary stat for 15 sec. Afterwards, a random secondary stat is reduced for 15 sec. (2 Min Cooldown)"},
+  {n:"Coiled Fangstone",ic:"inv_121_trinket_dungeon_ulatek_fangstone",id:273795,sl:"Trinket",ty:"Trinket",b:"Rav'i",p:["Str"],u:"Unleash 3 Envenomed Bites centered on your target, inflicting a total Nature damage split between nearby enemies. Damage increased by 30% per additional enemy, up to 150%. (1 Min Cooldown)",ro:["mdps"]},
+  {n:"Vile Vial of Volatile Venom",ic:"inv_121_trinket_dungeon_ulatek_vile",id:273796,sl:"Trinket",ty:"Trinket",b:"Rav'i",p:["Str","Agi","Int"],u:"Take a small sip of venom, gaining a random secondary stat for 15 sec. Afterwards, a random secondary stat is reduced for 15 sec. (2 Min Cooldown)",ro:["rdps","mdps"]},
   {n:"Toxin-Coated Warstaff",ic:"inv_staff_2h_outdooramaniloa_c_01",id:273783,sl:"Two-hand",ty:"Staff",b:"The Writhing Coil",p:["Agi"],x:[["Haste",11],["Mastery",8]]},
   {n:"Vile Writhefang Glaive",ic:"inv_polearm_2h_outdooramaniloa_c_01",id:273782,sl:"Two-hand",ty:"Polearm",b:"The Writhing Coil",p:["Str"],x:[["Crit",11],["Haste",9]]},
   {n:"Nocuous Focal Fang",ic:"inv_offhand_1h_outdooramaniloa_c_01",id:273779,sl:"Off-hand",ty:"Off-hand",b:"The Writhing Coil",p:["Int"],x:[["Crit",5],["Haste",4]]},
@@ -953,7 +964,7 @@ loot:{s:["iv_aof"],i:[
   {n:"Snakeskin Spaulders",ic:"inv_shoulder_leather_outdooramaniloa_c_01",id:273774,sl:"Shoulder",ty:"Leather",b:"The Writhing Coil",p:["Agi","Int"],x:[["Crit",9],["Vers",6]]},
   {n:"Aged Interwoven Scaleplate",ic:"inv_chest_plate_outdooramaniloa_c_01",id:273787,sl:"Chest",ty:"Plate",b:"The Writhing Coil",p:["Str","Int"],x:[["Crit",10],["Vers",9]]},
   {n:"Leggings of Entwined Serpents",ic:"inv_pant_cloth_outdooramaniloa_c_01",id:273786,sl:"Legs",ty:"Cloth",b:"The Writhing Coil",p:["Int"],x:[["Crit",11],["Haste",9]]},
-  {n:"Knot of Writhing Serpents",ic:"inv_121_trinket_dungeon_ulatek_writhe",id:273794,sl:"Trinket",ty:"Trinket",b:"The Writhing Coil",p:["Int"],e:"Your harmful spells have a chance to ensorcell a serpent into spewing venom at your target, inflicting Nature damage split between nearby enemies. Damage increased by 30% per additional enemy, up to 150%. The primary target also suffers an additional Nature damage over 15 sec."},
+  {n:"Knot of Writhing Serpents",ic:"inv_121_trinket_dungeon_ulatek_writhe",id:273794,sl:"Trinket",ty:"Trinket",b:"The Writhing Coil",p:["Int"],e:"Your harmful spells have a chance to ensorcell a serpent into spewing venom at your target, inflicting Nature damage split between nearby enemies. Damage increased by 30% per additional enemy, up to 150%. The primary target also suffers an additional Nature damage over 15 sec.",ro:["rdps"]},
   {n:"Polished Lightwood Channeler",ic:"inv_knife_1h_zuljin_d_01",id:273778,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Int"],x:[["Haste",5],["Mastery",4]],e:"Your damaging spells have a chance to launch a mote of light towards your target, inflicting Holy damage split among nearby enemies. Damage increased by 30% per additional enemy, up to 150%."},
   {n:"Sharpened Lightwood Slasher",ic:"inv_knife_1h_zuljin_d_01",id:275070,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Agi"],x:[["Crit",31],["Haste",23]],e:"Your damaging attacks and abilities have a chance to sear your target for Holy damage."},
   {n:"Ancestral Amani Recurve",ic:"inv_bow_1h_outdooramaniloa_c_01",id:273784,sl:"Ranged",ty:"Bow",b:"Zul'jan",p:["Agi"],x:[["Haste",11],["Mastery",8]]},
@@ -962,7 +973,7 @@ loot:{s:["iv_aof"],i:[
   {n:"Handwraps of Blasphemous Rites",ic:"inv_glove_cloth_outdooramaniloa_c_01",id:273773,sl:"Hands",ty:"Cloth",b:"Zul'jan",p:["Int"],x:[["Mastery",8],["Crit",7]]},
   {n:"Ancient General's Obsidian Pillars",ic:"inv_pant_plate_outdooramaniloa_c_01",id:273776,sl:"Legs",ty:"Plate",b:"Zul'jan",p:["Str","Int"],x:[["Crit",10],["Haste",9]]},
   {n:"Band of the Amani Warlord",ic:"inv_121_jewelry_ring02_green",id:273792,sl:"Ring",ty:"Ring",b:"Zul'jan",x:[["Haste",17],["Crit",10]]},
-  {n:"Tattered Amani War Banner",ic:"inv_121_trinket_dungeon_ulatek_banner",id:273797,sl:"Trinket",ty:"Trinket",b:"Zul'jan",p:["Str","Agi"],u:"Plant the banner for 15 sec! Fighting within 12 yards of it fills you with Battle Fervor, granting your highest secondary stat. Defeating at least 1 enemy while the banner stands will extend Banner's duration by 5 sec. (1 Min, 30 Sec Cooldown)"}]},
+  {n:"Tattered Amani War Banner",ic:"inv_121_trinket_dungeon_ulatek_banner",id:273797,sl:"Trinket",ty:"Trinket",b:"Zul'jan",p:["Str","Agi"],u:"Plant the banner for 15 sec! Fighting within 12 yards of it fills you with Battle Fervor, granting your highest secondary stat. Defeating at least 1 enemy while the banner stands will extend Banner's duration by 5 sec. (1 Min, 30 Sec Cooldown)",ro:["mdps"]}]},
  route:[
   {n:1,t:"Opening lust pull",m:"Primal Serpents, Twin Fang Harrowers, Ravenous Descendants",d:2,lust:true,p:"One kick assigned to each Primal Serpent; cover the rest with crowd control. They die fast enough under lust that the haste debuff never lands.",s:["tk_rt"]},
   {n:2,t:"Totem sweep",m:"Ravenous Descendants pulled forward",d:1,p:"Tag the extra Descendants into this pull to raise the count and keep the later pack from stacking six of them at once.",s:["tk_rt"]},
@@ -1074,25 +1085,25 @@ loot:{s:["iv_mr"],i:[
   {n:"Nibbling Armbands",ic:"inv_bracer_cloth_dungeonharronir_c_01",id:251127,sl:"Wrist",ty:"Cloth",b:"Kystia Manaheart",p:["Int"],x:[["Haste",5],["Crit",3]]},
   {n:"Gauntlets of Fevered Defense",ic:"inv_glove_leather_dungeonharronir_c_01",id:251124,sl:"Hands",ty:"Leather",b:"Kystia Manaheart",p:["Agi","Int"],x:[["Crit",7],["Haste",4]]},
   {n:"Felsoaked Soles",ic:"inv_boot_mail_dungeonharronir_c_01",id:251125,sl:"Feet",ty:"Mail",b:"Kystia Manaheart",p:["Agi","Int"],x:[["Vers",7],["Crit",4]]},
-  {n:"Manaheart's Binding Flame",ic:"inv_ember_fel",id:250243,sl:"Trinket",ty:"Trinket",b:"Kystia Manaheart",p:["Str","Agi"],u:"Form a Fel Shield for 10 sec, absorbing 30% of incoming damage. While the shield holds, a portion of the absorbed damage is stored as volatile Fel energy. When the shield expires or breaks, the energy erupts and inflicts Fire damage to split between nearby enemies. (1 Min, 30 Sec Cooldown)"},
+  {n:"Manaheart's Binding Flame",ic:"inv_ember_fel",id:250243,sl:"Trinket",ty:"Trinket",b:"Kystia Manaheart",p:["Str","Agi"],u:"Form a Fel Shield for 10 sec, absorbing 30% of incoming damage. While the shield holds, a portion of the absorbed damage is stored as volatile Fel energy. When the shield expires or breaks, the energy erupts and inflicts Fire damage to split between nearby enemies. (1 Min, 30 Sec Cooldown)",ro:["tank","mdps"]},
   {n:"Bladesorrow",ic:"inv_knife_1h_dungeonharronir_c_01",id:251128,sl:"One-hand",ty:"Dagger",b:"Zaen Bladesorrow",p:["Agi"],x:[["Crit",4],["Mastery",3]]},
   {n:"Jangling Felpaulets",ic:"inv_shoulder_mail_dungeonharronir_c_01",id:251131,sl:"Shoulder",ty:"Mail",b:"Zaen Bladesorrow",p:["Agi","Int"],x:[["Vers",6],["Crit",4]]},
   {n:"Speakeasy Shroud",ic:"inv_cape_leather_dungeonharronir_c_01",id:251132,sl:"Back",ty:"Cloak",b:"Zaen Bladesorrow",p:["Str","Agi","Int"],x:[["Crit",5],["Mastery",3]]},
   {n:"Overseer's Vambraces",ic:"inv_bracer_plate_dungeonharronir_c_01",id:251133,sl:"Wrist",ty:"Plate",b:"Zaen Bladesorrow",p:["Str","Int"],x:[["Haste",5],["Crit",3]]},
   {n:"Counterfeit Clutches",ic:"inv_glove_cloth_dungeonharronir_c_01",id:251129,sl:"Hands",ty:"Cloth",b:"Zaen Bladesorrow",p:["Int"],x:[["Mastery",7],["Vers",4]]},
   {n:"Breeches of Deft Deals",ic:"inv_pant_leather_dungeonharronir_c_01",id:251130,sl:"Legs",ty:"Leather",b:"Zaen Bladesorrow",p:["Agi","Int"],x:[["Crit",8],["Mastery",6]]},
-  {n:"Freightrunner's Flask",ic:"inv_alchemy_90_flask_red",id:250215,sl:"Trinket",ty:"Trinket",b:"Zaen Bladesorrow",p:["Agi","Int"],u:"Take a sip of the drink you swiped from the freight, increasing your Critical Strike for 15 sec. (1 Min, 30 Sec Cooldown)"},
+  {n:"Freightrunner's Flask",ic:"inv_alchemy_90_flask_red",id:250215,sl:"Trinket",ty:"Trinket",b:"Zaen Bladesorrow",p:["Agi","Int"],u:"Take a sip of the drink you swiped from the freight, increasing your Critical Strike for 15 sec. (1 Min, 30 Sec Cooldown)",ro:["rdps","mdps"]},
   {n:"Xathuux's Cleave",ic:"inv_axe_2h_dungeonharronir_c_01",id:251134,sl:"Two-hand",ty:"Axe",b:"Xathuux the Annihilator",p:["Str"],x:[["Crit",8],["Haste",6]]},
   {n:"Fury-fletched Armlets",ic:"inv_bracer_leather_dungeonharronir_c_01",id:251135,sl:"Wrist",ty:"Leather",b:"Xathuux the Annihilator",p:["Agi","Int"],x:[["Haste",5],["Crit",3]]},
   {n:"Tempestuous Sandals",ic:"inv_boot_cloth_dungeonharronir_c_01",id:251137,sl:"Feet",ty:"Cloth",b:"Xathuux the Annihilator",p:["Int"],x:[["Mastery",7],["Haste",4]]},
   {n:"Signet of Snarling Servitude",ic:"inv_12_jewelry_voidelf_ring_teal",id:251136,sl:"Ring",ty:"Ring",b:"Xathuux the Annihilator",x:[["Crit",12],["Mastery",8]]},
-  {n:"Resonant Bellowstone",ic:"inv_alchemy_90_stone_green",id:250228,sl:"Trinket",ty:"Trinket",b:"Xathuux the Annihilator",p:["Str","Agi"],e:"Your damaging abilities have a chance to echo with Xathuux's furious roar, increasing your Critical Strike for 30 sec. During this time, each of your attacks increases your Critical Strike by an additional 5, stacking up to a maximum of 5 times. (30s cooldown)"},
+  {n:"Resonant Bellowstone",ic:"inv_alchemy_90_stone_green",id:250228,sl:"Trinket",ty:"Trinket",b:"Xathuux the Annihilator",p:["Str","Agi"],e:"Your damaging abilities have a chance to echo with Xathuux's furious roar, increasing your Critical Strike for 30 sec. During this time, each of your attacks increases your Critical Strike by an additional 5, stacking up to a maximum of 5 times. (30s cooldown)",ro:["mdps"]},
   {n:"Vilefiend's Guise",ic:"inv_helm_leather_dungeonharronir_c_01",id:251140,sl:"Head",ty:"Leather",b:"Lithiel Cinderfury",p:["Agi","Int"],x:[["Haste",8],["Mastery",6]]},
   {n:"Pendant of Malefic Fury",ic:"inv_12_jewelry_silvermoonelf_necklace_green",id:251142,sl:"Neck",ty:"Neck",b:"Lithiel Cinderfury",x:[["Mastery",14],["Haste",6]]},
   {n:"Cinderfury Shoulderguards",ic:"inv_shoulder_plate_dungeonharronir_c_01",id:251138,sl:"Shoulder",ty:"Plate",b:"Lithiel Cinderfury",p:["Str","Int"],x:[["Haste",7],["Mastery",4]]},
   {n:"Summoner's Searing Shirt",ic:"inv_chest_cloth_dungeonharronir_c_01",id:251139,sl:"Chest",ty:"Cloth",b:"Lithiel Cinderfury",p:["Int"],x:[["Haste",9],["Crit",5]]},
   {n:"Lithiel's Linked Leggings",ic:"inv_pant_mail_dungeonharronir_c_01",id:251141,sl:"Legs",ty:"Mail",b:"Lithiel Cinderfury",p:["Agi","Int"],x:[["Haste",9],["Vers",6]]},
-  {n:"Unstable Felheart Crystal",ic:"tooltip_crystallizedfel",id:250255,sl:"Trinket",ty:"Trinket",b:"Lithiel Cinderfury",p:["Int"],u:"Unleash the fel energy stored within the crystal, sacrificing your health to infuse a target ally for 10 sec, absorbing damage. (2 Min Cooldown)"}]},
+  {n:"Unstable Felheart Crystal",ic:"tooltip_crystallizedfel",id:250255,sl:"Trinket",ty:"Trinket",b:"Lithiel Cinderfury",p:["Int"],u:"Unleash the fel energy stored within the crystal, sacrificing your health to infuse a target ally for 10 sec, absorbing damage. (2 Min Cooldown)",ro:["healer"]}]},
  route:[
   {n:1,t:"Bottom right start",m:"Opening street packs",d:1,p:"The opening area is static in Mythic+ even though it was not in Mythic 0.",s:["tk_rt"]},
   {n:2,t:"Lust pull, top of the district",m:"Lieutenant plus guard, chained into the next group",d:3,lust:true,p:"Looks bigger than it is — chain up to the mini-boss, then add the rest when you feel safe. They only spawn when you open the door.",s:["tk_rt"]},
@@ -1191,7 +1202,7 @@ loot:{s:["iv_don"],i:[
   {n:"Autumn's Boon Belt",ic:"inv_belt_plate_dungeonharronir_c_01",id:251144,sl:"Waist",ty:"Plate",b:"The Hoardmonger",p:["Str","Int"],x:[["Mastery",6],["Vers",4]]},
   {n:"Forgotten Tribe Footguards",ic:"inv_boot_mail_dungeonharronir_c_01",id:251145,sl:"Feet",ty:"Mail",b:"The Hoardmonger",p:["Agi","Int"],x:[["Haste",6],["Vers",4]]},
   {n:"Pilfered Precious Band",ic:"inv_12_jewelry_zulaman_troll_ring_green2",id:251148,sl:"Ring",ty:"Ring",b:"The Hoardmonger",x:[["Vers",12],["Crit",8]]},
-  {n:"Mycolic Medicine",ic:"inv_misc_starspecklemushroom",id:250248,sl:"Trinket",ty:"Trinket",b:"The Hoardmonger",p:["Int"],e:"You gain Nalorakk's Favor of Growth. Your healing spells and abilities have a chance to instantly heal your target and spawn a glowing mushroom near them that lasts for 10 sec. If an ally steps on and consumes the mushroom, they are healed again."},
+  {n:"Mycolic Medicine",ic:"inv_misc_starspecklemushroom",id:250248,sl:"Trinket",ty:"Trinket",b:"The Hoardmonger",p:["Int"],e:"You gain Nalorakk's Favor of Growth. Your healing spells and abilities have a chance to instantly heal your target and spawn a glowing mushroom near them that lasts for 10 sec. If an ally steps on and consumes the mushroom, they are healed again.",ro:["healer"]},
   {n:"Victor's Flashfrozen Blade",ic:"inv_polearm_2h_dungeonharronir_c_01",id:251149,sl:"Two-hand",ty:"Polearm",b:"Sentinel of Winter",p:["Agi"],x:[["Mastery",8],["Haste",6]]},
   {n:"Tempest's Shelter",ic:"inv_shield_1h_dungeonharronir_c_01",id:251150,sl:"Off-hand",ty:"Shield",b:"Sentinel of Winter",p:["Str","Int"],x:[["Haste",4],["Mastery",3]]},
   {n:"Perennial Frostbound Charm",ic:"inv_offhand_1h_dungeonharronir_c_01",id:271681,sl:"Off-hand",ty:"Off-hand",b:"Sentinel of Winter",p:["Int"],x:[["Mastery",14],["Crit",10]]},
@@ -1200,14 +1211,14 @@ loot:{s:["iv_don"],i:[
   {n:"Season's Turn Gauntlets",ic:"inv_glove_mail_dungeonharronir_c_01",id:251152,sl:"Hands",ty:"Mail",b:"Sentinel of Winter",p:["Agi","Int"],x:[["Haste",6],["Vers",4]]},
   {n:"Tribal Defender's Cord",ic:"inv_belt_mail_dungeonharronir_c_01",id:251155,sl:"Waist",ty:"Mail",b:"Sentinel of Winter",p:["Agi","Int"],x:[["Crit",7],["Mastery",4]]},
   {n:"Arctic Explorer's Legwraps",ic:"inv_boot_leather_dungeonharronir_c_01",id:251153,sl:"Feet",ty:"Leather",b:"Sentinel of Winter",p:["Agi","Int"],x:[["Haste",7],["Crit",4]]},
-  {n:"Permafrost Essence",ic:"inv12_jewelrytrinkets_dungeon_permafrostreservoir",id:250244,sl:"Trinket",ty:"Trinket",b:"Sentinel of Winter",e:"You gain Nalorakk's Favor of Enduring. Taking damage has a chance to grant a Mark of Frost, increasing your Critical Strike for 15 sec. Stacks up to 10 times. If your health falls below 25%, the reservoir ruptures, consuming all marks to form a Frost Barrier that absorbs damage per mark for 10 sec."},
+  {n:"Permafrost Essence",ic:"inv12_jewelrytrinkets_dungeon_permafrostreservoir",id:250244,sl:"Trinket",ty:"Trinket",b:"Sentinel of Winter",e:"You gain Nalorakk's Favor of Enduring. Taking damage has a chance to grant a Mark of Frost, increasing your Critical Strike for 15 sec. Stacks up to 10 times. If your health falls below 25%, the reservoir ruptures, consuming all marks to form a Frost Barrier that absorbs damage per mark for 10 sec.",ro:["tank"]},
   {n:"Fallen Speaker's Staff",ic:"inv_staff_2h_amani_c_01",id:251156,sl:"Two-hand",ty:"Staff",b:"Nalorakk",p:["Int"],x:[["Haste",9],["Vers",5]]},
   {n:"Nalorakk's Nightmare",ic:"inv_helm_mail_dungeonharronir_c_01",id:251158,sl:"Head",ty:"Mail",b:"Nalorakk",p:["Agi","Int"],x:[["Vers",8],["Haste",6]]},
   {n:"Yoke of the Charging Bear",ic:"inv_12_jewelry_zulaman_troll_necklace_green1",id:251173,sl:"Neck",ty:"Neck",b:"Nalorakk",x:[["Haste",13],["Crit",7]]},
   {n:"War Trial Vestments",ic:"inv_chest_leather_dungeonharronir_c_01",id:251159,sl:"Chest",ty:"Leather",b:"Nalorakk",p:["Agi","Int"],x:[["Mastery",9],["Haste",5]]},
   {n:"Bonds of the Hash'ura",ic:"inv_glove_plate_dungeonharronir_c_01",id:251214,sl:"Hands",ty:"Plate",b:"Nalorakk",p:["Str","Int"],x:[["Haste",6],["Crit",4]]},
   {n:"Forest Dream Leg-guards",ic:"inv_pant_cloth_dungeonharronir_c_01",id:251160,sl:"Legs",ty:"Cloth",b:"Nalorakk",p:["Int"],x:[["Haste",9],["Crit",5]]},
-  {n:"Idol of the War Loa",ic:"inv12_jewelrytrinkets_dungeon_idolofthewargod",id:250229,sl:"Trinket",ty:"Trinket",b:"Nalorakk",x:[["Crit",10]],e:"You have proven your worth to Nalorakk. Your abilities have a chance to echo with the war god's furious roar, granting you Strength for 15 sec. Nearby allies with Nalorakk's favor are rallied, gaining 25% movement speed for 10 sec."}]},
+  {n:"Idol of the War Loa",ic:"inv12_jewelrytrinkets_dungeon_idolofthewargod",id:250229,sl:"Trinket",ty:"Trinket",b:"Nalorakk",x:[["Crit",10]],e:"You have proven your worth to Nalorakk. Your abilities have a chance to echo with the war god's furious roar, granting you Strength for 15 sec. Nearby allies with Nalorakk's favor are rallied, gaining 25% movement speed for 10 sec.",ro:["mdps"]}]},
  route:[
   {n:1,t:"Big opening lust pull",m:"Spirit of Hunger, two casters, assorted forest mobs",d:3,lust:true,p:"The Spirit of Hunger is the scary part. The rest hit the tank or throw random bleeds.",s:["tk_rt"]},
   {n:2,t:"Matriarch drag",m:"Territorial Matriarch",d:2,p:"Drag it down while avoiding the second Spirit of Hunger. Walk the waterfall side.",s:["tk_rt"]},
@@ -1302,26 +1313,26 @@ loot:{s:["iv_bv"],i:[
   {n:"Rootwarden Wraps",ic:"inv_bracer_leather_dungeonharronir_c_01",id:251183,sl:"Wrist",ty:"Leather",b:"Lightblossom Trinity",p:["Agi","Int"],x:[["Crit",5],["Mastery",3]]},
   {n:"Lightblossom Cinch",ic:"inv_belt_cloth_dungeonharronir_c_01",id:251185,sl:"Waist",ty:"Cloth",b:"Lightblossom Trinity",p:["Int"],x:[["Mastery",6],["Haste",4]]},
   {n:"Bedrock Breeches",ic:"inv_pant_plate_dungeonharronir_c_01",id:251182,sl:"Legs",ty:"Plate",b:"Lightblossom Trinity",p:["Str","Int"],x:[["Crit",9],["Vers",6]]},
-  {n:"Seed of Radiant Hope",ic:"inv12_jewelrytrinkets_dungeon_seedofradianthope",id:250254,sl:"Trinket",ty:"Trinket",b:"Lightblossom Trinity",p:["Int"],u:"Surround your target ally with Lightblossoms, healing them over 12 sec. If their health falls below 50%, the Lightblossoms fully bloom in radiant light, instantly healing them. (1 Min, 30 Sec Cooldown)"},
+  {n:"Seed of Radiant Hope",ic:"inv12_jewelrytrinkets_dungeon_seedofradianthope",id:250254,sl:"Trinket",ty:"Trinket",b:"Lightblossom Trinity",p:["Int"],u:"Surround your target ally with Lightblossoms, healing them over 12 sec. If their health falls below 50%, the Lightblossoms fully bloom in radiant light, instantly healing them. (1 Min, 30 Sec Cooldown)",ro:["healer"]},
   {n:"Thorntalon Edge",ic:"inv_hand_1h_dungeonharronir_c_01",id:251186,sl:"One-hand",ty:"Fist",b:"Ikuzz the Light Hunter",p:["Agi"],x:[["Mastery",4],["Crit",3]]},
   {n:"Doompetal",ic:"inv_wand_1h_dungeonharronir_c_01",id:251188,sl:"Ranged",ty:"Wand",b:"Ikuzz the Light Hunter",p:["Int"],x:[["Haste",4],["Mastery",3]]},
   {n:"Amirdrassil's Reach",ic:"inv_crossbow_2h_dungeonharronir_c_01",id:251187,sl:"Ranged",ty:"Crossbow",b:"Ikuzz the Light Hunter",p:["Agi"],x:[["Vers",8],["Crit",6]]},
   {n:"Bloodthorn Burnous",ic:"inv_cape_mail_dungeonharronir_c_01",id:251190,sl:"Back",ty:"Cloak",b:"Ikuzz the Light Hunter",p:["Str","Agi","Int"],x:[["Haste",5],["Mastery",3]]},
   {n:"Rootwalker Harness",ic:"inv_belt_leather_dungeonharronir_c_01",id:251189,sl:"Waist",ty:"Leather",b:"Ikuzz the Light Hunter",p:["Agi","Int"],x:[["Vers",7],["Crit",4]]},
-  {n:"Seed of the Devouring Wild",ic:"inv12_jewelrytrinkets_dungeon_seedofthedevouringwild",id:250238,sl:"Trinket",ty:"Trinket",b:"Ikuzz the Light Hunter",p:["Str"],x:[["Mastery",29]],u:"Awaken the Bloodthorn Roots, erupting around your target and inflicting Nature damage split among nearby enemies. You absorb their essence, gaining Mastery for 10 sec. (1 Min, 30 Sec Cooldown)"},
+  {n:"Seed of the Devouring Wild",ic:"inv12_jewelrytrinkets_dungeon_seedofthedevouringwild",id:250238,sl:"Trinket",ty:"Trinket",b:"Ikuzz the Light Hunter",p:["Str"],x:[["Mastery",29]],u:"Awaken the Bloodthorn Roots, erupting around your target and inflicting Nature damage split among nearby enemies. You absorb their essence, gaining Mastery for 10 sec. (1 Min, 30 Sec Cooldown)",ro:["mdps"]},
   {n:"Branch of Pride",ic:"inv_staff_2h_dungeonharronir_c_01",id:251192,sl:"Two-hand",ty:"Staff",b:"Lightwarden Ruia",p:["Agi"],x:[["Crit",9],["Vers",5]]},
   {n:"Luminescent Sprout",ic:"inv_offhand_1h_dungeonharronir_c_01",id:251191,sl:"Off-hand",ty:"Off-hand",b:"Lightwarden Ruia",p:["Int"],x:[["Mastery",4],["Haste",3]]},
   {n:"Taproot Ribs",ic:"inv_chest_plate_dungeonharronir_c_01",id:251193,sl:"Chest",ty:"Plate",b:"Lightwarden Ruia",p:["Str","Int"],x:[["Haste",9],["Vers",5]]},
   {n:"Pulverizing Pads",ic:"inv_glove_mail_dungeonharronir_c_01",id:251165,sl:"Hands",ty:"Mail",b:"Lightwarden Ruia",p:["Agi","Int"],x:[["Crit",6],["Vers",4]]},
   {n:"Lightwarden's Bind",ic:"inv12_jewelrytrinkets_rutaani_ring_yellow",id:251194,sl:"Ring",ty:"Ring",b:"Lightwarden Ruia",x:[["Mastery",13],["Vers",7]]},
-  {n:"Lightspire Core",ic:"inv_enchant_essenceastrallarge",id:250214,sl:"Trinket",ty:"Trinket",b:"Lightwarden Ruia",p:["Agi","Int"],x:[["Mastery",35]],e:"You are embraced by the Light, increasing Mastery. Your damaging spells and abilities can call a beam of radiant light nearby. Standing in the light blesses you with Mastery while you stand in it."},
+  {n:"Lightspire Core",ic:"inv_enchant_essenceastrallarge",id:250214,sl:"Trinket",ty:"Trinket",b:"Lightwarden Ruia",p:["Agi","Int"],x:[["Mastery",35]],e:"You are embraced by the Light, increasing Mastery. Your damaging spells and abilities can call a beam of radiant light nearby. Standing in the light blesses you with Mastery while you stand in it.",ro:["rdps","mdps"]},
   {n:"Thorned Reply",ic:"inv_sword_1h_dungeonharronir_c_01",id:251195,sl:"One-hand",ty:"Sword",b:"Ziekket",p:["Str"],x:[["Haste",4],["Crit",3]]},
   {n:"Teldrassil's Sacrifice",ic:"inv_shield_1h_rutaani_b_01",id:251196,sl:"Off-hand",ty:"Shield",b:"Ziekket",p:["Str","Int"],x:[["Crit",4],["Vers",3]]},
   {n:"Worldroot Canopy",ic:"inv_helm_cloth_dungeonharronir_c_01",id:251199,sl:"Head",ty:"Cloth",b:"Ziekket",p:["Int"],x:[["Mastery",9],["Crit",5]]},
   {n:"Saptorbane Guards",ic:"inv_bracer_mail_dungeonharronir_c_01",id:251200,sl:"Wrist",ty:"Mail",b:"Ziekket",p:["Agi","Int"],x:[["Haste",5],["Crit",3]]},
   {n:"Thornspike Gauntlets",ic:"inv_glove_plate_dungeonharronir_c_01",id:251197,sl:"Hands",ty:"Plate",b:"Ziekket",p:["Str","Int"],x:[["Mastery",7],["Vers",4]]},
   {n:"Lightspore Leggings",ic:"inv_pant_leather_dungeonharronir_c_01",id:251198,sl:"Legs",ty:"Leather",b:"Ziekket",p:["Agi","Int"],x:[["Vers",9],["Mastery",5]]},
-  {n:"Sapling of the Dawnroot",ic:"inv_misc_herb_nightmarevine",id:250259,sl:"Trinket",ty:"Trinket",b:"Ziekket",p:["Str","Agi","Int"],e:"Your spells and abilities have a chance to uproot a Lightspawn Lasher to aid you in combat for 15 sec, dealing Physical damage. The Lightspawn Lasher then withers, bursting into light-infused sap and inflicting Holy damage split among nearby enemies."}]},
+  {n:"Sapling of the Dawnroot",ic:"inv_misc_herb_nightmarevine",id:250259,sl:"Trinket",ty:"Trinket",b:"Ziekket",p:["Str","Agi","Int"],e:"Your spells and abilities have a chance to uproot a Lightspawn Lasher to aid you in combat for 15 sec, dealing Physical damage. The Lightspawn Lasher then withers, bursting into light-infused sap and inflicting Holy damage split among nearby enemies.",ro:["rdps","mdps"]}]},
  route:[
   {n:1,t:"Choose right",m:"Headwing and scepter mobs",d:2,p:"The routing video prefers right: the left path has considerably more interrupts and an extra Belcher. The right side's bolt-casters can largely be ignored once packs are grouped.",s:["tk_rt"]},
   {n:2,t:"Group on the casters",m:"Spam casters, petalwing",d:2,p:"Interrupt to group them, then tag backwards to the petalwing area and fight there.",s:["tk_rt"]},
@@ -1434,7 +1445,7 @@ loot:{s:["iv_vsa"],i:[
   {n:"Despondent's Gauntlets",ic:"inv_glove_plate_dungeonharronir_c_01",id:251221,sl:"Hands",ty:"Plate",b:"Taz'Rah",p:["Str","Int"],x:[["Vers",6],["Mastery",4]]},
   {n:"Ethereal Netherwrap",ic:"inv_belt_cloth_dungeonharronir_c_01",id:251222,sl:"Waist",ty:"Cloth",b:"Taz'Rah",p:["Int"],x:[["Haste",7],["Crit",4]]},
   {n:"Riftworn Stompers",ic:"inv_boot_cloth_dungeonharronir_c_01",id:251219,sl:"Feet",ty:"Cloth",b:"Taz'Rah",p:["Int"],x:[["Haste",6],["Crit",4]]},
-  {n:"Void Execution Mandate",ic:"inv_inscription_80_warscroll_intellect",id:250225,sl:"Trinket",ty:"Trinket",b:"Taz'Rah",p:["Agi"],x:[["Crit",4]],u:"Mark your target for execution, increasing your Haste for 20 sec. While the target is marked, each of your attacks against them grants an additional Critical Strike, as the Void urges you to finish the kill, up to a maximum Critical Strike. (2 Min Cooldown)"},
+  {n:"Void Execution Mandate",ic:"inv_inscription_80_warscroll_intellect",id:250225,sl:"Trinket",ty:"Trinket",b:"Taz'Rah",p:["Agi"],x:[["Crit",4]],u:"Mark your target for execution, increasing your Haste for 20 sec. While the target is marked, each of your attacks against them grants an additional Critical Strike, as the Void urges you to finish the kill, up to a maximum Critical Strike. (2 Min Cooldown)",ro:["mdps"]},
   {n:"Fang of Contagion",ic:"inv_knife_1h_dungeonharronir_c_02",id:251225,sl:"One-hand",ty:"Dagger",b:"Atroxus",p:["Int"],x:[["Mastery",4],["Vers",3]]},
   {n:"Hulking Handaxe",ic:"inv_axe_1h_dungeonharronir_c_01",id:251224,sl:"One-hand",ty:"Axe",b:"Atroxus",p:["Agi"],x:[["Mastery",5],["Haste",2]]},
   {n:"Visor of the Predator",ic:"inv_helm_armor_domanaar_d_01",id:251229,sl:"Head",ty:"Plate",b:"Atroxus",p:["Str","Int"],x:[["Crit",9],["Mastery",5]]},
@@ -1442,14 +1453,14 @@ loot:{s:["iv_vsa"],i:[
   {n:"Hide of Pestilence",ic:"inv_chest_leather_dungeonharronir_c_01",id:251226,sl:"Chest",ty:"Leather",b:"Atroxus",p:["Agi","Int"],x:[["Crit",8],["Vers",6]]},
   {n:"Behemoth Waistband",ic:"inv_belt_mail_dungeonharronir_c_01",id:251228,sl:"Waist",ty:"Mail",b:"Atroxus",p:["Agi","Int"],x:[["Haste",6],["Mastery",4]]},
   {n:"Sickening Signet of Atroxus",ic:"inv_12_jewelry_devouringhost_ring_bronze2",id:252258,sl:"Ring",ty:"Ring",b:"Atroxus",x:[["Haste",14],["Mastery",6]]},
-  {n:"Tumor of the Swarm",ic:"ability_pet_baneling",id:250245,sl:"Trinket",ty:"Trinket",b:"Atroxus",p:["Str","Agi"],e:"Your attacks have a chance to release toxic parasites that burst around you, dealing Nature damage split among nearby enemies and healing you."},
+  {n:"Tumor of the Swarm",ic:"ability_pet_baneling",id:250245,sl:"Trinket",ty:"Trinket",b:"Atroxus",p:["Str","Agi"],e:"Your attacks have a chance to release toxic parasites that burst around you, dealing Nature damage split among nearby enemies and healing you.",ro:["mdps"]},
   {n:"Charonic Crescent",ic:"inv_polearm_2h_domanaar_b_01",id:251230,sl:"Two-hand",ty:"Polearm",b:"Charonus",p:["Str"],x:[["Vers",9],["Mastery",6]]},
   {n:"Singularity Slicer",ic:"inv_glaive_1h_dungeonharronir_c_01",id:251231,sl:"One-hand",ty:"Warglaive",b:"Charonus",p:["Agi","Int"],x:[["Crit",4],["Haste",3]]},
   {n:"Overseer's Diadem",ic:"inv_helm_cloth_dungeonharronir_c_01",id:251232,sl:"Head",ty:"Cloth",b:"Charonus",p:["Int"],x:[["Haste",9],["Mastery",6]]},
   {n:"Graft of the Domanaar",ic:"inv_12_jewelry_devouringhost_necklace_silver2",id:251234,sl:"Neck",ty:"Neck",b:"Charonus",x:[["Crit",13],["Mastery",7]]},
   {n:"Manipulator's Vest",ic:"inv_chest_mail_dungeonharronir_c_01",id:251233,sl:"Chest",ty:"Mail",b:"Charonus",p:["Agi","Int"],x:[["Crit",9],["Haste",5]]},
   {n:"Gravitic Girdle",ic:"inv_belt_leather_dungeonharronir_c_01",id:251235,sl:"Waist",ty:"Leather",b:"Charonus",p:["Agi","Int"],x:[["Vers",7],["Mastery",4]]},
-  {n:"Mindpiercer's Sigil",ic:"inv_icon_shadowcouncilorb_purple",id:250224,sl:"Trinket",ty:"Trinket",b:"Charonus",e:"Your damaging spells have a chance to stir the Void near your target, erupting Shadow damage split among nearby enemies. You siphon energy from the Void, gaining Intellect for 10 sec."}]},
+  {n:"Mindpiercer's Sigil",ic:"inv_icon_shadowcouncilorb_purple",id:250224,sl:"Trinket",ty:"Trinket",b:"Charonus",e:"Your damaging spells have a chance to stir the Void near your target, erupting Shadow damage split among nearby enemies. You siphon energy from the Void, gaining Intellect for 10 sec.",ro:["rdps"]}]},
  route:[
   {n:1,t:"Most dangerous first pull in the pool",m:"Three Dominated Brawlers, shaman, Brutal Overseer",d:3,lust:true,p:"Crowd control one brawler, one kick on each of the other two, spare kicks on the shaman to group. Focus the Overseer. Cutting the lieutenant out of this pull feels bad, so control it instead.",s:["tk_rt"]},
   {n:2,t:"Mini-boss",m:"Path mini-boss and buff",d:2,p:"Take the buff, then move into the arena.",s:["tk_rt"]},
@@ -1554,14 +1565,14 @@ loot:{s:["iv_kr"],i:[
   {n:"Down-Lined Breeches",ic:"inv_pant_cloth_zandalardungeon_c_01",id:159234,sl:"Legs",ty:"Cloth",b:"The Golden Serpent",p:["Int"],x:[["Crit",7],["Mastery",5]]},
   {n:"Auric Puddle Stompers",ic:"inv_boot_plate_zandalardungeon_c_01",id:159412,sl:"Feet",ty:"Plate",b:"The Golden Serpent",p:["Str","Int"],x:[["Vers",5],["Crit",4]]},
   {n:"Goldfeather Boots",ic:"inv_boot_leather_zandalardungeon_c_01",id:159304,sl:"Feet",ty:"Leather",b:"The Golden Serpent",p:["Agi","Int"],x:[["Vers",5],["Mastery",4]]},
-  {n:"Lustrous Golden Plumage",ic:"inv_icon_feather06a",id:159617,sl:"Trinket",ty:"Trinket",b:"The Golden Serpent",p:["Agi"],u:"Your movements shimmer with golden plumage, increasing your Versatility for 20 sec. (2 Min Cooldown)"},
+  {n:"Lustrous Golden Plumage",ic:"inv_icon_feather06a",id:159617,sl:"Trinket",ty:"Trinket",b:"The Golden Serpent",p:["Agi"],u:"Your movements shimmer with golden plumage, increasing your Versatility for 20 sec. (2 Min Cooldown)",ro:["mdps"]},
   {n:"Royal Purifier's Spade",ic:"inv_polearm_2h_zandalariguard_b_01",id:159642,sl:"Two-hand",ty:"Polearm",b:"Mchimba the Embalmer",p:["Agi"],x:[["Crit",7],["Mastery",5]]},
   {n:"Vessel of Last Rites",ic:"inv_offhand_1h_battledungeon_c_02",id:159667,sl:"Off-hand",ty:"Off-hand",b:"Mchimba the Embalmer",p:["Int"],x:[["Haste",4],["Vers",2]]},
   {n:"Embalmer's Steadying Bracers",ic:"inv_bracer_plate_zandalardungeon_c_01",id:159409,sl:"Wrist",ty:"Plate",b:"Mchimba the Embalmer",p:["Str","Int"],x:[["Crit",4],["Haste",3]]},
   {n:"Desiccator's Blessed Gloves",ic:"inv_glove_leather_zandalardungeon_c_01",id:159312,sl:"Hands",ty:"Leather",b:"Mchimba the Embalmer",p:["Agi","Int"],x:[["Crit",5],["Mastery",3]]},
   {n:"Sepulchral Construct's Gloves",ic:"inv_glove_mail_zandalardungeon_c_01",id:160213,sl:"Hands",ty:"Mail",b:"Mchimba the Embalmer",p:["Agi","Int"],x:[["Mastery",5],["Haste",4]]},
   {n:"Ritual Binder's Ring",ic:"inv_ring_80_03e",id:159459,sl:"Ring",ty:"Ring",b:"Mchimba the Embalmer",x:[["Haste",11],["Vers",6]]},
-  {n:"Mchimba's Ritual Bandages",ic:"inv_misc_emberweavebandagelight",id:159618,sl:"Trinket",ty:"Trinket",b:"Mchimba the Embalmer",p:["Str","Agi"],u:"Wrap yourself in ritual bandages, absorbing damage for 6 sec. (1 Min Cooldown)"},
+  {n:"Mchimba's Ritual Bandages",ic:"inv_misc_emberweavebandagelight",id:159618,sl:"Trinket",ty:"Trinket",b:"Mchimba the Embalmer",p:["Str","Agi"],u:"Wrap yourself in ritual bandages, absorbing damage for 6 sec. (1 Min Cooldown)",ro:["tank"]},
   {n:"Crackling Jade Kilij",ic:"inv_sword_1h_battledungeon_c_02",id:160216,sl:"One-hand",ty:"Sword",b:"The Council of Tribes",p:["Int"],x:[["Crit",3],["Mastery",2]]},
   {n:"Jeweled Dagger of Subjugation",ic:"inv_knife_1h_battledungeon_c_01",id:159136,sl:"One-hand",ty:"Dagger",b:"The Council of Tribes",p:["Agi"],x:[["Haste",3],["Mastery",3]]},
   {n:"Crossbow of Forgotten Majesty",ic:"inv_bow_2h_crossbow_pandaraid_d_01",id:159643,sl:"Ranged",ty:"Crossbow",b:"The Council of Tribes",p:["Agi"],x:[["Haste",7],["Mastery",5]]},
@@ -1580,7 +1591,7 @@ loot:{s:["iv_kr"],i:[
   {n:"Vest of Reverent Adoration",ic:"inv_chest_leather_zandalardungeon_c_01",id:239048,sl:"Chest",ty:"Leather",b:"King Dazar",p:["Agi","Int"],x:[["Crit",7],["Mastery",5]]},
   {n:"Primal Dinomancer's Belt",ic:"inv_belt_leather_zandalardungeon_c_01",id:159301,sl:"Waist",ty:"Leather",b:"King Dazar",p:["Agi","Int"],x:[["Crit",5],["Haste",4]]},
   {n:"Loa-Blessed Chestguard",ic:"inv_chest_mail_zandalardungeon_c_01",id:239046,sl:"Chest",ty:"Mail",b:"King Dazar",p:["Agi","Int"],x:[["Crit",8],["Vers",4]]},
-  {n:"Stormbound Emblem of Dazar",ic:"inv_7_0raid_necklace_14a",id:273649,sl:"Trinket",ty:"Trinket",b:"King Dazar",p:["Int"],u:"Channel for 2 sec as the wind answers Dazar's command, increasing your Haste up to 20 sec. (2 Min Cooldown)"}]},
+  {n:"Stormbound Emblem of Dazar",ic:"inv_7_0raid_necklace_14a",id:273649,sl:"Trinket",ty:"Trinket",b:"King Dazar",p:["Int"],u:"Channel for 2 sec as the wind answers Dazar's command, increasing your Haste up to 20 sec. (2 Min Cooldown)",ro:["rdps","healer"]}]},
  route:[
   {n:1,t:"Two guardians left behind",m:"Opening room",d:2,p:"The route deliberately leaves two Animated Guardians unselected and still makes count — which is the routing evidence that the 100% requirement changed.",s:["tk_rt"]},
   {n:2,t:"Gong lust pull",m:"Two Animated Guardians plus the room",d:3,lust:true,p:"Expected to become the meta strategy: drag the guardians in, trigger the gong, and lust the whole room. A pug group should kill them separately first.",s:["tk_rt"]},
@@ -1678,13 +1689,13 @@ loot:{s:["iv_rlp"],i:[
   {n:"Egg Tender's Leggings",ic:"inv_mail_dragondungeon_c_01_pant",id:193759,sl:"Legs",ty:"Mail",b:"Melidrussa Chillworn",p:["Agi","Int"],x:[["Vers",13],["Haste",8]]},
   {n:"Scaleguard's Stalwart Greatboots",ic:"inv_plate_dragondungeon_c_01_boot",id:193728,sl:"Feet",ty:"Plate",b:"Melidrussa Chillworn",p:["Str","Int"],x:[["Vers",10],["Mastery",6]]},
   {n:"Subjugator's Chilling Grips",ic:"inv_leather_dragondungeon_c_01_glove",id:193758,sl:"Hands",ty:"Leather",b:"Melidrussa Chillworn",p:["Agi","Int"],x:[["Crit",9],["Vers",7]]},
-  {n:"Ruby Whelp Shell",ic:"inv_item_dragonegg_redbroken01",id:193757,sl:"Trinket",ty:"Trinket",b:"Melidrussa Chillworn",p:["Str","Agi","Int"],u:"Call your Ruby Whelpling to inspect your target's situation, teaching them how to be helpful. (1 Day Cooldown)",e:"Your spells and abilities have a chance to call a Ruby Whelpling, which will try to be helpful and assist you in combat."},
+  {n:"Ruby Whelp Shell",ic:"inv_item_dragonegg_redbroken01",id:193757,sl:"Trinket",ty:"Trinket",b:"Melidrussa Chillworn",p:["Str","Agi","Int"],u:"Call your Ruby Whelpling to inspect your target's situation, teaching them how to be helpful. (1 Day Cooldown)",e:"Your spells and abilities have a chance to call a Ruby Whelpling, which will try to be helpful and assist you in combat.",ro:["rdps","mdps"]},
   {n:"Havoc Crusher",ic:"inv_mace_1h_dragondungeon_c_02",id:193767,sl:"One-hand",ty:"Mace",b:"Kokia Blazehoof",p:["Agi"],x:[["Crit",7],["Haste",4]]},
   {n:"Blazebound Lieutenant's Helm",ic:"inv_mail_dragondungeon_c_01_helm",id:193765,sl:"Head",ty:"Mail",b:"Kokia Blazehoof",p:["Agi","Int"],x:[["Mastery",14],["Vers",8]]},
   {n:"Fireproof Drape",ic:"inv_mail_dragondungeon_c_01_cape",id:193763,sl:"Back",ty:"Cloak",b:"Kokia Blazehoof",p:["Str","Agi","Int"],x:[["Haste",8],["Crit",4]]},
   {n:"Invader's Firestorm Chestguard",ic:"inv_leather_dragondungeon_c_01_chest",id:193764,sl:"Chest",ty:"Leather",b:"Kokia Blazehoof",p:["Agi","Int"],x:[["Mastery",13],["Vers",8]]},
   {n:"Kokia's Burnout Rod",ic:"inv_offhand_1h_drakonid_c_01",id:193766,sl:"Off-hand",ty:"Off-hand",b:"Kokia Blazehoof",p:["Int"],x:[["Crit",7],["Vers",4]]},
-  {n:"Blazebinder's Hoof",ic:"inv_10_dungeonjewelry_primalist_trinket_2_fire",id:193762,sl:"Trinket",ty:"Trinket",b:"Kokia Blazehoof",x:[["Haste",15]],u:"Bind with the blaze for 20 sec, giving your attacks a high chance to increase your Strength, stacking up to 6 times. When your binding is complete, emit a burnout wave, dealing Fire damage split between all nearby enemies, based on the strength of your binding. (500ms cooldown) (2 Min Cooldown)"},
+  {n:"Blazebinder's Hoof",ic:"inv_10_dungeonjewelry_primalist_trinket_2_fire",id:193762,sl:"Trinket",ty:"Trinket",b:"Kokia Blazehoof",x:[["Haste",15]],u:"Bind with the blaze for 20 sec, giving your attacks a high chance to increase your Strength, stacking up to 6 times. When your binding is complete, emit a burnout wave, dealing Fire damage split between all nearby enemies, based on the strength of your binding. (500ms cooldown) (2 Min Cooldown)",ro:["mdps"]},
   {n:"Backdraft Cleaver",ic:"inv_axe_2h_drakonoid_c_01",id:193755,sl:"Two-hand",ty:"Axe",b:"Kyrakka and Erkhart Stormvein",p:["Str"],x:[["Haste",14],["Crit",8]]},
   {n:"Skyferno Rondel",ic:"inv_knife_1h_dragondungeon_c_02",id:193756,sl:"One-hand",ty:"Dagger",b:"Kyrakka and Erkhart Stormvein",p:["Agi"],x:[["Vers",7],["Haste",4]]},
   {n:"Drake Rider's Stecktarge",ic:"inv_shield_1h_drakonid_c_01",id:193754,sl:"Off-hand",ty:"Shield",b:"Kyrakka and Erkhart Stormvein",p:["Str","Int"],x:[["Vers",7],["Mastery",4]]},
@@ -1693,7 +1704,7 @@ loot:{s:["iv_rlp"],i:[
   {n:"Galerattle Gauntlets",ic:"inv_mail_dragondungeon_c_01_glove",id:193752,sl:"Hands",ty:"Mail",b:"Kyrakka and Erkhart Stormvein",p:["Agi","Int"],x:[["Mastery",9],["Crit",7]]},
   {n:"Sky Saddle Cord",ic:"inv_belt_dragondungeon_c_01",id:193691,sl:"Waist",ty:"Cloth",b:"Kyrakka and Erkhart Stormvein",p:["Int"],x:[["Haste",10],["Mastery",6]]},
   {n:"Wind Soarer's Breeches",ic:"inv_pant_cloth_dragondungeon_c_01",id:193750,sl:"Legs",ty:"Cloth",b:"Kyrakka and Erkhart Stormvein",p:["Int"],x:[["Mastery",14],["Crit",8]]},
-  {n:"Kyrakka's Searing Embers",ic:"inv_10_dungeonjewelry_primalist_trinket_4_fire",id:193748,sl:"Trinket",ty:"Trinket",b:"Kyrakka and Erkhart Stormvein",x:[["Crit",15]],e:"Your helpful spells and abilities have a high chance to create a Burning Ember on an ally. The ember flares up after 1 sec, cauterizing wounds to heal and expelling Fire damage split between nearby enemies. (1s cooldown)"}]},
+  {n:"Kyrakka's Searing Embers",ic:"inv_10_dungeonjewelry_primalist_trinket_4_fire",id:193748,sl:"Trinket",ty:"Trinket",b:"Kyrakka and Erkhart Stormvein",x:[["Crit",15]],e:"Your helpful spells and abilities have a high chance to create a Burning Ember on an ally. The ember flares up after 1 sec, cauterizing wounds to heal and expelling Fire damage split between nearby enemies. (1s cooldown)",ro:["healer"]}]},
  route:[
   {n:1,t:"Opening lust pull",m:"Juggernaut plus escort",d:2,lust:true,p:"Not too bad. Be careful of the Juggernaut's AoE if you are also carrying an Earthbound Guardian dot.",s:["tk_rt"]},
   {n:2,t:"Second Juggernaut",m:"Three-pack",d:2,p:"Once it dies, move across and take the caster plus the group beyond.",s:["tk_rt"]},
@@ -1806,13 +1817,13 @@ loot:{s:["wh_dg"],i:[
   {n:"Jade Ophidian Band",ic:"inv_ring_80_04c",id:162544,sl:"Ring",ty:"Ring",b:"Merektha",x:[["Mastery",10],["Vers",6]]},
   {n:"Swarm's Edge",ic:"inv_sword_1h_battledungeon_c_02",id:158714,sl:"One-hand",ty:"Sword",b:"Merektha",p:["Agi"],x:[["Vers",3],["Mastery",2]]},
   {n:"Snakebite Recurve",ic:"inv_bow_1h_battledungeon_c_01",id:159637,sl:"Ranged",ty:"Bow",b:"Merektha",p:["Agi"],x:[["Crit",7],["Haste",5]]},
-  {n:"Merektha's Fang",ic:"inv_misc_food_87_sporelingsnack",id:158367,sl:"Trinket",ty:"Trinket",b:"Merektha",p:["Str"],u:"Pump the fang's noxious venom gland, spraying poisonous mist forward in a cone. The mist deals Nature damage every 1 sec over 3 sec, stacking up to 3 times. (2 Min Cooldown)"},
+  {n:"Merektha's Fang",ic:"inv_misc_food_87_sporelingsnack",id:158367,sl:"Trinket",ty:"Trinket",b:"Merektha",p:["Str"],u:"Pump the fang's noxious venom gland, spraying poisonous mist forward in a cone. The mist deals Nature damage every 1 sec over 3 sec, stacking up to 3 times. (2 Min Cooldown)",ro:["mdps"]},
   {n:"Handwraps of Oscillating Polarity",ic:"inv_glove_cloth_zandalardungeon_c_01",id:159247,sl:"Hands",ty:"Cloth",b:"Galvazzt",p:["Int"],x:[["Crit",6],["Haste",3]]},
   {n:"Sand-Scoured Greatbelt",ic:"inv_belt_plate_zandalardungeon_c_01",id:159442,sl:"Waist",ty:"Plate",b:"Galvazzt",p:["Str","Int"],x:[["Vers",5],["Mastery",3]]},
   {n:"Charged Sandstone Band",ic:"inv_ring_80_03d",id:158366,sl:"Ring",ty:"Ring",b:"Galvazzt",x:[["Crit",9],["Mastery",7]]},
   {n:"Galvanized Stormcrusher",ic:"inv_mace_1h_pandaraid_d_01",id:158369,sl:"One-hand",ty:"Mace",b:"Galvazzt",p:["Int"],x:[["Haste",3],["Vers",2]]},
   {n:"Bulwark of Brimming Potential",ic:"inv_shield_1h_battledungeon_c_02",id:159664,sl:"Off-hand",ty:"Shield",b:"Galvazzt",p:["Str","Int"],x:[["Crit",3],["Vers",3]]},
-  {n:"Tiny Electromental in a Jar",ic:"inv_alchemy_71_potion4",id:158374,sl:"Trinket",ty:"Trinket",b:"Galvazzt",p:["Agi"],e:"Your attacks and abilities have a chance to grant Phenomenal Power. On reaching 12 applications you will Unleash Lightning, inflicting Nature damage. \"Phenomenal lightning power, itty bitty containment space.\""},
+  {n:"Tiny Electromental in a Jar",ic:"inv_alchemy_71_potion4",id:158374,sl:"Trinket",ty:"Trinket",b:"Galvazzt",p:["Agi"],e:"Your attacks and abilities have a chance to grant Phenomenal Power. On reaching 12 applications you will Unleash Lightning, inflicting Nature damage. \"Phenomenal lightning power, itty bitty containment space.\"",ro:["mdps"]},
   {n:"Brood Cleanser's Amice",ic:"inv_shoulder_cloth_zandalardungeon_c_01",id:239031,sl:"Shoulder",ty:"Cloth",b:"Avatar of Sethraliss",p:["Int"],x:[["Crit",4],["Haste",4]]},
   {n:"Robes of the Reborn Serpent",ic:"inv_chest_cloth_zandalardungeon_c_01",id:239032,sl:"Chest",ty:"Cloth",b:"Avatar of Sethraliss",p:["Int"],x:[["Mastery",7],["Crit",5]]},
   {n:"Hood of the Slithering Loa",ic:"inv_helm_leather_zandalardungeon_c_01",id:239033,sl:"Head",ty:"Leather",b:"Avatar of Sethraliss",p:["Agi","Int"],x:[["Crit",7],["Haste",5]]},
@@ -1822,7 +1833,7 @@ loot:{s:["wh_dg"],i:[
   {n:"C'thraxxi Binders Pauldrons",ic:"inv_shoulder_plate_zandalardungeon_c_01",id:239037,sl:"Shoulder",ty:"Plate",b:"Avatar of Sethraliss",p:["Str","Int"],x:[["Haste",6],["Crit",3]]},
   {n:"Desert Guardian's Breastplate",ic:"inv_chest_plate_zandalardungeon_c_01",id:159424,sl:"Chest",ty:"Plate",b:"Avatar of Sethraliss",p:["Str","Int"]},
   {n:"Resonating Crystal Scimitar",ic:"inv_sword_1h_battledungeon_c_02",id:158373,sl:"One-hand",ty:"Sword",b:"Avatar of Sethraliss",p:["Str"],x:[["Crit",3],["Haste",3]]},
-  {n:"Sethraliss' Defiled Relic",ic:"inv_staff_2h_snakeman_c_01",id:158368,sl:"Trinket",ty:"Trinket",b:"Avatar of Sethraliss",p:["Int"],u:"Curse the target with a Rotten Wound, dealing Nature damage over 15 sec. While the wound persists, your damaging spells have a high chance to deepen the wound, inflicting an additional Nature damage. (2 Min Cooldown)"}]},
+  {n:"Sethraliss' Defiled Relic",ic:"inv_staff_2h_snakeman_c_01",id:158368,sl:"Trinket",ty:"Trinket",b:"Avatar of Sethraliss",p:["Int"],u:"Curse the target with a Rotten Wound, dealing Nature damage over 15 sec. While the wound persists, your damaging spells have a high chance to deepen the wound, inflicting an additional Nature damage. (2 Min Cooldown)",ro:["rdps"]}]},
  route:[
   {n:1,t:"Go right off the top",m:"Opening packs",d:2,p:"Fewer casters on this side, so it is the easier start.",s:["tk_rt"]},
   {n:2,t:"Conservative stop",m:"Big guy only",d:1,lust:true,p:"Faster groups run all the way to the next pack and lust both together. The pug version stops early and groups at the bottom of the first stairs.",s:["tk_rt"]},
@@ -2161,6 +2172,12 @@ const secChip=x=>{
    trinket is not a cantrip: every one of the 27 has an effect, that is what a
    trinket is, and they already have their own slot in the filter above. */
 const isCantrip=i=>i.ty!=="Trinket"&&!!(i.u||i.e);
+/* Role is the one field on this page nobody published — it is read off the
+   primary stat and the effect, so it ships marked UNCONFIRMED rather than
+   dressed up as sourced. Hunters sit under melee: they cannot use Intellect
+   trinkets, which is the only distinction that matters here. */
+const LROLE={tank:"Tank",healer:"Healer",rdps:"Ranged DPS",mdps:"Melee DPS"};
+const roleChips=i=>(i.ro||[]).map(r=>`<span class="rochip r-${r}" title="Unconfirmed — inferred from the primary stat and the effect, not from a published source.">${esc(LROLE[r]||r)}</span>`).join("");
 const cantrip=x=>isCantrip(x)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
 const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
   <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
@@ -2193,8 +2210,12 @@ const lootTable=d=>{
   rules as the stat line — <em>Mindpiercer's Sigil</em> has no stats printed on it and grants Intellect on proc.</p>
   <p class="note">Tanks are eligible for tank trinkets, but most set loot specialisation to a damage spec:
   survivability only out-earns throughput once a key is genuinely dangerous.</p>
+  <p class="note">${ic("i-warn",13)} The role on each trinket below is marked <b>UNCONFIRMED</b> because it is the
+  one judgement on this page nobody published. It is read off the primary stat and the effect — Intellect and
+  nothing else can only be a caster or a healer, Strength or Agility alone can never be either, and a trinket
+  carrying all three is a hybrid. Where the stat line says nothing, the effect decides.</p>
   <div class="trinkets">${trink.map(x=>`<div class="card trink">
-    <div class="mobtop">${itemIcon(x)}<h3>${esc(x.n)}</h3>${primChip(x.p)}</div>
+    <div class="mobtop">${itemIcon(x)}<h3>${esc(x.n)}</h3>${primChip(x.p)}${roleChips(x)}</div>
     ${x.x&&x.x.length?`<div class="n">${secChip(x.x)}</div>`:""}
     ${x.u?`<p class="fx"><b>Use</b> ${esc(x.u)}</p>`:""}
     ${x.e?`<p class="fx"><b>Equip</b> ${esc(x.e)}</p>`:""}
@@ -2474,7 +2495,7 @@ const LCAP=60;
    crit" is the query people mean. Secondaries are the exception and stack as
    AND, because every item carries exactly two and picking both is how you ask
    for a specific pairing. Each group says which it is. */
-let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null,fx:null};
+let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null};
 const LOOTALL=DUNGEONS.flatMap(d=>(d.loot?d.loot.i:[]).map(i=>({d,i})));
 const LSLOT=["Head","Shoulder","Back","Chest","Wrist","Hands","Waist","Legs","Feet",
   "Neck","Ring","Trinket","One-hand","Two-hand","Off-hand","Ranged"];
@@ -2496,6 +2517,7 @@ function lmatch(o,skip){
     for(const v of F.x) if(!have.includes(v)) return false;}
   if(skip!=="big"&&F.big&&!((i.x||[]).length&&i.x[0][0]===F.big)) return false;
   if(skip!=="fx"&&F.fx==="1"&&!isCantrip(i)) return false;
+  if(skip!=="ro"&&F.ro.size&&!(i.ro||[]).some(r=>F.ro.has(r))) return false;
   return true;
 }
 function pLoot(){
@@ -2507,6 +2529,7 @@ function pLoot(){
   const liveSl=reach("sl",i=>[i.sl]), liveTy=reach("ty",i=>[i.ty]);
   const liveP=reach("p",i=>i.p||[]), liveX=reach("x",i=>(i.x||[]).map(v=>v[0]));
   const liveBig=reach("big",i=>(i.x||[]).length?[i.x[0][0]]:[]);
+  const liveRo=reach("ro",i=>i.ro||[]);
   const opt=(key,v,label,live)=>{
     const on=F[key] instanceof Set?F[key].has(v):F[key]===v;
     const dis=!on&&live&&!live.has(v);
@@ -2515,7 +2538,7 @@ function pLoot(){
       <a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>
       <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
       <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
-      ${primChip(o.i.p)}${secChip(o.i.x)}</div>
+      ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
     ${o.i.u?`<p class="fx"><b>Use</b> ${esc(o.i.u)}</p>`:""}
     ${o.i.e?`<p class="fx"><b>Equip</b> ${esc(o.i.e)}</p>`:""}</div>`;
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Loot</em></div>
@@ -2537,6 +2560,8 @@ function pLoot(){
       ${LSEC.map(v=>opt("x",v,v,liveX)).join("")}</div></div>
     <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
       ${LSEC.map(v=>opt("big",v,v,liveBig)).join("")}</div></div>
+    <div class="fgroup"><h4>UNCONFIRMED: Role <span class="fany">any of · our call, not a source's</span></h4><div class="fopts">
+      ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,"UNCONFIRMED: "+LROLE[r],liveRo)).join("")}</div></div>
     <div class="fgroup"><h4>Cantrips</h4><div class="fopts">
       ${opt("fx","1","Cantrips",null)}</div></div>
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
@@ -2750,7 +2775,7 @@ document.addEventListener("click",e=>{
     else LFACETS[key]=LFACETS[key]===v?null:v;
     $("#p-loot").innerHTML=pLoot(); return;
   }
-  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null,fx:null};
+  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null};
     $("#p-loot").innerHTML=pLoot();}
 });
 
