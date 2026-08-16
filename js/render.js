@@ -351,15 +351,9 @@ function pHome(){
       <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">Every item, filterable by slot, armour,
       stats and who it's for.</p></a>
     <a class="card acc" href="#/sources" style="text-decoration:none;display:block"><h3>Why should I believe this?</h3>
-      <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">The source ledger, how the sources are weighed, and a list
-      of things this guide does not yet know.</p></a>
-  </div>
-
-  <div class="sec"><h2>Open questions</h2><span class="n">${DISPUTES.length} contested</span></div>
-  <p class="note">Most guides pick a side quietly. Where the sources actually disagree, this one shows both and says
-  what would settle it. All ${DISPUTES.length} are listed on the dungeon pages and on <a href="#/sources">Sources</a>.</p>
-  ${DISPUTES.map(x=>`<div class="mres"><div class="mtop"><span class="mdg" style="background:var(--ground-panel);color:var(--ink-muted)">${esc(x.dg==="raid"?RAID.short:D[x.dg].short)}</span>
-    <span class="mn">${esc(x.q)}</span></div><p>Resolves: ${esc(x.r)}</p></div>`).join("")}`;
+      <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">The source ledger, how the sources are weighed, and the
+      ${DISPUTES.length} places the sources still disagree.</p></a>
+  </div>`;
 }
 function tile(d){
   return `<a class="tile" href="#/d/${d.id}" data-dungeon="${d.id}">
