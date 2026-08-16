@@ -41,9 +41,33 @@ const mythBadge=a=>(a.t||[]).includes("myth")
   ? `<span class="mythonly" title="Only appears on Mythic difficulty — including every Mythic+ key.">${ic("i-warn",10)}Mythic only</span>` : "";
 const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
   healer:`<span class="chip c-heal">${ic("i-heal")}Healer</span>`,
-  dps:`<span class="chip c-dps">${ic("i-dps")}DPS</span>`}[r]||"");
+  dps:`<span class="chip c-dps">${ic("i-dps")}DPS</span>`,
+  mdps:`<span class="chip c-dps">${ic("i-dagger")}Melee</span>`,
+  rdps:`<span class="chip c-dps">${ic("i-dps")}Ranged</span>`}[r]||"");
 
 /* ── ability row ── fact and opinion render differently ── */
+/* ── the role lens ── "I tank; show me my night." Persists like the
+   difficulty choice and rides the URL as ?r=. Four lenses over a three-role
+   data vocabulary: Melee and Ranged each include the generic dps mechanics,
+   plus rows refined to mdps/rdps where a source names the role. An ability
+   with no r: at all concerns everyone and always renders. Hiding is never
+   silent — callers count what the lens removed and say so. */
+let ROLEF=(function(){try{return localStorage.getItem("cc-role")||null;}catch(e){return null;}})();
+const ROLES=[["tank","Tank","i-tank"],["healer","Healer","i-heal"],["mdps","Melee","i-dagger"],["rdps","Ranged","i-dps"]];
+const roleMatch=(a,rf)=>{
+  if(!rf||!a.r||!a.r.length) return true;
+  const want=rf==="mdps"?["mdps","dps"]:rf==="rdps"?["rdps","dps"]:[rf];
+  return a.r.some(r=>want.includes(r));
+};
+const roleBar=()=>`<div class="dtoggle rlens" role="group" aria-label="Role lens">
+  <button class="dseg" data-role="" aria-pressed="${!ROLEF}">Everyone</button>
+  ${ROLES.map(([k,l,i])=>`<button class="dseg" data-role="${k}" aria-pressed="${ROLEF===k}">${ic(i,11)}${l}</button>`).join("")}
+  </div>`;
+const roleNote=()=>ROLEF?`<p class="note">${ic("i-info",13)} Viewing as
+  <b>${({tank:"Tank",healer:"Healer",mdps:"Melee DPS",rdps:"Ranged DPS"})[ROLEF]}</b> — abilities that never
+  concern the role are hidden, and mobs with nothing left to say don't render.
+  <button class="linklike" data-role="">Show everyone's view</button>.</p>`:"";
+
 /* Raid abilities carry a difficulty dimension the dungeons never had:
    df:["h"] marks Heroic-only, hh: is a Heroic addendum to the tactic. The
    third argument is the viewer's difficulty — undefined on every Mythic+
@@ -53,7 +77,7 @@ const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
 const diffBadge=a=>a.df&&a.df.length===1&&a.df[0]==="h"
   ? `<span class="mythonly hb" title="Only cast on Heroic difficulty.">${ic("i-warn",10)}Heroic only</span>` : "";
 function abilityRow(a,roleFilter,diff){
-  if(roleFilter&&a.r&&!a.r.includes(roleFilter)) return "";
+  if(!roleMatch(a,roleFilter)) return "";
   const em=t=>t==="noarmor"?"c-noarmor":"";
   /* Mythic-only is lifted out of the chip row and worn as a badge. In a
      Mythic+ guide it is not a counter or a shape — it is a note about where
@@ -431,11 +455,14 @@ function pDungeon(id,tab){
   }
   else if(tab==="bosses"){
     body=`<div class="sec"><h2>Encounters</h2><span class="n">In order</span></div>`+
-      d.encounters.map(e=>encounterCard(d,e,ROLE)).join("");
+      roleBar()+roleNote()+
+      d.encounters.map(e=>encounterCard(d,e,ROLEF)).join("");
   }
   else if(tab==="trash"){
     body=`<div class="sec"><h2>Trash by area</h2><span class="n">In the order you meet it</span></div>`+
-      d.areas.map(ar=>`<div class="area-h">${esc(ar.n)}</div>`+ar.mobs.map(m=>mobBlock(m,ROLE)).join("")).join("");
+      roleBar()+roleNote()+
+      d.areas.map(ar=>{const blocks=ar.mobs.map(m=>mobBlock(m,ROLEF)).join("");
+        return blocks.trim()?`<div class="area-h">${esc(ar.n)}</div>`+blocks:"";}).join("");
   }
   else if(tab==="route"){
     body=`<div class="sec"><h2>Pug route</h2><span class="n">${d.route.length} pulls</span></div>
@@ -803,12 +830,17 @@ function pBoss(id,tab){
      vanishing — silent filtering is how a reader forms a wrong picture and
      blames the site. */
   const renderPhase=p=>{
-    const visible=(p.a||[]).filter(a=>DIFF==="h"||!(a.df&&a.df.length===1&&a.df[0]==="h"));
-    const hidden=(p.a||[]).length-visible.length;
+    const onDiff=(p.a||[]).filter(a=>DIFF==="h"||!(a.df&&a.df.length===1&&a.df[0]==="h"));
+    const hidden=(p.a||[]).length-onDiff.length;
+    const visible=onDiff.filter(a=>roleMatch(a,ROLEF));
+    const roleHid=onDiff.length-visible.length;
+    if(!visible.length&&!hidden&&!roleHid) return "";
     return `<div class="area-h">${esc(p.n)}${p.trigger?` <span class="n" style="text-transform:none;letter-spacing:0">· ${esc(p.trigger)}</span>`:""}</div>
     <div class="bossabils">${visible.map(a=>abilityRow(a,null,DIFF)).join("")}</div>
     ${hidden?`<p class="note hnote">${ic("i-info",13)} ${hidden} more abilit${hidden>1?"ies":"y"} on Heroic —
-      <button class="linklike" data-diff="h">switch to Heroic</button> to see ${hidden>1?"them":"it"}.</p>`:""}`;};
+      <button class="linklike" data-diff="h">switch to Heroic</button> to see ${hidden>1?"them":"it"}.</p>`:""}
+    ${roleHid?`<p class="note hnote">${ic("i-info",13)} ${roleHid} abilit${roleHid>1?"ies":"y"} hidden by the role
+      lens — <button class="linklike" data-role="">show everyone's view</button>.</p>`:""}`;};
   const loot=b.loot||[];
   const lootRows=loot.length?`
   <div class="sec"><h2>Loot</h2><span class="n">${loot.length} items · once a week per difficulty</span></div>
@@ -832,7 +864,7 @@ function pBoss(id,tab){
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
   ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
   ${b.brief?`<p>${esc(b.brief)}</p>`:""}
-  ${abilCount(b)?diffToggle():""}
+  ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}`:""}
   ${abilCount(b)?phases.map(renderPhase).join(""):`
   <p class="note">${ic("i-warn",13)} The order and name are confirmed against Wowhead; the encounter guide has
   not been written yet. Bosses are being sourced and added one at a time — the same way the dungeons were.</p>`}

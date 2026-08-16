@@ -791,7 +791,7 @@ loot:{s:["iv_kr"],i:[
    {n:"Primal Thundercloud",k:"trash",a:[
     {n:"Tempest Barrier",t:["shield","groupdmg"],c:["purge"],r:["dps"],sev:2,e:"Shielded for most of their health. Purging the shield makes them charge a random player and immediately explode.",h:"Both sources call the purge the fast way through these.",s:["tk_rlp","iv_rlp"]}]},
    {n:"Storm Warrior",k:"trash",a:[
-    {n:"Thunder Stomper",t:["groupdmg","debuff"],c:["position"],r:["healer","dps"],sev:2,e:"Hits everyone within five yards, reducing haste by 10% and movement speed by 20%.",h:"Short range, so ranged simply stand outside it. Melee will always eat it — plan for that rather than trying to dodge.",s:["tk_rlp","iv_rlp"]}]},
+    {n:"Thunder Stomper",t:["groupdmg","debuff"],c:["position"],r:["healer","mdps"],sev:2,e:"Hits everyone within five yards, reducing haste by 10% and movement speed by 20%.",h:"Short range, so ranged simply stand outside it. Melee will always eat it — plan for that rather than trying to dodge.",s:["tk_rlp","iv_rlp"]}]},
    {n:"Tempest Channeler",k:"caster",a:[
     {n:"Lightning Torrent",t:["channel"],c:["defensive","drop"],r:["healer"],sev:3,e:"Channels a lot of damage into a random player.",s:["tk_rlp"]},
     {n:"Thunder Blast",t:["tankbuster"],c:["interrupt"],r:["dps"],sev:1,e:"Bolt aimed at the tank — a spare-interrupt target.",s:["tk_rlp"]}]},

@@ -2,14 +2,19 @@
    Load order: data-shared → data-mplus → data-raid → render → app.
    All five load with `defer`, which preserves this order. */
 
-let ROLE=null;
 function route(){
-  /* the hash may carry a facet query: #/mechanics?from=r&ctr=poison */
+  /* the hash may carry a query: facet state on the indexes, difficulty and
+     role lens on boss/dungeon pages */
   const [pathStr,qs]=(location.hash||"#/").slice(2).split("?");
   const h=pathStr.split("/").filter(Boolean);
   const key=h[0]||"home";
   if(qs!==undefined&&key==="mechanics") facetsFromQS(qs);
   if(qs!==undefined&&key==="loot") lfacetsFromQS(qs);
+  if(qs!==undefined&&(key==="r"||key==="d")){
+    const rq=new URLSearchParams(qs).get("r");
+    if(rq!==null){ROLEF=["tank","healer","mdps","rdps"].includes(rq)?rq:null;
+      try{ROLEF?localStorage.setItem("cc-role",ROLEF):localStorage.removeItem("cc-role");}catch(e){}}
+  }
   $$(".page").forEach(p=>p.classList.remove("on"));
   document.body.removeAttribute("data-dungeon");
   document.body.removeAttribute("data-raid");
@@ -86,19 +91,38 @@ function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
 
 /* facet clicks — delegated, so re-renders never lose the handler */
 document.addEventListener("click",e=>{
-  /* difficulty toggle — anywhere one renders (boss pages, collapse notes).
-     Persist, reflect in the URL, repaint in place. */
+  /* difficulty toggle and role lens — anywhere either renders. Persist,
+     reflect both in the URL, repaint the current page in place. */
+  const lensQS=()=>{const q=[];
+    if(DIFF!=="n")q.push("d="+DIFF);
+    if(ROLEF)q.push("r="+ROLEF);
+    return q.length?"?"+q.join("&"):"";};
+  const repaint=()=>{
+    const h=(location.hash||"").slice(2).split("?")[0].split("/").filter(Boolean);
+    if(h[0]==="r"&&RB[h[1]]){
+      history.replaceState(null,"","#/r/"+h[1]+lensQS());
+      $("#p-boss").innerHTML=pBoss(h[1],h[2]);
+    }else if(h[0]==="d"&&D[h[1]]){
+      const roleOnly=ROLEF?"?r="+ROLEF:"";
+      history.replaceState(null,"","#/d/"+h[1]+"/"+(h[2]||"overview")+roleOnly);
+      $("#p-dungeon").innerHTML=pDungeon(h[1],h[2]);
+    }};
   const dseg=e.target.closest("[data-diff]");
   if(dseg){
     const d=dseg.dataset.diff;
     if(RAID.difficulties.includes(d)&&d!==DIFF){
       DIFF=d; try{localStorage.setItem("cc-diff",DIFF);}catch(err){}
-      const h=(location.hash||"").slice(2).split("?")[0].split("/").filter(Boolean);
-      if(h[0]==="r"&&RB[h[1]]){
-        history.replaceState(null,"","#/r/"+h[1]+(DIFF==="n"?"":"?d="+DIFF));
-        $("#p-boss").innerHTML=pBoss(h[1],h[2]);
-        window.scrollTo({top:0,behavior:"instant"});
-      }
+      repaint();
+    }
+    return;
+  }
+  const rseg=e.target.closest("[data-role]");
+  if(rseg){
+    const rv=rseg.dataset.role||null;
+    if(rv!==ROLEF){
+      ROLEF=rv;
+      try{ROLEF?localStorage.setItem("cc-role",ROLEF):localStorage.removeItem("cc-role");}catch(err){}
+      repaint();
     }
     return;
   }

@@ -292,6 +292,9 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
   color:var(--ink-faint);padding:.15rem .2rem .05rem
 }
 
+.lenses{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.rlens .dseg{display:inline-flex;align-items:center;gap:.32rem}
+
 /* ═══ DIFFICULTY TOGGLE ═══ segmented; built to take a third segment ═══ */
 .dtoggle{display:inline-flex;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin:.4rem 0 1rem}
 .dseg{
