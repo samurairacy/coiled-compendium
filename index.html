@@ -305,6 +305,32 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .card.acc{border-left:3px solid var(--d-accent,var(--accent))}
 .card h3{margin-bottom:.15rem}
 .card .meta{font-family:var(--face-term);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.75rem}
+/* ═══ MOB GRAVITY ════════════════════════════════════════════════════════
+   Three steps, so a scan down the trash tab tells you what will actually
+   stop the group: mini-boss (accent bar, raised plate, filled tag) >
+   lieutenant (deep bar, outlined tag) > trash/caster (flat, quiet tag). */
+.card.mob{border-left:3px solid transparent}
+.mobtop{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin-bottom:.7rem}
+.mobtop h3{margin:0}
+.kindtag{
+  display:inline-flex;align-items:center;gap:.28rem;font-family:var(--face-term);
+  font-size:.62rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:.12rem .42rem;border:1px solid var(--rule);border-radius:2px;
+  color:var(--ink-faint);white-space:nowrap
+}
+.kindtag svg{opacity:.9}
+.card.mob.k-mini{border-left-color:var(--d-accent,var(--accent));background:var(--ground-panel)}
+.card.mob.k-mini h3{font-size:1.1rem}
+.kindtag.k-mini{background:var(--d-accent,var(--accent));color:var(--d-ink,#14120E);border-color:transparent;font-weight:700}
+.card.mob.k-lt{border-left-color:var(--accent-deep)}
+.kindtag.k-lt{border-color:var(--accent-deep);color:var(--accent)}
+.card.mob.k-fodder{
+  background:none;border-style:dashed;border-color:var(--rule-soft);
+  padding:.75rem 1rem
+}
+.card.mob.k-fodder h3{color:var(--ink-muted);font-size:.95rem}
+.kindtag.k-fodder{border-style:dashed;opacity:.75}
+.mobsub{color:var(--ink-muted);font-size:.9rem;margin:0 0 .55rem}
 .killer{
   background:linear-gradient(100deg,rgba(240,80,60,.11),var(--ground-raised) 55%);
   border:1px solid var(--rule);border-left:3px solid var(--signal-urgent);
@@ -642,7 +668,7 @@ const CTRS={
  spread:{l:"Spread out",i:"i-spread"}, stack:{l:"Stack up",i:"i-stack"},
  soak:{l:"Soak it",i:"i-soak"}, mobility:{l:"Movement ability",i:"i-move"}
 };
-const KINDS={boss:"Boss",mini:"Mini-boss",lt:"Lieutenant",trash:"Trash",caster:"Caster"};
+const KINDS={boss:"Boss",mini:"Mini-boss",lt:"Lieutenant",trash:"Trash",caster:"Caster",fodder:"Fodder"};
 
 /* ═══ SEASON FACTS ═══ Blizzard-sourced: patch notes and live client ═══ */
 const SEASON={
@@ -789,7 +815,7 @@ const DUNGEONS=[
     {n:"Corrosive Fangs",t:["tankbuster","amp"],c:["defensive"],r:["tank"],sev:2,e:"Tank hit that applies a damage-taken amplifier.",s:["tk_aof"]}]},
    {n:"Bloodletter",k:"trash",a:[
     {n:"Bloodletting",alt:"Caustic Ichor",t:["denial"],c:["cc","dodge"],r:["tank"],sev:1,e:"Drops puddles nearby on melee swings.",h:"Crowd control stops it landing a swing at all, which is cleaner than dancing round the puddles.",s:["tk_aof","iv_aof"]}]},
-   {n:"Venom Leech",k:"trash",a:[
+   {n:"Venom Leech",k:"fodder",a:[
     {n:"Septic Spatter",t:["death","denial"],c:["position"],r:["dps","tank"],sev:1,e:"These smaller mobs leave a patch of ground ichor where their corpse falls.",h:"Kill them somewhere you do not need to stand.",s:["iv_aof"]}]},
    {n:"Venomous Hatchling",k:"trash",a:[
     {n:"Fixate",t:["fixate","adds"],c:["cc","focus"],r:["dps"],sev:1,e:"Hatch from eggs in the area or on pulling certain packs, then fixate random players until destroyed.",h:"AoE slows and stuns keep their damage near zero while you cleave them down.",s:["tk_aof"]}]},
@@ -798,7 +824,7 @@ const DUNGEONS=[
     {n:"Virulent Whirl",t:["denial"],c:["dodge"],r:["dps","healer","tank"],sev:1,e:"Spawns tornadoes that roam the area.",s:["tk_aof"]},
     {n:"Noxious Spray",t:["line","tankbuster","knockback"],c:["position","defensive"],r:["tank"],sev:2,e:"Line attack at the tank with significant pushback.",h:"Point it away from the group and fight the pushback with a defensive up.",s:["tk_aof"]}]}]},
   {n:"The Approach to Zul'jan",mobs:[
-   {n:"Blade of the Altar",k:"trash",a:[
+   {n:"Blade of the Altar",k:"fodder",a:[
     {n:"Laced Edge",t:["dot"],c:["defensive"],r:["healer"],sev:1,e:"Random-target hit and damage-over-time.",s:["tk_aof"]}]},
    {n:"Ula'tek's Chosen",k:"lt",a:[
     {n:"Mass Envenom",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:3,e:"AoE hit on the party.",h:"Every single cast needs kicking.",s:["tk_aof"]},
@@ -865,7 +891,7 @@ loot:{s:["iv_aof"],b:[
   {n:"Blade Dance",w:"Fel Master Luxay. A stacking party damage-over-time that becomes lethal the moment it overlaps anything else you have pulled.",s:["tk_mr"]}],
  areas:[
   {n:"The Row",mobs:[
-   {n:"Row Hooligan",k:"trash",a:[
+   {n:"Row Hooligan",k:"fodder",a:[
     {n:"Cut Purse",t:["dot"],c:["bleedcl","defensive"],r:["healer"],sev:1,e:"Bleed on a random player.",s:["tk_mr"]}]},
    {n:"Felonious Mage",k:"caster",a:[
     {n:"Fel Missiles",t:["channel"],c:["interrupt","cc"],r:["dps"],sev:2,e:"Channels into a random player.",h:"Crowd control also works and forces a re-target.",s:["tk_mr"]}]},
@@ -882,7 +908,7 @@ loot:{s:["iv_aof"],b:[
     {n:"Over-infused",t:["groupdmg","death"],c:["unavoidable"],r:["healer"],sev:2,e:"Constantly pulses party damage, and leaves a large AoE on death.",s:["tk_mr"]},
     {n:"Corroding Spittle",t:["dot"],c:["magic"],r:["healer"],sev:1,e:"Magic damage-over-time on a random player.",s:["tk_mr"]}]}]},
   {n:"The Warehouse",mobs:[
-   {n:"Warehouse Worker",k:"trash",a:[
+   {n:"Warehouse Worker",k:"fodder",a:[
     {n:"Sharp Nails",t:["dot"],c:["bleedcl"],r:["healer"],sev:1,e:"Random-target hit and bleed.",h:"Bleeds are everywhere in this dungeon. A cleanse earns its slot here.",s:["tk_mr"]}]},
    {n:"Keen Taskmaster",k:"trash",a:[
     {n:"Back to Work",t:["enrage"],c:["soothe"],r:["dps","tank"],sev:2,e:"Enrages every nearby Warehouse Worker for additional attack speed.",h:"You will be pulling a lot of workers at once here, so this matters more than it reads.",s:["tk_mr"]}]}]},
@@ -893,7 +919,7 @@ loot:{s:["iv_aof"],b:[
    {n:"Wrathguard Flayer",k:"trash",a:[
     {n:"Fel Rage",t:["enrage","shield"],c:["interrupt","soothe"],r:["dps"],sev:2,e:"Grants a large damage reduction and crowd-control immunity.",h:"It is an enrage, so a soothe works and frees your interrupt for something else.",s:["tk_mr"]},
     {n:"Flay",t:["dot"],c:["bleedcl"],r:["healer"],sev:1,e:"Bleed on a random player.",s:["tk_mr"]}]},
-   {n:"Trained Fel Hunter",k:"trash",a:[
+   {n:"Trained Fel Hunter",k:"fodder",a:[
     {n:"Shadow Bite",t:["tankbuster"],c:["defensive"],r:["tank"],sev:1,e:"Passive. Adds magic damage to their melee swings — dangerous when several are on you at once.",s:["tk_mr"]}]},
    {n:"Unleashed Imp",k:"trash",a:[
     {n:"Felfire Burst",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:2,e:"Cast by the imps that accompany the demon packs.",s:["iv_mr"]}]},
@@ -987,7 +1013,7 @@ loot:{s:["iv_mr"],b:[
   {n:"The Snowfield",mobs:[
    {n:"Harsh Winds",k:"trash",a:[
     {n:"Harsh Winds",t:["env","knockback"],c:["los","position"],r:["dps","healer","tank"],sev:2,e:"Environmental gusts blow through the area periodically.",h:"Take cover behind terrain — the safe spots are marked by an absence of snow.",s:["tk_don"]}]},
-   {n:"Frost Fang",k:"trash",a:[
+   {n:"Frost Fang",k:"fodder",a:[
     {n:"Frost Bite",t:["tankbuster"],c:["defensive"],r:["tank"],sev:1,e:"Passive that occasionally adds frost damage to their attacks.",s:["tk_don"]}]},
    {n:"Tar Rumbler",k:"trash",a:[
     {n:"Rumbling War Shield",t:["shield","groupdmg"],c:["focus"],r:["dps"],sev:2,e:"Pulses AoE damage for as long as the shield holds.",h:"The faster it breaks, the less the healer eats.",s:["tk_don"]}]},
@@ -1164,7 +1190,7 @@ loot:{s:["iv_bv"],b:[
     {n:"Feral Rage",t:["enrage"],c:["soothe"],r:["tank","dps"],sev:2,e:"Self-buff that becomes a real problem in proportion to how many saberon you pulled.",s:["iv_vsa"]}]},
    {n:"Sycophantic Tarasek",k:"trash",a:[
     {n:"Melt Armor",t:["amp","stacking"],c:["magic","defensive"],r:["tank","healer"],sev:2,e:"Armour reduction on the tank — and it can be dispelled.",h:"Absent from the creator guide entirely. If your tank is taking odd physical spikes in this dungeon, look here first.",s:["iv_vsa"]}]},
-   {n:"Lost Sethrak",k:"trash",a:[
+   {n:"Lost Sethrak",k:"fodder",a:[
     {n:"Venomous Spit",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Sidestep it.",s:["iv_vsa"]}]},
    {n:"Enthralled Shaman",k:"caster",a:[
     {n:"Magma Totem",t:["totem","groupdmg"],c:["focus"],r:["dps"],sev:2,e:"Spawns a totem that pulses AoE damage.",h:"Swap quickly — these are cheap to kill and expensive to ignore.",s:["tk_vsa"]}]},
@@ -1297,35 +1323,35 @@ loot:{s:["iv_vsa"],b:[
    {n:"Ghostly Brute",k:"lt",a:[
     {n:"Soul Crush",t:["tankbuster","amp"],c:["defensive"],r:["tank"],sev:2,e:"Tank buster that also applies a damage amplifier.",h:"Dangerous in proportion to how many mobs you are actively tanking.",s:["tk_kr"]},
     {n:"Seismic Upheaval",t:["knockup"],c:["position","dodge"],r:["dps","healer","tank"],sev:3,e:"AoE hit that massively knocks players up — potentially lethal from the fall damage alone.",h:"Run out. There is no defensive answer to hitting the floor.",s:["tk_kr"]}]},
-   {n:"Honored Raptor",k:"trash",a:[
-    {n:"Hunting Leap",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Leaps to a random player and fires a frontal through them. Unlike the earlier raptors, this one is not a lieutenant so you cannot stop the frontal with crowd control.",s:["tk_kr"]}]}]}],
+   {n:"Honored Raptor",k:"fodder",a:[
+    {n:"Hunting Leap",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Leaps to a random player and fires a frontal through them. Unlike the earlier raptors, this one is not a lieutenant so you cannot stop the frontal with crowd control.",s:["tk_kr"]}]},
+   {n:"Kings and Queens",k:"mini",sub:"Four mini-boss packs in a random order",shape:"Four packs, random order",lv:2,brief:"Not one encounter but four, spawning in a random order, each a royal with an escort. Rahu'ai's guard shields the pack, T'Maji's companion binds souls, Phat'ta brings an enraging raptor, and Akul lands a healing-reduction bleed then drains everyone carrying one. In every case the escort is the difficulty, not the royal.",a:[
+   {n:"King Rahu'ai",t:["groupdmg","adds"],c:["purge","interrupt","cc"],r:["dps","healer"],sev:2,e:"Spams Fork Lightning at random players and drops an Overload AoE. His escort is the real threat: Guard Captain Atu's Captain's Bulwark puts a magic damage reduction on the other two mobs, and Seneschal Imbara casts Unholy Mending.",h:"Purge the Bulwark if you can, or delay it with crowd control. One player permanently on the Mending interrupt.",s:["tk_kr"]},
+   {n:"King T'Maji",t:["spread","denial"],c:["spread","interrupt","kite"],r:["dps","healer"],sev:2,e:"Erupting Slam is a random-target AoE; his blade storm needs kiting. Inwashi casts Soul Bolt and Bind Soul.",h:"Every Bind Soul must be prevented. Spare kicks onto Soul Bolt.",s:["tk_kr"]},
+   {n:"Queen Phat'ta",t:["dot","denial","enrage"],c:["poison","soothe","dodge"],r:["healer","dps"],sev:2,e:"Drops circles and leaps at a random player with Serpent Strike, applying a poison. Her raptor is occasionally sent into Bestial Berserk and uses Hunting Leap with a frontal.",h:"A soothe on the raptor and a poison dispel on the leap target cover most of this pack.",s:["tk_kr"]},
+   {n:"King Akul",alt:"see concordance — the four royal packs are named differently by each source",t:["tankbuster","healred","dot"],c:["defensive","bleedcl"],r:["tank","healer"],sev:3,e:"Mortal Bleed is a tank bleed that reduces healing taken. Blood Drain then deals damage to every player carrying a bleed — including the Sudden Rupture bleeds from his Bloodsworn Assassins — and heals him based on that damage.",h:"The healing reduction is called out as very dangerous for certain tank specs. Bleed cleanses cut the Blood Drain hit as well as the tank damage.",s:["tk_kr"]}]},
+   {n:"Shade of Zul",alt:"Shadow of Zul",k:"mini",sub:"Mini-boss before the final encounter",shape:"Mini-boss, soak and spread",lv:1,brief:"A short mini-boss built on two soaks and a spread. Both Pools of Darkness need a body or they pulse the party, so the tank takes one and anyone takes the other. Dark Revelation then wants distance and spawns a minion from each hit. The barrage running underneath cannot be interrupted, so it is a defensive rather than a kick.",a:[
+   {n:"Shadow Barrage",t:["dot"],c:["defensive"],r:["healer"],sev:2,e:"Random target and not interruptible at all.",h:"If it targets you while you are also handling something else, that is your defensive moment.",s:["tk_kr"]},
+   {n:"Pool of Darkness",t:["soak"],c:["soak"],r:["tank","dps"],sev:2,e:"Two soaks that pulse party damage if left empty.",h:"Tank takes one, any other player takes the second.",s:["tk_kr"]},
+   {n:"Dark Revelation",t:["spread","adds"],c:["spread","purge"],r:["dps","healer"],sev:2,e:"Large AoE on two players; each hit spawns a Minion of Zul.",h:"Spread, then purge or kill the minions before they reach a target.",s:["tk_kr"]}]}]}],
  encounters:[
   {n:"The Golden Serpent",o:1,img:"kr-the-golden-serpent",sub:"Puddle discipline",shape:"One phase, puddle cycle",lv:2,brief:"The closest thing to a straightforward fight in the dungeon. She marks players, they drop gold puddles, and Lucre's Call then animates every puddle into an add that walks at her — one arriving gives a stacking shield and a large damage increase. Killed adds revert to puddles rather than vanishing, so grouping the drops early is what keeps the whole cycle manageable.",a:[
    {n:"Spit Gold",t:["dot","denial"],c:["position"],r:["dps","healer"],sev:2,e:"Debuffs two players at a time and drops a puddle on expiry.",h:"Drop them together and near existing ones — you will be glad later.",s:["tk_kr"]},
    {n:"Lucre's Call",t:["adds"],c:["focus","cc"],r:["dps"],sev:3,e:"Turns every Molten Gold pool into an Animated Gold that walks at the boss. One reaching him grants Luster: a shield worth 10% of his health AND +25% damage done, stacking. Killed adds revert to pools of Molten Gold rather than disappearing.",h:"The journal detail nobody mentions: killing them does not remove them, it resets them to puddles. So grouping the puddles is not a convenience, it is the only way the phase stays manageable.",s:["wh_ej","tk_kr","iv_kr"]},
    {n:"Serpentine Gust",t:["channel","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"A five-second gust: moderate Nature damage to everyone every second, pushing them back.",s:["wh_ej","tk_kr"]},
    {n:"Tail Thrash",t:["tankbuster"],c:["defensive"],r:["tank"],sev:1,e:"Massive Physical damage. Both guides call this mild — it is not a small number.",s:["wh_ej","tk_kr"]}]},
-  {n:"Kings and Queens",o:2,sub:"Four mini-boss packs in a random order",shape:"Four packs, random order",lv:2,brief:"Not one encounter but four, spawning in a random order, each a royal with an escort. Rahu'ai's guard shields the pack, T'Maji's companion binds souls, Phat'ta brings an enraging raptor, and Akul lands a healing-reduction bleed then drains everyone carrying one. In every case the escort is the difficulty, not the royal.",a:[
-   {n:"King Rahu'ai",t:["groupdmg","adds"],c:["purge","interrupt","cc"],r:["dps","healer"],sev:2,e:"Spams Fork Lightning at random players and drops an Overload AoE. His escort is the real threat: Guard Captain Atu's Captain's Bulwark puts a magic damage reduction on the other two mobs, and Seneschal Imbara casts Unholy Mending.",h:"Purge the Bulwark if you can, or delay it with crowd control. One player permanently on the Mending interrupt.",s:["tk_kr"]},
-   {n:"King T'Maji",t:["spread","denial"],c:["spread","interrupt","kite"],r:["dps","healer"],sev:2,e:"Erupting Slam is a random-target AoE; his blade storm needs kiting. Inwashi casts Soul Bolt and Bind Soul.",h:"Every Bind Soul must be prevented. Spare kicks onto Soul Bolt.",s:["tk_kr"]},
-   {n:"Queen Phat'ta",t:["dot","denial","enrage"],c:["poison","soothe","dodge"],r:["healer","dps"],sev:2,e:"Drops circles and leaps at a random player with Serpent Strike, applying a poison. Her raptor is occasionally sent into Bestial Berserk and uses Hunting Leap with a frontal.",h:"A soothe on the raptor and a poison dispel on the leap target cover most of this pack.",s:["tk_kr"]},
-   {n:"King Akul",alt:"see concordance — the four royal packs are named differently by each source",t:["tankbuster","healred","dot"],c:["defensive","bleedcl"],r:["tank","healer"],sev:3,e:"Mortal Bleed is a tank bleed that reduces healing taken. Blood Drain then deals damage to every player carrying a bleed — including the Sudden Rupture bleeds from his Bloodsworn Assassins — and heals him based on that damage.",h:"The healing reduction is called out as very dangerous for certain tank specs. Bleed cleanses cut the Blood Drain hit as well as the tank damage.",s:["tk_kr"]}]},
-  {n:"Mchimba the Embalmer",o:3,img:"kr-mchimba-the-embalmer",sub:"Sarcophagi, now four of them",shape:"One phase, rescue race",lv:2,brief:"A rescue race rather than a damage race. He seals a player in a crypt then opens the others one at a time — starting deliberately with the wrong ones, getting faster with each, and releasing a mummy from every coffin he opens. Freeing the trapped player interrupts the entire ritual, so speed beats damage here. Drain Fluids landing on top of it is a combat drop or a hard top-off.",a:[
+  {n:"Mchimba the Embalmer",o:2,img:"kr-mchimba-the-embalmer",sub:"Sarcophagi, now four of them",shape:"One phase, rescue race",lv:2,brief:"A rescue race rather than a damage race. He seals a player in a crypt then opens the others one at a time — starting deliberately with the wrong ones, getting faster with each, and releasing a mummy from every coffin he opens. Freeing the trapped player interrupts the entire ritual, so speed beats damage here. Drain Fluids landing on top of it is a combat drop or a hard top-off.",a:[
    {n:"Drain Fluids",t:["channel","debuff"],c:["drop","topoff","defensive"],r:["healer"],sev:3,alt:"Desiccation · Explosive Acids",e:"Significant damage every 2 seconds AND Explosive Acids landing for heavy damage within 4 yards throughout. It ends in Desiccation: 50% less damage done and 50% slower until healed above 90%.",h:"A combat drop cancels the channel. Otherwise get the debuffed player topped fast — any personal self-heal shortens it considerably.",s:["tk_kr","iv_kr"]},
    {n:"Awakening Slam",t:["groupdmg","adds"],c:["focus"],r:["tank","dps"],sev:2,e:"Heavy Shadow damage to the party, opening random crypts to release Half-Finished Mummies.",h:"Tank grabs them and cleaves under the boss. They keep Wretched Discharge — Deadly, interruptible, significant damage every 2 seconds for 12 seconds — so assign kicks.",s:["wh_ej","tk_kr"]},
    {n:"Entomb",t:["channel","adds"],c:["focus"],r:["dps","healer"],sev:3,e:"He seals a player in a crypt and then opens the others ONE AT A TIME, starting with the ones that do not hold the player — each opened coffin releases a Finished Mummy and makes the next open faster. Freeing the entombed player interrupts the whole ritual.",h:"So the search accelerates against you. The trapped player struggles to signal which crypt; getting that one open immediately is worth more than any damage you could be doing.",s:["wh_ej","tk_kr","iv_kr"]},
    {n:"Burning Corruption",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Large flame puddle under a random player on expiry.",h:"Drop these at the front or back of the room so they never block the path to a sarcophagus.",s:["tk_kr"]}]},
-  {n:"The Council of Tribes",o:4,img:"kr-the-council-of-tribes",sub:"Sequential, not simultaneous — and the dead keep interrupting",shape:"Sequential council",lv:3,brief:"Sequential rather than simultaneous, and the dead do not stay quiet. It opens with Kula alone; each defeated councillor returns to their urn and the next joins, but the fallen keep rejoining periodically to fire a single ability. Kula's axes respawn from wherever she died, so kill her in the middle of the room. Zanazal's Explosive Totem is the one cast that reliably ends runs.",a:[
+  {n:"The Council of Tribes",o:3,img:"kr-the-council-of-tribes",sub:"Sequential, not simultaneous — and the dead keep interrupting",shape:"Sequential council",lv:3,brief:"Sequential rather than simultaneous, and the dead do not stay quiet. It opens with Kula alone; each defeated councillor returns to their urn and the next joins, but the fallen keep rejoining periodically to fire a single ability. Kula's axes respawn from wherever she died, so kill her in the middle of the room. Zanazal's Explosive Totem is the one cast that reliably ends runs.",a:[
    {n:"Whirling Axes",t:["line","knockback","dot"],c:["dodge","position"],r:["dps","healer","tank"],sev:3,e:"The fight BEGINS with Kula alone. A defeated councilor returns to their urn and the next joins — but each dead councilor periodically rejoins to fire a single ability before leaving again. Kula opens with very heavy damage within 10 yards plus a knockback, then two axes doing significant damage every 2 seconds for 6 seconds to anyone they touch.",h:"Kill her in the middle of the room. The tier-2 source calls Severing Axe the one moment on this encounter that genuinely needs a major personal.",s:["tk_kr","iv_kr"]},
    {n:"Barrel Through",t:["soak"],c:["stack","soak"],r:["dps","healer","tank"],sev:2,e:"Massive Physical damage, SPLIT between everyone within 7 yards, ignoring armour. Being alone in it is fatal.",h:"Play close enough as a group that stepping into the soak is automatic.",s:["tk_kr"]},
    {n:"Debilitating Backhand",t:["tankbuster","knockback","amp"],c:["kite","defensive","position"],r:["tank"],sev:3,e:"Massive Physical damage, a knockback, and Shattered Defenses: +200% Physical damage taken.",h:"Either kite for the full duration or commit a strong defensive to survive the empowered melees — and do not get pushed off the platform.",s:["tk_kr"]},
    {n:"Call of the Elements",t:["totem"],c:["focus","interrupt"],r:["dps"],sev:3,e:"Three totems. Explosive detonates for very heavy Fire damage to the whole party. Thundering fires Disruption, interrupting every player for 4 seconds. Torrent spews heavy Frost damage within 3 yards with a knockback.",h:"Explosive first, always — both sources say letting it resolve is a wipe. Kite Xanzal next to each totem so the group cleaves boss and totem together.",s:["tk_kr","iv_kr"]},
    {n:"Poison Nova",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:3,e:"Significant Nature damage every 2 seconds for 12 seconds to the entire party. The journal flags it Deadly.",s:["wh_ej","tk_kr"]}]},
-  {n:"Shade of Zul",alt:"Shadow of Zul — not an Encounter Journal boss; a mini-boss",o:5,sub:"Mini-boss before the final encounter",shape:"Mini-boss, soak and spread",lv:1,brief:"A short mini-boss built on two soaks and a spread. Both Pools of Darkness need a body or they pulse the party, so the tank takes one and anyone takes the other. Dark Revelation then wants distance and spawns a minion from each hit. The barrage running underneath cannot be interrupted, so it is a defensive rather than a kick.",a:[
-   {n:"Shadow Barrage",t:["dot"],c:["defensive"],r:["healer"],sev:2,e:"Random target and not interruptible at all.",h:"If it targets you while you are also handling something else, that is your defensive moment.",s:["tk_kr"]},
-   {n:"Pool of Darkness",t:["soak"],c:["soak"],r:["tank","dps"],sev:2,e:"Two soaks that pulse party damage if left empty.",h:"Tank takes one, any other player takes the second.",s:["tk_kr"]},
-   {n:"Dark Revelation",t:["spread","adds"],c:["spread","purge"],r:["dps","healer"],sev:2,e:"Large AoE on two players; each hit spawns a Minion of Zul.",h:"Spread, then purge or kill the minions before they reach a target.",s:["tk_kr"]}]},
-  {n:"King Dazar",alt:"Dazar, The First King",o:6,img:"kr-king-dazar",sub:"Two targets on one health bar, under a ceiling that keeps falling",shape:"One phase, mounts at 80%",lv:3,brief:"Two targets sharing one health bar, under a ceiling that keeps falling. Reban joins on pull and should die immediately; T'zala arrives at 80% and Eternal Bond makes cleaving both of them free. Spears rain throughout, and Gilded Destruction adds a flame frontal to his melee swings — so the tank is dodging while keeping him pointed away, which is the hardest positioning in the dungeon.",a:[
+  {n:"King Dazar",alt:"Dazar, The First King",o:4,img:"kr-king-dazar",sub:"Two targets on one health bar, under a ceiling that keeps falling",shape:"One phase, mounts at 80%",lv:3,brief:"Two targets sharing one health bar, under a ceiling that keeps falling. Reban joins on pull and should die immediately; T'zala arrives at 80% and Eternal Bond makes cleaving both of them free. Spears rain throughout, and Gilded Destruction adds a flame frontal to his melee swings — so the tank is dodging while keeping him pointed away, which is the hardest positioning in the dungeon.",a:[
    {n:"Impaling Spears",t:["env","dot"],c:["dodge"],r:["dps","healer","tank"],sev:2,e:"Heavy damage within 7 yards of each impact plus a bleed of moderate damage per second for 5 seconds.",s:["wh_ej","tk_kr"]},
    {n:"Rabond",t:["frontal","fear"],c:["interrupt","position","focus"],r:["tank","dps"],sev:2,alt:"Reban · Deathly Roar",e:"Hunting Leap does significant damage plus moderate damage per second for 4 seconds, then a series of gutripping cone attacks at heavy damage each. Deathly Roar is significant Shadow damage and a 4-second fear, and it is interruptible.",h:"Tank away from the group for the leap, interrupt the roar, and focus Rabond down on pull — he has little health and is a persistent nuisance.",s:["tk_kr"]},
    {n:"Tazala",alt:"T'zala",t:["amp"],c:["focus"],r:["dps"],sev:2,e:"At 80% he mounts her. Eternal Bond makes them share 100% of all damage taken, so cleaving both is genuinely free.",s:["wh_ej","tk_kr"]},
@@ -1372,7 +1398,7 @@ loot:{s:["iv_kr"],b:[
     {n:"Crushing Smash",t:["tankbuster"],c:["defensive"],r:["tank"],sev:3,e:"A large tank buster.",h:"Extremely dangerous stacked with Tectonic Strike from the Earthshapers, or even just their melee.",s:["tk_rlp"]}]},
    {n:"Deepstone Earthshaper",k:"trash",a:[
     {n:"Tectonic Strike",t:["stacking","amp"],c:["defensive","kite"],r:["tank"],sev:2,e:"Passive that stacks a debuff on the tank.",s:["tk_rlp"]}]},
-   {n:"Earthbound Guardian",k:"trash",a:[
+   {n:"Earthbound Guardian",k:"fodder",a:[
     {n:"Earthbound's Imprint",t:["dot"],c:["defensive"],r:["healer"],sev:1,e:"Damage-over-time on random players.",h:"Focus heal into them if it overlaps the Juggernaut's group damage.",s:["tk_rlp"]}]},
    {n:"Flashfrost Chillweaver",k:"caster",a:[
     {n:"Ice Shield",t:["channel","shield"],c:["interrupt","cc"],r:["dps"],sev:3,e:"Channels a shield into a random mob. The longer the channel runs, the larger the shield.",h:"Stop it early rather than late — the value scales with time channelled, so a late kick still costs you.",s:["tk_rlp","iv_rlp"]},
@@ -1747,10 +1773,24 @@ function abilityRow(a,roleFilter){
       ${ctrs?`<div class="tags">${ctrs}</div>`:""}
       ${a.h?`<p class="read">${esc(a.h)}</p>`:""}</div></div>`;
 }
+/* Every trash block carries a gravity tier taken straight from the mob's own
+   k, so nothing is styled by hand: mini-bosses read loudest, lieutenants sit a
+   step below, ordinary trash and casters stay quiet. sub/shape/brief are
+   optional — a mini-boss promoted out of encounters keeps its summary, an
+   ordinary one simply renders without. */
+const MOBICON={mini:"i-boss",lt:"i-shield",caster:"i-channel"};
 function mobBlock(m,roleFilter){
   const rows=(m.a||[]).map(a=>abilityRow(a,roleFilter)).join("");
   if(!rows.trim()) return "";
-  return `<div class="card"><h3>${esc(m.n)}</h3><div class="meta">${KINDS[m.k]||m.k}${m.alt?` &nbsp;·&nbsp; also: ${esc(m.alt)}`:""}</div>${rows}</div>`;
+  const k=m.k||"trash", gi=MOBICON[k];
+  return `<div class="card mob k-${k}">
+    <div class="mobtop"><h3>${esc(m.n)}</h3>
+      <span class="kindtag k-${k}">${gi?ic(gi,11):""}${esc(KINDS[k]||k)}</span>
+      ${m.alt?`<span class="alt">also: ${esc(m.alt)}</span>`:""}</div>
+    ${m.shape?`<div class="bshape lv${m.lv}"><span>${esc(m.shape)}</span><em>${["","Straightforward","Moderate","Demanding"][m.lv]}</em></div>`:""}
+    ${m.sub?`<p class="mobsub">${esc(m.sub)}</p>`:""}
+    ${m.brief?`<p class="bossbrief">${esc(m.brief)}</p>`:""}
+    ${rows}</div>`;
 }
 
 /* ── shared bits ── */

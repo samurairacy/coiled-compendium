@@ -4,9 +4,10 @@ A sourced reference for **World of Warcraft: Midnight — patch 12.1, Mythic+ Se
 
 **→ [Read it here](https://samurairacy.github.io/coiled-compendium/)**
 
-Eight dungeons, 30 encounters, and every mechanic in the season tagged by what it is
-and by what stops it. Every factual claim carries a source mark and a reliability
-tier, so you can see where a statement came from and how much weight it deserves.
+Eight dungeons, 28 boss encounters, 16 mini-bosses, and every mechanic in the season
+tagged by what it is and by what stops it. Every factual claim carries a source mark
+and a reliability tier, so you can see where a statement came from and how much
+weight it deserves.
 
 ## Why it exists
 

@@ -35,10 +35,20 @@ If a fresh build lands, re-apply those rather than assuming they survived.
   at script end and again on every `hashchange`, reading `location.hash` each
   time — which is why a deep link survives a reload on a static host with no
   rewrite rules. Nothing about the deploy may break this.
-- **Eight dungeons, 30 encounter cards, 336 abilities.** A dungeon's `bosses:`
-  field is the advertised boss count and is deliberately *not* the length of its
-  `encounters` array — King's Rest declares 4 and carries 6. Sum `encounters`
-  for the real figure; the README's "30" comes from there.
+- **Eight dungeons, 28 boss encounters, 16 mini-bosses, 336 abilities.** Every
+  dungeon's `bosses:` field now equals the length of its `encounters` array.
+  It did not until 2026-08-16: King's Rest declared 4 and carried 6, because
+  *Kings and Queens* and *Shade of Zul* had been filed as bosses when both are
+  trash. An earlier revision of this file recorded that mismatch as deliberate.
+  It was a defect. **If `bosses:` and `encounters.length` ever diverge again,
+  treat it as a misfiled encounter and not as intent.**
+- **Mobs carry a gravity tier in `k`**, and the trash card styles itself from
+  it — nothing is styled by hand. The ladder, loudest first: `mini` (accent
+  bar, raised plate, filled tag) → `lt` → `caster` / `trash` (same weight, the
+  glyph distinguishes them) → `fodder` (dashed, receded — cannon fodder that
+  should not draw the eye). A mini-boss promoted out of `encounters` keeps its
+  `sub`/`shape`/`lv`/`brief`, which the card renders when present; ordinary
+  mobs have none and simply render without.
 - **The homepage status line computes live** against the Season 2 start of
   18 Aug 2026: it counts down before that date and reads "Season 2 is live —
   week N" after it. A homepage that looks stale is usually just the calendar.
