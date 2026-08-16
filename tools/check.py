@@ -76,7 +76,9 @@ check(ok, "bosses: equals encounters.length for all 8 dungeons" +
       ("" if ok else " (%s vs %s)" % (declared, enc_counts)))
 
 # ── 4. names: loot hangs off real encounters; corrections resolve ──────────
+# M+ encounters open {n:...,o:...}; raid bosses open {id:...,o:...,n:...}
 enc_names = set(re.findall(r'\{n:"((?:[^"\\]|\\.)*)",o:\d+,', mplus + raid))
+enc_names |= set(re.findall(r'\{id:"[\w\-]+",o:\d+,n:"((?:[^"\\]|\\.)*)"', raid))
 mob_names = set(re.findall(r'\{n:"((?:[^"\\]|\\.)*)",k:"', mplus))
 abil_names = set(re.findall(r'\{n:"((?:[^"\\]|\\.)*)",t:\[', mplus + raid))
 loot_b = set(re.findall(r',b:"((?:[^"\\]|\\.)*)"', mplus + raid))
@@ -84,9 +86,12 @@ bad = [b for b in loot_b if b not in enc_names and b not in mob_names]
 check(not bad, "loot b: resolves to an encounter or mob (%d unresolved%s)" %
       (len(bad), ": " + ", ".join(sorted(bad)[:4]) if bad else ""))
 if CORR:
-    every = enc_names | mob_names | abil_names
-    bad = [r[0] for r in CORR if r[0] not in every]
-    check(not bad, "CORRECTIONS canonical names exist in data (%d orphaned%s)" %
+    # canonicals may be entity names, phase units, or mechanics that live in
+    # ability prose (Grab Fish, Veil of Twilight) — the whole data text is
+    # the universe. A typo'd canonical still appears nowhere and still fails.
+    blob = mplus + raid
+    bad = [r[0] for r in CORR if r[0] not in blob]
+    check(not bad, "CORRECTIONS canonical names appear in data (%d orphaned%s)" %
           (len(bad), ": " + ", ".join(bad[:4]) if bad else ""))
 
 # ── 5. vocabulary: tags, counters and source keys all defined ──────────────

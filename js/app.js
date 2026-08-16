@@ -20,7 +20,11 @@ function route(){
   else if(key==="raid"&&h[1]==="prep"){page="prep";document.body.setAttribute("data-raid","");html=pPrep();}
   else if(key==="raid"){page="raid";document.body.setAttribute("data-raid","");html=pRaid();}
   else if(key==="r"&&RB[h[1]]){page="boss";document.body.setAttribute("data-raid","");
-    document.body.setAttribute("data-boss",h[1]);html=pBoss(h[1],h[2]);}
+    document.body.setAttribute("data-boss",h[1]);
+    /* ?d=h deep-links a difficulty; otherwise the sticky choice stands */
+    const dq=qs!==undefined&&new URLSearchParams(qs).get("d");
+    if(dq&&RAID.difficulties.includes(dq)){DIFF=dq;try{localStorage.setItem("cc-diff",DIFF);}catch(e){}}
+    html=pBoss(h[1],h[2]);}
   else if(key==="mechanics"){page="mechanics";html=pMechanics();}
   else if(key==="loot"){page="loot";html=pLoot();}
   else if(key==="routes"){page="routes";html=pRoutes();}
@@ -82,6 +86,22 @@ function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
 
 /* facet clicks — delegated, so re-renders never lose the handler */
 document.addEventListener("click",e=>{
+  /* difficulty toggle — anywhere one renders (boss pages, collapse notes).
+     Persist, reflect in the URL, repaint in place. */
+  const dseg=e.target.closest("[data-diff]");
+  if(dseg){
+    const d=dseg.dataset.diff;
+    if(RAID.difficulties.includes(d)&&d!==DIFF){
+      DIFF=d; try{localStorage.setItem("cc-diff",DIFF);}catch(err){}
+      const h=(location.hash||"").slice(2).split("?")[0].split("/").filter(Boolean);
+      if(h[0]==="r"&&RB[h[1]]){
+        history.replaceState(null,"","#/r/"+h[1]+(DIFF==="n"?"":"?d="+DIFF));
+        $("#p-boss").innerHTML=pBoss(h[1],h[2]);
+        window.scrollTo({top:0,behavior:"instant"});
+      }
+    }
+    return;
+  }
   /* Loot reuses .fopt for styling but keys off data-lf, so the mechanics branch
      must match on data-f or it swallows loot clicks and writes FACETS[undefined]. */
   const f=e.target.closest(".fopt[data-f]");

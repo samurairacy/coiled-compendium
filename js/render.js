@@ -44,7 +44,15 @@ const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
   dps:`<span class="chip c-dps">${ic("i-dps")}DPS</span>`}[r]||"");
 
 /* ── ability row ── fact and opinion render differently ── */
-function abilityRow(a,roleFilter){
+/* Raid abilities carry a difficulty dimension the dungeons never had:
+   df:["h"] marks Heroic-only, hh: is a Heroic addendum to the tactic. The
+   third argument is the viewer's difficulty — undefined on every Mythic+
+   call site, which changes nothing there. On "n", Heroic-only rows are the
+   CALLER's job to collapse into a visible count (never silently hide); this
+   function just renders what it is given. */
+const diffBadge=a=>a.df&&a.df.length===1&&a.df[0]==="h"
+  ? `<span class="mythonly hb" title="Only cast on Heroic difficulty.">${ic("i-warn",10)}Heroic only</span>` : "";
+function abilityRow(a,roleFilter,diff){
   if(roleFilter&&a.r&&!a.r.includes(roleFilter)) return "";
   const em=t=>t==="noarmor"?"c-noarmor":"";
   /* Mythic-only is lifted out of the chip row and worn as a badge. In a
@@ -55,10 +63,11 @@ function abilityRow(a,roleFilter){
   const ctrs=(a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("");
   const roles=(a.r||[]).map(roleChip).join("");
   return `<div class="abil ${a.sev===3?"sev3":a.sev===2?"sev2":""}">
-    <div><div class="an">${abilIcon(a.n)}${esc(a.n)}${mythBadge(a)}${alt(a)}</div><div class="tags">${tags}${roles}</div></div>
+    <div><div class="an">${abilIcon(a.n)}${esc(a.n)}${mythBadge(a)}${diffBadge(a)}${alt(a)}</div><div class="tags">${tags}${roles}</div></div>
     <div><p class="effect">${esc(a.e)}${srcMark(a.s)}</p>
       ${ctrs?`<div class="tags">${ctrs}</div>`:""}
-      ${a.h?`<p class="read">${esc(a.h)}</p>`:""}</div></div>`;
+      ${a.h?`<p class="read">${esc(a.h)}</p>`:""}
+      ${a.hh&&diff==="h"?`<p class="read hh"><b>On Heroic:</b> ${esc(a.hh)}</p>`:""}</div></div>`;
 }
 /* Every trash block carries a gravity tier taken straight from the mob's own
    k, so nothing is styled by hand: mini-bosses read loudest, lieutenants sit a
@@ -215,8 +224,8 @@ const lootTable=d=>{
   nothing else can only be a caster or a healer, Strength or Agility alone can never be either, and a trinket
   carrying all three is a hybrid. Where the stat line says nothing, the effect decides.</p>
   <div class="trinkets">${trink.map(x=>`<div class="card trink">
-    <div class="mobtop">${itemIcon(x)}<h3>${esc(x.n)}</h3>${primChip(x.p)}${roleChips(x)}</div>
-    ${x.x&&x.x.length?`<div class="n">${secChip(x.x)}</div>`:""}
+    <div class="tihead">${itemIcon(x)}<h3>${esc(x.n)}</h3></div>
+    <div class="tags tichips">${primChip(x.p)}${roleChips(x)}${x.x&&x.x.length?secChip(x.x):""}</div>
     ${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}
     ${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</div>`).join("")}</div>`:""}
 
@@ -325,7 +334,7 @@ function pHome(){
   <div class="sec"><h2>Open questions</h2><span class="n">${DISPUTES.length} contested</span></div>
   <p class="note">Most guides pick a side quietly. Where the sources actually disagree, this one shows both and says
   what would settle it. All ${DISPUTES.length} are listed on the dungeon pages and on <a href="#/sources">Sources</a>.</p>
-  ${DISPUTES.map(x=>`<div class="mres"><div class="mtop"><span class="mdg" style="background:var(--ground-panel);color:var(--ink-muted)">${esc(D[x.dg].short)}</span>
+  ${DISPUTES.map(x=>`<div class="mres"><div class="mtop"><span class="mdg" style="background:var(--ground-panel);color:var(--ink-muted)">${esc(x.dg==="raid"?RAID.short:D[x.dg].short)}</span>
     <span class="mn">${esc(x.q)}</span></div><p>Resolves: ${esc(x.r)}</p></div>`).join("")}`;
 }
 function tile(d){
@@ -686,17 +695,19 @@ function paintLoot(){ $("#p-loot").innerHTML=pLoot(); feedStart("#lfeed",LRES,lo
 
 /* ═══ RAID PAGES ═══ The Venomous Abyss — landing, boss detail, prep ═══ */
 
-/* The descent strip: eight bosses in kill order, each wearing its depth
-   colour. The palette walks venom green down into abyssal violet — the
-   literal shape of the raid. */
+/* The descent strip: each boss wears its depth colour — the palette walks
+   venom green down into abyssal violet, the literal shape of the raid. The
+   layout is the fork itself: the raid is not linear, and the page should
+   not pretend it is. */
 const bossTile=b=>`<a class="rboss" href="#/r/${b.id}" data-boss="${b.id}">
   <span class="rnum">${b.o}</span>
   <span class="rname">${esc(b.n)}</span>
   ${b.sub?`<span class="rsub">${esc(b.sub)}</span>`:""}
-  <span class="rabil">${(b.phases?b.phases.flatMap(p=>p.a):b.a||[]).length||"—"} abilities</span></a>`;
+  <span class="rabil">${abilCount(b)||"—"} abilities</span></a>`;
 
 function pRaid(){
-  const nAb=RAID.bosses.reduce((n,b)=>n+(b.phases?b.phases.flatMap(p=>p.a):b.a||[]).length,0);
+  const nAb=RAID.bosses.reduce((n,b)=>n+abilCount(b),0);
+  const F=RAID.fork, tile=id=>bossTile(RB[id]);
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Raid</em></div>
   <h1>${esc(RAID.name)}</h1>
   ${modbar("raid","raid")}
@@ -704,56 +715,130 @@ function pRaid(){
     <span class="pill new" style="background:var(--r-accent);color:var(--r-ink)">Patch ${RAID.patch}</span>
     <span class="pill">${ic("i-boss")}${RAID.bosses.length} bosses</span>
     <span class="pill">Normal · Heroic</span>
-    ${nAb?`<span class="pill">${nAb} abilities</span>`:""}</div>
-  <p class="lede">${esc(RAID.loc)} — beneath the same vaults Altar of Fangs digs under. Eight bosses in a fixed
-  order, ending at Ula'tek, the serpent the patch is named for.</p>
+    ${nAb?`<span class="pill">${nAb} abilities</span>`:""}
+    <span class="pill warn">${ic("i-warn")}Pre-launch data</span></div>
+  <p class="lede">${esc(RAID.loc)} — beneath the same vaults Altar of Fangs digs under. Eight bosses ending at
+  Ula'tek, the serpent the patch is named for — and the order is not a line.</p>
   <p class="note">${ic("i-info",13)} Covered here: <b>Normal and Heroic</b>. Mythic and Raid Finder are out of
   scope for now — a decision, not an oversight. The structure accommodates both if that changes.</p>
 
-  <div class="sec"><h2>The descent</h2><span class="n">Kill order</span></div>
-  <div class="rlist">${RAID.bosses.map(bossTile).join("")}</div>
+  <div class="sec"><h2>The descent</h2><span class="n">Forks after the first boss</span></div>
+  <p class="note">After Nek'zali the raid splits: two wings, each two bosses, taken in either order — different
+  guides list the middle four differently because both orders are real. The wings converge at the Twin Fangs.</p>
+  <div class="rlist">${tile(F.after)}</div>
+  <div class="rfork">
+    ${F.wings.map(w=>`<div class="rwing"><div class="rwing-h">${esc(w.n)}</div>${w.ids.map(tile).join("")}</div>`).join("")}
+  </div>
+  <div class="rlist">${[F.converge,...RAID.bosses.filter(b=>b.o>=7).map(b=>b.id)].map(tile).join("")}</div>
+
+  ${disputeBlock("raid")}
 
   <div class="sec"><h2>When it opens</h2><span class="n">Staggered</span></div>
   <table><thead><tr><th>Week</th><th>What opens</th></tr></thead><tbody>
   ${RAID.schedule.map(([w,x])=>`<tr><td class="mono">${esc(w)}</td><td>${esc(x)}${srcMark(["wh_va"])}</td></tr>`).join("")}
   </tbody></table>
-  <p class="note">Raid Finder wants item level ${RAID.minIlvl} to queue.${srcMark(["wh_va"])}</p>`;
+  <p class="note">Raid Finder wants item level ${RAID.minIlvl} to queue.${srcMark(["wh_va"])}</p>
+  <div class="sec"><h2>Getting there</h2><span class="n">Two waypoints, one door</span></div>
+  <p class="note">${esc(RAID.entrance.way)}${srcMark(RAID.entrance.s)} — inside the Vaults of Atal'Utek on the
+  Coiled Isle. The two written guides give waypoints seven map-points apart; see the contested list above.</p>`;
 }
 
 function pPrep(){
+  const il=RAID.ilvl;
   return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>Prep</em></div>
   <h1>Before you zone in</h1>
   ${modbar("raid","prep")}
-  <p class="lede">Lockout, schedule and what to bring. The parts of raid night that are decided before the
-  first pull.</p>
+  <p class="lede">Lockout, loot rules, item levels and the vault. The parts of raid night that are decided
+  before the first pull.</p>
+
   <div class="sec"><h2>The lockout</h2><span class="n">Once a week, per difficulty</span></div>
-  <p class="note">Normal and Heroic bosses each award loot once per character per week. Unlike Mythic+, there is
-  no end-of-run chest and no repeatable farm — the boss is the loot table, once.${srcMark(["wh_va"])}</p>
+  <p class="note">Each boss awards loot once per character per week on Normal and again on Heroic. Unlike
+  Mythic+, there is no end-of-run chest and no repeatable farm — the boss is the loot table, once. Gear drops
+  use Group Loot; after a kill, a Nebulous Voidcore buys a bonus roll from a separate per-class table, and a
+  piece already won that way stops appearing on it.${srcMark(["wh_vr"])}</p>
+
+  <div class="sec"><h2>Item level by boss</h2><span class="n">The deeper, the higher</span></div>
+  <p class="note">The bracket belongs to the boss, not to when you kill it — both wings pay the same.</p>
+  <table><thead><tr><th>Bosses</th><th>Normal</th><th>Heroic</th></tr></thead><tbody>
+  ${il.brackets.map((b,i)=>`<tr><td>${esc(b)}</td><td class="mono">${il.n[i]}</td><td class="mono">${il.h[i]}</td></tr>`).join("")}
+  </tbody></table>
+  <p class="note">Every boss also drops ten crests: ${esc(il.crests.n)}; on Heroic, ${esc(il.crests.h)}.${srcMark(["iv_va"])}</p>
+
+  <div class="sec"><h2>Tier sets</h2><span class="n">Bosses 2–6, plus the Curio</span></div>
+  <p class="note">Set tokens drop from the four wing bosses and the Twin Fangs — head, shoulders, chest, hands
+  and legs across them — and never from Nek'zali or the Coiled Altar. Ula'tek drops the Slumbering Coil Curio,
+  a token any class can roll that trades for a set piece of your choice.${srcMark(["wh_vr","wg_va"])}</p>
+
+  <div class="sec"><h2>The Great Vault</h2><span class="n">Six bosses fills it</span></div>
+  <p class="note">Raid kills fill the vault's raid row; defeating six bosses in a week maxes the choices, drawn
+  from the loot tables of bosses you actually killed. Vault rewards land a difficulty ahead of the kill —
+  Normal kills produce Heroic-track vault gear, Heroic kills produce Mythic-track.${srcMark(["wh_vr"])}</p>
+
   <div class="sec"><h2>Release schedule</h2><span class="n">${RAID.schedule.length} weeks</span></div>
   <table><thead><tr><th>Week</th><th>What opens</th></tr></thead><tbody>
   ${RAID.schedule.map(([w,x])=>`<tr><td class="mono">${esc(w)}</td><td>${esc(x)}${srcMark(["wh_va"])}</td></tr>`).join("")}
   </tbody></table>
-  <div class="sec"><h2>Consumables and composition</h2><span class="n">Lands with the boss guides</span></div>
-  <p class="note">${ic("i-warn",13)} Not yet written — it will be built from the same sources as the boss pages
-  rather than guessed at now.</p>`;
+
+  <div class="sec"><h2>Consumables and composition</h2><span class="n">Lands with live data</span></div>
+  <p class="note">${ic("i-warn",13)} Not yet written — the boss pages carry per-fight utility notes (dispel
+  load, immunities, movement), and a proper consumables section will be built from live-season sources rather
+  than guessed at now.</p>`;
 }
+
+/* The difficulty the reader is on. Persists — a Heroic raider stays on
+   Heroic all night — and rides the URL as ?d=h so a link carries it. Built
+   as a segmented control so a third segment is a data change, not a rebuild. */
+let DIFF=(function(){try{return localStorage.getItem("cc-diff")||"n";}catch(e){return "n";}})();
+const DIFFL={n:"Normal",h:"Heroic",m:"Mythic"};
+const diffToggle=()=>`<div class="dtoggle" role="group" aria-label="Difficulty">
+  ${RAID.difficulties.map(d=>`<button class="dseg" data-diff="${d}" aria-pressed="${DIFF===d}">${DIFFL[d]}</button>`).join("")}
+  </div>`;
+const abilCount=b=>(b.phases?b.phases.flatMap(p=>p.a||[]):(b.a||[])).length;
 
 function pBoss(id,tab){
   const b=RB[id]; if(!b) return `<p>Unknown boss.</p>`;
-  const abils=b.phases?b.phases.flatMap(p=>p.a):(b.a||[]);
-  const head=`<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>${esc(b.n)}</em></div>
+  const wing=RAID.fork.wings.find(w=>w.ids.includes(b.id));
+  const phases=b.phases||[{n:"The fight",trigger:"",a:b.a||[]}];
+  /* On Normal, Heroic-only rows collapse to a counted line rather than
+     vanishing — silent filtering is how a reader forms a wrong picture and
+     blames the site. */
+  const renderPhase=p=>{
+    const visible=(p.a||[]).filter(a=>DIFF==="h"||!(a.df&&a.df.length===1&&a.df[0]==="h"));
+    const hidden=(p.a||[]).length-visible.length;
+    return `<div class="area-h">${esc(p.n)}${p.trigger?` <span class="n" style="text-transform:none;letter-spacing:0">· ${esc(p.trigger)}</span>`:""}</div>
+    <div class="bossabils">${visible.map(a=>abilityRow(a,null,DIFF)).join("")}</div>
+    ${hidden?`<p class="note hnote">${ic("i-info",13)} ${hidden} more abilit${hidden>1?"ies":"y"} on Heroic —
+      <button class="linklike" data-diff="h">switch to Heroic</button> to see ${hidden>1?"them":"it"}.</p>`:""}`;};
+  const loot=b.loot||[];
+  const lootRows=loot.length?`
+  <div class="sec"><h2>Loot</h2><span class="n">${loot.length} items · once a week per difficulty</span></div>
+  ${loot.some(x=>x.ty==="Token")?`<p class="note">The <b>Token</b> rows are tier-set pieces: they drop as class tokens and trade for the set piece of that slot.</p>`:""}
+  <table><thead><tr><th>Item</th><th>Slot</th><th>Type</th><th>Stats</th></tr></thead><tbody>
+  ${loot.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
+    <td class="mono">${esc(x.sl)}</td><td class="mono">${esc(x.ty)}${x.tc?` · ${esc(x.tc)}`:""}</td>
+    <td>${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}</td></tr>
+    ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`).join("")}
+  </tbody></table>`:"";
+  return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>${esc(b.n)}</em></div>
   <nav class="dswitch" id="dswitch" aria-label="Switch boss">${RAID.bosses.map(x=>
     `<a href="#/r/${x.id}" data-boss="${x.id}" ${x.id===b.id?'aria-current="page"':""}
-      title="Boss ${x.o} — ${esc(x.n)}"><span class="rnum">${x.o}</span>${esc(x.short)}</a>`).join("")}</nav>
+      title="${esc(x.pos)} — ${esc(x.n)}"><span class="rnum">${x.o}</span>${esc(x.short)}</a>`).join("")}</nav>
   <h1>${esc(b.n)}</h1>
   <div class="tile-foot" style="border:none;padding:.8rem 0 0">
-    <span class="pill">Boss ${b.o} of ${RAID.bosses.length}</span>
-    <span class="pill">Normal · Heroic</span></div>
-  ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}`;
-  if(!abils.length) return head+`
+    <span class="pill">${esc(b.pos)}</span>
+    ${wing?`<span class="pill">${esc(wing.n)}</span>`:""}
+    ${abilCount(b)?`<span class="pill">${ic("i-boss")}${abilCount(b)} abilities</span>`:""}
+    <span class="pill warn">${ic("i-warn")}Pre-launch data</span></div>
+  ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
+  ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
+  ${b.brief?`<p>${esc(b.brief)}</p>`:""}
+  ${abilCount(b)?diffToggle():""}
+  ${abilCount(b)?phases.map(renderPhase).join(""):`
   <p class="note">${ic("i-warn",13)} The order and name are confirmed against Wowhead; the encounter guide has
-  not been written yet. Bosses are being sourced and added one at a time — the same way the dungeons were.</p>`;
-  return head+`<div class="bossabils">${abils.map(a=>abilityRow(a,null)).join("")}</div>`;
+  not been written yet. Bosses are being sourced and added one at a time — the same way the dungeons were.</p>`}
+  ${lootRows}
+  ${(b.reads||[]).length?`<div class="sec"><h2>Reads</h2><span class="n">Opinion, attributed</span></div>
+    ${b.reads.map(x=>`<div class="card"><div class="meta">${esc(x.by)}</div><p class="read">${esc(x.t)}${srcMark(x.s)}</p></div>`).join("")}`:""}`;
 }
 
 function pRoutes(){
@@ -789,6 +874,13 @@ function pSeason(){
   <p class="note">${esc(SEASON.rewardNote)}${srcMark(["bz_game","iv_ov"])}</p>
   <p class="note">${ic("i-info",13)} Blizzard's own figures and an independent written guide agree here line for
   line. Treat it as settled.</p>
+  <div class="sec"><h2>The raid</h2><span class="n">Opens with the season</span></div>
+  <p class="note"><a href="#/raid">${esc(RAID.name)}</a> opens the same week — Normal and Heroic from day one,
+  Raid Finder in four staggered wings. Item levels, tier tokens, the vault and the lockout live on
+  <a href="#/raid/prep">Raid → Prep</a>.${srcMark(["wh_va"])}</p>
+  <table><thead><tr><th>Week</th><th>What opens</th></tr></thead><tbody>
+  ${RAID.schedule.map(([w,x])=>`<tr><td class="mono">${esc(w)}</td><td>${esc(x)}${srcMark(["wh_va"])}</td></tr>`).join("")}
+  </tbody></table>
   <p class="note">${esc(SEASON.mounts)}${srcMark(["bz_game"])}</p>
   <div class="sec"><h2>Where things are</h2><span class="n">${SEASON.where.length}</span></div>
   <p class="note">Every dungeon also has its own location, waypoint and teleport spell on its Getting There section.
@@ -834,9 +926,10 @@ function pSources(){
     <p>${esc(x.p)}</p></div>`).join("")}
   <div class="sec"><h2>Open disputes</h2><span class="n">${DISPUTES.length}</span></div>
   ${DISPUTES.map(x=>`<div class="card acc"><h3>${esc(x.q)}</h3>
-    <div class="meta"><a href="#/d/${x.dg}">${esc(D[x.dg].name)}</a></div>
+    <div class="meta"><a href="${x.dg==="raid"?"#/raid":`#/d/${x.dg}`}">${esc(x.dg==="raid"?RAID.name:D[x.dg].name)}</a></div>
     <p><b>Position A.</b> ${esc(x.a.p)}${srcMark(x.a.s)}</p>
     <p><b>Position B.</b> ${esc(x.b.p)}${srcMark(x.b.s)}</p>
+    ${x.extra?`<p>${esc(x.extra)}</p>`:""}
     <p class="read">${esc(x.r)}</p></div>`).join("")}`;
 }
 
