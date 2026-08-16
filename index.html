@@ -377,6 +377,9 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .card.mob.k-fodder h3{color:var(--ink-muted);font-size:.95rem}
 .kindtag.k-fodder{border-style:dashed;opacity:.75}
 .mobsub{color:var(--ink-muted);font-size:.9rem;margin:0 0 .55rem}
+/* how a facet group combines, said once in the header rather than in a note */
+.fany{font-family:var(--face-term);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:400;margin-left:.4rem}
 /* ═══ LOOT ════════════════════════════════════════════════════════════════ */
 td.li{display:flex;align-items:center;gap:.5rem}
 .chip.pstat{border-style:solid;font-weight:600}
@@ -617,6 +620,7 @@ footer a{color:var(--ink-muted)}
   <nav id="nav" aria-label="Primary">
     <a href="#/dungeons" data-nav="dungeons">Dungeons</a>
     <a href="#/mechanics" data-nav="mechanics">Mechanics</a>
+    <a href="#/loot" data-nav="loot">Loot</a>
     <a href="#/routes" data-nav="routes">Routes</a>
     <a href="#/season" data-nav="season">Season</a>
     <a href="#/sources" data-nav="sources">Sources</a>
@@ -635,6 +639,7 @@ footer a{color:var(--ink-muted)}
     <section class="page" data-page="dungeons" id="p-dungeons"></section>
     <section class="page" data-page="dungeon" id="p-dungeon"></section>
     <section class="page" data-page="mechanics" id="p-mechanics"></section>
+    <section class="page" data-page="loot" id="p-loot"></section>
     <section class="page" data-page="routes" id="p-routes"></section>
     <section class="page" data-page="season" id="p-season"></section>
     <section class="page" data-page="sources" id="p-sources"></section>
@@ -2427,6 +2432,88 @@ function pMechanics(){
       <em>both</em>. Clear one and try again.</p>`}`;
 }
 
+/* ═══ LOOT INDEX ═══ the Mechanics treatment applied to gear. One chest per
+   run means the whole season's table is one pool, and the questions a player
+   actually has are cross-dungeon: what Mail exists with mastery on it, which
+   Agility trinkets are worth setting loot spec for. ═══════════════════════ */
+const LCAP=60;
+/* Within a group the options are OR, across groups AND — "Mail or Plate, with
+   crit" is the query people mean. Secondaries are the exception and stack as
+   AND, because every item carries exactly two and picking both is how you ask
+   for a specific pairing. Each group says which it is. */
+let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null};
+const LOOTALL=DUNGEONS.flatMap(d=>(d.loot?d.loot.i:[]).map(i=>({d,i})));
+const LSLOT=["Head","Shoulder","Back","Chest","Wrist","Hands","Waist","Legs","Feet",
+  "Neck","Ring","Trinket","One-hand","Two-hand","Off-hand","Ranged"];
+const LARM=["Cloth","Leather","Mail","Plate"];
+const LGEAR=["Cloak","Neck","Ring","Trinket","Shield","Off-hand"];
+const LWEP=["Dagger","Sword","Mace","Axe","Fist","Warglaive","Polearm","Staff","Bow","Crossbow","Gun","Wand"];
+const LPRIM=["Str","Agi","Int"], LSEC=["Crit","Haste","Mastery","Vers"];
+const inData=(arr,f)=>arr.filter(v=>LOOTALL.some(o=>f(o.i,v)));
+
+/* skip lets a group ask "what would still be reachable if I were not applied",
+   which is what keeps an OR group from disabling its own siblings. */
+function lmatch(o,skip){
+  const i=o.i, F=LFACETS;
+  if(skip!=="dg"&&F.dg&&o.d.id!==F.dg) return false;
+  if(skip!=="sl"&&F.sl.size&&!F.sl.has(i.sl)) return false;
+  if(skip!=="ty"&&F.ty.size&&!F.ty.has(i.ty)) return false;
+  if(skip!=="p"&&F.p.size&&!(i.p||[]).some(v=>F.p.has(v))) return false;
+  if(skip!=="x"&&F.x.size){const have=(i.x||[]).map(v=>v[0]);
+    for(const v of F.x) if(!have.includes(v)) return false;}
+  if(skip!=="big"&&F.big&&!((i.x||[]).length&&i.x[0][0]===F.big)) return false;
+  return true;
+}
+function pLoot(){
+  const res=LOOTALL.filter(o=>lmatch(o));
+  const F=LFACETS;
+  const n=Object.values(F).reduce((k,v)=>k+(v instanceof Set?v.size:(v?1:0)),0);
+  const reach=(key,get)=>{const live=new Set();
+    LOOTALL.filter(o=>lmatch(o,key)).forEach(o=>get(o.i).forEach(v=>live.add(v)));return live;};
+  const liveSl=reach("sl",i=>[i.sl]), liveTy=reach("ty",i=>[i.ty]);
+  const liveP=reach("p",i=>i.p||[]), liveX=reach("x",i=>(i.x||[]).map(v=>v[0]));
+  const liveBig=reach("big",i=>(i.x||[]).length?[i.x[0][0]]:[]);
+  const opt=(key,v,label,live)=>{
+    const on=F[key] instanceof Set?F[key].has(v):F[key]===v;
+    const dis=!on&&live&&!live.has(v);
+    return `<button class="fopt" data-lf="${key}" data-v="${esc(v)}" aria-pressed="${on}" ${dis?"disabled":""}>${esc(label||v)}</button>`;};
+  const row=o=>`<div class="mres"><div class="mtop">
+      <a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>
+      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}</span>
+      <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
+      ${primChip(o.i.p)}${secChip(o.i.x)}</div>
+    ${o.i.u?`<p class="fx"><b>Use</b> ${esc(o.i.u)}</p>`:""}
+    ${o.i.e?`<p class="fx"><b>Equip</b> ${esc(o.i.e)}</p>`:""}</div>`;
+  return `<div class="crumb"><a href="#/">Compendium</a> › <em>Loot</em></div>
+  <h1>Every item in the season</h1>
+  <p class="lede">${LOOTALL.length} items across eight dungeons. Mythic+ pays out from one chest at the end of a run,
+  so a dungeon's whole table is a single pool and the useful questions cross dungeons: what Mail exists with mastery
+  on it, which Agility trinkets are worth setting loot specialisation for, where the crit/haste boots are.</p>
+  <div class="facets">
+    <div class="fgroup"><h4>Slot <span class="fany">any of</span></h4><div class="fopts">
+      ${inData(LSLOT,(i,v)=>i.sl===v).map(v=>opt("sl",v,v,liveSl)).join("")}</div></div>
+    <div class="fgroup"><h4>Armour <span class="fany">any of</span></h4><div class="fopts">
+      ${inData(LARM,(i,v)=>i.ty===v).map(v=>opt("ty",v,v,liveTy)).join("")}
+      ${inData(LGEAR,(i,v)=>i.ty===v).map(v=>opt("ty",v,v,liveTy)).join("")}</div></div>
+    <div class="fgroup"><h4>Weapon <span class="fany">any of</span></h4><div class="fopts">
+      ${inData(LWEP,(i,v)=>i.ty===v).map(v=>opt("ty",v,v,liveTy)).join("")}</div></div>
+    <div class="fgroup"><h4>Primary stat <span class="fany">any of</span></h4><div class="fopts">
+      ${LPRIM.map(v=>opt("p",v,{Str:"Strength",Agi:"Agility",Int:"Intellect"}[v],liveP)).join("")}</div></div>
+    <div class="fgroup"><h4>Secondaries <span class="fany">all of</span></h4><div class="fopts">
+      ${LSEC.map(v=>opt("x",v,v,liveX)).join("")}</div></div>
+    <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
+      ${LSEC.map(v=>opt("big",v,v,liveBig)).join("")}</div></div>
+    <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
+      ${DUNGEONS.map(d=>opt("dg",d.id,d.short,null)).join("")}</div></div>
+  </div>
+  <div class="fstate">Showing <b>${Math.min(res.length,LCAP)}</b>${res.length>LCAP?` of ${res.length} matches`:``} · ${LOOTALL.length} items indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
+    ${n?`<button class="clear" id="clearl">Clear all</button>`:""}</div>
+  ${res.length>LCAP?`<p class="note">${ic("i-info",13)} Capped at ${LCAP} results so the page stays usable. Add a filter to narrow it.</p>`:""}
+  ${res.length?res.slice(0,LCAP).map(row).join("")
+    :`<p class="note">Nothing matches that combination. Slot, armour and primary stack as <em>any of</em>;
+      secondaries stack as <em>all of</em>, so picking three of the four can never match — every item has two.</p>`}`;
+}
+
 function pRoutes(){
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Routes</em></div>
   <h1>Pug routes, all eight</h1>
@@ -2590,6 +2677,7 @@ function route(){
   if(key==="dungeons"){page="dungeons";html=pDungeons();}
   else if(key==="d"&&D[h[1]]){page="dungeon";document.body.setAttribute("data-dungeon",h[1]);html=pDungeon(h[1],h[2]);}
   else if(key==="mechanics"){page="mechanics";html=pMechanics();}
+  else if(key==="loot"){page="loot";html=pLoot();}
   else if(key==="routes"){page="routes";html=pRoutes();}
   else if(key==="season"){page="season";html=pSeason();}
   else if(key==="sources"){page="sources";html=pSources();}
@@ -2608,7 +2696,9 @@ addEventListener("hashchange",route);
 
 /* facet clicks — delegated, so re-renders never lose the handler */
 document.addEventListener("click",e=>{
-  const f=e.target.closest(".fopt");
+  /* Loot reuses .fopt for styling but keys off data-lf, so the mechanics branch
+     must match on data-f or it swallows loot clicks and writes FACETS[undefined]. */
+  const f=e.target.closest(".fopt[data-f]");
   if(f&&!f.disabled){
     const {f:key,v}=f.dataset;
     if(FACETS[key] instanceof Set){FACETS[key].has(v)?FACETS[key].delete(v):FACETS[key].add(v);}
@@ -2616,7 +2706,16 @@ document.addEventListener("click",e=>{
     const el=$("#p-mechanics"); el.innerHTML=pMechanics(); return;
   }
   if(e.target.closest("#clearf")){FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null};
-    $("#p-mechanics").innerHTML=pMechanics();}
+    $("#p-mechanics").innerHTML=pMechanics(); return;}
+  const l=e.target.closest("[data-lf]");
+  if(l&&!l.disabled){
+    const {lf:key,v}=l.dataset;
+    if(LFACETS[key] instanceof Set){LFACETS[key].has(v)?LFACETS[key].delete(v):LFACETS[key].add(v);}
+    else LFACETS[key]=LFACETS[key]===v?null:v;
+    $("#p-loot").innerHTML=pLoot(); return;
+  }
+  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),big:null,dg:null};
+    $("#p-loot").innerHTML=pLoot();}
 });
 
 /* ═══ SEARCH ═════════════════════════════════════════════════════════ */

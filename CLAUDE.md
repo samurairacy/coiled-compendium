@@ -53,6 +53,16 @@ If a fresh build lands, re-apply those rather than assuming they survived.
   inside 55:45. Every field came from Wowhead, so the old hand-written slot
   strings — which spelled the same slot four ways (`Mail Boots` vs `Mail Feet`,
   `Head` vs `Helm`) — are gone.
+- **Two filtered indexes, and they share a stylesheet but not a state.**
+  `#/mechanics` runs on `FACETS`/`ALL`/`matches`; `#/loot` runs on
+  `LFACETS`/`LOOTALL`/`lmatch`. Both render `.fopt` buttons, so the delegated
+  handler distinguishes them by attribute — mechanics matches `.fopt[data-f]`,
+  loot uses `data-lf`. **Drop that `[data-f]` qualifier and mechanics silently
+  eats every loot click**, writing `FACETS[undefined]`. The two differ on
+  purpose: mechanics stacks multi-select as AND (two counters means abilities
+  answered by both), loot stacks as OR within a group and AND across groups,
+  because "Mail or Plate, with mastery" is the question people have. Loot's
+  secondaries are the one AND group. Each group's header says which it is.
 - **Mobs carry a gravity tier in `k`**, and the trash card styles itself from
   it — nothing is styled by hand. The ladder, loudest first: `mini` (accent
   bar, raised plate, filled tag) → `lt` → `caster` / `trash` (same weight, the
