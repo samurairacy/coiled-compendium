@@ -68,6 +68,20 @@ item icons keyed by Blizzard slug.
   orders because each describes one walk of the same graph; **that is not
   a naming dispute**. `o` is a listing index for the switcher; `pos` is
   the only order claim a page may render for a fork boss.
+- **Trinket `ro` answers "whose loot table is this on", not "who benefits".**
+  The stat line sets the outer bound (Int alone → caster/healer; Str/Agi
+  alone → never either), then the effect narrows it: a purely offensive
+  proc is DPS-only *even on Str/Agi a tank could equip and use well*; a
+  defensive effect, or one triggered by dodge/parry/block, is a tank's;
+  an ally heal or shield is a healer's. **Stat-granting effects are the
+  exception** — they stay as wide as the stat line permits, which is why
+  all-three-primaries plus a stat effect (Gebbo's Bottomless Bag, Vile
+  Vial, Ruby Whelp Shell) is marked for everyone, while all-three-primaries
+  plus a damage-only effect (Sapling of the Dawnroot) stays DPS-only.
+  All 41 trinkets were re-adjudicated against this on 2026-08-17. Note the
+  label collision: in **loot** `ro`, hunters count as `mdps` (they share
+  Agility gear); in **ability** `r`, `rdps` means "stands at range", so a
+  hunter is `rdps` there. Different axes, same words — check which field.
 - **The role lens** rides every boss and dungeon page: Everyone / Tank /
   Healer / Melee / Ranged, persisted (`cc-role`) and URL-carried (`?r=tank`).
   Ability `r:` vocabulary is tank/healer/dps plus **mdps/rdps refinements**

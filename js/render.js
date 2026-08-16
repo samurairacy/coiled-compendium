@@ -244,9 +244,13 @@ const lootTable=d=>{
   <p class="note">Tanks are eligible for tank trinkets, but most set loot specialisation to a damage spec:
   survivability only out-earns throughput once a key is genuinely dangerous.</p>
   <p class="note">${ic("i-warn",13)} The role on each trinket below is marked <b>UNCONFIRMED</b> because it is the
-  one judgement on this page nobody published. It is read off the primary stat and the effect — Intellect and
-  nothing else can only be a caster or a healer, Strength or Agility alone can never be either, and a trinket
-  carrying all three is a hybrid. Where the stat line says nothing, the effect decides.</p>
+  one judgement on this page nobody published. It answers <em>whose loot table is this on</em> — not who could
+  wring value out of it. The stat line sets the outer bound: Intellect alone can only be a caster or a healer,
+  Strength or Agility alone can never be either. Then the effect narrows it. A purely offensive proc is a damage
+  dealer's even when a Strength tank could equip it and play well with it; a defensive effect, or one triggered by
+  dodging, parrying or blocking, is a tank's; one that heals or shields an ally is a healer's. Effects that simply
+  hand you stats are the exception — they stay as broad as the stat line allows, which is why the few trinkets
+  carrying all three primary stats <em>and</em> a stat-granting effect are marked for everyone.</p>
   <div class="trinkets">${trink.map(x=>`<div class="card trink">
     <div class="tihead">${itemIcon(x)}<h3>${esc(x.n)}</h3></div>
     <div class="tags tichips">${primChip(x.p)}${roleChips(x)}${x.x&&x.x.length?secChip(x.x):""}</div>
@@ -854,7 +858,7 @@ function pBoss(id,tab){
   ${loot.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
     <td class="mono">${esc(x.sl)}</td><td class="mono">${esc(x.ty)}${x.tc?` · ${esc(x.tc)}`:""}</td>
     <td class="statcell">${x.ty==="Token"?`<span class="n">${TOKCLS[x.tc]||"—"}</span>`
-      :`${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}`}</td></tr>
+      :`${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}${x.ty==="Trinket"?roleChips(x):""}`}</td></tr>
     ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`
       :x.ty==="Trinket"?`<tr class="fxrow"><td colspan="4"><p class="fx pending">Effect not yet published —
       the tooltip carries no Use or Equip text yet; it lands here when the database has it.</p></td></tr>`:""}`).join("")}
