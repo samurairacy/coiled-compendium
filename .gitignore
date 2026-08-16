@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local working documents — briefs, notes, scratch. This repository is public;
+# docs/ is where anything not meant for publication lives.
+docs/
