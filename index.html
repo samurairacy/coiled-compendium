@@ -761,7 +761,7 @@ const DISPUTES=[
  {id:"kr-count",q:"Does King's Rest still require 100% trash count?",
   a:{p:"Yes — every mob in the instance, believed to be a first for the format.",s:["bz_game"]},
   b:{p:"Relaxed late in the PTR. A 15 Aug routing video says the requirement changed and demonstrates a route leaving two packs unpulled that still makes count; Wowhead separately reported PTR dungeon tuning that removed some King's Rest trash. Note these are not the same claim — removing trash does not by itself relax a 100% requirement.",s:["tk_rt","wh_dt"]},
-  extra:"A tier-2 dungeon overview dated 11-12 Aug states flatly that you must pull every mob. That strengthens Position A on tier — but it PREDATES the routing video by three or four days, so it cannot rebut a claim about a later change. Date order matters more than tier here.",
+  extra:"A written dungeon overview dated 11-12 Aug states flatly that you must pull every mob. That is a steadier kind of source than a video and it strengthens Position A — but it PREDATES the routing video by three or four days, so it cannot rebut a claim about a later change. Date order matters more than pedigree here.",
   r:"Open the key and check whether count completes with a pack skipped. This is now the oldest open question in the compendium and the cheapest to answer.",dg:"kings-rest"},
  {id:"vsa-buff",q:"How much Versatility does the Voidscar left path grant?",
   a:{p:"5% Versatility, from Proof of Endurance.",s:["tk_vsa"]},
@@ -774,11 +774,11 @@ const DISPUTES=[
  {id:"bv-pulverize",q:"Can you dodge Lightwarden Ruia's Pulverizing Strikes?",
   a:{p:"Yes — move the moment you are marked, and leave room for untargeted players to get out.",s:["tk_bv"]},
   b:{p:"No — the cones lock onto the player, so there is no dodging them. Stand still when it is on you and rely on being spread.",s:["wh_dg"]},
-  r:"The Encounter Journal says he marks targets and launches a wave toward each, which reads closer to a lock-on. If the tier-2 reading is right, the creator advice actively hurts you — running drags the cone across allies. Watch one cast before deciding.",dg:"blinding-vale"},
+  r:"The Encounter Journal says he marks targets and launches a wave toward each, which reads closer to a lock-on. If the written guide's reading is right, the creator advice actively hurts you — running drags the cone across allies. Watch one cast before deciding.",dg:"blinding-vale"},
  {id:"vsa-path",q:"Which Voidscar Arena path should you take?",
   a:{p:"Left, for Proof of Endurance. The Versatility buff is generally more beneficial, and the harder left-side mini-boss is worth it for most groups.",s:["tk_vsa"]},
   b:{p:"Right, for Proof of Mastery — described as a powerful dungeon buff that speeds the run up, against Proof of Endurance being called not-so-great. Explicitly framed as a call about current tuning.",s:["iv_vsa"]},
-  r:"The tier-2 position is six days later and post-patch, which usually settles it. But the two are arguing about buff value, not a fact, and Proof of Mastery scales with your spec's mastery modifier — so the right answer may genuinely differ by group composition. Read the tooltips and decide for your comp.",dg:"voidscar-arena"},
+  r:"The written guide's position is six days later and post-patch, which usually settles it. But the two are arguing about buff value, not a fact, and Proof of Mastery scales with your spec's mastery modifier — so the right answer may genuinely differ by group composition. Read the tooltips and decide for your comp.",dg:"voidscar-arena"},
  {id:"bv-side",q:"Which side of Blinding Vale should a pug take?",
   a:{p:"Left. The Light-Starved Blossom buff is the better of the two and the trash composition looks slightly easier.",s:["tk_bv"]},
   b:{p:"Right. The left side has considerably more interrupts and an extra Sporeblight Belcher; the right side's bolt-casters can be safely ignored once packs are grouped.",s:["tk_rt"]},
@@ -789,10 +789,10 @@ const DISPUTES=[
 const RESOLVED=[
  {id:"rlp-phase",q:"At what health does Kyrakka join Erkhart Stormvein?",
   won:"40%",by:["wh_ej"],
-  p:"The creator guide said 40%, the tier-2 written guide said 50%. The Encounter Journal says Kyrakka lands when EITHER of them reaches 40% — so the creator was right, and both guides missed that the threshold applies to whichever boss hits it first.",d:"2026-08-16"},
+  p:"The creator guide said 40%, the written guide said 50%. The Encounter Journal says Kyrakka lands when EITHER of them reaches 40% — so the creator was right, and both guides missed that the threshold applies to whichever boss hits it first.",d:"2026-08-16"},
  {id:"aof-axes",q:"Can Axegrinder be used to clear Ritual Venom stacks?",
   won:"Yes",by:["wh_ej"],
-  p:"The creator guide treated the axes purely as something to dodge; the tier-2 guide offered them as a second way to clear stacks. The journal settles it: Bloodletting triggers on Zul'jan's Physical abilities, and Axegrinder is Physical. It is a real second option — and useful, because Boneslicer only targets one player at a time.",d:"2026-08-16"}
+  p:"The creator guide treated the axes purely as something to dodge; the written guide offered them as a second way to clear stacks. The journal settles it: Bloodletting triggers on Zul'jan's Physical abilities, and Axegrinder is Physical. It is a real second option — and useful, because Boneslicer only targets one player at a time.",d:"2026-08-16"}
 ];
 /* ═══ IMAGERY ═══ optimised WebP, embedded so the file stays self-contained.
    Boss portraits carry the in-game nameplate, which makes them evidence as well as decoration. */
@@ -842,7 +842,7 @@ const DUNGEONS=[
 {id:"altar-of-fangs",name:"Altar of Fangs",short:"Altar",banner:"altar-of-fangs",sigil:"i-fang",origin:"Midnight",isNew:true,
  timer:{v:"29 min",s:["bz_game","wh_dg"]},bosses:3,routing:"limited",
  blurb:"The season's only new dungeon, beneath the Vaults of Atal'Utek. Three bosses, venom everywhere, and a final encounter built entirely around a stack counter that kills you if it expires.",
- cov:"Three independent sources plus the Encounter Journal. The 29-minute timer is confirmed twice over — Blizzard's own figure and an independent tier-2 overview agree exactly.",cov2:true,
+ cov:"Three independent sources plus the Encounter Journal. The 29-minute timer is confirmed twice over — Blizzard's own figure and an independent written overview agree exactly.",cov2:true,
  dispels:{poison:3,magic:2,curse:0,disease:0,enrage:2,bleed:0},
  gates:[{t:"Destroy all six Caustic Mist Totems in the opening area to reach the first boss.",s:["tk_aof"]},
         {t:"Destroy four Infusion Totems and kill the Ascendant Serpent to open the exit from the mixture room.",s:["tk_aof"]}],
@@ -898,7 +898,7 @@ const DUNGEONS=[
    {n:"Ravenous Stomp",t:["groupdmg"],c:["unavoidable"],r:["healer"],sev:1,e:"Heavy Nature damage to all players, and breaks stalactites from the ceiling — each inflicts very heavy damage within 5 yards and STUNS for 2 seconds. Flying Twinfangs skewered by the falling rock are what drop Fresh Meat into the Carrion Piles.",h:"Neither guide mentions the stun or the falling rock. Do not be standing under a stalactite marker when this lands, and note the meat placement is not random — it follows the rocks.",s:["wh_ej","tk_aof"]},
    {n:"Scavenging",t:["shield","dot","soak"],c:["position","preposition"],r:["tank"],sev:3,alt:"Ssscavenging · Feeding Frenzy",t:["shield","dot","soak","noarmor"],e:"She feasts at the nearest Carrion Pile behind a shield that absorbs ALL damage, applying stacking Carrion Burst every 3 seconds until the shield breaks. If that pile holds Fresh Meat she enters Feeding Frenzy instead — same thing every 1.5 seconds — and gains Scent of Blood, +30% attack speed on the tank.",h:"Two jobs at once. The tank drags her to a clean pile; everyone else breaks the shield, because breaking it is the only thing that stops the damage.",s:["wh_ej","tk_aof","iv_aof"]},
    {n:"Triple Shot",t:["dot","spread"],c:["spread"],r:["dps","healer"],sev:2,e:"Globs of venom at 3 players: significant damage on impact plus moderate damage to anyone within 5 yards every second for 10 seconds.",h:"Loosely spread. The journal says three enemies, not tank-plus-two — so nobody is exempt.",s:["wh_ej","tk_aof"]},
-   {n:"Regurgitate",t:["line","debuff","groupdmg"],c:["dodge","disease"],r:["dps","healer"],sev:2,e:"Three waves of stomach acid in lines toward a player: very heavy Nature damage, and anyone caught is slowed 50% AND has damage done reduced by 50%. The journal tags it Disease.",h:"Both creator guides call this a minor dodge. It is not: a 50% damage cut is a timer problem, and it is confirmed dispellable by the tier-2 assignment table — so the season has two dungeons where disease removal does real work, not one.",s:["wh_ej","wh_dg"]},
+   {n:"Regurgitate",t:["line","debuff","groupdmg"],c:["dodge","disease"],r:["dps","healer"],sev:2,e:"Three waves of stomach acid in lines toward a player: very heavy Nature damage, and anyone caught is slowed 50% AND has damage done reduced by 50%. The journal tags it Disease.",h:"Both creator guides call this a minor dodge. It is not: a 50% damage cut is a timer problem, and it is confirmed dispellable by the published assignment table — so the season has two dungeons where disease removal does real work, not one.",s:["wh_ej","wh_dg"]},
    {n:"Hydro Strike",t:["tankbuster"],c:["defensive"],r:["tank"],sev:2,e:"Her melee hits notably hard with this up.",s:["tk_aof"]}]},
   {n:"The Writhing Coil",o:2,img:"aof-the-writhing-coil",sub:"Split it apart, and whatever the pieces have left is what comes back",shape:"Boss and split intermission",lv:3,brief:"A two-part loop rather than a health-gated fight. It alternates between the boss and an intermission where it splits into five Uncoiled Writhes, and the health they have left when they reform is the health it comes back with — so the intermission is where the fight is won or lost. Interrupts must cover Toxic Atrophy in both halves, which is what makes it awkward with a thin kick roster.",a:[
    {n:"Synchronized Venom",t:["dot","groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Party debuff early in the boss phase that ticks for most of its duration.",s:["tk_aof"]},
@@ -1112,7 +1112,7 @@ loot:{s:["iv_mr"],i:[
    {n:"Territorial Matriarch",k:"trash",a:[
     {n:"Mother's Wrath",t:["enrage","stacking"],c:["soothe"],r:["tank","dps"],sev:2,e:"Harmless alone, but gains stacking rage whenever her cubs die.",h:"Kill order matters. Left up, this gets very ugly for the tank — an enrage dispel is the clean answer if anyone has one.",s:["tk_don","iv_don"]}]},
    {n:"Spirit of Hunger",k:"lt",a:[
-    {n:"Starvation Effigy",t:["totem","adds"],c:["focus"],r:["dps"],sev:3,e:"Spawns a totem whose Insatiable Hunger cast puts a curse on the whole party reducing maximum health.",h:"Kill the totem before the cast lands — but the tier-2 assignment table lists the curse as dispellable, which neither creator guide mentions. With a curse dispel this pack stops being the wipe it is otherwise.",s:["tk_don","wh_dg"]},
+    {n:"Starvation Effigy",t:["totem","adds"],c:["focus"],r:["dps"],sev:3,e:"Spawns a totem whose Insatiable Hunger cast puts a curse on the whole party reducing maximum health.",h:"Kill the totem before the cast lands — but the published assignment table lists the curse as dispellable, which neither creator guide mentions. With a curse dispel this pack stops being the wipe it is otherwise.",s:["tk_don","wh_dg"]},
     {n:"Feast of Misery",t:["channel","groupdmg"],c:["unavoidable"],r:["healer"],sev:3,e:"Channels party damage, usually shortly after the effigy spawns.",h:"Maximum-health reduction plus party damage is the wipe combination.",s:["tk_don"]}]}]},
   {n:"The Snowfield",mobs:[
    {n:"Harsh Winds",k:"trash",a:[
@@ -1217,7 +1217,7 @@ loot:{s:["iv_don"],i:[
    {n:"Lasher",k:"trash",a:[
     {n:"Four-Spined",t:["dot","stacking"],c:["magic","freedom"],r:["tank","healer"],sev:2,e:"Stacks a magic damage-over-time on the tank through melee swings.",h:"Removable by magic dispel or by a freedom effect, so you have two ways to clear it more often. Note the pool video contests whether freedoms work — see the disputes list.",s:["tk_bv"]}]},
    {n:"Light Gorged Lasher",alt:"Lightgorged Lasher",k:"trash",a:[
-    {n:"Lightbloom Pollination",t:["shield","heal"],c:["focus"],r:["dps"],sev:2,e:"Buffs and heals nearby allies while the shield holds.",h:"Focus it the moment it happens — the tier-2 source treats this as an interrupt target, so if you can stop the cast outright, do.",s:["tk_bv","iv_bv"]}]},
+    {n:"Lightbloom Pollination",t:["shield","heal"],c:["focus"],r:["dps"],sev:2,e:"Buffs and heals nearby allies while the shield holds.",h:"Focus it the moment it happens — the written guide treats this as an interrupt target, so if you can stop the cast outright, do.",s:["tk_bv","iv_bv"]}]},
    {n:"Radiant Spell Sower",alt:"Radiant Spellsower",k:"caster",a:[
     {n:"Light Bolt Volley",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:3,e:"AoE hit on the party.",h:"Always interrupted. These are the mobs that make the left path interrupt-heavy.",s:["tk_bv"]},
     {n:"Rouse",t:["adds"],c:["cc","focus"],r:["dps"],sev:2,alt:"Frantic Blooming",e:"At low health they automatically walk to the nearest dormant lasher camp and wake it.",h:"Slow it and kill it before it arrives. Both sources call this the most important caster in the dungeon.",s:["tk_bv","iv_bv"]}]},
@@ -1365,7 +1365,7 @@ loot:{s:["iv_bv"],i:[
    {n:"Brutok",k:"mini",a:[
     {n:"Fel Steps",t:["groupdmg"],c:["position"],r:["tank"],sev:3,e:"Passive. Pulses damage with every step it takes.",h:"Move him as little as possible. The whole encounter is about not walking.",s:["tk_vsa"]},
     {n:"Smashing Charge",t:["line"],c:["position","los"],r:["tank"],sev:3,e:"Line attack at the tank across the arena.",h:"Tank him near a wall so the charge has nowhere to go. Blizzard has hotfixed this charging through doors.",s:["tk_vsa","bz0814"]},
-    {n:"Head Bash",t:["tankbuster","knockback"],c:["defensive"],r:["tank"],sev:2,e:"Tank buster with a knockback. The tier-2 source instead flags a Concussion window that opens right after Smashing Charge.",h:"If Concussion is a damage-taken window on him, that is your burst cue — worth confirming on the first pull.",s:["tk_vsa","iv_vsa"]}]},
+    {n:"Head Bash",t:["tankbuster","knockback"],c:["defensive"],r:["tank"],sev:2,e:"Tank buster with a knockback. The written guide instead flags a Concussion window that opens right after Smashing Charge.",h:"If Concussion is a damage-taken window on him, that is your burst cue — worth confirming on the first pull.",s:["tk_vsa","iv_vsa"]}]},
    {n:"Angry Krul",k:"trash",a:[
     {n:"Violent Sands",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:2,e:"AoE cast.",h:"Have an interrupt ready — it is a one-off mob and easy to forget.",s:["tk_vsa"]}]}]},
   {n:"The Converging Paths",mobs:[
@@ -1388,7 +1388,7 @@ loot:{s:["iv_bv"],i:[
     {n:"Dimensional Shred",t:["dot"],c:["defensive"],r:["healer"],sev:1,e:"Damage on random players.",s:["tk_vsa"]}]}]}],
  encounters:[
   {n:"Taz'Rah",alt:"Taz'grah",o:1,img:"va-tazrah",sub:"Five shades and a shrinking floor",shape:"One phase, shrinking floor",lv:2,brief:"One phase in a room that keeps shrinking. Five shades dash lines through the party and then leave two-minute puddles beneath themselves, so the group stays loosely together, takes the dash as one, and rotates around the arena edge as the floor fills. Dark Bloom later detonates those puddles, which turns a dodge check into a healing check.",a:[
-   {n:"Nether Dash",t:["line","dot","spread"],c:["spread"],r:["dps","healer","tank"],sev:2,e:"Each Ethereal Shade dashes through its target for significant damage plus moderate damage every second for a full 15 seconds.",h:"Contested emphasis: the creator guide says loosely spread to avoid cleaving, the tier-2 guide says stay closer together so the puddles that follow land in a manageable cluster. Both agree the puddles are the real problem — err towards grouped.",s:["tk_vsa","iv_vsa"]},
+   {n:"Nether Dash",t:["line","dot","spread"],c:["spread"],r:["dps","healer","tank"],sev:2,e:"Each Ethereal Shade dashes through its target for significant damage plus moderate damage every second for a full 15 seconds.",h:"Contested emphasis: the creator guide says loosely spread to avoid cleaving, the written guide says stay closer together so the puddles that follow land in a manageable cluster. Both agree the puddles are the real problem — err towards grouped.",s:["tk_vsa","iv_vsa"]},
    {n:"Umbral Rupture",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:3,t:["denial","myth"],e:"Mythic only: very heavy Shadow damage within 10 yards of impact, leaving Void Fissures that eat away at heavy damage per second.",h:"Always follows Nether Dash, which is why you do not over-spread. Stay grouped along the arena edge and rotate around as puddles form.",s:["tk_vsa"]},
    {n:"Void Blast",t:["tankbuster","knockback"],c:["defensive"],r:["tank"],sev:2,e:"Tank hit and knockback.",s:["tk_vsa"]},
    {n:"Dark Bloom",t:["denial"],c:["dodge"],r:["dps","healer"],sev:2,e:"A wave of void energy for heavy damage to everyone, which also erupts the Void Fissures for a further heavy damage to anyone caught.",h:"Both guides describe orbs shooting from puddles. The journal describes a party-wide hit that detonates the fissures — so it is a healing check plus a dodge, not just a dodge.",s:["wh_ej","tk_vsa"]}]},
@@ -1396,7 +1396,7 @@ loot:{s:["iv_bv"],i:[
    {n:"Poison Splash",t:["groupdmg","denial","channel"],c:["unavoidable","dodge"],r:["healer","dps"],sev:3,e:"Ticks heavy party damage and spawns poison puddles that reduce haste on contact.",s:["tk_vsa"]},
    {n:"Noxious Breath",t:["frontal"],c:["dodge","position"],r:["dps","healer"],sev:2,e:"A large random-target frontal.",h:"Ranged should play closer to melee than usual so it is easier to step out of.",s:["tk_vsa"]},
    {n:"Monstrous Roar",t:["adds"],c:["focus"],r:["dps"],sev:2,alt:"Monstrous Roar · Toxic Aura",e:"Significant Physical damage to the party, ignoring armour, and agitates a pool into a Toxic Creeper. On Mythic its Toxic Aura hits everyone within 100 yards for light damage every half second — there is no outranging it.",h:"DPS swap immediately to cut the area denial short.",s:["tk_vsa"]},
-   {n:"Sickening Bite",t:["stacking","amp"],c:["kite"],r:["tank"],sev:3,e:"+50% Nature damage taken per stack, lasting FIVE MINUTES. It stacks, and it does not fall off within the encounter.",h:"Kite it and do not let it melee you at all — the tier-2 source is blunt that eating these is simply death. Everything else on this fight is negotiable; this is not.",s:["tk_vsa","iv_vsa"]},
+   {n:"Sickening Bite",t:["stacking","amp"],c:["kite"],r:["tank"],sev:3,e:"+50% Nature damage taken per stack, lasting FIVE MINUTES. It stacks, and it does not fall off within the encounter.",h:"Kite it and do not let it melee you at all — the written guide is blunt that eating these is simply death. Everything else on this fight is negotiable; this is not.",s:["tk_vsa","iv_vsa"]},
    {n:"Hulking Claw",t:["tankbuster"],c:["defensive"],r:["tank"],sev:3,e:"Heavy Nature damage plus moderate damage per second for 10 seconds — tagged Poison, so the follow-up is dispellable.",h:"Magic mitigation matters here in a way it does not on most busters in the pool, and it scales with your Sickening Bite stacks. The follow-up poison is dispellable — worth telling your healer.",s:["tk_vsa","iv_vsa"]}]},
   {n:"Charonus",alt:"Chronus",o:3,img:"va-charonus",sub:"Three singularities, an orb each, and nowhere safe in the middle",shape:"One phase, positional puzzle",lv:3,brief:"A spatial puzzle where everybody has a job. Three singularities drag players inward and lock anyone who touches them out of the fight for fifteen seconds, and an orb spawns near every player that dies only by being walked into one. So each person claims a singularity, feeds their orb into it, and the group stays loosely spread for Cosmic Crash without drifting toward the middle.",a:[
    {n:"Unstable Singularities",t:["denial","groupdmg","pacify"],c:["position"],r:["dps","healer","tank"],sev:3,alt:"Unstable Singularity / Atomized",e:"Light Shadow damage per second to everyone, slowly dragging players toward the centre. Touching one applies Atomized: unable to attack or use any ability for FIFTEEN seconds.",h:"Fighting the pull is easier the closer to the centre of the formation you stand.",s:["tk_vsa"]},
@@ -1441,7 +1441,7 @@ loot:{s:["iv_vsa"],i:[
 {id:"kings-rest",name:"King's Rest",short:"King's Rest",banner:"kings-rest",sigil:"i-tomb",origin:"BfA",
  timer:{v:"33 min",s:["wh_dg"]},bosses:4,routing:"locked",
  blurb:"The Zandalari royal mausoleum, back from Battle for Azeroth with a static third-boss order and a much less dangerous Shade of Zul. Trash count is the contested question of the season.",
- cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 33 minutes, replacing the unverified tier-4 figure with the same number from a tier-2 source. The trash requirement remains the compendium's oldest open question.",cov2:true,
+ cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 33 minutes, replacing the unverified figure with the same number from a written guide. The trash requirement remains the compendium's oldest open question.",cov2:true,
  dispels:{poison:2,magic:2,curse:3,disease:2,enrage:2,bleed:3},
  gates:[{t:"Trash requirement contested — pre-launch guides state 100% of trash; two later sources indicate it was relaxed during the PTR. See the disputes list.",s:["bz_game","tk_rt","wh_dt"]},
         {t:"Defeat all four king and queen mini-boss packs, which spawn in a random order, before the second boss room opens.",s:["tk_kr"]}],
@@ -1511,7 +1511,7 @@ loot:{s:["iv_vsa"],i:[
    {n:"Entomb",t:["channel","adds"],c:["focus"],r:["dps","healer"],sev:3,e:"He seals a player in a crypt and then opens the others ONE AT A TIME, starting with the ones that do not hold the player — each opened coffin releases a Finished Mummy and makes the next open faster. Freeing the entombed player interrupts the whole ritual.",h:"So the search accelerates against you. The trapped player struggles to signal which crypt; getting that one open immediately is worth more than any damage you could be doing.",s:["wh_ej","tk_kr","iv_kr"]},
    {n:"Burning Corruption",t:["denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Large flame puddle under a random player on expiry.",h:"Drop these at the front or back of the room so they never block the path to a sarcophagus.",s:["tk_kr"]}]},
   {n:"The Council of Tribes",o:3,img:"kr-the-council-of-tribes",sub:"Sequential, not simultaneous — and the dead keep interrupting",shape:"Sequential council",lv:3,brief:"Sequential rather than simultaneous, and the dead do not stay quiet. It opens with Kula alone; each defeated councillor returns to their urn and the next joins, but the fallen keep rejoining periodically to fire a single ability. Kula's axes respawn from wherever she died, so kill her in the middle of the room. Zanazal's Explosive Totem is the one cast that reliably ends runs.",a:[
-   {n:"Whirling Axes",t:["line","knockback","dot"],c:["dodge","position"],r:["dps","healer","tank"],sev:3,e:"The fight BEGINS with Kula alone. A defeated councilor returns to their urn and the next joins — but each dead councilor periodically rejoins to fire a single ability before leaving again. Kula opens with very heavy damage within 10 yards plus a knockback, then two axes doing significant damage every 2 seconds for 6 seconds to anyone they touch.",h:"Kill her in the middle of the room. The tier-2 source calls Severing Axe the one moment on this encounter that genuinely needs a major personal.",s:["tk_kr","iv_kr"]},
+   {n:"Whirling Axes",t:["line","knockback","dot"],c:["dodge","position"],r:["dps","healer","tank"],sev:3,e:"The fight BEGINS with Kula alone. A defeated councilor returns to their urn and the next joins — but each dead councilor periodically rejoins to fire a single ability before leaving again. Kula opens with very heavy damage within 10 yards plus a knockback, then two axes doing significant damage every 2 seconds for 6 seconds to anyone they touch.",h:"Kill her in the middle of the room. The written guide calls Severing Axe the one moment on this encounter that genuinely needs a major personal.",s:["tk_kr","iv_kr"]},
    {n:"Barrel Through",t:["soak"],c:["stack","soak"],r:["dps","healer","tank"],sev:2,e:"Massive Physical damage, SPLIT between everyone within 7 yards, ignoring armour. Being alone in it is fatal.",h:"Play close enough as a group that stepping into the soak is automatic.",s:["tk_kr"]},
    {n:"Debilitating Backhand",t:["tankbuster","knockback","amp"],c:["kite","defensive","position"],r:["tank"],sev:3,e:"Massive Physical damage, a knockback, and Shattered Defenses: +200% Physical damage taken.",h:"Either kite for the full duration or commit a strong defensive to survive the empowered melees — and do not get pushed off the platform.",s:["tk_kr"]},
    {n:"Call of the Elements",t:["totem"],c:["focus","interrupt"],r:["dps"],sev:3,e:"Three totems. Explosive detonates for very heavy Fire damage to the whole party. Thundering fires Disruption, interrupting every player for 4 seconds. Torrent spews heavy Frost damage within 3 yards with a knockback.",h:"Explosive first, always — both sources say letting it resolve is a wipe. Kite Xanzal next to each totem so the group cleaves boss and totem together.",s:["tk_kr","iv_kr"]},
@@ -1521,7 +1521,7 @@ loot:{s:["iv_vsa"],i:[
    {n:"Rabond",t:["frontal","fear"],c:["interrupt","position","focus"],r:["tank","dps"],sev:2,alt:"Reban · Deathly Roar",e:"Hunting Leap does significant damage plus moderate damage per second for 4 seconds, then a series of gutripping cone attacks at heavy damage each. Deathly Roar is significant Shadow damage and a 4-second fear, and it is interruptible.",h:"Tank away from the group for the leap, interrupt the roar, and focus Rabond down on pull — he has little health and is a persistent nuisance.",s:["tk_kr"]},
    {n:"Tazala",alt:"T'zala",t:["amp"],c:["focus"],r:["dps"],sev:2,e:"At 80% he mounts her. Eternal Bond makes them share 100% of all damage taken, so cleaving both is genuinely free.",s:["wh_ej","tk_kr"]},
    {n:"Quaking Leap",t:["spread","groupdmg"],c:["spread","drop"],r:["dps","healer"],sev:3,e:"T'zala leaps at targeted players for heavy damage within 8 yards; Dazar's own version is Aerial Smash, same shape. The journal gives no distance-scaled party hit — that claim appears only in the creator guide and should be treated as unconfirmed.",h:"Move further away to soften it, but stay in healer range. A combat drop while he is midair cancels the remaining jumps entirely.",s:["tk_kr"]},
-   {n:"Blade Combo",t:["tankbuster","channel"],c:["defensive","bleedcl","magic"],r:["tank","healer"],sev:3,e:"A series of strikes doing increasing damage. T'zala's Savage Maul precedes it: heavy damage, a bleed of moderate damage per second, and +10% Physical damage taken for 10 seconds — a damage amplifier, not an armour reduction as the creator guide has it. The tier-2 assignment table lists Savage Maul as DISPELLABLE, which changes the tank's answer entirely.",h:"Cleanse the bleed if you can, or press your defensive early so it covers both abilities.",s:["tk_kr"]},
+   {n:"Blade Combo",t:["tankbuster","channel"],c:["defensive","bleedcl","magic"],r:["tank","healer"],sev:3,e:"A series of strikes doing increasing damage. T'zala's Savage Maul precedes it: heavy damage, a bleed of moderate damage per second, and +10% Physical damage taken for 10 seconds — a damage amplifier, not an armour reduction as the creator guide has it. The published assignment table lists Savage Maul as DISPELLABLE, which changes the tank's answer entirely.",h:"Cleanse the bleed if you can, or press your defensive early so it covers both abilities.",s:["tk_kr"]},
    {n:"Gilded Destruction",t:["dot","frontal","env"],c:["position","dodge"],r:["tank","healer"],sev:3,t:["dot","frontal","env","myth"],e:"Mythic only: heavy Fire damage to everyone plus light damage for 15 seconds, and his melee swings gain Searing Gold — a wave of molten gold in front of him for significant damage.",h:"Tanks have to move quickly to dodge spears while keeping the boss pointed away. The hardest positioning moment in the dungeon.",s:["tk_kr"]}]}],
 loot:{s:["iv_kr"],i:[
   {n:"Gilded Serpent's Tooth",ic:"inv_knife_1h_battledungeon_c_01",id:159137,sl:"One-hand",ty:"Dagger",b:"The Golden Serpent",p:["Int"],x:[["Haste",3],["Vers",3]]},
@@ -1635,16 +1635,16 @@ loot:{s:["iv_kr"],i:[
  encounters:[
   {n:"Melidrussa Chillworn",o:1,img:"rlp-melidrussa",sub:"Stack, rotate, and break the shield",shape:"Two burn checks, 66% and 33%",lv:2,brief:"Two hard checkpoints in an otherwise steady fight. Hailbombs land permanently and Chillstorm pulls then shoves, so the arena slowly fills and the group rotates as one body. At 66% and 33% she wakes ten whelps and shields herself — the whelps stack toward a stun on the tank while the shield pulses escalating damage. Both are burn checks with a dispel requirement bolted on.",a:[
    {n:"Frigid Shard",t:["tankbuster"],c:["interrupt"],r:["dps"],sev:2,e:"Massive Physical damage at the tank, and interruptible.",h:"Confirmed by the journal. At that number a missed kick is most of a tank's health bar, so this is not an optional interrupt.",s:["wh_ej","tk_rlp"]},
-   {n:"Hailburst",t:["denial"],c:["stack","position"],r:["dps","healer","tank"],sev:2,alt:"Hailbombs",e:"Significant Frost damage to everyone, then launches mines at each player. A mine detonates for heavy damage within 4 yards, knocks you UPWARD, and cuts haste by 50% for 20 seconds.",h:"Stay stacked so they all land together, then rotate as a group. Space is a finite resource here — the tier-2 source treats bad bomb placement as the main failure mode.",s:["tk_rlp","iv_rlp"]},
+   {n:"Hailburst",t:["denial"],c:["stack","position"],r:["dps","healer","tank"],sev:2,alt:"Hailbombs",e:"Significant Frost damage to everyone, then launches mines at each player. A mine detonates for heavy damage within 4 yards, knocks you UPWARD, and cuts haste by 50% for 20 seconds.",h:"Stay stacked so they all land together, then rotate as a group. Space is a finite resource here — the written guide treats bad bomb placement as the main failure mode.",s:["tk_rlp","iv_rlp"]},
    {n:"Chill Storm",t:["denial","groupdmg"],c:["spread"],r:["dps","healer"],sev:2,alt:"Chillstorm · Storm's Eye",e:"A storm at the target's location pulling everyone toward the Storm's Eye, dealing moderate damage every 1.5 seconds. After 7 seconds it explodes for significant damage and pushes players away. Anyone standing in the eye takes 100% increased Frost damage.",h:"Step out of the centre if you are targeted. Everyone should be topped before the explosion, and watch where the pushback sends you — landing in a Hailbomb is the usual death.",s:["tk_rlp","iv_rlp"]},
    {n:"Awaken Welps",t:["adds","stacking"],c:["magic","freedom","focus"],r:["tank","healer"],sev:3,e:"At 66% and 33% health she summons ten Infused Welps, which bring Cold Claws with them.",h:"Tank picks them up fast and the group watches the stack count — twenty means a stunned tank in the middle of the next mechanic.",s:["tk_rlp"]},
    {n:"Frost Overload",t:["shield","groupdmg","myth"],c:["focus"],r:["dps","healer"],sev:3,e:"Mythic only. She encases herself in an Ice Bulwark absorbing 10% of her maximum health; while it holds she deals moderate damage every 1.5 seconds and increases damage taken FROM THIS ABILITY by 5% for 3 seconds, stacking.",h:"Save some combination of damage and healing cooldowns. The shield must break before the healer is overwhelmed.",s:["tk_rlp"]}]},
   {n:"Kokia Blazehoof",o:2,img:"rlp-kokia-blazehoof",sub:"Space management with a baitable boulder",shape:"One phase, space management",lv:2,brief:"Energy-driven, and entirely about floor space. At full energy she binds a Blazebound Firestorm to a player's head and that player chooses where it lands — drop it onto existing fire and the arena stays usable, drop it somewhere fresh and it will not. Molten Boulder is baitable the same way. There are no phases here; there is only how much room you have left.",a:[
    {n:"Ritual of Blaze Binding",t:["adds","denial"],c:["position","interrupt"],r:["dps"],sev:3,alt:"Ritual of Blazebinding",e:"At 100 energy a Blazebound Firestorm spawns at a player's location, searing everyone within 12 yards for heavy damage. It casts Blaze Volley (significant damage to all, interruptible) and Inferno (significant damage plus moderate damage per second for 8 seconds, stacking). Its Burnout on death does massive damage within 20 yards and leaves Scorched Earth on Mythic.",h:"Drop it near existing puddles to conserve space. Kick Blaze Volley late in the cast to delay the Inferno.",s:["tk_rlp"]},
-   {n:"Molten Boulder",t:["line","denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Very heavy damage within 6 yards in front of her, then it rolls up to 40 yards and explodes for massive damage within 12 yards, knocking back anyone it touches.",h:"The tier-2 guide adds a 3-second stun; the journal does not mention one. Treat the stun as unconfirmed.",h:"Fully baitable. Aim it opposite to where you plan to move, or straight into existing fire.",s:["tk_rlp","iv_rlp"]},
+   {n:"Molten Boulder",t:["line","denial"],c:["position"],r:["dps","healer","tank"],sev:2,e:"Very heavy damage within 6 yards in front of her, then it rolls up to 40 yards and explodes for massive damage within 12 yards, knocking back anyone it touches.",h:"The written guide adds a 3-second stun; the journal does not mention one. Treat the stun as unconfirmed.",h:"Fully baitable. Aim it opposite to where you plan to move, or straight into existing fire.",s:["tk_rlp","iv_rlp"]},
    {n:"Searing Blows",t:["channel","tankbuster","dot"],c:["defensive"],r:["tank"],sev:2,e:"Four strikes over 3 seconds at 150% weapon damage, each applying Searing Wounds — light damage every half second for 8 seconds, stacking.",h:"Active mitigation for the channel, and be aware the bleed outlives it.",s:["tk_rlp","iv_rlp"]}]},
   {n:"Kyrakka and Erkhart Stormvein",o:3,img:"rlp-kyrakka-and-erkhart",sub:"Predictable winds, if you learn the order",shape:"Two phases, joins at 40%",lv:3,brief:"Two phases. Kyrakka circles overhead while Erkhart intercepts on the ground, and when either of them reaches 40% she lands so he can remount. Winds of Change is the mechanic that decides it: the hurricane shoves both players and Kyrakka's fire in one of four directions, and the order is fixed — so puddles can be placed deliberately to be blown away from the group rather than through it.",a:[
-   {n:"Two-phase structure",t:["adds"],c:["focus"],r:["dps"],sev:3,e:"Kyrakka starts airborne while Erkhart intercepts on the ground. When EITHER of them reaches 40% health she lands so he can remount, and the second phase begins.",h:"Settled by the journal at 40%, against the tier-2 guide's 50% — and note the threshold applies to whichever boss reaches it first, which neither guide mentions. Chunk Kyrakka whenever she is grounded.",s:["wh_ej","tk_rlp"]},
+   {n:"Two-phase structure",t:["adds"],c:["focus"],r:["dps"],sev:3,e:"Kyrakka starts airborne while Erkhart intercepts on the ground. When EITHER of them reaches 40% health she lands so he can remount, and the second phase begins.",h:"Settled by the journal at 40%, against the written guide's 50% — and note the threshold applies to whichever boss reaches it first, which neither guide mentions. Chunk Kyrakka whenever she is grounded.",s:["wh_ej","tk_rlp"]},
    {n:"Inferno Spit",t:["dot","denial"],c:["position"],r:["dps","healer"],sev:2,alt:"Inferno Spit · Flaming Embers",e:"Moderate Fire damage per second for 6 seconds. On REMOVAL the flames explode for moderate damage within 8 yards and leave Flaming Embers burning at significant damage per second.",h:"Drop these away from the group.",s:["tk_rlp"]},
    {n:"Winds of Change",t:["knockback","env"],c:["preposition","position"],r:["dps","healer","tank"],sev:3,e:"A localised hurricane doing light Nature damage per second for 8 seconds that pushes players AND Kyrakka's Flaming Embers. The journal confirms the ember-pushing; the fixed north-west, south-west, south-east, north-east order comes only from the creator guide and is not corroborated.",h:"Learn the order and you can deliberately place puddles so they are blown away from the group rather than through it. The single highest-value fact on this encounter.",s:["tk_rlp"]},
    {n:"Roaring Flame Breath",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Kyrakka lands near a random player and channels a frontal through them.",h:"While she is grounded she takes full damage — focus her.",s:["tk_rlp"]},
@@ -1687,7 +1687,7 @@ loot:{s:["iv_rlp"],i:[
 {id:"temple-of-sethraliss",name:"Temple of Sethraliss",short:"Sethraliss",banner:"temple-of-sethraliss",sigil:"i-serpent",origin:"BfA",
  timer:{v:"33 min",s:["wh_dg"]},bosses:4,routing:"limited",
  blurb:"The other Battle for Azeroth return. Two stun-orb gauntlets, a great deal of lightning, and a final encounter that is a trash fight wearing a boss's name.",
- cov:"Now corroborated. The tier-2 encounter guide for this dungeon still does not exist, but a tier-2 dungeon overview does — and it supplies the timer, the full interrupt and dispel assignments, and a loot table. Trash detail remains thinner here than elsewhere.",cov2:true,
+ cov:"Now corroborated. A written encounter guide for this dungeon still does not exist, but a written dungeon overview does — and it supplies the timer, the full interrupt and dispel assignments, and a loot table. Trash detail remains thinner here than elsewhere.",cov2:true,
  dispels:{poison:3,magic:3,curse:2,disease:0,enrage:0,bleed:3},
  gates:[{t:"Charge both Eyes of Sethraliss by having a player click and remain nearby while taking ticking damage, to open the sealed snake mouth to the final boss.",s:["tk_tos"]},
         {t:"The Avatar of Sethraliss encounter ends when the boss is healed to 100% health, not when something dies.",s:["tk_tos"]}],
@@ -2042,7 +2042,7 @@ function mobBlock(m,roleFilter){
 
 /* ── shared bits ── */
 const covBox=d=>`<div class="cov ok">${ic("i-info",16)}<div><b>Source coverage.</b>
-  <b style="color:var(--tier1)">Bosses: tier 1.</b> Every encounter on this page is checked against Blizzard's own
+  <b style="color:var(--tier1)">Bosses: Blizzard-checked.</b> Every encounter on this page is verified against Blizzard's own
   Encounter Journal, which outranks any guide on names, numbers and mechanics.
   <b style="color:${d.cov2?"var(--tier2)":"var(--signal-warn)"}">Trash and routing: ${d.cov2?"two sources":"single source"}.</b>
   ${esc(d.cov)}
@@ -2238,7 +2238,7 @@ function pHome(){
       <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">Every ability in the season, filterable by
       what stops it. "Show me everything a poison dispel solves" is one click.</p></a>
     <a class="card acc" href="#/sources" style="text-decoration:none;display:block"><h3>Why should I believe this?</h3>
-      <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">The source ledger, the tier system, and a list
+      <p style="color:var(--ink-muted);font-size:.92rem;margin:.5rem 0 0">The source ledger, how the sources are weighed, and a list
       of things this guide does not yet know.</p></a>
   </div>
 
@@ -2279,7 +2279,7 @@ function pDungeons(){
   </tbody></table>
   <div class="sec"><h2>Timers</h2><span class="n">All eight, sourced</span></div>
   <p class="note">Previously the compendium's largest gap — six of eight were unknown. Now every dungeon has a figure
-  from a tier-2 source, and Altar of Fangs is confirmed twice over: Blizzard's own data and the tier-2 overview give
+  from a written guide, and Altar of Fangs is confirmed twice over: Blizzard's own data and the written overview give
   29 minutes independently.${srcMark(["wh_dg","bz_game"])}</p>
   <div class="tchart">${[...DUNGEONS].sort((a,b)=>parseInt(a.timer.v)-parseInt(b.timer.v)).map(d=>{
     const m=parseInt(d.timer.v), pct=Math.round((m-26)/(35-26)*100);
@@ -2364,12 +2364,12 @@ function pDungeon(id,tab){
     [...d.areas.flatMap(a=>a.mobs),...d.encounters].forEach(m=>(m.a||[]).forEach(walk));
     d.timer.s.forEach(x=>used.add(x));
     body=`<div class="sec"><h2>Everything on this page came from</h2><span class="n">${used.size} sources</span></div>
-    <table><thead><tr><th>Source</th><th>Tier</th><th>Date</th><th>What it is</th></tr></thead><tbody>
+    <table><thead><tr><th>Source</th><th>Date</th><th>What it is</th></tr></thead><tbody>
     ${[...used].map(x=>{const s=SOURCES[x];return `<tr><td>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${esc(s.a)}</a>`:esc(s.a)}</td>
-      <td class="mono">${s.t}</td><td class="mono">${s.d}</td><td>${esc(s.b)}</td></tr>`;}).join("")}
+      <td class="mono">${s.d}</td><td>${esc(s.b)}</td></tr>`;}).join("")}
     </tbody></table>
-    <p class="note">Tier 1 is Blizzard directly, 2 is Wowhead or Icy Veins, 3 is established creators, 4 is SEO and
-    boosting sites. A single tier-3 source is a starting point, not a settled fact — which is what the coverage
+    <p class="note">Sources are listed most-trusted first: Blizzard directly, then the written guides, then creator
+    coverage. A page resting on one creator video is a starting point, not a settled fact — which is what the coverage
     badge on the overview tab is telling you.</p>
     <p class="note">Source material is paraphrased throughout. Links go to the originals; read them.</p>`;
   }
@@ -2457,7 +2457,7 @@ function pSeason(){
   ${SEASON.rewards.map(r=>`<tr><td class="mono">${esc(r.k)}</td><td class="mono">${r.e}</td><td class="mono">${r.v}</td></tr>`).join("")}
   </tbody></table>
   <p class="note">${esc(SEASON.rewardNote)}${srcMark(["bz_game","iv_ov"])}</p>
-  <p class="note">${ic("i-info",13)} Blizzard's own figures and an independent tier-2 source agree here line for
+  <p class="note">${ic("i-info",13)} Blizzard's own figures and an independent written guide agree here line for
   line. Treat it as settled.</p>
   <p class="note">${esc(SEASON.mounts)}${srcMark(["bz_game"])}</p>
   <div class="sec"><h2>Where things are</h2><span class="n">${SEASON.where.length}</span></div>
@@ -2526,11 +2526,11 @@ function pGlossary(){
    ["Zul'jan","Zul'jin","Altar of Fangs final boss. Zul'jin is his dead father — a real, different character."],
    ["Zul'jarra","Zandalari Forces","Zul'jan's sister and the Season 2 renown faction. Zandalari is a real, different troll faction."],
    ["Atal'Utek","Atal'Dazar","The 12.1 subzone. Atal'Dazar is an unrelated Battle for Azeroth dungeon."],
-   ["Xy'exa Manahar","Kith'ix Manahar","Murder Row first boss. The tier-2 source calls her Kystia Manaheart, which is likelier — Manaheart is exactly what a captioner turns into Manahar."],
-   ["Ataraxis","Atroxus, Ataraxus","Voidscar Arena second boss. The creator transcript uses both spellings within one video; the tier-2 source settles on Atroxus."],
+   ["Xy'exa Manahar","Kith'ix Manahar","Murder Row first boss. The written guide calls her Kystia Manaheart, which is likelier — Manaheart is exactly what a captioner turns into Manahar."],
+   ["Ataraxis","Atroxus, Ataraxus","Voidscar Arena second boss. The creator transcript uses both spellings within one video; the written guide settles on Atroxus."],
    ["Taz'grah","Ta'agra, Taz'Rah","Voidscar Arena first boss."],
-   ["Geti'ikku, Cut of Death","Gatiku","The King's Rest two-hand sword. Confirmed by the tier-2 loot table."],
-   ["Aku'mai the Light Hunter","Ikuzz the Light Hunter","Genuinely unresolved. Aku'mai is a real Blackfathom Deeps name, which is exactly the kind of substitution auto-captioning makes — so the tier-2 spelling may well be right."]
+   ["Geti'ikku, Cut of Death","Gatiku","The King's Rest two-hand sword. Confirmed by the published loot table."],
+   ["Aku'mai the Light Hunter","Ikuzz the Light Hunter","Genuinely unresolved. Aku'mai is a real Blackfathom Deeps name, which is exactly the kind of substitution auto-captioning makes — so the written guide's spelling may well be right."]
   ];
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Glossary</em></div>
   <h1>Names, and the ones that are wrong everywhere</h1>
@@ -2629,7 +2629,7 @@ const INDEX=[
    return m.alt?[e,{t:m.alt,m:`Alternate name for ${m.n} · ${d.name}`,h:e.h}]:[e];})),
  ...DUNGEONS.flatMap(d=>d.buffs.map(b=>({t:b.n,m:`Interactable · ${d.name}`,h:`#/d/${d.id}`}))),
  {t:"Every poison in the season",m:"Mechanics index · filtered",h:"#/mechanics"},
- {t:"Source ledger",m:"Who said what, when, at what tier",h:"#/sources"},
+ {t:"Source ledger",m:"Who said what, and when",h:"#/sources"},
  {t:"Caption decoder",m:"Glossary · names that are wrong everywhere",h:"#/glossary"}
 ];
 let SEL=0;
