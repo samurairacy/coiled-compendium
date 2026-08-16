@@ -42,6 +42,17 @@ If a fresh build lands, re-apply those rather than assuming they survived.
   trash. An earlier revision of this file recorded that mismatch as deliberate.
   It was a defect. **If `bosses:` and `encounters.length` ever diverge again,
   treat it as a misfiled encounter and not as intent.**
+- **Loot is a flat table per dungeon, not a per-boss list.** `loot.i` holds every
+  item with `sl` (slot), `ty` (armour or weapon type), `p` (primary stats), `x`
+  (secondaries as `[name, value]`, sorted high first) and `b` (the boss it hangs
+  off, kept for reference only). Mythic+ pays out once from an end-of-run chest
+  holding the whole table, so slot and armour type decide whether a drop is
+  usable and the boss does not — which is why the tab groups by type.
+  **Secondary values are never printed.** They move with item level; what a
+  player wants is the lean, rendered as "big Mastery little Haste", or "even"
+  inside 55:45. Every field came from Wowhead, so the old hand-written slot
+  strings — which spelled the same slot four ways (`Mail Boots` vs `Mail Feet`,
+  `Head` vs `Helm`) — are gone.
 - **Mobs carry a gravity tier in `k`**, and the trash card styles itself from
   it — nothing is styled by hand. The ladder, loudest first: `mini` (accent
   bar, raised plate, filled tag) → `lt` → `caster` / `trash` (same weight, the

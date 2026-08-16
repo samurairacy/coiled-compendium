@@ -331,6 +331,19 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .card.mob.k-fodder h3{color:var(--ink-muted);font-size:.95rem}
 .kindtag.k-fodder{border-style:dashed;opacity:.75}
 .mobsub{color:var(--ink-muted);font-size:.9rem;margin:0 0 .55rem}
+/* ═══ LOOT ════════════════════════════════════════════════════════════════ */
+td.li{display:flex;align-items:center;gap:.5rem}
+.chip.pstat{border-style:solid;font-weight:600}
+.chip.p-str{border-color:#A6693C;color:#D69A63}
+.chip.p-agi{border-color:#4E8F6B;color:#7DC49A}
+.chip.p-int{border-color:#5C7FB8;color:#8FB0DE}
+.secs{font-family:var(--face-term);font-size:.72rem;letter-spacing:.04em;color:var(--ink-muted);white-space:nowrap}
+.secs b{color:var(--ink);font-weight:600}
+.secs i{font-style:normal;opacity:.72}
+.trinkets{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.7rem;margin-bottom:1rem}
+.card.trink{margin:0;border-left:3px solid var(--d-accent,var(--accent))}
+.card.trink h3{font-size:1rem;margin:0}
+.card.trink .mobtop{margin-bottom:.4rem}
 .killer{
   background:linear-gradient(100deg,rgba(240,80,60,.11),var(--ground-raised) 55%);
   border:1px solid var(--rule);border-left:3px solid var(--signal-urgent);
@@ -853,10 +866,31 @@ const DUNGEONS=[
    {n:"Bone Slicer",t:["line","dot"],c:["position"],r:["dps","healer"],sev:2,alt:"Boneslicer",t:["line","dot","noarmor"],e:"Heavy damage to everyone in the axe's path plus moderate damage every second for 7 seconds, ignoring armour. Each tick removes a stack, so one hit clears all eight.",h:"The intended clear method for most players. Get hit by one of the two and you survive — but do not send everyone at once or the healer drowns in the dot.",s:["tk_aof"]},
    {n:"Chop Down",t:["tankbuster"],c:["defensive","position"],r:["tank"],sev:2,e:"Two strikes of massive Physical damage, which also clear stacks and therefore drop puddles.",h:"Tanks have to think about puddle placement on their own buster. Do not take it standing on a beam line.",s:["tk_aof"]},
    {n:"Axe Grinder",t:["denial"],c:["dodge"],r:["dps","healer","tank"],sev:1,alt:"Axegrinder",t:["denial","noarmor"],c:["dodge","soak"],e:"Spinning axes that ricochet around the arena for up to significant damage x5, ignoring armour, doing less damage as they lose speed.",h:"Settled by the journal: Bloodletting triggers on Zul'jan's Physical abilities and these are Physical, so they DO clear Ritual Venom. That makes them your backup when Boneslicer is aimed at someone else — and a slowed, ricocheting axe is a cheap clear.",s:["wh_ej","iv_aof"]}]}],
-loot:{s:["iv_aof"],b:[
-  {n:"Rav'i",i:[["Warglaives","Hydraspine Twinblade","Mastery/Vers"],["1H Axe","Venom-Etched Crescent","Mastery/Crit"],["Cloth Chest","Primordial Robe of Rites","Haste/Mastery"],["Mail Wrist","Hydra Scale Wristguards","Mastery/Crit"],["Plate Boots","Poison-Proof Stompers","Haste/Vers"],["Trinket","Coiled Fangstone","Strength"],["Trinket","Vile Vial of Volatile Venom","Int / Agi / Str"]]},
-  {n:"The Writhing Coil",i:[["Staff","Toxin-Coated Warstaff","Haste/Mastery"],["Polearm","Vile Writhefang Glaive","Crit/Haste"],["Off-Hand","Nocuous Focal Fang","Crit/Haste"],["Neck","Strand of Warding Fangs","Crit/Haste"],["Leather Shoulder","Snakeskin Spaulders","Crit/Vers"],["Plate Chest","Aged Interwoven Scaleplate","Crit/Vers"],["Cloth Legs","Leggings of Entwined Serpents","Crit/Haste"],["Trinket","Knot of Writhing Serpents","Intellect"]]},
-  {n:"Zul'jan",i:[["Dagger","Polished Lightwood Channeler","Int, Haste/Mastery"],["Dagger","Sharpened Lightwood Slasher","Agi, Crit/Haste"],["Bow","Ancestral Amani Recurve","Haste/Mastery"],["Leather Head","Spare Speaker's Hood","Haste/Crit"],["Mail Chest","Chestguard of Corroded Scales","Crit/Haste"],["Cloth Hands","Handwraps of Blasphemous Rites","Mastery/Crit"],["Plate Legs","Ancient General's Obsidian Pillars","Crit/Haste"],["Ring","Band of the Amani Warlord","Haste/Crit"],["Trinket","Tattered Amani War Banner","Agi / Str"]]}]},
+loot:{s:["iv_aof"],i:[
+  {n:"Hydraspine Twinblade",ic:"inv_glaive_1h_outdooramaniloa_c_01",id:273793,sl:"One-hand",ty:"Warglaive",b:"Rav'i",p:["Agi","Int"],x:[["Mastery",5],["Vers",4]]},
+  {n:"Venom-Etched Crescent",ic:"inv_axe_1h_outdooramaniloa_c_01",id:273780,sl:"One-hand",ty:"Axe",b:"Rav'i",p:["Int"],x:[["Crit",5],["Mastery",5]]},
+  {n:"Primordial Robe of Rites",ic:"inv_robe_cloth_outdooramaniloa_c_01",id:273785,sl:"Chest",ty:"Cloth",b:"Rav'i",p:["Int"],x:[["Haste",10],["Mastery",9]]},
+  {n:"Hydra Scale Wristguards",ic:"inv_bracer_mail_outdooramaniloa_c_01",id:273775,sl:"Wrist",ty:"Mail",b:"Rav'i",p:["Agi","Int"],x:[["Mastery",6],["Vers",5]]},
+  {n:"Poison-Proof Stompers",ic:"inv_boot_plate_outdooramaniloa_c_01",id:273777,sl:"Feet",ty:"Plate",b:"Rav'i",p:["Str","Int"],x:[["Haste",8],["Vers",7]]},
+  {n:"Coiled Fangstone",ic:"inv_121_trinket_dungeon_ulatek_fangstone",id:273795,sl:"Trinket",ty:"Trinket",b:"Rav'i",p:["Str"]},
+  {n:"Vile Vial of Volatile Venom",ic:"inv_121_trinket_dungeon_ulatek_vile",id:273796,sl:"Trinket",ty:"Trinket",b:"Rav'i",p:["Str","Agi","Int"]},
+  {n:"Toxin-Coated Warstaff",ic:"inv_staff_2h_outdooramaniloa_c_01",id:273783,sl:"Two-hand",ty:"Staff",b:"The Writhing Coil",p:["Agi"],x:[["Haste",11],["Mastery",8]]},
+  {n:"Vile Writhefang Glaive",ic:"inv_polearm_2h_outdooramaniloa_c_01",id:273782,sl:"Two-hand",ty:"Polearm",b:"The Writhing Coil",p:["Str"],x:[["Crit",11],["Haste",9]]},
+  {n:"Nocuous Focal Fang",ic:"inv_offhand_1h_outdooramaniloa_c_01",id:273779,sl:"Off-hand",ty:"Off-hand",b:"The Writhing Coil",p:["Int"],x:[["Crit",5],["Haste",4]]},
+  {n:"Strand of Warding Fangs",ic:"inv_121_jewelry_neck03_teal",id:273781,sl:"Neck",ty:"Neck",b:"The Writhing Coil",x:[["Crit",16],["Haste",12]]},
+  {n:"Snakeskin Spaulders",ic:"inv_shoulder_leather_outdooramaniloa_c_01",id:273774,sl:"Shoulder",ty:"Leather",b:"The Writhing Coil",p:["Agi","Int"],x:[["Crit",9],["Vers",6]]},
+  {n:"Aged Interwoven Scaleplate",ic:"inv_chest_plate_outdooramaniloa_c_01",id:273787,sl:"Chest",ty:"Plate",b:"The Writhing Coil",p:["Str","Int"],x:[["Crit",10],["Vers",9]]},
+  {n:"Leggings of Entwined Serpents",ic:"inv_pant_cloth_outdooramaniloa_c_01",id:273786,sl:"Legs",ty:"Cloth",b:"The Writhing Coil",p:["Int"],x:[["Crit",11],["Haste",9]]},
+  {n:"Knot of Writhing Serpents",ic:"inv_121_trinket_dungeon_ulatek_writhe",id:273794,sl:"Trinket",ty:"Trinket",b:"The Writhing Coil",p:["Int"]},
+  {n:"Polished Lightwood Channeler",ic:"inv_knife_1h_zuljin_d_01",id:273778,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Int"],x:[["Haste",5],["Mastery",4]]},
+  {n:"Sharpened Lightwood Slasher",ic:"inv_knife_1h_zuljin_d_01",id:275070,sl:"One-hand",ty:"Dagger",b:"Zul'jan",p:["Agi"],x:[["Crit",31],["Haste",23]]},
+  {n:"Ancestral Amani Recurve",ic:"inv_bow_1h_outdooramaniloa_c_01",id:273784,sl:"Ranged",ty:"Bow",b:"Zul'jan",p:["Agi"],x:[["Haste",11],["Mastery",8]]},
+  {n:"Spare Speaker's Hood",ic:"inv_helm_leather_outdooramaniloa_c_01",id:273791,sl:"Head",ty:"Leather",b:"Zul'jan",p:["Agi","Int"],x:[["Haste",11],["Crit",8]]},
+  {n:"Chestguard of Corroded Scales",ic:"inv_chest_mail_outdooramaniloa_c_01",id:273789,sl:"Chest",ty:"Mail",b:"Zul'jan",p:["Agi","Int"],x:[["Haste",10],["Crit",9]]},
+  {n:"Handwraps of Blasphemous Rites",ic:"inv_glove_cloth_outdooramaniloa_c_01",id:273773,sl:"Hands",ty:"Cloth",b:"Zul'jan",p:["Int"],x:[["Mastery",8],["Crit",7]]},
+  {n:"Ancient General's Obsidian Pillars",ic:"inv_pant_plate_outdooramaniloa_c_01",id:273776,sl:"Legs",ty:"Plate",b:"Zul'jan",p:["Str","Int"],x:[["Crit",10],["Haste",9]]},
+  {n:"Band of the Amani Warlord",ic:"inv_121_jewelry_ring02_green",id:273792,sl:"Ring",ty:"Ring",b:"Zul'jan",x:[["Haste",17],["Crit",10]]},
+  {n:"Tattered Amani War Banner",ic:"inv_121_trinket_dungeon_ulatek_banner",id:273797,sl:"Trinket",ty:"Trinket",b:"Zul'jan",p:["Str","Agi"]}]},
  route:[
   {n:1,t:"Opening lust pull",m:"Primal Serpents, Twin Fang Harrowers, Ravenous Descendants",d:2,lust:true,p:"One kick assigned to each Primal Serpent; cover the rest with crowd control. They die fast enough under lust that the haste debuff never lands.",s:["tk_rt"]},
   {n:2,t:"Totem sweep",m:"Ravenous Descendants pulled forward",d:1,p:"Tag the extra Descendants into this pull to raise the count and keep the later pack from stacking six of them at once.",s:["tk_rt"]},
@@ -961,11 +995,32 @@ loot:{s:["iv_aof"],b:[
    {n:"Chaos Bolt",t:["groupdmg"],c:["interrupt"],r:["dps"],sev:2,e:"Cast at random players throughout.",h:"Higher interrupt priority than the imps.",s:["tk_mr"]},
    {n:"Searing Fel Flame",t:["groupdmg"],c:["unavoidable"],r:["healer"],sev:2,e:"Passive fire pulse for the whole encounter, which is what makes the imp casts dangerous.",s:["tk_mr"]},
    {n:"Malefic Wave",t:["line","amp"],c:["dodge","position"],r:["dps","healer","tank"],sev:3,e:"He puts up a demonic gateway, teleports across the room and fires a lethal shockwave that increases fire damage taken for a minute and buffs any living adds it touches.",h:"Kill the adds before it reaches them. Dodge with a personal teleport, or take his own gateway — waiting until the wave has passed the far end.",s:["tk_mr"]}]}],
-loot:{s:["iv_mr"],b:[
-  {n:"Kystia Manaheart",i:[["Staff","Nibbles' Training Rod","Crit/Haste"],["Gun","Sinseared Repeater","Crit/Vers"],["Plate Head","Greathelm of Temptation","Mastery/Crit"],["Cloth Wrist","Nibbling Armbands","Haste/Crit"],["Leather Hands","Gauntlets of Fevered Defense","Crit/Haste"],["Mail Feet","Felsoaked Soles","Vers/Crit"],["Trinket","Manaheart's Binding Flame","Agi / Str"]]},
-  {n:"Zaen Bladesorrow",i:[["Dagger","Bladesorrow","Crit/Mastery"],["Mail Shoulder","Jangling Felpaulets","Vers/Crit"],["Back","Speakeasy Shroud","Crit/Mastery"],["Plate Wrist","Overseer's Vambraces","Haste/Crit"],["Cloth Hands","Counterfeit Clutches","Mastery/Vers"],["Leather Legs","Breeches of Deft Deals","Crit/Mastery"],["Trinket","Freightrunner's Flask","Agi / Int"]]},
-  {n:"Xathuux the Annihilator",i:[["2H Axe","Xathuux's Cleave","Crit/Haste"],["Leather Wrist","Fury-fletched Armlets","Haste/Crit"],["Cloth Boots","Tempestuous Sandals","Mastery/Haste"],["Ring","Signet of Snarling Servitude","Crit/Mastery"],["Trinket","Resonant Bellowstone","Agi / Str"]]},
-  {n:"Lithiel Cinderfury",i:[["Leather Head","Vilefiend's Guise","Haste/Mastery"],["Neck","Pendant of Malefic Fury","Mastery/Haste"],["Plate Shoulder","Cinderfury Shoulderguards","Haste/Mastery"],["Cloth Chest","Summoner's Searing Shirt","Haste/Crit"],["Mail Legs","Lithiel's Linked Leggings","Haste/Vers"],["Trinket","Unstable Felheart Crystal","Intellect"]]}]},
+loot:{s:["iv_mr"],i:[
+  {n:"Nibbles' Training Rod",ic:"inv_staff_2h_dungeonharronir_c_02",id:251123,sl:"Two-hand",ty:"Staff",b:"Kystia Manaheart",p:["Int"],x:[["Crit",9],["Haste",6]]},
+  {n:"Sinseared Repeater",ic:"inv_firearm_2h_undergroundquest_b_01",id:271680,sl:"Ranged",ty:"Gun",b:"Kystia Manaheart",p:["Agi"],x:[["Crit",30],["Vers",16]]},
+  {n:"Greathelm of Temptation",ic:"inv_helm_plate_dungeonharronir_c_01",id:251126,sl:"Head",ty:"Plate",b:"Kystia Manaheart",p:["Str","Int"],x:[["Mastery",9],["Crit",5]]},
+  {n:"Nibbling Armbands",ic:"inv_bracer_cloth_dungeonharronir_c_01",id:251127,sl:"Wrist",ty:"Cloth",b:"Kystia Manaheart",p:["Int"],x:[["Haste",5],["Crit",3]]},
+  {n:"Gauntlets of Fevered Defense",ic:"inv_glove_leather_dungeonharronir_c_01",id:251124,sl:"Hands",ty:"Leather",b:"Kystia Manaheart",p:["Agi","Int"],x:[["Crit",7],["Haste",4]]},
+  {n:"Felsoaked Soles",ic:"inv_boot_mail_dungeonharronir_c_01",id:251125,sl:"Feet",ty:"Mail",b:"Kystia Manaheart",p:["Agi","Int"],x:[["Vers",7],["Crit",4]]},
+  {n:"Manaheart's Binding Flame",ic:"inv_ember_fel",id:250243,sl:"Trinket",ty:"Trinket",b:"Kystia Manaheart",p:["Str","Agi"]},
+  {n:"Bladesorrow",ic:"inv_knife_1h_dungeonharronir_c_01",id:251128,sl:"One-hand",ty:"Dagger",b:"Zaen Bladesorrow",p:["Agi"],x:[["Crit",4],["Mastery",3]]},
+  {n:"Jangling Felpaulets",ic:"inv_shoulder_mail_dungeonharronir_c_01",id:251131,sl:"Shoulder",ty:"Mail",b:"Zaen Bladesorrow",p:["Agi","Int"],x:[["Vers",6],["Crit",4]]},
+  {n:"Speakeasy Shroud",ic:"inv_cape_leather_dungeonharronir_c_01",id:251132,sl:"Back",ty:"Cloak",b:"Zaen Bladesorrow",p:["Str","Agi","Int"],x:[["Crit",5],["Mastery",3]]},
+  {n:"Overseer's Vambraces",ic:"inv_bracer_plate_dungeonharronir_c_01",id:251133,sl:"Wrist",ty:"Plate",b:"Zaen Bladesorrow",p:["Str","Int"],x:[["Haste",5],["Crit",3]]},
+  {n:"Counterfeit Clutches",ic:"inv_glove_cloth_dungeonharronir_c_01",id:251129,sl:"Hands",ty:"Cloth",b:"Zaen Bladesorrow",p:["Int"],x:[["Mastery",7],["Vers",4]]},
+  {n:"Breeches of Deft Deals",ic:"inv_pant_leather_dungeonharronir_c_01",id:251130,sl:"Legs",ty:"Leather",b:"Zaen Bladesorrow",p:["Agi","Int"],x:[["Crit",8],["Mastery",6]]},
+  {n:"Freightrunner's Flask",ic:"inv_alchemy_90_flask_red",id:250215,sl:"Trinket",ty:"Trinket",b:"Zaen Bladesorrow",p:["Agi","Int"]},
+  {n:"Xathuux's Cleave",ic:"inv_axe_2h_dungeonharronir_c_01",id:251134,sl:"Two-hand",ty:"Axe",b:"Xathuux the Annihilator",p:["Str"],x:[["Crit",8],["Haste",6]]},
+  {n:"Fury-fletched Armlets",ic:"inv_bracer_leather_dungeonharronir_c_01",id:251135,sl:"Wrist",ty:"Leather",b:"Xathuux the Annihilator",p:["Agi","Int"],x:[["Haste",5],["Crit",3]]},
+  {n:"Tempestuous Sandals",ic:"inv_boot_cloth_dungeonharronir_c_01",id:251137,sl:"Feet",ty:"Cloth",b:"Xathuux the Annihilator",p:["Int"],x:[["Mastery",7],["Haste",4]]},
+  {n:"Signet of Snarling Servitude",ic:"inv_12_jewelry_voidelf_ring_teal",id:251136,sl:"Ring",ty:"Ring",b:"Xathuux the Annihilator",x:[["Crit",12],["Mastery",8]]},
+  {n:"Resonant Bellowstone",ic:"inv_alchemy_90_stone_green",id:250228,sl:"Trinket",ty:"Trinket",b:"Xathuux the Annihilator",p:["Str","Agi"]},
+  {n:"Vilefiend's Guise",ic:"inv_helm_leather_dungeonharronir_c_01",id:251140,sl:"Head",ty:"Leather",b:"Lithiel Cinderfury",p:["Agi","Int"],x:[["Haste",8],["Mastery",6]]},
+  {n:"Pendant of Malefic Fury",ic:"inv_12_jewelry_silvermoonelf_necklace_green",id:251142,sl:"Neck",ty:"Neck",b:"Lithiel Cinderfury",x:[["Mastery",14],["Haste",6]]},
+  {n:"Cinderfury Shoulderguards",ic:"inv_shoulder_plate_dungeonharronir_c_01",id:251138,sl:"Shoulder",ty:"Plate",b:"Lithiel Cinderfury",p:["Str","Int"],x:[["Haste",7],["Mastery",4]]},
+  {n:"Summoner's Searing Shirt",ic:"inv_chest_cloth_dungeonharronir_c_01",id:251139,sl:"Chest",ty:"Cloth",b:"Lithiel Cinderfury",p:["Int"],x:[["Haste",9],["Crit",5]]},
+  {n:"Lithiel's Linked Leggings",ic:"inv_pant_mail_dungeonharronir_c_01",id:251141,sl:"Legs",ty:"Mail",b:"Lithiel Cinderfury",p:["Agi","Int"],x:[["Haste",9],["Vers",6]]},
+  {n:"Unstable Felheart Crystal",ic:"tooltip_crystallizedfel",id:250255,sl:"Trinket",ty:"Trinket",b:"Lithiel Cinderfury",p:["Int"]}]},
  route:[
   {n:1,t:"Bottom right start",m:"Opening street packs",d:1,p:"The opening area is static in Mythic+ even though it was not in Mythic 0.",s:["tk_rt"]},
   {n:2,t:"Lust pull, top of the district",m:"Lieutenant plus guard, chained into the next group",d:3,lust:true,p:"Looks bigger than it is — chain up to the mini-boss, then add the rest when you feel safe. They only spawn when you open the door.",s:["tk_rt"]},
@@ -1057,10 +1112,30 @@ loot:{s:["iv_mr"],b:[
    {n:"Fury of the War God",t:["amp","adds"],c:["position"],r:["dps","healer","tank"],sev:3,e:"He headbutts Zul'jarra into a Concussive Shock, then sends the echoes charging at her. Blocking one costs you significant Nature damage; letting one reach her costs the party heavy damage, ignoring armour, plus a stacking 10% damage-taken increase. Each echo lingers for one further Fury of the War God, then vanishes.",h:"Block their path instead of letting them connect, and drop the echoes into a corner earlier so every charge comes from the same direction.",s:["tk_don","iv_don"]},
    {n:"Overwhelming Onslaught",t:["channel","groupdmg","knockback"],c:["los","position"],r:["healer","tank"],sev:3,t:["channel","groupdmg","knockback","noarmor","myth"],e:"Mythic only: very heavy damage every second for 3 seconds, ignoring armour. Zul'jarra's Defensive Stance reduces it by 80% for anyone standing behind her — not immunity, an 80% cut. The final hit stuns her and knocks everyone back.",h:"Tanks own the shield's placement. Getting knocked into an echo is how this goes wrong.",s:["tk_don"]},
    {n:"Forceful Slam",t:["tankbuster","soak"],c:["defensive","position"],r:["tank"],sev:3,e:"Massive Physical damage to everyone within 6 yards of Zul'jarra. If NOBODY is standing there she takes it in full and screams.",h:"Get back to the boss fast after the knockback. This is the single most punishing tank moment in the dungeon.",s:["tk_don"]}]}],
-loot:{s:["iv_don"],b:[
-  {n:"The Hoardmonger",i:[["Fist Weapon","Grim Harvest Gloves","Haste/Vers"],["Leather Shoulder","Scavenger's Spaulders","Vers/Crit"],["Cloth Chest","Hoarded Harvest Wrap","Mastery/Vers"],["Plate Waist","Autumn's Boon Belt","Mastery/Vers"],["Mail Boots","Forgotten Tribe Footguards","Haste/Vers"],["Ring","Pilfered Precious Band","Vers/Crit"],["Trinket","Mycolic Medicine","Intellect"]]},
-  {n:"Sentinel of Winter",i:[["Polearm","Victor's Flashfrozen Blade","Mastery/Haste"],["Shield","Tempest's Shelter","Haste/Mastery"],["Off-Hand","Perennial Frostbound Charm","Mastery/Crit"],["Plate Chest","Sentinel Challenger's Prize","Crit/Mastery"],["Cloth Wrist","Winter's Embrace Bracers","Crit/Mastery"],["Mail Hands","Season's Turn Gauntlets","Haste/Vers"],["Mail Waist","Tribal Defender's Cord","Crit/Mastery"],["Leather Boots","Arctic Explorer's Legwraps","Haste/Crit"],["Trinket","Permafrost Essence","Unstatted"]]},
-  {n:"Nalorakk",i:[["Staff","Fallen Speaker's Staff","Haste/Vers"],["Mail Head","Nalorakk's Nightmare","Vers/Haste"],["Neck","Yoke of the Charging Bear","Haste/Crit"],["Leather Chest","War Trial Vestments","Mastery/Haste"],["Plate Hands","Bonds of the Hash'ura","Haste/Crit"],["Cloth Legs","Forest Dream Leg-guards","Haste/Crit"],["Trinket","Idol of the War Loa","Crit"]]}]},
+loot:{s:["iv_don"],i:[
+  {n:"Grim Harvest Gloves",ic:"inv_hand_1h_dungeonharronir_c_01",id:251143,sl:"One-hand",ty:"Fist",b:"The Hoardmonger",p:["Agi"],x:[["Haste",4],["Vers",3]]},
+  {n:"Scavenger's Spaulders",ic:"inv_shoulder_leather_dungeonharronir_c_01",id:251146,sl:"Shoulder",ty:"Leather",b:"The Hoardmonger",p:["Agi","Int"],x:[["Vers",6],["Crit",4]]},
+  {n:"Hoarded Harvest Wrap",ic:"inv_chest_cloth_dungeonharronir_c_01",id:251147,sl:"Chest",ty:"Cloth",b:"The Hoardmonger",p:["Int"],x:[["Mastery",9],["Vers",6]]},
+  {n:"Autumn's Boon Belt",ic:"inv_belt_plate_dungeonharronir_c_01",id:251144,sl:"Waist",ty:"Plate",b:"The Hoardmonger",p:["Str","Int"],x:[["Mastery",6],["Vers",4]]},
+  {n:"Forgotten Tribe Footguards",ic:"inv_boot_mail_dungeonharronir_c_01",id:251145,sl:"Feet",ty:"Mail",b:"The Hoardmonger",p:["Agi","Int"],x:[["Haste",6],["Vers",4]]},
+  {n:"Pilfered Precious Band",ic:"inv_12_jewelry_zulaman_troll_ring_green2",id:251148,sl:"Ring",ty:"Ring",b:"The Hoardmonger",x:[["Vers",12],["Crit",8]]},
+  {n:"Mycolic Medicine",ic:"inv_misc_starspecklemushroom",id:250248,sl:"Trinket",ty:"Trinket",b:"The Hoardmonger",p:["Int"]},
+  {n:"Victor's Flashfrozen Blade",ic:"inv_polearm_2h_dungeonharronir_c_01",id:251149,sl:"Two-hand",ty:"Polearm",b:"Sentinel of Winter",p:["Agi"],x:[["Mastery",8],["Haste",6]]},
+  {n:"Tempest's Shelter",ic:"inv_shield_1h_dungeonharronir_c_01",id:251150,sl:"Off-hand",ty:"Shield",b:"Sentinel of Winter",p:["Str","Int"],x:[["Haste",4],["Mastery",3]]},
+  {n:"Perennial Frostbound Charm",ic:"inv_offhand_1h_dungeonharronir_c_01",id:271681,sl:"Off-hand",ty:"Off-hand",b:"Sentinel of Winter",p:["Int"],x:[["Mastery",14],["Crit",10]]},
+  {n:"Sentinel Challenger's Prize",ic:"inv_chest_plate_dungeonharronir_c_01",id:251151,sl:"Chest",ty:"Plate",b:"Sentinel of Winter",p:["Str","Int"],x:[["Crit",9],["Mastery",5]]},
+  {n:"Winter's Embrace Bracers",ic:"inv_bracer_cloth_dungeonharronir_c_01",id:251154,sl:"Wrist",ty:"Cloth",b:"Sentinel of Winter",p:["Int"],x:[["Crit",5],["Mastery",3]]},
+  {n:"Season's Turn Gauntlets",ic:"inv_glove_mail_dungeonharronir_c_01",id:251152,sl:"Hands",ty:"Mail",b:"Sentinel of Winter",p:["Agi","Int"],x:[["Haste",6],["Vers",4]]},
+  {n:"Tribal Defender's Cord",ic:"inv_belt_mail_dungeonharronir_c_01",id:251155,sl:"Waist",ty:"Mail",b:"Sentinel of Winter",p:["Agi","Int"],x:[["Crit",7],["Mastery",4]]},
+  {n:"Arctic Explorer's Legwraps",ic:"inv_boot_leather_dungeonharronir_c_01",id:251153,sl:"Feet",ty:"Leather",b:"Sentinel of Winter",p:["Agi","Int"],x:[["Haste",7],["Crit",4]]},
+  {n:"Permafrost Essence",ic:"inv12_jewelrytrinkets_dungeon_permafrostreservoir",id:250244,sl:"Trinket",ty:"Trinket",b:"Sentinel of Winter"},
+  {n:"Fallen Speaker's Staff",ic:"inv_staff_2h_amani_c_01",id:251156,sl:"Two-hand",ty:"Staff",b:"Nalorakk",p:["Int"],x:[["Haste",9],["Vers",5]]},
+  {n:"Nalorakk's Nightmare",ic:"inv_helm_mail_dungeonharronir_c_01",id:251158,sl:"Head",ty:"Mail",b:"Nalorakk",p:["Agi","Int"],x:[["Vers",8],["Haste",6]]},
+  {n:"Yoke of the Charging Bear",ic:"inv_12_jewelry_zulaman_troll_necklace_green1",id:251173,sl:"Neck",ty:"Neck",b:"Nalorakk",x:[["Haste",13],["Crit",7]]},
+  {n:"War Trial Vestments",ic:"inv_chest_leather_dungeonharronir_c_01",id:251159,sl:"Chest",ty:"Leather",b:"Nalorakk",p:["Agi","Int"],x:[["Mastery",9],["Haste",5]]},
+  {n:"Bonds of the Hash'ura",ic:"inv_glove_plate_dungeonharronir_c_01",id:251214,sl:"Hands",ty:"Plate",b:"Nalorakk",p:["Str","Int"],x:[["Haste",6],["Crit",4]]},
+  {n:"Forest Dream Leg-guards",ic:"inv_pant_cloth_dungeonharronir_c_01",id:251160,sl:"Legs",ty:"Cloth",b:"Nalorakk",p:["Int"],x:[["Haste",9],["Crit",5]]},
+  {n:"Idol of the War Loa",ic:"inv12_jewelrytrinkets_dungeon_idolofthewargod",id:250229,sl:"Trinket",ty:"Trinket",b:"Nalorakk",x:[["Crit",10]]}]},
  route:[
   {n:1,t:"Big opening lust pull",m:"Spirit of Hunger, two casters, assorted forest mobs",d:3,lust:true,p:"The Spirit of Hunger is the scary part. The rest hit the tank or throw random bleeds.",s:["tk_rt"]},
   {n:2,t:"Matriarch drag",m:"Territorial Matriarch",d:2,p:"Drag it down while avoiding the second Spirit of Hunger. Walk the waterfall side.",s:["tk_rt"]},
@@ -1148,11 +1223,33 @@ loot:{s:["iv_don"],b:[
    {n:"Awaken the Light Bloom",t:["adds"],c:["interrupt","cc","position"],r:["dps","tank"],sev:3,alt:"Awaken the Lightbloom · Vicious Regrowth",e:"Lightspawn Lashers sprout and bolt at players. At 1% health they go DORMANT — submerged, immune to everything — rather than dying. Concentrated Lightbeam liquifies dormant ones into Lightsap (heavy damage every 2 seconds, 40% slow). Any left dormant reawaken with Vicious Regrowth: +30% haste and damage, AND immune to interrupts and crowd control.",h:"Tank on the edge, cleave the lashers there, then shift towards the centre so the frontal line sweeps all of them. Move to a new edge and repeat.",s:["tk_bv"]},
    {n:"Light Bloom's Essence",t:["soak","dot"],c:["soak"],r:["dps","healer"],sev:3,alt:"Lightbloom's Essence",t:["soak","dot","myth"],e:"Mythic only. Orbs drift towards him; arrival triggers Fluorescent Outburst — significant damage to the party and a Fluorescent Shield absorbing significant amount of with +10% damage done, STACKING. Touching one instead grants Lightbloom's Might: +10% damage and healing while taking light Holy damage per second for 12 seconds, stacking.",h:"Letting orbs through is not just a hit — it gives him a stacking shield and a stacking damage buff. Every orb matters more than either guide implies.",s:["wh_ej","tk_bv","iv_bv"]},
    {n:"Thorn Spike",t:["tankbuster","dot"],c:["defensive","bleedcl"],r:["tank"],sev:2,e:"Heavy Holy damage, a knockback, and a bleed of moderate damage per second for 10 seconds.",h:"The knockback is not in either guide. Do not take it with your back to the lasher pack.",s:["wh_ej","tk_bv"]}]}],
-loot:{s:["iv_bv"],b:[
-  {n:"Lightblossom Trinity",i:[["Polearm","Pruning Lance","Haste/Vers"],["Dagger","Thornblade","Haste/Mastery"],["Mail Shoulder","Ironroot Collar","Haste/Vers"],["Leather Wrist","Rootwarden Wraps","Crit/Mastery"],["Cloth Waist","Lightblossom Cinch","Haste/Mastery"],["Plate Legs","Bedrock Breeches","Crit/Vers"],["Trinket","Seed of Radiant Hope","Intellect"]]},
-  {n:"Ikuzz the Light Hunter",i:[["Fist Weapon","Thorntalon Edge","Crit/Mastery"],["Wand","Doompetal","Haste/Mastery"],["Crossbow","Amirdrassil's Reach","Crit/Vers"],["Back","Bloodthorn Burnous","Haste/Mastery"],["Leather Waist","Rootwalker Harness","Crit/Vers"],["Trinket","Seed of the Devouring Wild","Strength"]]},
-  {n:"Lightwarden Ruia",i:[["Staff","Branch of Pride","Crit/Vers"],["Off-Hand","Luminescent Sprout","Haste/Mastery"],["Plate Chest","Taproot Ribs","Haste/Vers"],["Mail Hands","Pulverizing Pads","Crit/Vers"],["Ring","Lightwarden's Bind","Vers/Mastery"],["Trinket","Lightspire Core","Int / Agi"]]},
-  {n:"Ziekket",i:[["1H Sword","Thorned Reply","Crit/Haste"],["Shield","Teldrassil's Sacrifice","Crit/Vers"],["Cloth Head","Worldroot Canopy","Crit/Mastery"],["Mail Wrists","Saptorbane Guards","Crit/Haste"],["Plate Hands","Thornspike Gauntlets","Vers/Mastery"],["Leather Legs","Lightspore Leggings","Vers/Mastery"],["Trinket","Sapling of the Dawnroot","Agi / Int / Str"]]}]},
+loot:{s:["iv_bv"],i:[
+  {n:"Pruning Lance",ic:"inv_polearm_2h_rutaani_b_01",id:251181,sl:"Two-hand",ty:"Polearm",b:"Lightblossom Trinity",p:["Str"],x:[["Haste",8],["Vers",6]]},
+  {n:"Thornblade",ic:"inv_knife_1h_rutaani_b_01",id:251180,sl:"One-hand",ty:"Dagger",b:"Lightblossom Trinity",p:["Agi"],x:[["Mastery",4],["Haste",3]]},
+  {n:"Ironroot Collar",ic:"inv_shoulder_mail_dungeonharronir_c_01",id:251184,sl:"Shoulder",ty:"Mail",b:"Lightblossom Trinity",p:["Agi","Int"],x:[["Haste",7],["Vers",4]]},
+  {n:"Rootwarden Wraps",ic:"inv_bracer_leather_dungeonharronir_c_01",id:251183,sl:"Wrist",ty:"Leather",b:"Lightblossom Trinity",p:["Agi","Int"],x:[["Crit",5],["Mastery",3]]},
+  {n:"Lightblossom Cinch",ic:"inv_belt_cloth_dungeonharronir_c_01",id:251185,sl:"Waist",ty:"Cloth",b:"Lightblossom Trinity",p:["Int"],x:[["Mastery",6],["Haste",4]]},
+  {n:"Bedrock Breeches",ic:"inv_pant_plate_dungeonharronir_c_01",id:251182,sl:"Legs",ty:"Plate",b:"Lightblossom Trinity",p:["Str","Int"],x:[["Crit",9],["Vers",6]]},
+  {n:"Seed of Radiant Hope",ic:"inv12_jewelrytrinkets_dungeon_seedofradianthope",id:250254,sl:"Trinket",ty:"Trinket",b:"Lightblossom Trinity",p:["Int"]},
+  {n:"Thorntalon Edge",ic:"inv_hand_1h_dungeonharronir_c_01",id:251186,sl:"One-hand",ty:"Fist",b:"Ikuzz the Light Hunter",p:["Agi"],x:[["Mastery",4],["Crit",3]]},
+  {n:"Doompetal",ic:"inv_wand_1h_dungeonharronir_c_01",id:251188,sl:"Ranged",ty:"Wand",b:"Ikuzz the Light Hunter",p:["Int"],x:[["Haste",4],["Mastery",3]]},
+  {n:"Amirdrassil's Reach",ic:"inv_crossbow_2h_dungeonharronir_c_01",id:251187,sl:"Ranged",ty:"Crossbow",b:"Ikuzz the Light Hunter",p:["Agi"],x:[["Vers",8],["Crit",6]]},
+  {n:"Bloodthorn Burnous",ic:"inv_cape_mail_dungeonharronir_c_01",id:251190,sl:"Back",ty:"Cloak",b:"Ikuzz the Light Hunter",p:["Str","Agi","Int"],x:[["Haste",5],["Mastery",3]]},
+  {n:"Rootwalker Harness",ic:"inv_belt_leather_dungeonharronir_c_01",id:251189,sl:"Waist",ty:"Leather",b:"Ikuzz the Light Hunter",p:["Agi","Int"],x:[["Vers",7],["Crit",4]]},
+  {n:"Seed of the Devouring Wild",ic:"inv12_jewelrytrinkets_dungeon_seedofthedevouringwild",id:250238,sl:"Trinket",ty:"Trinket",b:"Ikuzz the Light Hunter",p:["Str"],x:[["Mastery",29]]},
+  {n:"Branch of Pride",ic:"inv_staff_2h_dungeonharronir_c_01",id:251192,sl:"Two-hand",ty:"Staff",b:"Lightwarden Ruia",p:["Agi"],x:[["Crit",9],["Vers",5]]},
+  {n:"Luminescent Sprout",ic:"inv_offhand_1h_dungeonharronir_c_01",id:251191,sl:"Off-hand",ty:"Off-hand",b:"Lightwarden Ruia",p:["Int"],x:[["Mastery",4],["Haste",3]]},
+  {n:"Taproot Ribs",ic:"inv_chest_plate_dungeonharronir_c_01",id:251193,sl:"Chest",ty:"Plate",b:"Lightwarden Ruia",p:["Str","Int"],x:[["Haste",9],["Vers",5]]},
+  {n:"Pulverizing Pads",ic:"inv_glove_mail_dungeonharronir_c_01",id:251165,sl:"Hands",ty:"Mail",b:"Lightwarden Ruia",p:["Agi","Int"],x:[["Crit",6],["Vers",4]]},
+  {n:"Lightwarden's Bind",ic:"inv12_jewelrytrinkets_rutaani_ring_yellow",id:251194,sl:"Ring",ty:"Ring",b:"Lightwarden Ruia",x:[["Mastery",13],["Vers",7]]},
+  {n:"Lightspire Core",ic:"inv_enchant_essenceastrallarge",id:250214,sl:"Trinket",ty:"Trinket",b:"Lightwarden Ruia",p:["Agi","Int"],x:[["Mastery",35]]},
+  {n:"Thorned Reply",ic:"inv_sword_1h_dungeonharronir_c_01",id:251195,sl:"One-hand",ty:"Sword",b:"Ziekket",p:["Str"],x:[["Haste",4],["Crit",3]]},
+  {n:"Teldrassil's Sacrifice",ic:"inv_shield_1h_rutaani_b_01",id:251196,sl:"Off-hand",ty:"Shield",b:"Ziekket",p:["Str","Int"],x:[["Crit",4],["Vers",3]]},
+  {n:"Worldroot Canopy",ic:"inv_helm_cloth_dungeonharronir_c_01",id:251199,sl:"Head",ty:"Cloth",b:"Ziekket",p:["Int"],x:[["Mastery",9],["Crit",5]]},
+  {n:"Saptorbane Guards",ic:"inv_bracer_mail_dungeonharronir_c_01",id:251200,sl:"Wrist",ty:"Mail",b:"Ziekket",p:["Agi","Int"],x:[["Haste",5],["Crit",3]]},
+  {n:"Thornspike Gauntlets",ic:"inv_glove_plate_dungeonharronir_c_01",id:251197,sl:"Hands",ty:"Plate",b:"Ziekket",p:["Str","Int"],x:[["Mastery",7],["Vers",4]]},
+  {n:"Lightspore Leggings",ic:"inv_pant_leather_dungeonharronir_c_01",id:251198,sl:"Legs",ty:"Leather",b:"Ziekket",p:["Agi","Int"],x:[["Vers",9],["Mastery",5]]},
+  {n:"Sapling of the Dawnroot",ic:"inv_misc_herb_nightmarevine",id:250259,sl:"Trinket",ty:"Trinket",b:"Ziekket",p:["Str","Agi","Int"]}]},
  route:[
   {n:1,t:"Choose right",m:"Headwing and scepter mobs",d:2,p:"The routing video prefers right: the left path has considerably more interrupts and an extra Belcher. The right side's bolt-casters can largely be ignored once packs are grouped.",s:["tk_rt"]},
   {n:2,t:"Group on the casters",m:"Spam casters, petalwing",d:2,p:"Interrupt to group them, then tag backwards to the petalwing area and fight there.",s:["tk_rt"]},
@@ -1258,10 +1355,29 @@ loot:{s:["iv_bv"],b:[
    {n:"Gravitic Orbs",t:["fixate","dot"],c:["kite","position"],r:["dps"],sev:3,alt:"Condensed Mass",e:"One orb spawns near EVERY player, each stacking light damage per second and a 2% slow. An orb within 6 yards of a singularity is destroyed.",h:"Both guides were wrong here — one said three DPS, the other three random players. The journal says one per player, so everybody has a job. Pre-position beside a singularity before the cast and there is no scramble.",s:["wh_ej","tk_vsa","iv_vsa"]},
    {n:"Dark Waves",t:["frontal","tankbuster"],c:["defensive","position"],r:["tank"],sev:2,e:"Frontal at the tank.",h:"Point it away from anyone kiting an orb.",s:["tk_vsa"]},
    {n:"Void Cascade",t:["line"],c:["kite","position"],r:["dps","healer"],sev:2,t:["line","myth"],e:"Mythic only. Condensed cosmic power projected at nearby players: very heavy Shadow damage and a knockback to anyone it contacts. Dodgeable, and it does not home.",h:"Create distance and outrun them. Everyone else stands behind the boss so they do not intercept.",s:["tk_vsa"]}]}],
-loot:{s:["iv_vsa"],b:[
-  {n:"Taz'Rah",i:[["1H Sword","Taz'Rah's Cosmic Edge","Haste/Mastery"],["Mail Head","Voidscarred Crown","Haste/Mastery"],["Leather Shoulder","Somber Spaulders","Crit/Haste"],["Plate Hands","Despondent's Gauntlets","Vers/Mastery"],["Cloth Waist","Ethereal Netherwrap","Haste/Crit"],["Cloth Boots","Riftworn Stompers","Haste/Crit"],["Trinket","Void Execution Mandate","Agility"]]},
-  {n:"Atroxus",i:[["Dagger","Fang of Contagion","Mastery/Vers"],["1H Axe","Hulking Handaxe","Mastery/Haste"],["Plate Head","Visor of the Predator","Crit/Mastery"],["Cloth Shoulder","Poisoner's Pauldrons","Vers/Mastery"],["Leather Chest","Hide of Pestilence","Crit/Vers"],["Mail Waist","Behemoth Waistband","Haste/Mastery"],["Ring","Sickening Signet of Atroxus","Haste/Mastery"],["Trinket","Tumor of the Swarm","Agi / Str"]]},
-  {n:"Charonus",i:[["Polearm","Charonic Crescent","Vers/Mastery"],["Warglaives","Singularity Slicer","Crit/Haste"],["Cloth Head","Overseer's Diadem","Haste/Mastery"],["Neck","Graft of the Domanaar","Crit/Mastery"],["Mail Chest","Manipulator's Vest","Crit/Haste"],["Leather Waist","Gravitic Girdle","Vers/Mastery"],["Trinket","Mindpiercer's Sigil","Unstatted"]]}]},
+loot:{s:["iv_vsa"],i:[
+  {n:"Taz'Rah's Cosmic Edge",ic:"inv_sword_1h_domanaar_b_01",id:251218,sl:"One-hand",ty:"Sword",b:"Taz'Rah",p:["Str"],x:[["Haste",4],["Mastery",3]]},
+  {n:"Voidscarred Crown",ic:"inv_helm_mail_dungeonharronir_c_01",id:251220,sl:"Head",ty:"Mail",b:"Taz'Rah",p:["Agi","Int"],x:[["Haste",9],["Mastery",5]]},
+  {n:"Somber Spaulders",ic:"inv_shoulder_leather_dungeonharronir_c_01",id:251223,sl:"Shoulder",ty:"Leather",b:"Taz'Rah",p:["Agi","Int"],x:[["Crit",7],["Haste",4]]},
+  {n:"Despondent's Gauntlets",ic:"inv_glove_plate_dungeonharronir_c_01",id:251221,sl:"Hands",ty:"Plate",b:"Taz'Rah",p:["Str","Int"],x:[["Vers",6],["Mastery",4]]},
+  {n:"Ethereal Netherwrap",ic:"inv_belt_cloth_dungeonharronir_c_01",id:251222,sl:"Waist",ty:"Cloth",b:"Taz'Rah",p:["Int"],x:[["Haste",7],["Crit",4]]},
+  {n:"Riftworn Stompers",ic:"inv_boot_cloth_dungeonharronir_c_01",id:251219,sl:"Feet",ty:"Cloth",b:"Taz'Rah",p:["Int"],x:[["Haste",6],["Crit",4]]},
+  {n:"Void Execution Mandate",ic:"inv_inscription_80_warscroll_intellect",id:250225,sl:"Trinket",ty:"Trinket",b:"Taz'Rah",p:["Agi"],x:[["Crit",4]]},
+  {n:"Fang of Contagion",ic:"inv_knife_1h_dungeonharronir_c_02",id:251225,sl:"One-hand",ty:"Dagger",b:"Atroxus",p:["Int"],x:[["Mastery",4],["Vers",3]]},
+  {n:"Hulking Handaxe",ic:"inv_axe_1h_dungeonharronir_c_01",id:251224,sl:"One-hand",ty:"Axe",b:"Atroxus",p:["Agi"],x:[["Mastery",5],["Haste",2]]},
+  {n:"Visor of the Predator",ic:"inv_helm_armor_domanaar_d_01",id:251229,sl:"Head",ty:"Plate",b:"Atroxus",p:["Str","Int"],x:[["Crit",9],["Mastery",5]]},
+  {n:"Poisoner's Pauldrons",ic:"inv_shoulder_cloth_dungeonharronir_c_01",id:251227,sl:"Shoulder",ty:"Cloth",b:"Atroxus",p:["Int"],x:[["Vers",6],["Mastery",4]]},
+  {n:"Hide of Pestilence",ic:"inv_chest_leather_dungeonharronir_c_01",id:251226,sl:"Chest",ty:"Leather",b:"Atroxus",p:["Agi","Int"],x:[["Crit",8],["Vers",6]]},
+  {n:"Behemoth Waistband",ic:"inv_belt_mail_dungeonharronir_c_01",id:251228,sl:"Waist",ty:"Mail",b:"Atroxus",p:["Agi","Int"],x:[["Haste",6],["Mastery",4]]},
+  {n:"Sickening Signet of Atroxus",ic:"inv_12_jewelry_devouringhost_ring_bronze2",id:252258,sl:"Ring",ty:"Ring",b:"Atroxus",x:[["Haste",14],["Mastery",6]]},
+  {n:"Tumor of the Swarm",ic:"ability_pet_baneling",id:250245,sl:"Trinket",ty:"Trinket",b:"Atroxus",p:["Str","Agi"]},
+  {n:"Charonic Crescent",ic:"inv_polearm_2h_domanaar_b_01",id:251230,sl:"Two-hand",ty:"Polearm",b:"Charonus",p:["Str"],x:[["Vers",9],["Mastery",6]]},
+  {n:"Singularity Slicer",ic:"inv_glaive_1h_dungeonharronir_c_01",id:251231,sl:"One-hand",ty:"Warglaive",b:"Charonus",p:["Agi","Int"],x:[["Crit",4],["Haste",3]]},
+  {n:"Overseer's Diadem",ic:"inv_helm_cloth_dungeonharronir_c_01",id:251232,sl:"Head",ty:"Cloth",b:"Charonus",p:["Int"],x:[["Haste",9],["Mastery",6]]},
+  {n:"Graft of the Domanaar",ic:"inv_12_jewelry_devouringhost_necklace_silver2",id:251234,sl:"Neck",ty:"Neck",b:"Charonus",x:[["Crit",13],["Mastery",7]]},
+  {n:"Manipulator's Vest",ic:"inv_chest_mail_dungeonharronir_c_01",id:251233,sl:"Chest",ty:"Mail",b:"Charonus",p:["Agi","Int"],x:[["Crit",9],["Haste",5]]},
+  {n:"Gravitic Girdle",ic:"inv_belt_leather_dungeonharronir_c_01",id:251235,sl:"Waist",ty:"Leather",b:"Charonus",p:["Agi","Int"],x:[["Vers",7],["Mastery",4]]},
+  {n:"Mindpiercer's Sigil",ic:"inv_icon_shadowcouncilorb_purple",id:250224,sl:"Trinket",ty:"Trinket",b:"Charonus"}]},
  route:[
   {n:1,t:"Most dangerous first pull in the pool",m:"Three Dominated Brawlers, shaman, Brutal Overseer",d:3,lust:true,p:"Crowd control one brawler, one kick on each of the other two, spare kicks on the shaman to group. Focus the Overseer. Cutting the lieutenant out of this pull feels bad, so control it instead.",s:["tk_rt"]},
   {n:2,t:"Mini-boss",m:"Path mini-boss and buff",d:2,p:"Take the buff, then move into the arena.",s:["tk_rt"]},
@@ -1358,11 +1474,41 @@ loot:{s:["iv_vsa"],b:[
    {n:"Quaking Leap",t:["spread","groupdmg"],c:["spread","drop"],r:["dps","healer"],sev:3,e:"T'zala leaps at targeted players for heavy damage within 8 yards; Dazar's own version is Aerial Smash, same shape. The journal gives no distance-scaled party hit — that claim appears only in the creator guide and should be treated as unconfirmed.",h:"Move further away to soften it, but stay in healer range. A combat drop while he is midair cancels the remaining jumps entirely.",s:["tk_kr"]},
    {n:"Blade Combo",t:["tankbuster","channel"],c:["defensive","bleedcl","magic"],r:["tank","healer"],sev:3,e:"A series of strikes doing increasing damage. T'zala's Savage Maul precedes it: heavy damage, a bleed of moderate damage per second, and +10% Physical damage taken for 10 seconds — a damage amplifier, not an armour reduction as the creator guide has it. The tier-2 assignment table lists Savage Maul as DISPELLABLE, which changes the tank's answer entirely.",h:"Cleanse the bleed if you can, or press your defensive early so it covers both abilities.",s:["tk_kr"]},
    {n:"Gilded Destruction",t:["dot","frontal","env"],c:["position","dodge"],r:["tank","healer"],sev:3,t:["dot","frontal","env","myth"],e:"Mythic only: heavy Fire damage to everyone plus light damage for 15 seconds, and his melee swings gain Searing Gold — a wave of molten gold in front of him for significant damage.",h:"Tanks have to move quickly to dodge spears while keeping the boss pointed away. The hardest positioning moment in the dungeon.",s:["tk_kr"]}]}],
-loot:{s:["iv_kr"],b:[
-  {n:"The Golden Serpent",i:[["Dagger","Gilded Serpent's Tooth","Vers/Haste"],["Plate Hands","Gauntlets of the Avian Sentinel","Mastery/Crit"],["Mail Waist","Belt of the Consecrated Tomb","Vers/Haste"],["Leather Legs","Breeches of the Sacred Hall","Vers/Haste"],["Cloth Legs","Down-Lined Breeches","Crit/Mastery"],["Plate Boots","Auric Puddle Stompers","Vers/Crit"],["Leather Boots","Goldfeather Boots","Vers/Mastery"],["Trinket","Lustrous Golden Plumage","Agility"]]},
-  {n:"Mchimba the Embalmer",i:[["Polearm","Royal Purifier's Spade","Crit/Mastery"],["Off-Hand","Vessel of Last Rites","Haste/Vers"],["Plate Wrist","Embalmer's Steadying Bracers","Crit/Haste"],["Leather Hands","Desiccator's Blessed Gloves","Crit/Mastery"],["Mail Hands","Sepulchral Construct's Gloves","Haste/Mastery"],["Ring","Ritual Binder's Ring","Haste/Vers"],["Trinket","Mchimba's Ritual Bandages","Agi / Str"]]},
-  {n:"The Council of Tribes",i:[["1H Sword","Crackling Jade Kilij","Crit/Mastery"],["Dagger","Jeweled Dagger of Subjugation","Haste/Mastery"],["Crossbow","Crossbow of Forgotten Majesty","Haste/Mastery"],["Back","Cloak of the Restless Tribes","Vers/Mastery"],["Leather Wrist","Kula's Butchering Wristwraps","Crit/Vers"],["Plate Waist","Girdle of Pestilent Purification","Crit/Vers"],["Mail Boots","Boots of the Headlong Conqueror","Vers/Mastery"],["Cloth Boots","Sandals of Wise Voodoo","Vers/Haste"]]},
-  {n:"King Dazar",i:[["2H Sword","Geti'ikku, Cut of Death","Special effect"],["1H Mace","Headcracker of Supplication","Mastery/Crit"],["Cloth Head","Headdress of the First Empire","Crit/Vers"],["Plate Head","Helm of the Raptor King","Vers/Haste"],["Cloth Shoulder","Mantle of Ceremonial Ascension","Mastery/Haste"],["Plate Shoulder","Pauldrons of the Great Unifier","Vers/Mastery"],["Mail Shoulder","Spaulders of Prime Emperor","Crit/Haste"],["Leather Chest","Vest of Reverent Adoration","Crit/Mastery"],["Leather Waist","Primal Dinomancer's Belt","Crit/Haste"],["Mail Chest","Loa-Blessed Chestguard","—"],["Trinket","Stormbound Emblem of Dazar","Intellect"]]}]},
+loot:{s:["iv_kr"],i:[
+  {n:"Gilded Serpent's Tooth",ic:"inv_knife_1h_battledungeon_c_01",id:159137,sl:"One-hand",ty:"Dagger",b:"The Golden Serpent",p:["Int"],x:[["Haste",3],["Vers",3]]},
+  {n:"Gauntlets of the Avian Sentinel",ic:"inv_glove_plate_zandalardungeon_c_01",id:159413,sl:"Hands",ty:"Plate",b:"The Golden Serpent",p:["Str","Int"],x:[["Mastery",6],["Crit",3]]},
+  {n:"Belt of the Consecrated Tomb",ic:"inv_belt_mail_zandalardungeon_c_01",id:159369,sl:"Waist",ty:"Mail",b:"The Golden Serpent",p:["Agi","Int"],x:[["Vers",5],["Haste",4]]},
+  {n:"Breeches of the Sacred Hall",ic:"inv_pant_leather_zandalardungeon_c_01",id:159313,sl:"Legs",ty:"Leather",b:"The Golden Serpent",p:["Agi","Int"],x:[["Vers",7],["Haste",5]]},
+  {n:"Down-Lined Breeches",ic:"inv_pant_cloth_zandalardungeon_c_01",id:159234,sl:"Legs",ty:"Cloth",b:"The Golden Serpent",p:["Int"],x:[["Crit",7],["Mastery",5]]},
+  {n:"Auric Puddle Stompers",ic:"inv_boot_plate_zandalardungeon_c_01",id:159412,sl:"Feet",ty:"Plate",b:"The Golden Serpent",p:["Str","Int"],x:[["Vers",5],["Crit",4]]},
+  {n:"Goldfeather Boots",ic:"inv_boot_leather_zandalardungeon_c_01",id:159304,sl:"Feet",ty:"Leather",b:"The Golden Serpent",p:["Agi","Int"],x:[["Vers",5],["Mastery",4]]},
+  {n:"Lustrous Golden Plumage",ic:"inv_icon_feather06a",id:159617,sl:"Trinket",ty:"Trinket",b:"The Golden Serpent",p:["Agi"]},
+  {n:"Royal Purifier's Spade",ic:"inv_polearm_2h_zandalariguard_b_01",id:159642,sl:"Two-hand",ty:"Polearm",b:"Mchimba the Embalmer",p:["Agi"],x:[["Crit",7],["Mastery",5]]},
+  {n:"Vessel of Last Rites",ic:"inv_offhand_1h_battledungeon_c_02",id:159667,sl:"Off-hand",ty:"Off-hand",b:"Mchimba the Embalmer",p:["Int"],x:[["Haste",4],["Vers",2]]},
+  {n:"Embalmer's Steadying Bracers",ic:"inv_bracer_plate_zandalardungeon_c_01",id:159409,sl:"Wrist",ty:"Plate",b:"Mchimba the Embalmer",p:["Str","Int"],x:[["Crit",4],["Haste",3]]},
+  {n:"Desiccator's Blessed Gloves",ic:"inv_glove_leather_zandalardungeon_c_01",id:159312,sl:"Hands",ty:"Leather",b:"Mchimba the Embalmer",p:["Agi","Int"],x:[["Crit",5],["Mastery",3]]},
+  {n:"Sepulchral Construct's Gloves",ic:"inv_glove_mail_zandalardungeon_c_01",id:160213,sl:"Hands",ty:"Mail",b:"Mchimba the Embalmer",p:["Agi","Int"],x:[["Mastery",5],["Haste",4]]},
+  {n:"Ritual Binder's Ring",ic:"inv_ring_80_03e",id:159459,sl:"Ring",ty:"Ring",b:"Mchimba the Embalmer",x:[["Haste",11],["Vers",6]]},
+  {n:"Mchimba's Ritual Bandages",ic:"inv_misc_emberweavebandagelight",id:159618,sl:"Trinket",ty:"Trinket",b:"Mchimba the Embalmer",p:["Str","Agi"]},
+  {n:"Crackling Jade Kilij",ic:"inv_sword_1h_battledungeon_c_02",id:160216,sl:"One-hand",ty:"Sword",b:"The Council of Tribes",p:["Int"],x:[["Crit",3],["Mastery",2]]},
+  {n:"Jeweled Dagger of Subjugation",ic:"inv_knife_1h_battledungeon_c_01",id:159136,sl:"One-hand",ty:"Dagger",b:"The Council of Tribes",p:["Agi"],x:[["Haste",3],["Mastery",3]]},
+  {n:"Crossbow of Forgotten Majesty",ic:"inv_bow_2h_crossbow_pandaraid_d_01",id:159643,sl:"Ranged",ty:"Crossbow",b:"The Council of Tribes",p:["Agi"],x:[["Haste",7],["Mastery",5]]},
+  {n:"Cloak of the Restless Tribes",ic:"inv_cape_mail_zandalardungeon_c_01",id:159288,sl:"Back",ty:"Cloak",b:"The Council of Tribes",p:["Str","Agi","Int"],x:[["Vers",4],["Mastery",3]]},
+  {n:"Kula's Butchering Wristwraps",ic:"inv_bracer_leather_zandalardungeon_c_01",id:159300,sl:"Wrist",ty:"Leather",b:"The Council of Tribes",p:["Agi","Int"],x:[["Crit",4],["Vers",2]]},
+  {n:"Girdle of Pestilent Purification",ic:"inv_belt_plate_zandalardungeon_c_01",id:159418,sl:"Waist",ty:"Plate",b:"The Council of Tribes",p:["Str","Int"],x:[["Haste",5],["Mastery",3]]},
+  {n:"Boots of the Headlong Conqueror",ic:"inv_boot_mail_zandalardungeon_c_01",id:159371,sl:"Feet",ty:"Mail",b:"The Council of Tribes",p:["Agi","Int"],x:[["Vers",5],["Mastery",4]]},
+  {n:"Sandals of Wise Voodoo",ic:"inv_boot_cloth_zandalardungeon_c_01",id:159243,sl:"Feet",ty:"Cloth",b:"The Council of Tribes",p:["Int"],x:[["Vers",6],["Haste",3]]},
+  {n:"Geti'ikku, Cut of Death",ic:"inv_sword_2h_battledungeon_c_01",id:159644,sl:"Two-hand",ty:"Sword",b:"King Dazar",p:["Str"]},
+  {n:"Headcracker of Supplication",ic:"inv_mace_1h_battledungeon_c_01",id:159645,sl:"One-hand",ty:"Mace",b:"King Dazar",p:["Agi"],x:[["Mastery",3],["Crit",2]]},
+  {n:"Headdress of the First Empire",ic:"inv_helm_cloth_zandalardungeon_c_01",id:239047,sl:"Head",ty:"Cloth",b:"King Dazar",p:["Int"],x:[["Vers",7],["Crit",5]]},
+  {n:"Helm of the Raptor King",ic:"inv_helm_plate_zandalardungeon_c_01",id:239050,sl:"Head",ty:"Plate",b:"King Dazar",p:["Str","Int"],x:[["Vers",7],["Haste",5]]},
+  {n:"Mantle of Ceremonial Ascension",ic:"inv_shoulder_cloth_zandalardungeon_c_01",id:239045,sl:"Shoulder",ty:"Cloth",b:"King Dazar",p:["Int"],x:[["Mastery",6],["Haste",3]]},
+  {n:"Pauldrons of the Great Unifier",ic:"inv_shoulder_plate_zandalardungeon_c_01",id:239051,sl:"Shoulder",ty:"Plate",b:"King Dazar",p:["Str","Int"],x:[["Vers",5],["Mastery",4]]},
+  {n:"Spaulders of Prime Emperor",ic:"inv_shoulder_mail_zandalardungeon_c_01",id:239049,sl:"Shoulder",ty:"Mail",b:"King Dazar",p:["Agi","Int"],x:[["Haste",5],["Crit",4]]},
+  {n:"Vest of Reverent Adoration",ic:"inv_chest_leather_zandalardungeon_c_01",id:239048,sl:"Chest",ty:"Leather",b:"King Dazar",p:["Agi","Int"],x:[["Crit",7],["Mastery",5]]},
+  {n:"Primal Dinomancer's Belt",ic:"inv_belt_leather_zandalardungeon_c_01",id:159301,sl:"Waist",ty:"Leather",b:"King Dazar",p:["Agi","Int"],x:[["Crit",5],["Haste",4]]},
+  {n:"Loa-Blessed Chestguard",ic:"inv_chest_mail_zandalardungeon_c_01",id:239046,sl:"Chest",ty:"Mail",b:"King Dazar",p:["Agi","Int"],x:[["Crit",8],["Vers",4]]},
+  {n:"Stormbound Emblem of Dazar",ic:"inv_7_0raid_necklace_14a",id:273649,sl:"Trinket",ty:"Trinket",b:"King Dazar",p:["Int"]}]},
  route:[
   {n:1,t:"Two guardians left behind",m:"Opening room",d:2,p:"The route deliberately leaves two Animated Guardians unselected and still makes count — which is the routing evidence that the 100% requirement changed.",s:["tk_rt"]},
   {n:2,t:"Gong lust pull",m:"Two Animated Guardians plus the room",d:3,lust:true,p:"Expected to become the meta strategy: drag the guardians in, trigger the gong, and lust the whole room. A pug group should kill them separately first.",s:["tk_rt"]},
@@ -1455,10 +1601,27 @@ loot:{s:["iv_kr"],b:[
    {n:"Roaring Flame Breath",t:["frontal"],c:["dodge"],r:["dps","healer"],sev:1,e:"Kyrakka lands near a random player and channels a frontal through them.",h:"While she is grounded she takes full damage — focus her.",s:["tk_rlp"]},
    {n:"Storm Slam",t:["tankbuster","amp"],c:["magic","defensive"],r:["tank","healer"],sev:2,alt:"Stormslam",e:"Very heavy Physical damage and heavy Nature damage, applying a stacking, dispellable +100% Nature damage taken for 30 seconds. Mythic adds a further vulnerability.",h:"Dispel after every application. At 100% per stack this is not a nice-to-have — an undispelled tank walking into the next one is the standard death on this boss.",s:["tk_rlp","iv_rlp"]},
    {n:"Interrupting Cloud Burst",t:["silence"],c:["position"],r:["dps","healer"],sev:1,t:["silence","groupdmg","myth"],e:"Mythic only: significant Nature damage to everyone and interrupts casts for 2 seconds.",h:"Stop casting when you see it.",s:["wh_ej","tk_rlp"]}]}],
-loot:{s:["iv_rlp"],b:[
-  {n:"Melidrussa Chillworn",i:[["Staff","Chillworn's Infusion Staff","Int, Crit/Mastery"],["Mail Legs","Egg Tender's Leggings","Vers/Haste"],["Plate Feet","Scaleguard's Stalwart Greatboots","Vers/Mastery"],["Leather Hands","Subjugator's Chilling Grips","Crit/Vers"],["Trinket","Ruby Whelp Shell","Agi / Str / Int"]]},
-  {n:"Kokia Blazehoof",i:[["1H Mace","Havoc Crusher","Agi, Crit/Haste"],["Mail Head","Blazebound Lieutenant's Helm","Mastery/Vers"],["Back","Fireproof Drape","Haste/Mastery"],["Leather Chest","Invader's Firestorm Chestguard","Mastery/Vers"],["Off-Hand","Kokia's Burnout Rod","Crit/Vers"],["Trinket","Blazebinder's Hoof","Haste"]]},
-  {n:"Kyrakka and Erkhart Stormvein",i:[["2H Axe","Backdraft Cleaver","Agi, Haste/Crit"],["Dagger","Skyferno Rondel","Agi, Vers/Haste"],["Shield","Drake Rider's Stecktarge","Vers/Mastery"],["Plate Chest","Breastplate of Soaring Terror","Mastery/Haste"],["Leather Head","Crown of Roaring Storms","Vers/Crit"],["Mail Hands","Galerattle Gauntlets","Mastery/Crit"],["Cloth Waist","Sky Saddle Cord","Haste/Mastery"],["Cloth Legs","Wind Soarer's Breeches","Mastery/Crit"],["Trinket","Kyrakka's Searing Embers","Crit"]]}]},
+loot:{s:["iv_rlp"],i:[
+  {n:"Chillworn's Infusion Staff",ic:"inv_staff_2h_dragondungeon_c_02",id:193761,sl:"Two-hand",ty:"Staff",b:"Melidrussa Chillworn",p:["Int"],x:[["Crit",13],["Mastery",8]]},
+  {n:"Egg Tender's Leggings",ic:"inv_mail_dragondungeon_c_01_pant",id:193759,sl:"Legs",ty:"Mail",b:"Melidrussa Chillworn",p:["Agi","Int"],x:[["Vers",13],["Haste",8]]},
+  {n:"Scaleguard's Stalwart Greatboots",ic:"inv_plate_dragondungeon_c_01_boot",id:193728,sl:"Feet",ty:"Plate",b:"Melidrussa Chillworn",p:["Str","Int"],x:[["Vers",10],["Mastery",6]]},
+  {n:"Subjugator's Chilling Grips",ic:"inv_leather_dragondungeon_c_01_glove",id:193758,sl:"Hands",ty:"Leather",b:"Melidrussa Chillworn",p:["Agi","Int"],x:[["Crit",9],["Vers",7]]},
+  {n:"Ruby Whelp Shell",ic:"inv_item_dragonegg_redbroken01",id:193757,sl:"Trinket",ty:"Trinket",b:"Melidrussa Chillworn",p:["Str","Agi","Int"]},
+  {n:"Havoc Crusher",ic:"inv_mace_1h_dragondungeon_c_02",id:193767,sl:"One-hand",ty:"Mace",b:"Kokia Blazehoof",p:["Agi"],x:[["Crit",7],["Haste",4]]},
+  {n:"Blazebound Lieutenant's Helm",ic:"inv_mail_dragondungeon_c_01_helm",id:193765,sl:"Head",ty:"Mail",b:"Kokia Blazehoof",p:["Agi","Int"],x:[["Mastery",14],["Vers",8]]},
+  {n:"Fireproof Drape",ic:"inv_mail_dragondungeon_c_01_cape",id:193763,sl:"Back",ty:"Cloak",b:"Kokia Blazehoof",p:["Str","Agi","Int"],x:[["Haste",8],["Crit",4]]},
+  {n:"Invader's Firestorm Chestguard",ic:"inv_leather_dragondungeon_c_01_chest",id:193764,sl:"Chest",ty:"Leather",b:"Kokia Blazehoof",p:["Agi","Int"],x:[["Mastery",13],["Vers",8]]},
+  {n:"Kokia's Burnout Rod",ic:"inv_offhand_1h_drakonid_c_01",id:193766,sl:"Off-hand",ty:"Off-hand",b:"Kokia Blazehoof",p:["Int"],x:[["Crit",7],["Vers",4]]},
+  {n:"Blazebinder's Hoof",ic:"inv_10_dungeonjewelry_primalist_trinket_2_fire",id:193762,sl:"Trinket",ty:"Trinket",b:"Kokia Blazehoof",x:[["Haste",15]]},
+  {n:"Backdraft Cleaver",ic:"inv_axe_2h_drakonoid_c_01",id:193755,sl:"Two-hand",ty:"Axe",b:"Kyrakka and Erkhart Stormvein",p:["Str"],x:[["Haste",14],["Crit",8]]},
+  {n:"Skyferno Rondel",ic:"inv_knife_1h_dragondungeon_c_02",id:193756,sl:"One-hand",ty:"Dagger",b:"Kyrakka and Erkhart Stormvein",p:["Agi"],x:[["Vers",7],["Haste",4]]},
+  {n:"Drake Rider's Stecktarge",ic:"inv_shield_1h_drakonid_c_01",id:193754,sl:"Off-hand",ty:"Shield",b:"Kyrakka and Erkhart Stormvein",p:["Str","Int"],x:[["Vers",7],["Mastery",4]]},
+  {n:"Breastplate of Soaring Terror",ic:"inv_plate_dragondungeon_c_01_chest",id:193753,sl:"Chest",ty:"Plate",b:"Kyrakka and Erkhart Stormvein",p:["Str","Int"],x:[["Mastery",14],["Haste",8]]},
+  {n:"Crown of Roaring Storms",ic:"inv_leather_dragondungeon_c_01_helm",id:193751,sl:"Head",ty:"Leather",b:"Kyrakka and Erkhart Stormvein",p:["Agi","Int"],x:[["Vers",14],["Crit",8]]},
+  {n:"Galerattle Gauntlets",ic:"inv_mail_dragondungeon_c_01_glove",id:193752,sl:"Hands",ty:"Mail",b:"Kyrakka and Erkhart Stormvein",p:["Agi","Int"],x:[["Mastery",9],["Crit",7]]},
+  {n:"Sky Saddle Cord",ic:"inv_belt_dragondungeon_c_01",id:193691,sl:"Waist",ty:"Cloth",b:"Kyrakka and Erkhart Stormvein",p:["Int"],x:[["Haste",10],["Mastery",6]]},
+  {n:"Wind Soarer's Breeches",ic:"inv_pant_cloth_dragondungeon_c_01",id:193750,sl:"Legs",ty:"Cloth",b:"Kyrakka and Erkhart Stormvein",p:["Int"],x:[["Mastery",14],["Crit",8]]},
+  {n:"Kyrakka's Searing Embers",ic:"inv_10_dungeonjewelry_primalist_trinket_4_fire",id:193748,sl:"Trinket",ty:"Trinket",b:"Kyrakka and Erkhart Stormvein",x:[["Crit",15]]}]},
  route:[
   {n:1,t:"Opening lust pull",m:"Juggernaut plus escort",d:2,lust:true,p:"Not too bad. Be careful of the Juggernaut's AoE if you are also carrying an Earthbound Guardian dot.",s:["tk_rt"]},
   {n:2,t:"Second Juggernaut",m:"Three-pack",d:2,p:"Once it dies, move across and take the caster plus the group beyond.",s:["tk_rt"]},
@@ -1553,11 +1716,41 @@ loot:{s:["iv_rlp"],b:[
    {n:"Corrupted Guardian",t:["adds","dot","death"],c:["defensive","soak"],r:["tank","healer"],sev:2,alt:"Unstable Corruption",e:"Tainted Strike hits the tank for massive Physical damage plus moderate Shadow damage per second for 10 seconds, stacking. Vile Charge does significant damage plus moderate damage per second for 8 seconds to a random player. Unstable Corruption erupts for massive damage within 20 yards and forms Corrupted Lifeforce — multiple orbs on Mythic.",s:["wh_ej","tk_tos"]},
    {n:"Corrupted Life Force",t:["soak","debuff"],c:["soak"],r:["dps"],sev:3,e:"Touching one cleanses it so the Avatar can consume it, healing her 2% plus a regeneration. The soaker takes Corruption: moderate damage per second, healing done reduced 33%, and PHYSICAL DAMAGE TAKEN INCREASED BY 300% for 15 seconds, stacking. An uncleansed orb bursts for heavy damage to everyone and raises damage from that burst by 100% for 3 seconds.",h:"+300% physical damage taken is why this can never be the tank, and −33% healing done is why it can never be the healer. Two DPS, strictly alternating, never overlapping — the 3-second burst vulnerability is what kills groups that stagger badly.",s:["wh_ej","tk_tos"]},
    {n:"Faceless Tormentor waves",t:["adds","fixate"],c:["cc","kite"],r:["dps","healer","tank"],sev:3,alt:"Shadowlash · Siphon the Weak",e:"Faithless Tormentors fixate the closest healer, and each strike reduces that healer's healing done by 5%, stacking. You do not kill them: damage them below 25% and the Avatar SIPHONS them, killing them instantly and healing herself for 0.7% of her maximum health. Agony of Sethraliss also jolts the chamber for heavy damage within 4.5 yards.",h:"The creator guide says each wave killed heals her 3%. The journal says 0.7% per Tormentor siphoned below 25% — so the job is to push several to 25% quickly rather than to finish any of them.",s:["wh_ej","tk_tos"]}]}],
-loot:{s:["wh_dg"],b:[
-  {n:"Adderis and Aspix",i:[["Cloth Wrist","Bindings of the Slithering Current","—"],["Cloth Feet","Sandswept Sandals","—"],["Leather Waist","Whirling Dervish Sash","—"],["Leather Legs","Leggings of the Galeforce Viper","—"],["Mail Wrist","Arc-Glass Bindings","—"],["Mail Feet","Sabatons of Coruscating Energy","—"],["Plate Wrist","Shard-Tipped Vambraces","—"],["Plate Legs","Legplates of Charged Duality","—"],["2H Staff","Staff of the Lightning Serpent","—"],["2H Polearm","Twin-Strike Polearm","—"]]},
-  {n:"Merektha",i:[["Cloth Waist","Ouroborial Sash","—"],["Leather Feet","Sand-Shined Snakeskin Sandals","—"],["Mail Legs","Legguards of the Awakening Brood","—"],["Plate Hands","Fangproof Gauntlets","—"],["Ring","Jade Ophidian Band","—"],["1H Sword","Swarm's Edge","—"],["Ranged Bow","Snakebite Recurve","—"],["Trinket","Merektha's Fang","—"]]},
-  {n:"Galvazzt",i:[["Cloth Hands","Handwraps of Oscillating Polarity","—"],["Plate Waist","Sand-Scoured Greatbelt","—"],["Ring","Charged Sandstone Band","—"],["1H Mace","Galvanized Stormcrusher","—"],["Shield","Bulwark of Brimming Potential","—"],["Trinket","Tiny Electromental in a Jar","—"]]},
-  {n:"Avatar of Sethraliss",i:[["Cloth Shoulder","Brood Cleanser's Amice","—"],["Cloth Chest","Robes of the Reborn Serpent","—"],["Leather Helm","Hood of the Slithering Loa","—"],["Leather Hands","Grips of Electrified Defense","—"],["Mail Helm","Sethraliss' Fanged Helm","—"],["Mail Chest","Corrupted Hexxer's Vestments","—"],["Plate Shoulder","C'thraxxi Binders Pauldrons","—"],["Plate Chest","Desert Guardian's Breastplate","—"],["1H Sword","Resonating Crystal Scimitar","—"],["Trinket","Sethraliss' Defiled Relic","—"]]}]},
+loot:{s:["wh_dg"],i:[
+  {n:"Bindings of the Slithering Current",ic:"inv_bracer_cloth_zandalardungeon_c_01",id:159263,sl:"Wrist",ty:"Cloth",b:"Adderis and Aspix",p:["Int"],x:[["Crit",4],["Vers",3]]},
+  {n:"Sandswept Sandals",ic:"inv_boot_cloth_zandalardungeon_c_01",id:159259,sl:"Feet",ty:"Cloth",b:"Adderis and Aspix",p:["Int"],x:[["Crit",5],["Haste",3]]},
+  {n:"Whirling Dervish Sash",ic:"inv_belt_leather_zandalardungeon_c_01",id:159317,sl:"Waist",ty:"Leather",b:"Adderis and Aspix",p:["Agi","Int"],x:[["Mastery",5],["Haste",3]]},
+  {n:"Leggings of the Galeforce Viper",ic:"inv_pant_leather_zandalardungeon_c_01",id:159329,sl:"Legs",ty:"Leather",b:"Adderis and Aspix",p:["Agi","Int"],x:[["Mastery",6],["Vers",5]]},
+  {n:"Arc-Glass Bindings",ic:"inv_bracer_mail_zandalardungeon_c_01",id:159380,sl:"Wrist",ty:"Mail",b:"Adderis and Aspix",p:["Agi","Int"],x:[["Crit",4],["Haste",3]]},
+  {n:"Sabatons of Coruscating Energy",ic:"inv_boot_mail_zandalardungeon_c_01",id:159388,sl:"Feet",ty:"Mail",b:"Adderis and Aspix",p:["Agi","Int"],x:[["Mastery",5],["Crit",4]]},
+  {n:"Shard-Tipped Vambraces",ic:"inv_bracer_plate_zandalardungeon_c_01",id:159425,sl:"Wrist",ty:"Plate",b:"Adderis and Aspix",p:["Str","Int"],x:[["Vers",4],["Haste",3]]},
+  {n:"Legplates of Charged Duality",ic:"inv_pant_plate_zandalardungeon_c_01",id:159435,sl:"Legs",ty:"Plate",b:"Adderis and Aspix",p:["Str","Int"],x:[["Vers",7],["Crit",4]]},
+  {n:"Staff of the Lightning Serpent",ic:"inv_staff_2h_battledungeon_c_04",id:159636,sl:"Two-hand",ty:"Staff",b:"Adderis and Aspix",p:["Int"],x:[["Haste",7],["Mastery",5]]},
+  {n:"Twin-Strike Polearm",ic:"inv_polearm_2h_snakeman_c_01",id:158370,sl:"Two-hand",ty:"Polearm",b:"Adderis and Aspix",p:["Agi"],x:[["Haste",7],["Crit",5]]},
+  {n:"Ouroborial Sash",ic:"inv_belt_cloth_zandalardungeon_c_01",id:159255,sl:"Waist",ty:"Cloth",b:"Merektha",p:["Int"],x:[["Mastery",5],["Vers",4]]},
+  {n:"Sand-Shined Snakeskin Sandals",ic:"inv_boot_leather_zandalardungeon_c_01",id:159327,sl:"Feet",ty:"Leather",b:"Merektha",p:["Agi","Int"],x:[["Crit",5],["Mastery",4]]},
+  {n:"Legguards of the Awakening Brood",ic:"inv_pant_mail_zandalardungeon_c_01",id:159375,sl:"Legs",ty:"Mail",b:"Merektha",p:["Agi","Int"],x:[["Crit",7],["Haste",5]]},
+  {n:"Fangproof Gauntlets",ic:"inv_glove_plate_zandalardungeon_c_01",id:159437,sl:"Hands",ty:"Plate",b:"Merektha",p:["Str","Int"],x:[["Haste",5],["Mastery",3]]},
+  {n:"Jade Ophidian Band",ic:"inv_ring_80_04c",id:162544,sl:"Ring",ty:"Ring",b:"Merektha",x:[["Mastery",10],["Vers",6]]},
+  {n:"Swarm's Edge",ic:"inv_sword_1h_battledungeon_c_02",id:158714,sl:"One-hand",ty:"Sword",b:"Merektha",p:["Agi"],x:[["Vers",3],["Mastery",2]]},
+  {n:"Snakebite Recurve",ic:"inv_bow_1h_battledungeon_c_01",id:159637,sl:"Ranged",ty:"Bow",b:"Merektha",p:["Agi"],x:[["Crit",7],["Haste",5]]},
+  {n:"Merektha's Fang",ic:"inv_misc_food_87_sporelingsnack",id:158367,sl:"Trinket",ty:"Trinket",b:"Merektha",p:["Str"]},
+  {n:"Handwraps of Oscillating Polarity",ic:"inv_glove_cloth_zandalardungeon_c_01",id:159247,sl:"Hands",ty:"Cloth",b:"Galvazzt",p:["Int"],x:[["Crit",6],["Haste",3]]},
+  {n:"Sand-Scoured Greatbelt",ic:"inv_belt_plate_zandalardungeon_c_01",id:159442,sl:"Waist",ty:"Plate",b:"Galvazzt",p:["Str","Int"],x:[["Vers",5],["Mastery",3]]},
+  {n:"Charged Sandstone Band",ic:"inv_ring_80_03d",id:158366,sl:"Ring",ty:"Ring",b:"Galvazzt",x:[["Crit",9],["Mastery",7]]},
+  {n:"Galvanized Stormcrusher",ic:"inv_mace_1h_pandaraid_d_01",id:158369,sl:"One-hand",ty:"Mace",b:"Galvazzt",p:["Int"],x:[["Haste",3],["Vers",2]]},
+  {n:"Bulwark of Brimming Potential",ic:"inv_shield_1h_battledungeon_c_02",id:159664,sl:"Off-hand",ty:"Shield",b:"Galvazzt",p:["Str","Int"],x:[["Crit",3],["Vers",3]]},
+  {n:"Tiny Electromental in a Jar",ic:"inv_alchemy_71_potion4",id:158374,sl:"Trinket",ty:"Trinket",b:"Galvazzt",p:["Agi"]},
+  {n:"Brood Cleanser's Amice",ic:"inv_shoulder_cloth_zandalardungeon_c_01",id:239031,sl:"Shoulder",ty:"Cloth",b:"Avatar of Sethraliss",p:["Int"],x:[["Crit",4],["Haste",4]]},
+  {n:"Robes of the Reborn Serpent",ic:"inv_chest_cloth_zandalardungeon_c_01",id:239032,sl:"Chest",ty:"Cloth",b:"Avatar of Sethraliss",p:["Int"],x:[["Mastery",7],["Crit",5]]},
+  {n:"Hood of the Slithering Loa",ic:"inv_helm_leather_zandalardungeon_c_01",id:239033,sl:"Head",ty:"Leather",b:"Avatar of Sethraliss",p:["Agi","Int"],x:[["Crit",7],["Haste",5]]},
+  {n:"Grips of Electrified Defense",ic:"inv_glove_leather_zandalardungeon_c_01",id:159337,sl:"Hands",ty:"Leather",b:"Avatar of Sethraliss",p:["Agi","Int"],x:[["Mastery",5],["Vers",4]]},
+  {n:"Sethraliss' Fanged Helm",ic:"inv_helm_mail_zandalardungeon_c_01",id:239035,sl:"Head",ty:"Mail",b:"Avatar of Sethraliss",p:["Agi","Int"],x:[["Mastery",7],["Crit",5]]},
+  {n:"Corrupted Hexxer's Vestments",ic:"inv_chest_mail_zandalardungeon_c_01",id:239034,sl:"Chest",ty:"Mail",b:"Avatar of Sethraliss",p:["Agi","Int"],x:[["Vers",8],["Mastery",4]]},
+  {n:"C'thraxxi Binders Pauldrons",ic:"inv_shoulder_plate_zandalardungeon_c_01",id:239037,sl:"Shoulder",ty:"Plate",b:"Avatar of Sethraliss",p:["Str","Int"],x:[["Haste",6],["Crit",3]]},
+  {n:"Desert Guardian's Breastplate",ic:"inv_chest_plate_zandalardungeon_c_01",id:159424,sl:"Chest",ty:"Plate",b:"Avatar of Sethraliss",p:["Str","Int"]},
+  {n:"Resonating Crystal Scimitar",ic:"inv_sword_1h_battledungeon_c_02",id:158373,sl:"One-hand",ty:"Sword",b:"Avatar of Sethraliss",p:["Str"],x:[["Crit",3],["Haste",3]]},
+  {n:"Sethraliss' Defiled Relic",ic:"inv_staff_2h_snakeman_c_01",id:158368,sl:"Trinket",ty:"Trinket",b:"Avatar of Sethraliss",p:["Int"]}]},
  route:[
   {n:1,t:"Go right off the top",m:"Opening packs",d:2,p:"Fewer casters on this side, so it is the easier start.",s:["tk_rt"]},
   {n:2,t:"Conservative stop",m:"Big guy only",d:1,lust:true,p:"Faster groups run all the way to the next pack and lust both together. The pug version stops early and groups at the bottom of the first stairs.",s:["tk_rt"]},
@@ -1829,11 +2022,11 @@ function bossStats(d,e){
     roles:["tank","healer","dps"].filter(r=>a.some(x=>(x.r||[]).includes(r))),
     demands:[...loud,...quiet].slice(0,7),
     srcs:[...new Set(a.flatMap(x=>x.s||[]))],
-    loot:d.loot?d.loot.b.find(b=>b.n===e.n):null};
+    loot:d.loot?d.loot.i.filter(x=>x.b===e.n):null};
 }
 function encounterCard(d,e,roleFilter){
   const s=bossStats(d,e), img=e.img&&IMG[e.img];
-  const trinkets=s.loot?s.loot.i.filter(([sl])=>sl==="Trinket"):[];
+  const trinkets=(s.loot||[]).filter(x=>x.ty==="Trinket");
   const stat=(k,v,cls)=>`<div class="bstat ${cls||""}"><b>${k}</b><span>${v}</span></div>`;
   return `<article class="bosscard" id="boss-${e.o}">
     <header class="bosstop">
@@ -1855,13 +2048,73 @@ function encounterCard(d,e,roleFilter){
         ${s.myth?stat("Mythic only",s.myth,"myth"):""}
         ${stat("Whose problem",s.roles.map(roleChip).join("")||"—","wide")}
         ${stat("What it demands",s.demands.map(c=>chip(c,CTRS,"c-counter")).join("")||"—","wide")}
-        ${s.loot?stat("Drops",`${s.loot.i.length} items${trinkets.length?` · <b style="color:var(--d-accent)">${esc(trinkets[0][1])}</b>`:""}`,"wide"):""}
+        ${s.loot&&s.loot.length?stat("Drops",`${s.loot.length} items${trinkets.length?` · <b style="color:var(--d-accent)">${esc(trinkets[0].n)}</b>`:""}`,"wide"):""}
         ${stat("Sourced from",srcMark(s.srcs),"wide")}
       </div></div>
     </div>
     <div class="bossabils">${(e.a||[]).map(a=>abilityRow(a,roleFilter)).join("")}</div>
   </article>`;
 }
+/* ═══ LOOT ═══ Mythic+ pays out from one chest at the end of the run, so the
+   boss an item hangs off is trivia. What decides whether you can use a drop is
+   its slot and its armour or weapon type, which is how this is grouped. ═══ */
+const WEAPONRY=new Set(["Dagger","Sword","Mace","Axe","Polearm","Staff","Warglaive",
+  "Fist","Bow","Crossbow","Gun","Wand","Shield","Off-hand"]);
+const ARMOURS=["Cloth","Leather","Mail","Plate"];
+const SLOTORDER=["Head","Shoulder","Back","Chest","Wrist","Hands","Waist","Legs","Feet",
+  "Neck","Ring","One-hand","Two-hand","Off-hand","Ranged","Trinket"];
+const slotRank=x=>{const i=SLOTORDER.indexOf(x);return i<0?99:i;};
+
+const itemIcon=x=>x.ic?`<img class="aicon" src="assets/icons/${x.ic}.jpg" alt="" loading="lazy" decoding="async" width="22" height="22">`:`<span class="aicon none"></span>`;
+const primChip=p=>(p||[]).map(v=>`<span class="chip pstat p-${v.toLowerCase()}">${esc(v)}</span>`).join("");
+/* Secondaries are spoken as "big mastery, little haste", never in points — and
+   the points move with item level anyway, so only the lean is worth printing.
+   Inside 55:45 there is no meaningful lean, so it is called even. */
+const secChip=x=>{
+  if(!x||!x.length) return `<span class="n">—</span>`;
+  if(x.length===1) return `<span class="secs">${esc(x[0][0])}</span>`;
+  const [a,b]=x, tot=a[1]+b[1];
+  if(!tot||a[1]/tot<0.55) return `<span class="secs">${esc(a[0])} / ${esc(b[0])} <i>even</i></span>`;
+  return `<span class="secs"><b>big ${esc(a[0])}</b> <i>little ${esc(b[0])}</i></span>`;
+};
+const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b></td>
+  <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
+  <td>${secChip(x.x)}</td></tr>`;
+const lootTable=d=>{
+  const I=d.loot.i, n=I.length;
+  const trink=I.filter(x=>x.ty==="Trinket");
+  const weap=I.filter(x=>WEAPONRY.has(x.ty)).sort((a,b)=>a.ty.localeCompare(b.ty));
+  const jewel=I.filter(x=>["Ring","Neck","Cloak"].includes(x.ty));
+  const table=rows=>`<table><thead><tr><th>Item</th><th>Slot</th><th>Primary</th><th>Secondaries</th></tr></thead>
+    <tbody>${rows.map(lootRow).join("")}</tbody></table>`;
+  return `<div class="sec"><h2>The end-of-run chest</h2><span class="n">${n} items</span></div>
+  <p class="note">Nothing here drops from a boss. Mythic+ pays out once, from a chest that appears when the
+  dungeon is finished — in time or not — and that chest holds the whole table below. <b>Two</b> players in the
+  group receive an item, picked at random, and what each of them is eligible for follows their
+  <b>loot specialisation</b> rather than the spec they actually played. So the useful questions are which slot
+  an item fills and whether you can wear it, not which boss it hangs off.${srcMark(d.loot.s)}</p>
+
+  ${trink.length?`<div class="sec"><h2>Trinkets</h2><span class="n">${trink.length}</span></div>
+  <p class="note">Primary stat is what gates a trinket: Intellect goes to casters and healers, Strength and
+  Agility to melee and physical ranged. Tanks can take a tank trinket, but most set loot specialisation to a
+  damage spec — survivability only out-earns throughput once a key is genuinely dangerous.</p>
+  <div class="trinkets">${trink.map(x=>`<div class="card trink">
+    <div class="mobtop">${itemIcon(x)}<h3>${esc(x.n)}</h3>${primChip(x.p)}</div>
+    ${x.x&&x.x.length?`<div class="n">${secChip(x.x)}</div>`:""}
+    ${x.fx?`<p class="mobsub">${esc(x.fx)}</p>`:""}</div>`).join("")}</div>`:""}
+
+  ${ARMOURS.map(a=>{const l=I.filter(x=>x.ty===a).sort((p,q)=>slotRank(p.sl)-slotRank(q.sl));
+    return l.length?`<div class="sec"><h2>${a}</h2><span class="n">${l.length}</span></div>${table(l)}`:"";}).join("")}
+
+  ${jewel.length?`<div class="sec"><h2>Rings, necks and cloaks</h2><span class="n">${jewel.length}</span>
+    </div><p class="note">No armour type, so every specialisation is eligible.</p>${table(jewel)}`:""}
+
+  ${weap.length?`<div class="sec"><h2>Weapons and off-hands</h2><span class="n">${weap.length}</span></div>
+    <table><thead><tr><th>Item</th><th>Type</th><th>Primary</th><th>Secondaries</th></tr></thead><tbody>
+    ${weap.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b></td><td class="mono">${esc(x.ty)}</td>
+      <td>${primChip(x.p)||`<span class="n">—</span>`}</td><td>${secChip(x.x)}</td></tr>`).join("")}
+    </tbody></table>`:""}`;
+};
 function callsBlock(d){
   if(!d.calls) return "";
   const col=(rows,label,icon,cls)=>rows.length?`<div><h4>${ic(icon,12)} ${label} <span style="color:var(--ink-faint)">${rows.length}</span></h4>
@@ -1984,7 +2237,7 @@ function pDungeon(id,tab){
   const T=[["overview","Overview",""],["bosses","Bosses",d.encounters.length],
            ["trash","Trash",d.areas.reduce((n,a)=>n+a.mobs.length,0)],
            ["route","Route",d.route.length],
-           ["loot","Loot",d.loot?d.loot.b.reduce((n,b)=>n+b.i.length,0):0],
+           ["loot","Loot",d.loot?d.loot.i.length:0],
            ["sources","Sources",""]];
   const head=`<div class="crumb"><a href="#/">Compendium</a> › <a href="#/dungeons">Dungeons</a> › <em>${esc(d.name)}</em></div>
   <nav class="dswitch" id="dswitch" aria-label="Switch dungeon">${DUNGEONS.map(x=>
@@ -2041,12 +2294,7 @@ function pDungeon(id,tab){
   else if(tab==="loot"){
     if(!d.loot){ body=`<div class="sec"><h2>Loot</h2><span class="n">Not recorded</span></div>
       <p class="note">${ic("i-warn",13)} ${esc(d.noLoot||"No loot data yet.")}</p>`; }
-    else body=`<div class="sec"><h2>Loot by boss</h2><span class="n">${d.loot.b.reduce((n,b)=>n+b.i.length,0)} items</span></div>
-    <p class="note">Trinkets are highlighted because they are the slot most likely to change how a spec plays. Item levels follow the standard Mythic+ track for the key you ran.${srcMark(d.loot.s)}</p>
-    ${d.loot.b.map(b=>`<div class="area-h">${esc(b.n)}</div>
-      <table><thead><tr><th>Slot</th><th>Item</th><th>Stats</th></tr></thead><tbody>
-      ${b.i.map(([sl,it,st])=>`<tr${sl==="Trinket"?' class="tr"':""}><td class="mono">${esc(sl)}</td><td><b>${esc(it)}</b></td><td class="mono">${esc(st)}</td></tr>`).join("")}
-      </tbody></table>`).join("")}`;
+    else body=lootTable(d);
   }
   else{
     const used=new Set(); const walk=o=>{(o.s||[]).forEach(x=>used.add(x));};
@@ -2315,7 +2563,7 @@ document.addEventListener("click",e=>{
 const INDEX=[
  ...DUNGEONS.map(d=>({t:d.name,m:`Dungeon · ${d.origin} · ${d.bosses} bosses`,h:`#/d/${d.id}`})),
  ...ALL.map(x=>({t:x.a.n,m:`${x.a.alt?"also "+x.a.alt+" · ":""}${x.src} · ${x.kind} · ${x.d.name}`,h:`#/d/${x.d.id}/${x.kind==="Boss"?"bosses":"trash"}`})),
- ...DUNGEONS.flatMap(d=>d.loot?d.loot.b.flatMap(b=>b.i.map(([sl,it,st])=>({t:it,m:`${sl} · ${st} · ${b.n} · ${d.name}`,h:`#/d/${d.id}/loot`}))):[]),
+ ...DUNGEONS.flatMap(d=>d.loot?d.loot.i.map(x=>({t:x.n,m:`${x.ty} · ${x.sl} · ${d.name}`,h:`#/d/${d.id}/loot`})):[]),
  ...DUNGEONS.flatMap(d=>[...d.areas.flatMap(a=>a.mobs),...d.encounters].flatMap(m=>{
    const e={t:m.n,m:`${KINDS[m.k]||"Boss"} · ${d.name}`,h:`#/d/${d.id}/${m.o?"bosses":"trash"}`};
    return m.alt?[e,{t:m.alt,m:`Alternate name for ${m.n} · ${d.name}`,h:e.h}]:[e];})),
