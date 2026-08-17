@@ -56,7 +56,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
  bosses:[
 
  /* ── 1 · NEK'ZALI THE SOULCOILER ─────────────────────────────────────── */
- {id:"nekzali",o:1,n:"Nek'zali the Soulcoiler",short:"Nek'zali",
+ {id:"nekzali",o:1,n:"Nek'zali the Soulcoiler",jp:"j-nekzali",short:"Nek'zali",
   pos:"Opens the raid",lv:1,sub:"Tower defence, and the tower is a hole in the ground",
   brief:"Everything orbits the Soulcoil Well in the centre: adds feed it energy, energy feeds her, and 100 energy is the enrage. Add control first, boss damage second. The settled shape is two tanks, four healers and the rest damage, with casters assigned to strip the Amani shields — hunters cannot, their damage is Physical — and the boss dragged to whichever coffin cluster is glowing for cleave. Tanks taunt early, around three or four stacks, so the swap falls naturally after each Possession Barrage, and Essence Rend carriers walk to the wall before anyone dispels them, because those puddles come back to haunt Phase 2. Heroic gives the intermission a second job — burn every corpse with the Pyre soak and the Flames outside it — then lust Phase 2 and beat the bar.",
   reads:[{by:"Method",t:"Simple core loop with real texture underneath: puddle placement in Phase 1 decides how annoying Phase 2 gets, and the corpse-burning intermission is genuinely clever. Rated 3/5.",s:["me_nek"]},
@@ -196,7 +196,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Idol",sl:"Hands",ty:"Token",tc:"Plate",b:"Entombed Sentinels",ic:"inv_jewelcrafting_rubyserpent",id:270913}]},
 
  /* ── 3 · VASHNIK THE MALIGNANT · Sentinel wing ───────────────────────── */
- {id:"vashnik",o:3,n:"Vashnik the Malignant",short:"Vashnik",
+ {id:"vashnik",o:3,n:"Vashnik the Malignant",jp:"j-vashnik",short:"Vashnik",
   pos:"Sentinel wing · follows the Sentinels",lv:2,
   sub:"The alchemist drinks from two fountains, and you pick which",
   brief:"Three venom fountains ring the room — Flame, Blood, Shadow — and every Imbibe empowers the two nearest, spawning that flavour of add. Boss position IS the mechanic: you are choosing your poison, literally, roughly every 90 seconds. The two published rotations amount to the same discipline, never the same fountain twice running: Tactyks opens Flame and Blood then walks clockwise to delay the double-Flame window, Method starts Blood and Shadow. Lust on the pull, kill adds fire first, then blood, then shadow, and grip the burning ones in one at a time so their death detonations never land together. Nothing may reach the Cavity in the middle; almost everything else is survivable.",
@@ -265,7 +265,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Icon",sl:"Chest",ty:"Token",tc:"Plate",b:"Vashnik the Malignant",ic:"inv_jewelcrafting_rubyserpent",id:270929}]},
 
  /* ── 4 · THE LOST EXPLORERS · Explorer wing ──────────────────────────── */
- {id:"lost-explorers",o:4,n:"The Lost Explorers",short:"Explorers",
+ {id:"lost-explorers",o:4,n:"The Lost Explorers",jp:["j-morzahi","j-scrollsage-iku","j-first-mate-nama","j-trader-gebbo"],short:"Explorers",
   pos:"Explorer wing · after Nek'zali, either wing first",lv:2,
   sub:"Three tortollans, one puppeteer, and a fish",
   brief:"A three-target council — Trader Gebbo, First Mate Nama, Scrollsage Iku — enslaved by the sorcerer Mor'zahi, who builds toward a raid-ending Final Ascension. Feeding a turtle the Grab Fish resets his bar and detonates that turtle's ultimate on your schedule instead of his, and each can only be fed once, so three fish is the entire clock. Normal lets you stack all three and cleave freely; Heroic's damage reduction forces pairs, with Gebbo untankable and patrolling through the middle of your plan. Lust on the pull and bring them down level — every death enrages the survivors and the enrages are not equal. Which one to feed first is genuinely contested between the guides; see the open questions.",
@@ -329,7 +329,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Remnant",sl:"Shoulder",ty:"Token",tc:"Plate",b:"The Lost Explorers",ic:"inv_jewelcrafting_rubyserpent",id:270925}]},
 
  /* ── 5 · SSZORAK · Explorer wing ─────────────────────────────────────── */
- {id:"sszorak",o:5,n:"Sszorak",short:"Sszorak",
+ {id:"sszorak",o:5,n:"Sszorak",jp:"j-sszorak",short:"Sszorak",
   pos:"Explorer wing · follows the Explorers",lv:2,
   sub:"Read the winds on pull, or the intermission reads you",
   brief:"An apex predator on the Altar of Six Winds. The fight's homework happens in its first three seconds: the wind motes on the tunnels tell you the intermission's push order, and everything you place before then decides whether the hurricane is a plan or a wipe. Two soak groups of at least five split the Mutilates, markers go opposite each tunnel for the cysts, and the boss is tanked toward the edge so the Heroic residue gets swept off the platform. Damage intake is high enough that a fifth healer is a genuine option, and raids split on whether to lust the pull or the Dig In window, where he takes 30% more while shoving everyone around.",
@@ -382,7 +382,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Relic",sl:"Legs",ty:"Token",tc:"Plate",b:"Sszorak",ic:"inv_jewelcrafting_rubyserpent",id:270921}]},
 
  /* ── 6 · THE TWIN FANGS · the wings converge ─────────────────────────── */
- {id:"twin-fangs",o:6,n:"The Twin Fangs",short:"Twin Fangs",
+ {id:"twin-fangs",o:6,n:"The Twin Fangs",jp:["j-vexhul","j-ithraz"],short:"Twin Fangs",
   pos:"Where the wings converge — both wings first",lv:3,
   sub:"Vexhul poisons you; Ithraz is the antidote, and he bites",
   brief:"Two serpents, no shared health, killed together. Everything stacks Eternal Venom on you, and the only cleanse is deliberately standing in Ithraz's Ravenous Feast — the raid managing its own poison budget through a bite. Neither boss can be moved, so the raid spreads where it pulls and lusts immediately, and everyone stays inside their generous hitboxes: leaving melee range starts a bolt barrage that hurts more than anything you were dodging. Heroic's one-bite limit means three soak teams of seven or more, or two teams with immunities eating the last. Three cycles of shrinking floor, then the room is simply gone.",
@@ -445,7 +445,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Effigy",sl:"Head",ty:"Token",tc:"Plate",b:"The Twin Fangs",ic:"inv_jewelcrafting_rubyserpent",id:270917}]},
 
  /* ── 7 · THE COILED ALTAR ────────────────────────────────────────────── */
- {id:"coiled-altar",o:7,n:"The Coiled Altar",short:"Altar",
+ {id:"coiled-altar",o:7,n:"The Coiled Altar",jp:["j-zuljan-raid","j-hex-lord-malacrass"],short:"Altar",
   pos:"Seventh — the story fight",lv:3,
   sub:"Zul'jan, then Malacrass, then both at once",
   brief:"The villains of the patch, in sequence and then in chorus: kill Zul'jan while metering venom orbs through Sever, kill Malacrass while herding his Boo-style ghosts, survive the Soulbinding race — and then fight everything at once, knowing that when one falls the other enrages. The orb job belongs to the off-tank and your most mobile ranged, with everyone else stacked clear so the frontal never clips a bystander; the ghosts get one assigned stack point and a tank aiming through it. Kill Zul'jan centre-room rather than in a corner, because he revives exactly where he fell, and save lust for the intermission, where he takes double damage and every point burned is health Phase 3 never sees.",
@@ -536,7 +536,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Zul'jin's Guillotine Technique",sl:"Trinket",b:"The Coiled Altar",ic:"inv_121_trinket_raid_ulatek_trolltablet",id:270173,p:["Agi", "Str"],ro:["tank","mdps"],e:"You have a chance to follow up your attacks with Guillotine, hurling a massive axe in an arc at your target for heavy Physical damage.",rc:"ig"}]},
 
  /* ── 8 · ULA'TEK ─────────────────────────────────────────────────────── */
- {id:"ulatek",o:8,n:"Ula'tek",short:"Ula'tek",
+ {id:"ulatek",o:8,n:"Ula'tek",jp:"j-ulatek",short:"Ula'tek",
   pos:"Final boss",lv:3,
   sub:"The serpent the temple was built to hold",
   gap:"Ula'tek was not available for PTR testing, so no tested strategy exists anywhere yet — Icy Veins says so outright and will write theirs when the raid is live. What follows is journal-derived structure via wow.gg (whose descriptions are Mythic-based by their own note), recorded so the shape is known. Treat every line as unconfirmed until live.",

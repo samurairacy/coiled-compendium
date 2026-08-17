@@ -253,13 +253,22 @@ item icons keyed by Blizzard slug.
   modules without a second stylesheet. The raid palette is a descent
   measured in Lab — venom green (`--r-accent`, dE≥39 from all eight
   dungeon accents) down through drowned cyan into abyssal violet, L* 70→58.
-- **Raid boss imagery is plumbed but empty.** `pBoss` renders an `hban`
-  banner when a boss carries `img:` keying into `IMG` — the same contract
-  as dungeons. No raid boss has one yet because the M+ captures were the
-  owner's own in-game screenshots (`img` source, nameplates visible) and
-  shipping a guide site's screenshots would break the README's
-  paraphrase-never-reproduce position. To add: capture in game, drop
-  `va-<boss>.webp` in `assets/img/`, add the `IMG` entry and `img:` field.
+- **Boss imagery comes in two kinds, and the caption must not lie about
+  which.** In-game captures (owner screenshots, nameplate in frame, source
+  `img`) cover 24 of 28 M+ encounters and always win over catalog art.
+  **Dungeon-journal model portraits** (owner-captured from the Adventure
+  Guide 2026-08-18, cropped to the parchment panel, keys `j-*`, source
+  `wh_ej`, display names in `JNAMES`) fill the true gaps: all of Temple of
+  Sethraliss plus seven raid bosses — member fights carry arrays rendered
+  side by side (`jp:["j-vexhul","j-ithraz"]`), captioned with the member
+  roll. `bossMedia()` in render.js branches caption and alt text on the
+  `j-` prefix; `check.py` asserts every `img:`/`jp:` `j-` key resolves in
+  `IMG`. **Entombed Sentinels is the one raid boss with no portrait** — no
+  capture exists; leave it bare rather than substituting a guide site's
+  image, which would break the README's position. `hban` stays reserved
+  for future wide in-world captures (`b.img`), and 66 further processed
+  portraits (adds, minis, alternate forms) sit git-ignored in
+  `docs/filedrop-processed/` awaiting homes.
 - **The homepage status line computes live** against the Season 2 start of
   18 Aug 2026 (the raid opens the same week). A stale-looking homepage is
   usually just the calendar.

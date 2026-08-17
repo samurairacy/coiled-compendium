@@ -60,6 +60,18 @@ for nm, mp in (("CLASSICON", CLSI), ("SPECICON", SPCI)):
 ICONS = strict("ICONS", shared, "{}")
 IMG   = strict("IMG",   shared, "{}")
 CORR  = strict("CORRECTIONS", shared, "[]")
+# NOSPELL asserts "no spell exists for this row", which only stays true if the
+# name is real and has no icon: an overlap with ICONS would mean one of the two
+# is a lie, and a stale entry would quietly keep a cog on a renamed row.
+NOSP = strict("NOSPELL", shared, "[]")
+check(NOSP is not None, "NOSPELL parses (%s rows)" % (NOSP and len(NOSP)))
+if NOSP and ICONS:
+    both = sorted(set(NOSP) & set(ICONS))
+    check(not both, "no name is both iconless-by-design and in ICONS (%s)" %
+          (", ".join(both) or "clean"))
+    gone = [n for n in NOSP if '"%s"' % n.replace('"', '\\"') not in mplus + raid]
+    check(not gone, "NOSPELL names still exist in the data (%d stale%s)" %
+          (len(gone), ": " + ", ".join(gone[:4]) if gone else ""))
 check(ICONS is not None, "ICONS parses (%s entries)" % (ICONS and len(ICONS)))
 check(IMG   is not None, "IMG parses (%s entries)"   % (IMG and len(IMG)))
 check(CORR  is not None, "CORRECTIONS parses (%s rows)" % (CORR and len(CORR)))
@@ -75,10 +87,24 @@ if IMG:
 item_slugs = set(re.findall(r'ic:"([a-z0-9_\-]+)"', mplus + raid))
 missing = [s for s in item_slugs if not os.path.exists(R("assets", "icons", s + ".jpg"))]
 check(not missing, "item icon slugs resolve to files (%d of %d missing)" % (len(missing), len(item_slugs)))
-# abilIcon falls back to the red question mark for names ICONS lacks, so that
-# file is load-bearing even though no map entry names it
-check(os.path.exists(R("assets", "icons", "inv_misc_questionmark.jpg")),
-      "question-mark placeholder icon exists on disk")
+# abilIcon has two fallbacks and neither is named by any map entry, so both
+# files are load-bearing and invisible to the slug checks above
+for slug, what in (("inv_misc_questionmark", "question-mark (icon not found)"),
+                   ("trade_engineering", "cog (not a spell by design)")):
+    check(os.path.exists(R("assets", "icons", slug + ".jpg")),
+          "%s placeholder exists on disk" % what)
+
+# ── 2b. journal portraits: every img:/jp: key must resolve through IMG ─────
+# encounterCard and pBoss render whatever key the data names; a typo'd key
+# renders nothing silently, so the checker holds the line instead.
+jkeys = set(re.findall(r'\b(?:img|jp):"(j-[a-z0-9\-]+)"', mplus + raid))
+for m in re.finditer(r'\b(?:img|jp):\[([^\]]*)\]', mplus + raid):
+    jkeys |= set(re.findall(r'"(j-[a-z0-9\-]+)"', m.group(1)))
+if IMG is not None:
+    orphan = sorted(k for k in jkeys if k not in IMG)
+    check(not orphan, "boss portrait keys resolve in IMG (%d orphaned%s)" %
+          (len(orphan), ": " + ", ".join(orphan[:4]) if orphan else ""))
+    check(len(jkeys) > 0, "journal portrait keys present (%d referenced)" % len(jkeys))
 
 # ── 3. bosses: equals encounters.length, per dungeon ───────────────────────
 ids = re.findall(r'\{id:"([\w\-]+)",name:"(?:[^"\\]|\\.)*",short:', mplus)

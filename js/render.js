@@ -159,8 +159,24 @@ function bossStats(d,e){
     srcs:[...new Set(a.flatMap(x=>x.s||[]))],
     loot:d.loot?d.loot.i.filter(x=>x.b===e.n):null};
 }
+/* Boss imagery comes in two kinds and the caption must not lie about which:
+   an in-game capture (key without the j- prefix, nameplate in frame, source
+   "img") or a dungeon-journal model portrait (j- keys, owner-captured from
+   the Adventure Guide, source wh_ej). Member fights carry an array of
+   portraits — the Trinity, the Council, the two duos — rendered side by
+   side inside the same media slot. */
+const bossMedia=(imgKeys,fallbackName)=>{
+  const ks=(Array.isArray(imgKeys)?imgKeys:[imgKeys]).filter(k=>k&&IMG[k]);
+  if(!ks.length) return "";
+  const journal=ks[0].startsWith("j-");
+  const caption=journal
+    ?`Dungeon-journal model${ks.length>1?"s":""}${srcMark(["wh_ej"])}`
+    :`Nameplate visible in frame${srcMark(["img"])}`;
+  return `<figure class="bossmedia${ks.length>1?" members":""}">
+    <div class="bmrow">${ks.map(k=>`<img src="${IMG[k]}" alt="${esc(JNAMES[k]||fallbackName)}${journal?" — dungeon-journal model":" in game"}" loading="lazy" decoding="async" title="${esc(JNAMES[k]||"")}">`).join("")}</div>
+    <figcaption>${ks.length>1?ks.map(k=>esc(JNAMES[k]||"")).filter(Boolean).join(" · ")+" — ":""}${caption}</figcaption></figure>`;};
 function encounterCard(d,e,roleFilter){
-  const s=bossStats(d,e), img=e.img&&IMG[e.img];
+  const s=bossStats(d,e), img=e.img&&bossMedia(e.img,e.n);
   const trinkets=(s.loot||[]).filter(x=>x.sl==="Trinket");
   const stat=(k,v,cls)=>`<div class="bstat ${cls||""}"><b>${k}</b><span>${v}</span></div>`;
   return `<article class="bosscard" id="boss-${e.o}">
@@ -171,9 +187,7 @@ function encounterCard(d,e,roleFilter){
         <p class="bosssub">${esc(e.sub)}</p></div>
     </header>
     <div class="bossbody">
-      ${img?`<figure class="bossmedia"><img src="${img}" alt="${esc(e.n)} in game" loading="lazy">
-        <figcaption>Nameplate visible in frame${srcMark(["img"])}</figcaption></figure>`
-      :`<figure class="bossmedia none"><div class="noimg">${ic("i-boss",26)}<span>No capture</span></div>
+      ${img||`<figure class="bossmedia none"><div class="noimg">${ic("i-boss",26)}<span>No capture</span></div>
         <figcaption>Imagery missing for this encounter</figcaption></figure>`}
       <div class="bossright">
       ${e.brief?`<p class="bossbrief">${esc(e.brief)}</p>`:""}
@@ -1062,6 +1076,7 @@ function pBoss(id,tab){
     ${abilCount(b)?`<span class="pill">${ic("i-boss")}${abilCount(b)} abilities</span>`:""}
     <span class="pill warn">${ic("i-warn")}Pre-launch data</span></div>
   ${b.img&&IMG[b.img]?`<div class="hban"><img src="${IMG[b.img]}" alt="${esc(b.n)} in game" decoding="async"></div>`:""}
+  ${b.jp?bossMedia(b.jp,b.n):""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
   ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
   ${b.brief?`<p>${esc(b.brief)}</p>`:""}

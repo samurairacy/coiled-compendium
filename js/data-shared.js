@@ -236,7 +236,27 @@ const IMG={
 "va-atroxus":"assets/img/va-atroxus.webp",
 "va-charonus":"assets/img/va-charonus.webp",
 "va-tazrah":"assets/img/va-tazrah.webp",
-"voidscar-arena":"assets/img/voidscar-arena.webp"
+"voidscar-arena":"assets/img/voidscar-arena.webp",
+/* Dungeon-journal model portraits, owner-captured 2026-08-18. Cropped to the
+   parchment panel; the in-image nameplate is trimmed because the site prints
+   the name beside the figure. */
+"j-adderis":"assets/img/j-adderis.jpg",
+"j-aspix":"assets/img/j-aspix.jpg",
+"j-avatar-of-sethraliss":"assets/img/j-avatar-of-sethraliss.jpg",
+"j-first-mate-nama":"assets/img/j-first-mate-nama.jpg",
+"j-galvazzt":"assets/img/j-galvazzt.jpg",
+"j-hex-lord-malacrass":"assets/img/j-hex-lord-malacrass.jpg",
+"j-ithraz":"assets/img/j-ithraz.jpg",
+"j-merektha":"assets/img/j-merektha.jpg",
+"j-morzahi":"assets/img/j-morzahi.jpg",
+"j-nekzali":"assets/img/j-nekzali.jpg",
+"j-scrollsage-iku":"assets/img/j-scrollsage-iku.jpg",
+"j-sszorak":"assets/img/j-sszorak.jpg",
+"j-trader-gebbo":"assets/img/j-trader-gebbo.jpg",
+"j-ulatek":"assets/img/j-ulatek.jpg",
+"j-vashnik":"assets/img/j-vashnik.jpg",
+"j-vexhul":"assets/img/j-vexhul.jpg",
+"j-zuljan-raid":"assets/img/j-zuljan-raid.jpg"
 };
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -740,9 +760,31 @@ const NOSPELL=[
 "Queen Phat'ta",
 "Released Inhibitors",
 "Spirits of the Veil",
-"Tazala",
+"T'zala",
 "Two-phase structure"
 ];
+
+/* Display names for the journal portraits above — captions read from here,
+   so a key without a name simply gets no caption rather than a broken one. */
+const JNAMES={
+"j-adderis":"Adderis",
+"j-aspix":"Aspix",
+"j-avatar-of-sethraliss":"Avatar of Sethraliss",
+"j-first-mate-nama":"First Mate Nama",
+"j-galvazzt":"Galvazzt",
+"j-hex-lord-malacrass":"Hex Lord Malacrass",
+"j-ithraz":"Ithraz",
+"j-merektha":"Merektha",
+"j-morzahi":"Mor'zahi",
+"j-nekzali":"Nek'zali",
+"j-scrollsage-iku":"Scrollsage Iku",
+"j-sszorak":"Sszorak",
+"j-trader-gebbo":"Trader Gebbo",
+"j-ulatek":"Ula'tek",
+"j-vashnik":"Vashnik the Malignant",
+"j-vexhul":"Vexhul",
+"j-zuljan-raid":"Zul'jan"
+};
 
 /* ═══ SEASON 2 TIER SET BONUSES ═══ 79 spec bonuses across 13 classes.
    Bonus text is Blizzard's own (via Icy Veins' set guide); percentages and
@@ -783,7 +825,6 @@ const CORRECTIONS=[
  ["Deathly Roar","Rabond","King's Rest","ability",0],
  ["Shadow of Zul","Shade of Zul","King's Rest","mini",0],
  ["Shadow-Borne Champion","Shadowborne Champion","King's Rest","lt",0],
- ["Tazala","T'zala","King's Rest","ability",1],
  ["Felmaster Lucsei","Fel Master Luxay","Murder Row","mini",0],
  ["Heartstop Poison","Heart Stop Poison","Murder Row","ability",0],
  ["Massive Felwyrm","Massive Fel Worm","Murder Row","mini",0],
@@ -866,5 +907,8 @@ const CORRECTIONS=[
  ["Felshield","Fel Shield","Murder Row","ability",0],
  ["Lightfire","Light Fire","The Blinding Vale","ability",0],
  ["Harsh Winter","Master of the Winds","Den of Nalorakk","ability",0],
- ["Spore Spines","Four-Spined","The Blinding Vale","ability",0]
+ ["Spore Spines","Four-Spined","The Blinding Vale","ability",0],
+ /* 2026-08-18: the dungeon journal itself spells these with the apostrophes */
+ ["Ko'kia Blazehoof","Kokia Blazehoof","Ruby Life Pools","boss",0],
+ ["T'zala","Tazala","King's Rest","ability",0]
 ];
