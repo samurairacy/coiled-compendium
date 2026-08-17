@@ -698,55 +698,60 @@ const H1=["One-hand"], H2=["Two-hand"], H12=["One-hand","Two-hand"],
    but. Retribution is two-handed and carries no shield where Protection is the
    reverse. None of that is derivable from the class. */
 const SPECS=[
- ["Mage","Arcane","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
- ["Mage","Fire","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
- ["Mage","Frost","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
- ["Priest","Discipline","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC],
- ["Priest","Holy","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC],
- ["Priest","Shadow","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC],
- ["Warlock","Affliction","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
- ["Warlock","Demonology","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
- ["Warlock","Destruction","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
- ["Demon Hunter","Havoc","Agi",["Warglaive","Sword","Axe","Fist"],H1],
- ["Demon Hunter","Vengeance","Agi",["Warglaive","Sword","Axe","Fist"],H1],
- ["Demon Hunter","Devourer","Agi",["Warglaive","Sword","Axe","Fist"],H1],
- ["Druid","Balance","Int",["Staff","Dagger","Mace","Off-hand"],H12O],
- ["Druid","Feral","Agi",["Staff","Polearm","Dagger","Fist","Mace"],H12],
- ["Druid","Guardian","Agi",["Staff","Polearm","Dagger","Fist","Mace"],H12],
- ["Druid","Restoration","Int",["Staff","Dagger","Mace","Off-hand"],H12O],
- ["Monk","Brewmaster","Agi",["Staff","Polearm","Axe","Mace","Sword","Fist"],H12],
- ["Monk","Mistweaver","Int",["Staff","Mace","Sword","Fist","Off-hand"],H12O],
- ["Monk","Windwalker","Agi",["Axe","Mace","Sword","Fist","Staff","Polearm"],H12],
- ["Rogue","Assassination","Agi",["Dagger"],H1],
- ["Rogue","Outlaw","Agi",["Sword","Axe","Mace","Fist"],H1],
- ["Rogue","Subtlety","Agi",["Dagger"],H1],
- ["Hunter","Beast Mastery","Agi",["Bow","Crossbow","Gun"],HR],
- ["Hunter","Marksmanship","Agi",["Bow","Crossbow","Gun"],HR],
- ["Hunter","Survival","Agi",["Polearm","Staff","Axe","Sword","Mace","Dagger","Fist"],H12],
- ["Shaman","Elemental","Int",["Staff","Dagger","Mace","Axe","Fist","Shield","Off-hand"],H12O],
- ["Shaman","Enhancement","Agi",["Axe","Mace","Fist","Dagger"],H1],
- ["Shaman","Restoration","Int",["Staff","Dagger","Mace","Axe","Fist","Shield","Off-hand"],H12O],
- ["Evoker","Devastation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O],
- ["Evoker","Preservation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O],
- ["Evoker","Augmentation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O],
- ["Death Knight","Blood","Str",["Axe","Mace","Sword","Polearm"],H2],
- ["Death Knight","Frost","Str",["Axe","Mace","Sword","Polearm"],H12],
- ["Death Knight","Unholy","Str",["Axe","Mace","Sword","Polearm"],H2],
- ["Paladin","Holy","Int",["Mace","Sword","Axe","Shield","Off-hand"],H1O],
- ["Paladin","Protection","Str",["Mace","Sword","Axe","Shield"],H1O],
- ["Paladin","Retribution","Str",["Mace","Sword","Axe","Polearm"],H2],
- ["Warrior","Arms","Str",["Axe","Mace","Sword","Polearm","Staff"],H2],
- ["Warrior","Fury","Str",["Axe","Mace","Sword","Polearm","Staff","Dagger","Fist"],H12],
- ["Warrior","Protection","Str",["Axe","Mace","Sword","Shield"],H1O]
+ ["Mage","Arcane","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC,"rdps"],
+ ["Mage","Fire","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC,"rdps"],
+ ["Mage","Frost","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC,"rdps"],
+ ["Priest","Discipline","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC,"healer"],
+ ["Priest","Holy","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC,"healer"],
+ ["Priest","Shadow","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC,"rdps"],
+ ["Warlock","Affliction","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC,"rdps"],
+ ["Warlock","Demonology","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC,"rdps"],
+ ["Warlock","Destruction","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC,"rdps"],
+ ["Demon Hunter","Havoc","Agi",["Warglaive","Sword","Axe","Fist"],H1,"mdps"],
+ ["Demon Hunter","Vengeance","Agi",["Warglaive","Sword","Axe","Fist"],H1,"tank"],
+ ["Demon Hunter","Devourer","Int",["Warglaive","Sword","Axe","Fist"],H1,"rdps"],
+ ["Druid","Balance","Int",["Staff","Dagger","Mace","Off-hand"],H12O,"rdps"],
+ ["Druid","Feral","Agi",["Staff","Polearm","Dagger","Fist","Mace"],H12,"mdps"],
+ ["Druid","Guardian","Agi",["Staff","Polearm","Dagger","Fist","Mace"],H12,"tank"],
+ ["Druid","Restoration","Int",["Staff","Dagger","Mace","Off-hand"],H12O,"healer"],
+ ["Monk","Brewmaster","Agi",["Staff","Polearm","Axe","Mace","Sword","Fist"],H12,"tank"],
+ ["Monk","Mistweaver","Int",["Staff","Mace","Sword","Fist","Off-hand"],H12O,"healer"],
+ ["Monk","Windwalker","Agi",["Axe","Mace","Sword","Fist","Staff","Polearm"],H12,"mdps"],
+ ["Rogue","Assassination","Agi",["Dagger"],H1,"mdps"],
+ ["Rogue","Outlaw","Agi",["Sword","Axe","Mace","Fist"],H1,"mdps"],
+ ["Rogue","Subtlety","Agi",["Dagger"],H1,"mdps"],
+ ["Hunter","Beast Mastery","Agi",["Bow","Crossbow","Gun"],HR,"mdps"],
+ ["Hunter","Marksmanship","Agi",["Bow","Crossbow","Gun"],HR,"mdps"],
+ ["Hunter","Survival","Agi",["Polearm","Staff","Axe","Sword","Mace","Dagger","Fist"],H12,"mdps"],
+ ["Shaman","Elemental","Int",["Staff","Dagger","Mace","Axe","Fist","Shield","Off-hand"],H12O,"rdps"],
+ ["Shaman","Enhancement","Agi",["Axe","Mace","Fist","Dagger"],H1,"mdps"],
+ ["Shaman","Restoration","Int",["Staff","Dagger","Mace","Axe","Fist","Shield","Off-hand"],H12O,"healer"],
+ ["Evoker","Devastation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O,"rdps"],
+ ["Evoker","Preservation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O,"healer"],
+ ["Evoker","Augmentation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O,"rdps"],
+ ["Death Knight","Blood","Str",["Axe","Mace","Sword","Polearm"],H2,"tank"],
+ ["Death Knight","Frost","Str",["Axe","Mace","Sword","Polearm"],H12,"mdps"],
+ ["Death Knight","Unholy","Str",["Axe","Mace","Sword","Polearm"],H2,"mdps"],
+ ["Paladin","Holy","Int",["Mace","Sword","Axe","Shield","Off-hand"],H1O,"healer"],
+ ["Paladin","Protection","Str",["Mace","Sword","Axe","Shield"],H1O,"tank"],
+ ["Paladin","Retribution","Str",["Mace","Sword","Axe","Polearm"],H2,"mdps"],
+ ["Warrior","Arms","Str",["Axe","Mace","Sword","Polearm","Staff"],H2,"mdps"],
+ ["Warrior","Fury","Str",["Axe","Mace","Sword","Polearm","Staff","Dagger","Fist"],H12,"mdps"],
+ ["Warrior","Protection","Str",["Axe","Mace","Sword","Shield"],H1O,"tank"]
 ];
 const SPECKEY=s=>s[0]+"/"+s[1];
 const SPECMAP=Object.fromEntries(SPECS.map(s=>
-  [SPECKEY(s),{c:s[0],s:s[1],p:s[2],w:s[3],h:s[4],a:WCLASS[s[0]].a}]));
+  [SPECKEY(s),{c:s[0],s:s[1],p:s[2],w:s[3],h:s[4],ro:s[5],a:WCLASS[s[0]].a}]));
 /* No primary at all means the item does not gate on stat \u2014 trinkets and
    tokens mostly \u2014 so it stays eligible. */
 const specStatOK=(i,sp)=>!i.p||!i.p.length||i.p.includes(sp.p);
 function specCan(i,key){
   const sp=SPECMAP[key]; if(!sp) return true;
+  /* Trinkets are the one slot the game gates by loot specialisation, and ro is
+     that gate — so a Protection Warrior never sees a melee-DPS trinket on its
+     own loot table, however well it could use one in the fight. Only trinkets
+     carry ro, so nothing else narrows here. */
+  if(i.ro&&i.ro.length&&!i.ro.includes(sp.ro)) return false;
   const ty=i.ty;
   if(ARMOURS.includes(ty)) return ty===sp.a;              // armour: class gate only
   if(ty==="Token") return i.tc===sp.a||i.tc==="All";      // tier token carries its armour
@@ -830,7 +835,7 @@ function pLoot(){
       ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,esc("UNCONFIRMED: "+LROLE[r]),liveRo)).join("")}</div></div>
     <details class="fgroup specfg"${F.spec?" open":""}>
       <summary><h4><span class="spectw" aria-hidden="true"></span>Specialisation
-        <span class="fany">one at a time · ${SPECS.length} specs · from armour, primary stat and the weapons the spec actually uses</span></h4></summary>
+        <span class="fany">one at a time · ${SPECS.length} specs · from armour, primary stat, the weapons the spec actually uses, and loot role on trinkets</span></h4></summary>
       ${ARMOURS.map(a=>`<div class="specarm"><span class="specarm-h">${a}</span>
         ${Object.keys(WCLASS).filter(c=>WCLASS[c].a===a).map(c=>`<div class="specrow">
           <span class="speccls">${clsIcon(c)}${esc(c)}</span>

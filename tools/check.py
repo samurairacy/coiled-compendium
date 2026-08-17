@@ -129,9 +129,16 @@ spec_blk = re.search(r"const SPECS=\[\n(.*?)\n\];", render, re.S)
 if not spec_blk:
     check(False, "SPECS block not found")
 else:
-    rows = re.findall(r'\["([A-Za-z \']+)","([A-Za-z \']+)","(Str|Agi|Int)",\[([^\]]*)\],(\w+)\]',
+    rows = re.findall(r'\["([A-Za-z \']+)","([A-Za-z \']+)","(Str|Agi|Int)",\[([^\]]*)\],(\w+),"(\w+)"\]',
                       spec_blk.group(1))
     check(len(rows) == 40, "SPECS has 40 specialisations (%d found)" % len(rows))
+    # the role is what gates trinkets, so a typo here silently misfilters loot
+    roles = [r[5] for r in rows]
+    bad = sorted(set(roles) - {"tank", "healer", "mdps", "rdps"})
+    check(not bad, "spec roles within {tank,healer,mdps,rdps} (%s)" % (", ".join(bad) or "clean"))
+    dist = __import__("collections").Counter(roles)
+    want = {"tank": 6, "healer": 7, "mdps": 15, "rdps": 12}
+    check(dict(dist) == want, "role split is 6 tank / 7 healer / 15 mdps / 12 rdps (%s)" % dict(dist))
     classes = {r[0] for r in rows}
     check(len(classes) == 13, "SPECS covers 13 classes (%d found)" % len(classes))
     dupes = [k for k, v in __import__("collections").Counter((r[0], r[1]) for r in rows).items() if v > 1]
@@ -147,7 +154,29 @@ else:
     defined = set(re.findall(r'\b(H1|H2|H12|H1O|H12O|HR|HC)=\[', render))
     check(hands <= defined, "spec hand sets all defined (%s)" % (", ".join(sorted(hands - defined)) or "clean"))
 
-# ── 8. the shell: every script and stylesheet it names exists ──────────────
+# ── 8. trinket loot roles: the one axis the spec filter narrows on ─────────
+# ro answers "whose loot table is this on", so it is now load-bearing rather
+# than decorative. Manaheart's Binding Flame read tank+mdps for a while: its
+# primary effect is a self-absorb, and the damage rider does not make a tank
+# trinket lootable by DPS. The only trinkets that legitimately span tank and
+# DPS are all-three-primaries stat sticks (Gebbo's, Vile Vial, Ruby Whelp).
+trinkets = [b.group(0) for b in re.finditer(r'\{n:"(?:[^"\\]|\\.)*"[^{}]*?\}', mplus + raid)
+            if 'sl:"Trinket"' in b.group(0)]
+check(len(trinkets) == 41, "41 trinkets found (%d)" % len(trinkets))
+name_of = lambda t: re.search(r'\{n:"((?:[^"\\]|\\.)*)"', t).group(1)
+arr = lambda t, k: re.findall(r'"(\w+)"', (re.search(r'\b%s:\[([^\]]*)\]' % k, t) or [None, ""])[1])
+noro = [name_of(t) for t in trinkets if not arr(t, "ro")]
+check(not noro, "every trinket carries a role (%d without%s)" %
+      (len(noro), ": " + ", ".join(noro[:3]) if noro else ""))
+badro = sorted({r for t in trinkets for r in arr(t, "ro")} - {"tank", "healer", "mdps", "rdps"})
+check(not badro, "trinket ro within {tank,healer,mdps,rdps} (%s)" % (", ".join(badro) or "clean"))
+straddle = [name_of(t) for t in trinkets
+            if "tank" in arr(t, "ro") and ({"mdps", "rdps"} & set(arr(t, "ro")))
+            and set(arr(t, "p")) != {"Str", "Agi", "Int"}]
+check(not straddle, "no tank+DPS trinket outside all-three-stat sticks (%d%s)" %
+      (len(straddle), ": " + ", ".join(straddle) if straddle else ""))
+
+# ── 9. the shell: every script and stylesheet it names exists ──────────────
 refs = re.findall(r'(?:src|href)="((?:js|css)/[\w\-.]+)"', html)
 missing = [r_ for r_ in refs if not os.path.exists(R(*r_.split("/")))]
 check(len(refs) >= 6 and not missing, "index.html references resolve (%d refs, %d missing)" % (len(refs), len(missing)))

@@ -69,7 +69,8 @@ item icons keyed by Blizzard slug.
   a naming dispute**. `o` is a listing index for the switcher; `pos` is
   the only order claim a page may render for a fork boss.
 - **The spec facet models weapons per SPEC, not per class.** `SPECS` carries
-  [class, spec, primary, weapon types, hand slots]; `WCLASS` now holds only
+  [class, spec, primary, weapon types, hand slots, loot role]; `WCLASS` now
+  holds only
   armour. This is load-bearing: Beast Mastery and Marksmanship take ranged and
   no melee, Survival melee and no ranged; Assassination and Subtlety are
   daggers only, Outlaw anything but; Retribution is two-handed and shieldless,
@@ -78,8 +79,15 @@ item icons keyed by Blizzard slug.
   correct answers are emergent rather than stated — Fury sees no staff because
   every staff is Agi or Int — so **do not fix a spec by widening its list
   until you have checked whether the stat gate is doing the work.**
-  `tools/check.py` asserts 40 specs, 13 classes, no duplicates, and that
-  every claimed weapon type exists in the data. **Alone among the loot
+  `tools/check.py` asserts 40 specs, 13 classes, no duplicates, that
+  every claimed weapon type exists in the data, and that the role split is
+  6 tank / 7 healer / 15 mdps / 12 rdps. **Devourer is an Intellect ranged
+  spec, not the Agility melee one it looks like** — it is the third Demon
+  Hunter spec and shares Havoc's and Vengeance's proficiencies, so the only
+  thing separating them is the stat. Every warglaive in the data is `Agi/Int`,
+  which is the game making room for exactly this; the effect is that Devourer
+  emergently sees 3 warglaives, 2 Int swords and 1 Int axe while every Fist
+  weapon (all Agi) correctly vanishes. **Alone among the loot
   groups it is single-select** — "what can my spec use" is a question about
   one character, and two specs at once answers nobody. So `LFACETS.spec` is
   a plain string, not a Set, which is all the delegated handler needs to
@@ -89,16 +97,33 @@ item icons keyed by Blizzard slug.
   contract as `abilIcon()`. Devourer, being new, has no published spec icon
   and carries a documented stand-in.
 - **Trinket `ro` answers "whose loot table is this on", not "who benefits".**
-  The stat line sets the outer bound (Int alone → caster/healer; Str/Agi
-  alone → never either), then the effect narrows it: a purely offensive
-  proc is DPS-only *even on Str/Agi a tank could equip and use well*; a
-  defensive effect, or one triggered by dodge/parry/block, is a tank's;
-  an ally heal or shield is a healer's. **Stat-granting effects are the
-  exception** — they stay as wide as the stat line permits, which is why
-  all-three-primaries plus a stat effect (Gebbo's Bottomless Bag, Vile
-  Vial, Ruby Whelp Shell) is marked for everyone, while all-three-primaries
-  plus a damage-only effect (Sapling of the Dawnroot) stays DPS-only.
-  All 41 trinkets were re-adjudicated against this on 2026-08-17.
+  It is not decorative: since 2026-08-17 `specCan()` gates trinkets on it, so
+  a wrong `ro` silently misfilters the spec facet. The stat line sets the
+  outer bound (Int alone → caster/healer; Str/Agi alone → never either),
+  then the effect narrows it: a purely offensive proc is DPS-only *even on
+  Str/Agi a tank could equip and use well*; an ally heal or shield is a
+  healer's.
+- **On a trinket, the primary effect decides and a rider never widens it.**
+  A defensive primary is a tank trinket even when it also deals damage —
+  tank trinkets very often carry an offensive component, and it is usually
+  contingent on tanking (on damage absorbed, on health lost, on dodge/parry/
+  block). Manaheart's Binding Flame read `tank`+`mdps` for a while and was
+  wrong: it is an absorb shield whose stored damage erupts when the shield
+  breaks, so the eruption is *paid for* by having been hit. It is a tank
+  trinket. DPS are **ineligible to loot** a tank trinket even in a season
+  where the meta wants them to have one; a class with no tank spec of its own
+  needs a greed roll nobody contested, or a gift from an eligible player.
+  Conversely a stat grant with no defensive trigger stays DPS however well a
+  tank would use it — the Tattered Amani War Banner is `mdps` — while a stat
+  grant gated on being hit or on dodge/parry/block is a tank's (Permafrost
+  Essence, Idol of the Howling Nexus). **The one legitimate straddle is the
+  all-three-primaries stat stick**: Gebbo's Bottomless Bag, Vile Vial and
+  Ruby Whelp Shell are everyone's, where all-three-primaries plus a
+  damage-only effect (Sapling of the Dawnroot) stays DPS-only. `check.py`
+  now asserts exactly that — no trinket may be both tank and DPS unless its
+  stat line is Str+Agi+Int — which is the assertion that would have caught
+  Manaheart's. All 41 trinkets were re-adjudicated against this on
+  2026-08-17, the second pass finding one error, the one above.
   **Two axes wear the same words — check which field you are editing.**
   Loot `ro` is the *gear pool*: every hunter takes Agility, so all three
   specs read `mdps` there. Ability `r` is *positioning*: Beast Mastery and
