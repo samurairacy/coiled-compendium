@@ -194,12 +194,30 @@ const primChip=p=>(p||[]).map(v=>`<span class="chip pstat p-${v.toLowerCase()}">
 /* Secondaries are spoken as "big mastery, little haste", never in points — and
    the points move with item level anyway, so only the lean is worth printing.
    Inside 55:45 there is no meaningful lean, so it is called even. */
+/* ── the five loot chip families ───────────────────────────────────────────
+   Each answers a different question, so each gets its own treatment rather
+   than another hue in an already crowded palette:
+     type      what it is        · square, tinted fill
+     slot      where it goes     · pill, outline only
+     primary   who can use it    · square, stat-coloured (unchanged)
+     secondary what it leans     · paired, big solid + little dotted
+     role      who it's for      · square, dashed = our inference (unchanged)
+   Fill, shape, weight and border-style do the separating; the label always
+   states the fact, so colour is never carrying meaning alone. */
+const slotChip=x=>x.sl?`<span class="chip slotc">${esc(x.sl)}</span>`:"";
+const typeChip=x=>x.ty&&x.ty!==x.sl
+  ?`<span class="chip tyc">${esc(x.ty)}${x.tc?` · ${esc(x.tc)}`:""}</span>`:"";
+/* Secondaries keep the house idiom — "big Mastery little Haste" — but as a
+   weighted pair, so the lean is visible before the words are read. Equal
+   stats render as two equal chips, which says "even" without saying it. */
 const secChip=x=>{
-  if(!x||!x.length) return `<span class="n">—</span>`;
-  if(x.length===1) return `<span class="secs">${esc(x[0][0])}</span>`;
+  if(!x||!x.length) return "";
+  if(x.length===1) return `<span class="chip sec">${esc(x[0][0])}</span>`;
   const [a,b]=x, tot=a[1]+b[1];
-  if(!tot||a[1]/tot<0.55) return `<span class="secs">${esc(a[0])} / ${esc(b[0])} <i>even</i></span>`;
-  return `<span class="secs"><b>big ${esc(a[0])}</b> <i>little ${esc(b[0])}</i></span>`;
+  if(!tot||a[1]/tot<0.55)
+    return `<span class="chip sec">${esc(a[0])}</span><span class="chip sec">${esc(b[0])}</span>`;
+  return `<span class="chip sec big"><i>big</i>${esc(a[0])}</span>`
+        +`<span class="chip sec lil"><i>little</i>${esc(b[0])}</span>`;
 };
 /* One definition, because the badge and the Cantrips facet must agree. A
    trinket is not a cantrip: every one of the 27 has an effect, that is what a
@@ -218,7 +236,7 @@ const roleChips=i=>(i.ro||[]).map(r=>`<span class="rochip r-${r}" title="Unconfi
 const cantrip=x=>isCantrip(x)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
 const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
   <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
-  <td>${secChip(x.x)}</td></tr>
+  <td>${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}</td></tr>
   ${x.sl!=="Trinket"&&(x.u||x.e)?`<tr class="fxrow"><td colspan="4">
     ${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}
     ${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`;
@@ -255,7 +273,7 @@ const lootTable=d=>{
   ${weap.length?`<div class="sec"><h2>Weapons and off-hands</h2><span class="n">${weap.length}</span></div>
     <table><thead><tr><th>Item</th><th>Type</th><th>Primary</th><th>Secondaries</th></tr></thead><tbody>
     ${weap.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td><td class="mono">${esc(x.ty)}</td>
-      <td>${primChip(x.p)||`<span class="n">—</span>`}</td><td>${secChip(x.x)}</td></tr>
+      <td>${primChip(x.p)||`<span class="n">—</span>`}</td><td>${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}</td></tr>
       ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`).join("")}
     </tbody></table>`:""}`;
 };
@@ -614,9 +632,8 @@ const lootIdxRow=o=>`${o.hdr?`<div class="area-h" data-boss="${o.hdr.id}"><a hre
       ${o.mod==="r"
         ?`<a class="mdg" href="#/r/${o.b.id}/loot" data-boss="${o.b.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.b.short)}</a>`
         :`<a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>`}
-      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
-      <span class="mm">${o.i.ty&&o.i.ty!==o.i.sl?`${esc(o.i.ty)} · `:""}${esc(o.i.sl)}</span></div>
-    <div class="tags" style="margin-top:.35rem">${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
+      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span></div>
+    <div class="tags" style="margin-top:.35rem">${typeChip(o.i)}${slotChip(o.i)}${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
     ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
     ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}
     ${o.mod==="r"&&o.i.sl==="Trinket"&&!o.i.u&&!o.i.e?`<p class="fx pending">Effect not yet published —
