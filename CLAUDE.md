@@ -203,6 +203,16 @@ the gate that replaces them.
   fresh but scripts can stay stale for up to ten minutes. When live-checking
   a deploy, verify with `fetch(url, {cache:"no-store"})` before diagnosing —
   a "broken" deploy that is ten minutes old is usually just this.
+- **The same trap bites the local dev loop, harder.** A browser will hold
+  `js/*.js` across an ordinary reload even when the local server is already
+  serving the new bytes, so you read the OLD globals and misdiagnose a
+  correct edit as a code bug. Order of trust: `curl` the file off disk and
+  off the server first, `tools/check.py` second, the browser last. When the
+  browser must be believed, **restart the server on a new port** — a new
+  origin gets a new cache, and it is faster than any amount of cache-busting.
+  Cache-busting `index.html` does nothing here, and `document.write`ing the
+  scripts into a live realm throws on `const` redeclaration, so the new code
+  never runs at all.
 - `.gitattributes` pins html/js/css/py to LF.
 - No `CNAME`; no bare `LICENSE` file, deliberately — the README's
   *Licensing and attribution* section is the licence position. Don't "fix"
