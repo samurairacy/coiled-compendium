@@ -485,6 +485,10 @@ function pDungeon(id,tab){
     ${d.killers.map(k=>`<div class="killer"><div class="kn">${esc(k.n)}<span>SEVERITY 3</span></div><p>${esc(k.w)}${srcMark(k.s)}</p></div>`).join("")}
     <div class="sec"><h2>What blocks progress</h2><span class="n">Gates</span></div>
     ${d.gates.map(g=>`<p class="note">${ic("i-gate",13)} ${esc(g.t)}${srcMark(g.s)}</p>`).join("")}
+    ${d.map&&IMG[d.map]?`<div class="sec"><h2>Map</h2><span class="n">Every pack marked</span></div>
+    <figure class="dmap"><a href="${IMG[d.map]}" target="_blank" rel="noopener">
+      <img src="${IMG[d.map]}" alt="${esc(d.name)} — Mythic Dungeon Tools map with enemy positions" loading="lazy" decoding="async"></a>
+      <figcaption>Mythic Dungeon Tools · boss and pack positions · click to open full size${srcMark(["img"])}</figcaption></figure>`:""}
     <div class="sec"><h2>Dispel demand</h2><span class="n">How much each matters here</span></div>
     <div class="tile-foot" style="border:none;padding:0">${dispelStrip(d.dispels)}</div>`
     +callsBlock(d)

@@ -914,3 +914,9 @@ footer a{color:var(--ink-muted)}
   font-family:var(--face-term);font-size:.58rem;font-weight:600;letter-spacing:.08em;
   text-transform:uppercase;padding:.1rem .36rem;border-radius:2px;white-space:nowrap;
   border:1px solid var(--signal-warn);color:var(--signal-warn)}
+
+/* ═══ MDT DUNGEON MAP ═══ wide figure on the overview; the anchor wraps the
+   image so a click opens the file itself at native resolution. */
+.dmap{margin:.6rem 0 1rem;border:1px solid var(--rule);border-left:3px solid var(--d-accent,var(--accent));background:var(--ground-sunken)}
+.dmap img{display:block;width:100%;height:auto}
+.dmap figcaption{font-family:var(--face-term);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);padding:.4rem .6rem;border-top:1px solid var(--rule-soft)}

@@ -100,6 +100,7 @@ for slug, what in (("inv_misc_questionmark", "question-mark (icon not found)"),
 jkeys = set(re.findall(r'\b(?:img|jp):"(j-[a-z0-9\-]+)"', mplus + raid))
 for m in re.finditer(r'\b(?:img|jp):\[([^\]]*)\]', mplus + raid):
     jkeys |= set(re.findall(r'"(j-[a-z0-9\-]+)"', m.group(1)))
+jkeys |= set(re.findall(r'\bmap:"(mdt-[a-z0-9\-]+)"', mplus))
 if IMG is not None:
     orphan = sorted(k for k in jkeys if k not in IMG)
     check(not orphan, "boss portrait keys resolve in IMG (%d orphaned%s)" %

@@ -256,7 +256,18 @@ const IMG={
 "j-ulatek":"assets/img/j-ulatek.jpg",
 "j-vashnik":"assets/img/j-vashnik.jpg",
 "j-vexhul":"assets/img/j-vexhul.jpg",
-"j-zuljan-raid":"assets/img/j-zuljan-raid.jpg"
+"j-zuljan-raid":"assets/img/j-zuljan-raid.jpg",
+/* Mythic Dungeon Tools maps, owner-captured 2026-08-18 — every pack and boss
+   chip marked. Cropped to the map panel; served at 1800px, click-through
+   opens the file itself for native zoom. */
+"mdt-altar-of-fangs":"assets/img/mdt-altar-of-fangs.webp",
+"mdt-blinding-vale":"assets/img/mdt-blinding-vale.webp",
+"mdt-den-of-nalorakk":"assets/img/mdt-den-of-nalorakk.webp",
+"mdt-kings-rest":"assets/img/mdt-kings-rest.webp",
+"mdt-murder-row":"assets/img/mdt-murder-row.webp",
+"mdt-ruby-life-pools":"assets/img/mdt-ruby-life-pools.webp",
+"mdt-temple-of-sethraliss":"assets/img/mdt-temple-of-sethraliss.webp",
+"mdt-voidscar-arena":"assets/img/mdt-voidscar-arena.webp"
 };
 
 /* ═══════════════════════════════════════════════════════════════════════
