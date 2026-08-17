@@ -345,15 +345,27 @@ td.statcell .lean{margin-left:.15rem}
 .bossname{min-width:0}
 .bossname h3{display:inline;font-size:1.24rem;color:var(--ink)}
 .bosssub{font-size:.92rem;color:var(--ink-muted);margin:.3rem 0 0;max-width:64ch}
-.bossbody{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:1.15rem;padding:1rem 1.15rem}
+.bossbody{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:1.15rem;padding:1rem 1.15rem}
 .bossmedia{margin:0;min-width:0}
 /* one image or a member strip — the row shares the slot, images split it */
 .bossmedia .bmrow{display:flex;gap:.45rem;min-width:0}
 .bossmedia img{width:100%;height:190px;object-fit:contain;display:block;background:var(--ground-sunken);border:1px solid var(--rule);min-width:0}
 .bossmedia.members img{flex:1 1 0}
-/* raid boss pages reuse the figure outside the card grid: cap its width */
-#p-boss .bossmedia{margin:.5rem 0 1rem;max-width:560px}
-#p-boss .bossmedia.members{max-width:820px}
+
+/* ── journal PLATES ── the parchment is its own ground, so no slab and no
+   fixed box: the image's ratio decides, and the layout gives it room.
+   Singles fill their column; member strips share one height and let widths
+   fall where the art puts them. */
+.bossmedia.plate .bmrow a{display:block;min-width:0;font-size:0}
+.bossmedia.plate img{width:100%;height:auto;object-fit:unset;background:none;
+  border:1px solid var(--rule);border-bottom:2px solid var(--accent-deep)}
+.bossmedia.plate.members .bmrow{flex-wrap:wrap;gap:.55rem}
+.bossmedia.plate.members .bmrow a{flex:0 1 auto}
+.bossmedia.plate.members img{width:auto;height:clamp(200px,24vw,300px)}
+/* raid boss pages: a single plate is the hero — near content width */
+#p-boss .bossmedia.plate{margin:.7rem 0 1.1rem;max-width:640px}
+#p-boss .bossmedia.plate.members{max-width:none}
+#p-boss .bossmedia.plate.members img{height:clamp(220px,26vw,320px)}
 .bossmedia .noimg{
   height:190px;display:grid;place-content:center;justify-items:center;gap:.4rem;
   background:var(--ground-sunken);border:1px dashed var(--rule);color:var(--ink-faint);
@@ -379,7 +391,9 @@ td.statcell .lean{margin-left:.15rem}
 .bstat.myth>span{color:var(--tier1)}
 .bossabils{padding:0 1.15rem 1rem;border-top:1px solid var(--rule-soft)}
 .bossabils .abil:first-of-type{padding-top:.85rem}
-@media(max-width:760px){.bossbody{grid-template-columns:minmax(0,1fr)}.bossmedia img,.bossmedia .noimg{height:220px}}
+@media(max-width:760px){.bossbody{grid-template-columns:minmax(0,1fr)}.bossmedia img,.bossmedia .noimg{height:220px}
+  .bossmedia.plate img{height:auto}
+  .bossmedia.plate.members img,#p-boss .bossmedia.plate.members img{height:clamp(150px,38vw,220px)}}
 
 /* ═══ META PILLS ═════════════════════════════════════════════════════ */
 .pill{

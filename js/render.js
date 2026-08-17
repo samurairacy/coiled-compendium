@@ -170,10 +170,17 @@ const bossMedia=(imgKeys,fallbackName)=>{
   if(!ks.length) return "";
   const journal=ks[0].startsWith("j-");
   const caption=journal
-    ?`Dungeon-journal model${ks.length>1?"s":""}${srcMark(["wh_ej"])}`
+    ?`Dungeon-journal model${ks.length>1?"s":""} · click for full size${srcMark(["wh_ej"])}`
     :`Nameplate visible in frame${srcMark(["img"])}`;
-  return `<figure class="bossmedia${ks.length>1?" members":""}">
-    <div class="bmrow">${ks.map(k=>`<img src="${IMG[k]}" alt="${esc(JNAMES[k]||fallbackName)}${journal?" — dungeon-journal model":" in game"}" loading="lazy" decoding="async" title="${esc(JNAMES[k]||"")}">`).join("")}</div>
+  /* Journal plates carry their own parchment ground and arrive in every
+     aspect, so they render as PLATES: no slab behind them, the image's own
+     ratio sets the box, and a click opens the file at native size. The
+     legacy capture treatment (fixed-height on the sunken ground) stays for
+     photos, which are uniform and landscape. */
+  return `<figure class="bossmedia${journal?" plate":""}${ks.length>1?" members":""}">
+    <div class="bmrow">${ks.map(k=>{
+      const img=`<img src="${IMG[k]}" alt="${esc(JNAMES[k]||fallbackName)}${journal?" — dungeon-journal model":" in game"}" loading="lazy" decoding="async" title="${esc(JNAMES[k]||"")}">`;
+      return journal?`<a href="${IMG[k]}" target="_blank" rel="noopener">${img}</a>`:img;}).join("")}</div>
     <figcaption>${ks.length>1?ks.map(k=>esc(JNAMES[k]||"")).filter(Boolean).join(" · ")+" — ":""}${caption}</figcaption></figure>`;};
 function encounterCard(d,e,roleFilter){
   const s=bossStats(d,e), img=e.img&&bossMedia(e.img,e.n);
