@@ -646,7 +646,7 @@ const lootIdxRow=o=>`${o.hdr?`<div class="area-h" data-boss="${o.hdr.id}"><a hre
       ${o.mod==="r"
         ?`<a class="mdg" href="#/r/${o.b.id}/loot" data-boss="${o.b.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.b.short)}</a>`
         :`<a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>`}
-      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span></div>
+      <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}${wlBtn(o.i)}</span></div>
     <div class="tags" style="margin-top:.35rem">${typeChip(o.i)}${slotChip(o.i)}${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
     ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
     ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}
@@ -670,22 +670,24 @@ const LPRIM=["Str","Agi","Int"], LSEC=["Crit","Haste","Mastery","Vers"];
 const inData=(arr,f)=>arr.filter(v=>LOOTALL.some(o=>f(o.i,v)));
 
 /* ═══ SPECIALISATION FILTER ═══════════════════════════════════════════════
-   "Show me what my Fury Warrior can actually wear." Eligibility is derived,
-   not published, so it is marked as inference like the trinket roles — but
-   the three inputs are objective, and the data supports every one of them:
+   "Show me what my Fury Warrior can actually wear." Four gates:
 
      armour class   a class property. Plate item, Plate class, or nothing.
      primary stat   a SPEC property — Holy Paladin wants Int off a Plate
                     item, Retribution wants Str off the same one. Every
                     weapon in the season carries a primary, so this does
-                    most of the work on weapons too.
-     proficiency    a CLASS property, which is why it lives on 13 rows
-                    rather than 40. Kept to the well-established live-game
-                    lists; Midnight has published no changes to them.
+                    most of the work on weapons too. A trinket that grants
+                    a stat gates on it via es: even with no stat line.
+     proficiency    a SPEC property too, with a hand gate — Beast Mastery
+                    takes bows and no melee, Survival the reverse.
+     trinket ro     whose loot table the trinket is on. This began as our
+                    inference and was deliberately not used; since
+                    2026-08-17 every one of the 41 is OBSERVED in game
+                    (rc: marks the looking), so the gate is data.
 
-   Deliberately NOT used: the trinket `ro` marks. Those are already our
-   inference, and stacking a guess on a guess would launder it into a fact.
-   A spec therefore sees every trinket its stat line permits.
+   specCan() is also the voidcore engine: js/wishlist.js divides wished
+   items by table size per spec, so a wrong gate here is no longer just a
+   misfiltered list — it is wrong arithmetic shown to the user.
    ═══════════════════════════════════════════════════════════════════════ */
 const WCLASS={
  "Mage":{a:"Cloth"},        "Priest":{a:"Cloth"},   "Warlock":{a:"Cloth"},
@@ -863,6 +865,7 @@ function pLoot(){
   </div>
   <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${LOOTALL.length} items indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearl">Clear all</button>`:""}</div>
+  ${wlLootBar()}
   ${res.length?`<div id="lfeed"></div>`
     :`<p class="note">Nothing matches that combination. Slot, armour and primary stack as <em>any of</em>;
       secondaries stack as <em>all of</em>, so picking three of the four can never match — every item has two.</p>`}`;

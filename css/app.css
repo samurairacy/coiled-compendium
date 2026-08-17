@@ -826,3 +826,84 @@ footer a{color:var(--ink-muted)}
   .bossbody{grid-template-columns:1fr}
   h2{break-after:avoid} .area-h{color:#000}
 }
+
+/* ═══ WISHLISTS ═══ a shopping list over the loot data (js/wishlist.js).
+   Everything here leans on existing tokens; the accent comes from the same
+   [data-dungeon]/[data-boss] plumbing every other component uses. */
+.wlbtn{
+  font-family:var(--face-term);font-size:.72rem;font-weight:600;line-height:1;
+  width:1.35rem;height:1.35rem;margin-left:.45rem;flex:0 0 auto;
+  border:1px solid var(--rule);border-radius:3px;background:transparent;
+  color:var(--ink-muted);cursor:pointer;vertical-align:middle}
+.wlbtn:hover{border-color:var(--accent);color:var(--accent)}
+.wlbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.wlbar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin:.5rem 0 .8rem;
+  padding:.45rem .65rem;border:1px solid var(--rule-soft);border-radius:4px;
+  background:var(--ground-raised);font-size:.82rem}
+.wlbar select,.wlhead select{
+  background:var(--ground-panel);color:var(--ink);border:1px solid var(--rule);
+  border-radius:3px;padding:.25rem .4rem;font:inherit;font-size:.82rem}
+#wltoast{
+  position:fixed;left:50%;bottom:1.1rem;transform:translate(-50%,.7rem);
+  display:flex;align-items:center;gap:.9rem;z-index:80;max-width:min(92vw,34rem);
+  background:var(--ground-panel);border:1px solid var(--rule);border-radius:5px;
+  padding:.55rem .85rem;font-size:.85rem;box-shadow:0 6px 24px rgba(0,0,0,.45);
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+#wltoast.on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+#wltoast button{
+  background:none;border:none;color:var(--accent);font:inherit;font-weight:600;
+  cursor:pointer;padding:0}
+.wlcard h3{display:flex;align-items:center;gap:.45rem;margin-bottom:.15rem}
+.wlcard h3 a{color:inherit;text-decoration:none}
+.wlcard h3 a:hover{color:var(--accent)}
+.wlact{display:inline-flex;flex-wrap:wrap;align-items:center;gap:.7rem}
+.wlcard .wlact{margin-top:.45rem}
+.wldanger{color:var(--signal-urgent)}
+.wlnewrow{margin-top:1.1rem}
+.wlnew{
+  font:inherit;font-weight:600;cursor:pointer;border-radius:4px;
+  background:var(--accent);color:var(--accent-ink);border:1px solid var(--accent);
+  padding:.45rem .9rem}
+.wlfile{cursor:pointer}
+.wlhead{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;margin:.2rem 0 .4rem}
+.wlname{
+  font-family:var(--face-head,serif);font-weight:700;font-size:1.5rem;
+  background:transparent;border:1px solid transparent;border-radius:3px;
+  color:var(--ink);padding:.1rem .3rem;min-width:0;max-width:100%;flex:1 1 14rem}
+.wlname:hover,.wlname:focus{border-color:var(--rule);background:var(--ground-raised);outline:none}
+.wlrow .mn{flex:1 1 auto}
+.wlrow .mtop{display:flex;align-items:center;gap:.5rem}
+.wlstar,.wlx{
+  background:none;border:1px solid transparent;border-radius:3px;cursor:pointer;
+  font-size:.95rem;line-height:1;padding:.2rem .3rem;color:var(--ink-faint)}
+.wlstar:hover{color:var(--signal-warn)}
+.wlstar[aria-pressed="true"]{color:var(--signal-warn)}
+.wlx:hover{color:var(--signal-urgent);border-color:var(--rule)}
+.wlkeys{display:flex;flex-direction:column;gap:.45rem;margin:.6rem 0 1.2rem}
+.wlkey{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.55rem;
+  padding:.5rem .65rem;border:1px solid var(--rule-soft);border-radius:4px;
+  background:var(--ground-raised)}
+.wlkey.farm{border-color:var(--signal-warn)}
+.wlfarm{color:var(--signal-warn);font-weight:600}
+.wlraidn{margin:.3rem 0 .5rem}
+.vchead{margin:.6rem 0 .2rem;font-size:.95rem}
+.vcwrap{overflow-x:auto;margin:.6rem 0 .4rem}
+.vct{border-collapse:collapse;min-width:100%}
+.vct th,.vct td{
+  text-align:left;vertical-align:top;padding:.5rem .65rem;
+  border-bottom:1px solid var(--rule-soft);font-size:.85rem}
+.vct thead th{
+  font-family:var(--face-term);font-size:.66rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-muted)}
+.vct thead th .cicon{margin-right:.3rem}
+.vct td i{display:block;font-style:normal;color:var(--ink-faint);font-size:.72rem}
+.vct td.vcbest{background:var(--ground-raised);box-shadow:inset 2px 0 0 var(--accent)}
+.vcg{min-width:11rem}
+.vcitems{margin-top:.25rem;text-transform:none;letter-spacing:0}
+.vcnote{margin-top:.4rem}
+.wlnope{
+  font-family:var(--face-term);font-size:.58rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;padding:.1rem .36rem;border-radius:2px;white-space:nowrap;
+  border:1px solid var(--signal-warn);color:var(--signal-warn)}

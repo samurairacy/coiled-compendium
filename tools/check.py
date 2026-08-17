@@ -154,6 +154,19 @@ else:
     defined = set(re.findall(r'\b(H1|H2|H12|H1O|H12O|HR|HC)=\[', render))
     check(hands <= defined, "spec hand sets all defined (%s)" % (", ".join(sorted(hands - defined)) or "clean"))
 
+# ── 7b. loot ids: wishlists serialize on them ──────────────────────────────
+# js/wishlist.js stores {id, star} and share links carry dot-joined ids, so a
+# loot row without an id can never be wished, and a duplicated id would make
+# two items one. Names won't do — 57 were renamed this season; ids survived.
+loot_rows = [m.group(0) for m in re.finditer(r'\{n:"(?:[^"\\]|\\.)*"[^{}]*?\}', mplus + raid)
+             if 'sl:"' in m.group(0)]
+check(len(loot_rows) == 312, "312 loot rows found (%d)" % len(loot_rows))
+lids = [re.search(r'\bid:(\d+)', b) for b in loot_rows]
+check(all(lids), "every loot row carries a Wowhead id (%d without)" % sum(1 for m in lids if not m))
+lidv = [m.group(1) for m in lids if m]
+ldup = [k for k, v in __import__("collections").Counter(lidv).items() if v > 1]
+check(not ldup, "loot ids unique (%s)" % (", ".join(ldup[:4]) or "clean"))
+
 # ── 8. trinket loot roles: the one axis the spec filter narrows on ─────────
 # ro answers "whose loot table is this on", so it is now load-bearing rather
 # than decorative. Manaheart's Binding Flame read tank+mdps for a while: its

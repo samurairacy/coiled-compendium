@@ -11,7 +11,7 @@ licensing position the project depends on.
 ## Architecture
 
 Since 2026-08-17 the site is a small `index.html` shell over split files.
-**Load order is the contract** — five classic scripts with `defer`, which
+**Load order is the contract** — six classic scripts with `defer`, which
 preserves document order and keeps the site working from `file://`:
 
     index.html            shell: head, icon sprite, nav, page containers
@@ -21,6 +21,7 @@ preserves document order and keeps the site working from `file://`:
     js/data-mplus.js      DUNGEONS (+ D map, ROUTING)
     js/data-raid.js       RAID (+ RB map)
     js/render.js          helpers and every page function
+    js/wishlist.js        wishlists: store, CRUD, insights, voidcore odds
     js/app.js             router, facet/difficulty delegation, search, boot
 
 **No build step, deliberately.** Data files are JS object literals, not
@@ -217,6 +218,33 @@ item icons keyed by Blizzard slug.
   stacks multi-select as AND; loot stacks OR within a group, AND across
   groups; loot's secondaries are the one AND group. Raid rows carry the
   boss (`x.b`) where dungeon rows carry `x.d` — renderers branch on `mod`.
+- **Wishlists are local-first and id-keyed.** `js/wishlist.js` owns the
+  feature: routes `#/wl`, `#/wl/<key>`, `#/wl/import?…`; one localStorage
+  key `cc-wl` (`{v:1,active,lists:[{k,name,cls,items:[{id,star}]}]}`), read
+  lazily behind try/catch so a corrupt blob degrades to an explained empty
+  state and can never brick the router. Items serialize on **Wowhead ids**
+  — `check.py` asserts all 312 loot rows carry one, uniquely — because 57
+  names changed this season and ids didn't. **Sharing is sending a
+  snapshot**, never a live link: `#/wl/import?i=<id[s]>.<id>…&n=…&c=…`
+  (dot-joined, `s` marks a star) opens a preview whose one action is "Save
+  a copy". An id that stops resolving renders as a tombstone, counted and
+  named, never silently dropped; an item no spec of the list's class can
+  loot wears a flag and is excluded only from the odds arithmetic (an
+  eligible groupmate can still trade it). Trinkets auto-star on add. The
+  module's delegated listener matches `[data-wl]` only — same qualifier
+  discipline that keeps mechanics (`[data-f]`) and loot (`[data-lf]`)
+  from eating each other's clicks.
+- **Voidcore odds are exact, and the mechanics are owner-verified in game**
+  (2026-08-17): a core draws uniformly from the dungeon's — in the raid,
+  that boss's, offered after the kill — loot table filtered to your **loot
+  spec** (not active spec); a received item leaves the pool (no
+  duplicates) until the pool empties and resets. Without replacement the
+  closed forms are: single roll `W/T`, expected rolls to first wished hit
+  `(T+1)/(W+1)`, guaranteed within `T−W+1`. All rendered numbers assume a
+  fresh pool and say so. Cores are capped at 2 purchasable a week plus 1
+  via 6 Tokens of Merit from the Vault (≥3 slots filled) — "2–3 a week".
+  `specCan()` is the denominator, which is why the spec-filter gates and
+  the observed trinket `ro` are load-bearing arithmetic, not just filters.
 - **Mobs carry a gravity tier in `k`** (`mini`→`lt`→`caster`/`trash`→
   `fodder`), and the trash card styles itself from it.
 - **Accents do the wayfinding.** `[data-dungeon]` sets `--d-accent` per
@@ -277,7 +305,11 @@ the gate that replaces them.
   origin gets a new cache, and it is faster than any amount of cache-busting.
   Cache-busting `index.html` does nothing here, and `document.write`ing the
   scripts into a live realm throws on `const` redeclaration, so the new code
-  never runs at all.
+  never runs at all. When a new port is unavailable (the in-app browser can
+  policy-block fresh origins), the working substitute is a throwaway shell
+  whose script URLs are busted — new URL, no cache entry:
+  `sed 's|src="js/\([a-z-]*\)\.js"|src="js/\1.js?v='$(date +%s)'"|g'
+  index.html > dev-bust.html` — navigate to that, verify, delete it.
 - `.gitattributes` pins html/js/css/py to LF.
 - No `CNAME`; no bare `LICENSE` file, deliberately — the README's
   *Licensing and attribution* section is the licence position. Don't "fix"
@@ -297,7 +329,11 @@ Load the published URL and check, in order:
    pages.
 6. Search opens with `/`; "Luxay" and "Entombed Wardens" both find their
    right-named entities.
-7. No console errors.
+7. Wishlists: `#/wl` renders; + on a Loot row adds (creating a first list
+   if none); the list survives a reload; a share link opens its preview in
+   a private window and "Save a copy" works; the voidcore table shows
+   denominator-honest fractions.
+8. No console errors.
 
 ## Corrections and issues
 

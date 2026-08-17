@@ -32,6 +32,10 @@ function route(){
     html=pBoss(h[1],h[2]);}
   else if(key==="mechanics"){page="mechanics";html=pMechanics();}
   else if(key==="loot"){page="loot";html=pLoot();}
+  /* wishlists: the index, a share-link import preview, or one list */
+  else if(key==="wl"&&h[1]==="import"){page="wl";html=pWlImport(qs||"");}
+  else if(key==="wl"&&h[1]){page="wl";html=pWlOne(h[1]);}
+  else if(key==="wl"){page="wl";html=pWl();}
   else if(key==="routes"){page="routes";html=pRoutes();}
   else if(key==="season"){page="season";html=pSeason();}
   else if(key==="sources"){page="sources";html=pSources();}
@@ -53,6 +57,7 @@ function route(){
     :page==="boss"?RB[h[1]].n+" — "
     :page==="raid"?RAID.name+" — "
     :page==="prep"?"Raid Prep — "
+    :page==="wl"?((h[1]&&h[1]!=="import"&&wlGet(h[1])?wlGet(h[1]).name:"Wishlists")+" — ")
     :page!=="home"?key[0].toUpperCase()+key.slice(1)+" — ":"")+"The Coiled Compendium";
   window.scrollTo({top:0,behavior:"instant"});
 }
@@ -169,6 +174,7 @@ const INDEX=[
  {t:RAID.name,m:`Raid · ${RAID.bosses.length} bosses · Normal and Heroic`,h:"#/raid"},
  {t:"Raid prep",m:"Lockout, schedule, what to bring",h:"#/raid/prep"},
  ...DUNGEONS.flatMap(d=>d.buffs.map(b=>({t:b.n,m:`Interactable · ${d.name}`,h:`#/d/${d.id}`}))),
+ {t:"Wishlists",m:"Your lists · keys to run · voidcore odds",h:"#/wl"},
  {t:"Every poison in the season",m:"Mechanics index · filtered",h:"#/mechanics"},
  {t:"Source ledger",m:"Who said what, and when",h:"#/sources"},
  {t:"Caption decoder",m:"Glossary · names that are wrong everywhere",h:"#/glossary"}
