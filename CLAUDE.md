@@ -263,14 +263,24 @@ item icons keyed by Blizzard slug.
 - **The homepage status line computes live** against the Season 2 start of
   18 Aug 2026 (the raid opens the same week). A stale-looking homepage is
   usually just the calendar.
-- **Ability icons are keyed by name, not ID.** `ICONS` (356 entries) maps
+- **Ability icons are keyed by name, not ID.** `ICONS` (380 entries) maps
   name → Blizzard slug; `abilIcon()` renders `assets/icons/<slug>.jpg`.
-  287/329 M+ names resolved; the other 42 were each queried and none is a
-  spell. 71/76 raid abilities resolved the same way. **A missing name
-  renders an empty spacer box, never nothing** — and renaming an ability
-  silently costs it its icon, so update `ICONS` with any rename. The
-  shared map also means cross-module name reuse pays: raid Axegrinder
-  inherited the M+ icon for free.
+  **A name without an entry wears the classic red question mark**
+  (`inv_misc_questionmark`, asserted on disk by `check.py`), never an empty
+  spacer — so a rename that forgets `ICONS` is visible, not silent. The
+  2026-08 audit closed most gaps by discovering they were **naming errors,
+  not missing spells**: 22 abilities were renamed against Wowhead spells
+  whose descriptions match our effect text and encounter (Hydro Strike →
+  Hydrastrike, Cut Purse → Cutpurse, Awaken Welps → Awaken Whelps…), each
+  feeding CORRECTIONS like every other rename. The 25 names still on the
+  question mark are structural rows (Add Phase, Two-phase structure),
+  council NPCs used as ability rows (King Akul, Queen Phat'ta), or
+  mechanics Wowhead has no spell for — itemised with reasons in the
+  git-ignored audit report. **Search variant spellings before declaring a
+  name iconless**: word joins, singulars and the Whelps/Welps class of typo
+  found 22 of 26; exact-match-only found none of them. The shared map also
+  means cross-module name reuse pays: raid Axegrinder inherited the M+
+  icon for free.
 
 ## Repository conventions
 

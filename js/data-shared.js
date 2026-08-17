@@ -669,7 +669,33 @@ const ICONS={
 "Warden's Wrath":"spell_nature_wispsplodegreen",
 "Whirling Axes":"ability_butcher_whirl",
 "Winds of Change":"spell_shaman_unleashweapon_wind",
-"Wretched Discharge":"spell_festergutgas"
+"Wretched Discharge":"spell_festergutgas",
+/* 2026-08-17 icon audit: 22 renamed against Wowhead spells whose descriptions
+   match our effect text, plus 2 already-exact names whose spells surfaced. */
+"A Knot of Snakes":"ability_hunter_snaketrap",
+"Awaken Whelps":"inv_dragonwhelp3_gemmed_red",
+"Consume Charge":"spell_nature_unrelentingstorm",
+"Corrupted Lifeforce":"inv_nullstone_shadow",
+"Cryo Surge":"spell_mage_frostbomb",
+"Cutpurse":"ability_warrior_deepcuts",
+"Earthsplitter":"spell_nature_earthquake",
+"Hydrastrike":"trade_archaeology_whitehydrafigurine",
+"Impaling Spear":"inv_spear_08",
+"Interrupting Cloudburst":"spell_nature_cyclone",
+"Lightcrazed Frenzy":"ability_monk_explodingjadeblossom",
+"Lightning Spire":"ability_thunderking_rockfalllow",
+"Lightsower Dash":"rogue_burstofspeed",
+"Malevolent Presence":"ability_revendreth_priest",
+"Orb of Disruption":"ability_monk_forcesphere",
+"Rumbling Ward":"ability_gift_of_earth",
+"Scouring Sand":"spell_sandexplosion",
+"Serpent's Stormcall":"spell_nature_unrelentingstorm",
+"Sharp Nail":"ability_hunter_quickshot",
+"Summon Primal Thunderclouds":"ability_vehicle_electrocharge",
+"Swarming Krolusks":"achievement_dungeon_thesandqueen",
+"Thornspike":"inv_misc_herb_goldthorn_bramble",
+"Ula'tek's Presence":"achievement_dungeon_templeofsethraliss",
+"Violent Sand":"spell_sandexplosion"
 };
 
 /* ═══ SEASON 2 TIER SET BONUSES ═══ 79 spec bonuses across 13 classes.
@@ -765,5 +791,28 @@ const CORRECTIONS=[
  ["Final Ascension","Empowered Ascension","Venomous Abyss","ability",0],
  ["Veil of Twilight","Twilight Veil","Venomous Abyss","ability",0],
  ["Coalesced Venom","Coagulated Poison","Venomous Abyss","ability",0],
- ["Clinging Murk","Sticky Filth","Venomous Abyss","ability",0]
+ ["Clinging Murk","Sticky Filth","Venomous Abyss","ability",0],
+ /* 2026-08-17 icon audit renames — every guide wrote these; Wowhead disagrees */
+ ["Hydrastrike","Hydro Strike","Altar of Fangs","ability",0],
+ ["Cutpurse","Cut Purse","Murder Row","ability",0],
+ ["Sharp Nail","Sharp Nails","Murder Row","ability",0],
+ ["Rumbling Ward","Rumbling War Shield","Den of Nalorakk","ability",0],
+ ["Cryo Surge","Cryosurge","Den of Nalorakk","ability",0],
+ ["Earthsplitter","Earth Splitter","Voidscar Arena","ability",0],
+ ["Orb of Disruption","Orbs of Disruption","Voidscar Arena","ability",0],
+ ["Violent Sand","Violent Sands","Voidscar Arena","ability",0],
+ ["Lightsower Dash","Light Sower's Dash","The Blinding Vale","ability",0],
+ ["Lightcrazed Frenzy","Light Crazed Frenzy","The Blinding Vale","ability",0],
+ ["Thornspike","Thorn Spike","The Blinding Vale","ability",0],
+ ["Impaling Spear","Impaling Spears","King's Rest","ability",0],
+ ["Summon Primal Thunderclouds","Summon Thunderclouds","Ruby Life Pools","ability",0],
+ ["Awaken Whelps","Awaken Welps","Ruby Life Pools","ability",0],
+ ["Interrupting Cloudburst","Interrupting Cloud Burst","Ruby Life Pools","ability",0],
+ ["Swarming Krolusks","Swarming Krolusk","Temple of Sethraliss","ability",0],
+ ["Scouring Sand","Scouring Sands","Temple of Sethraliss","ability",0],
+ ["Serpent's Stormcall","Serpent Storm Called","Temple of Sethraliss","ability",0],
+ ["A Knot of Snakes","Knot of Snakes","Temple of Sethraliss","ability",0],
+ ["Lightning Spire","Lightning Spires","Temple of Sethraliss","ability",0],
+ ["Consume Charge","Consumed Charge","Temple of Sethraliss","ability",0],
+ ["Corrupted Lifeforce","Corrupted Life Force","Temple of Sethraliss","ability",0]
 ];

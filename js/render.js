@@ -13,9 +13,13 @@ const ic=(id,sz)=>`<svg width="${sz||12}" height="${sz||12}" aria-hidden="true">
    No icon still emits an empty box of the same size: 42 of the 329 names have
    no Wowhead entry (none of them is a spell — see the ICONS block), and without the spacer their titles would hang a glyph's
    width left of every other row in the column. */
-const abilIcon=n=>{const s=ICONS[n];
-  return s?`<img class="aicon" src="assets/icons/${s}.jpg" alt="" loading="lazy" decoding="async" width="44" height="44">`
-          :`<span class="aicon none" aria-hidden="true"></span>`;};
+/* A name with no ICONS entry wears the classic red question mark rather than
+   an empty spacer — after the 2026-08 audit the remaining gaps are names
+   Wowhead genuinely lacks (structural rows, council NPCs, unlisted spells),
+   and a visible placeholder is honest where a blank box was mistakable for a
+   layout accident. A future rename that forgets ICONS now shows a ? too. */
+const abilIcon=n=>{const s=ICONS[n]||"inv_misc_questionmark";
+  return `<img class="aicon" src="assets/icons/${s}.jpg" alt="" loading="lazy" decoding="async" width="44" height="44">`;};
 
 /* ── source marks ── every factual claim carries one ── */
 function srcMark(ids){

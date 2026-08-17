@@ -75,6 +75,10 @@ if IMG:
 item_slugs = set(re.findall(r'ic:"([a-z0-9_\-]+)"', mplus + raid))
 missing = [s for s in item_slugs if not os.path.exists(R("assets", "icons", s + ".jpg"))]
 check(not missing, "item icon slugs resolve to files (%d of %d missing)" % (len(missing), len(item_slugs)))
+# abilIcon falls back to the red question mark for names ICONS lacks, so that
+# file is load-bearing even though no map entry names it
+check(os.path.exists(R("assets", "icons", "inv_misc_questionmark.jpg")),
+      "question-mark placeholder icon exists on disk")
 
 # ── 3. bosses: equals encounters.length, per dungeon ───────────────────────
 ids = re.findall(r'\{id:"([\w\-]+)",name:"(?:[^"\\]|\\.)*",short:', mplus)
