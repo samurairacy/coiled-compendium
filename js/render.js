@@ -13,13 +13,20 @@ const ic=(id,sz)=>`<svg width="${sz||12}" height="${sz||12}" aria-hidden="true">
    No icon still emits an empty box of the same size: 42 of the 329 names have
    no Wowhead entry (none of them is a spell — see the ICONS block), and without the spacer their titles would hang a glyph's
    width left of every other row in the column. */
-/* A name with no ICONS entry wears the classic red question mark rather than
-   an empty spacer — after the 2026-08 audit the remaining gaps are names
-   Wowhead genuinely lacks (structural rows, council NPCs, unlisted spells),
-   and a visible placeholder is honest where a blank box was mistakable for a
-   layout accident. A future rename that forgets ICONS now shows a ? too. */
-const abilIcon=n=>{const s=ICONS[n]||"inv_misc_questionmark";
-  return `<img class="aicon" src="assets/icons/${s}.jpg" alt="" loading="lazy" decoding="async" width="44" height="44">`;};
+/* Never an empty spacer, and never one placeholder for two different facts.
+   A row in NOSPELL is iconless by design — a phase marker, an NPC standing as
+   an ability row — and wears WoW's own no-art cog. Anything else missing from
+   ICONS wears the red question mark, which means "this should have an icon and
+   we have not found it": an unresolved gap, or a rename that forgot to move
+   its ICONS entry. Same glyph for both would hide the distinction the audit
+   exists to record. */
+const NOSPELLSET=new Set(NOSPELL);
+const abilIcon=n=>{
+  const s=ICONS[n]||(NOSPELLSET.has(n)?"trade_engineering":"inv_misc_questionmark");
+  const t=ICONS[n]?"":NOSPELLSET.has(n)
+    ?' title="Not a spell — a phase, a structure note, or an NPC that owns these tactics."'
+    :' title="No icon found for this name yet."';
+  return `<img class="aicon" src="assets/icons/${s}.jpg" alt=""${t} loading="lazy" decoding="async" width="44" height="44">`;};
 
 /* ── source marks ── every factual claim carries one ── */
 function srcMark(ids){
@@ -1131,13 +1138,28 @@ function pSources(){
      SOURCES cannot silently drop it off this page. */
   const GROUPS=[["blizzard","Blizzard"],["journal","Blizzard Encounter Journal"],
                 ["capture","In-game capture"],["wowhead","Wowhead"],
-                ["icyveins","Icy Veins"],["creator","Tactyks"]];
-  const seen=new Set(GROUPS.map(([k])=>k));
-  const extra=[...new Set(Object.values(SOURCES).map(s=>s.k))].filter(k=>!seen.has(k))
-                .map(k=>[k,(Object.values(SOURCES).find(s=>s.k===k)||{}).a||k]);
-  const groups=[...GROUPS,...extra]
-    .map(([k,label])=>[label,Object.values(SOURCES).filter(s=>s.k===k)])
-    .filter(([,l])=>l.length);
+                ["icyveins","Icy Veins"]];
+  /* The five above are publishers and group by kind. EVERYONE ELSE groups by
+     AUTHOR, which is the only key that holds: the creator kind used to be
+     labelled "Tactyks" wholesale — fine while he was the only creator cited,
+     and quietly wrong from the moment Method, Ready Check Pull, BrettStefani,
+     JFunkGaming and WoW So Zesty arrived, all filed under his name. Grouping
+     by author also reunites Method's written guides (k:"method") with its
+     videos (k:"creator"), which a kind-based split had put in two sections
+     with the same heading. Order is trust order: best tier first, Tactyks
+     ahead of the rest of his tier because he is the creator this project
+     trusts most, and wow.gg last by virtue of being tier 4. */
+  const pubKinds=new Set(GROUPS.map(([k])=>k));
+  const rest=Object.values(SOURCES).filter(s=>!pubKinds.has(s.k));
+  const tierOf=a=>Math.min(...rest.filter(s=>s.a===a).map(s=>s.t||9));
+  const LEAD=["Tactyks","Method"];
+  const byAuthor=[...new Set(rest.map(s=>s.a))].sort((a,b)=>
+    tierOf(a)-tierOf(b)||(LEAD.indexOf(a)<0?99:LEAD.indexOf(a))-(LEAD.indexOf(b)<0?99:LEAD.indexOf(b))
+    ||a.localeCompare(b));
+  const groups=[
+    ...GROUPS.map(([k,label])=>[label,Object.values(SOURCES).filter(s=>s.k===k)]),
+    ...byAuthor.map(a=>[a,rest.filter(s=>s.a===a)])
+  ].filter(([,l])=>l.length);
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Sources</em></div>
   <h1>Where all of this came from</h1>
   <p class="lede">Every factual claim in this compendium carries a source mark. Hover one anywhere on the

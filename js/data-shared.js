@@ -48,10 +48,10 @@ const SOURCES={
  tk_kr  :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"King's Rest Mythic+ Dungeon Guide",d:"2026-08-07",u:"https://www.youtube.com/watch?v=pT8A8RW9QTc"},
  tk_tos :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Temple of Sethraliss Mythic+ Dungeon Guide",d:"2026-08-08",u:"https://www.youtube.com/watch?v=qBM_N6qBcEc"},
  tk_pool:{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Thoughts on the Season 2 Dungeon Pool, Rewards and Resilient Keystones",d:"2026-07-25",u:"https://www.youtube.com/watch?v=IcBeTr3VTbo"},
- me_ssz :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"Sszorak Boss Guide video (Perky, Honolulu)",d:"2026-08-13",u:"https://www.youtube.com/watch?v=SfPXUQ8melM"},
- me_exp :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"The Lost Explorers Boss Guide video (Perky, Honolulu)",d:"2026-08-14",u:"https://www.youtube.com/watch?v=dRmU77JQ_Yg"},
- me_vas :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"Vashnik the Malignant Boss Guide video (Perky, Honolulu)",d:"2026-08-13",u:"https://www.youtube.com/watch?v=gTdNoxqAHOQ"},
- me_twf :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"The Twin Fangs Boss Guide video (Perky, Honolulu)",d:"2026-08-14",u:"https://www.youtube.com/watch?v=SoOCwJT2qYI"},
+ me_ssz :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"Sszorak Boss Guide video (presented by Purke of <Honolulu>)",d:"2026-08-13",u:"https://www.youtube.com/watch?v=SfPXUQ8melM"},
+ me_exp :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"The Lost Explorers Boss Guide video (presented by Purke of <Honolulu>)",d:"2026-08-14",u:"https://www.youtube.com/watch?v=dRmU77JQ_Yg"},
+ me_vas :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"Vashnik the Malignant Boss Guide video (presented by Purke of <Honolulu>)",d:"2026-08-13",u:"https://www.youtube.com/watch?v=gTdNoxqAHOQ"},
+ me_twf :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"The Twin Fangs Boss Guide video (presented by Purke of <Honolulu>)",d:"2026-08-14",u:"https://www.youtube.com/watch?v=SoOCwJT2qYI"},
  bs_alt :{l:"BRETTSTEFANI",t:3,k:"creator",  a:"BrettStefani",b:"TLDR Coiled Altar Boss Guide",d:"2026-08-12",u:"https://www.youtube.com/watch?v=818k4yfy8D4"},
  jf_va  :{l:"JFUNKGAMING",t:3,k:"creator",  a:"JFunkGaming",b:"Venomous Abyss Heroic-Mythic Boss Guides",d:"2026-08-12",u:"https://www.youtube.com/watch?v=o7lua5gr850"},
  rcp_nek:{l:"READY CHECK ",t:3,k:"creator",  a:"Ready Check Pull",b:"Nek'zali Guide",d:"2026-08-10",u:"https://www.youtube.com/watch?v=YBn4-mMBLs4"},
@@ -708,7 +708,8 @@ const ICONS={
    three named spells. Owner supplied the spell links. */
 "Harsh Winter":"spell_frost_arcticwinds",
 "Cloudpiercer":"ability_skyreach_wind_wall",
-"Static Discharge":"spell_shaman_staticshock"
+"Static Discharge":"spell_shaman_staticshock",
+"Spore Spines":"inv_misc_herb_04"
 };
 
 /* ═══ ROWS THAT ARE NOT SPELLS ═══════════════════════════════════════════
@@ -864,5 +865,6 @@ const CORRECTIONS=[
     trinket tooltip still says "Fel Shield" in two — that quote is left as is. */
  ["Felshield","Fel Shield","Murder Row","ability",0],
  ["Lightfire","Light Fire","The Blinding Vale","ability",0],
- ["Harsh Winter","Master of the Winds","Den of Nalorakk","ability",0]
+ ["Harsh Winter","Master of the Winds","Den of Nalorakk","ability",0],
+ ["Spore Spines","Four-Spined","The Blinding Vale","ability",0]
 ];

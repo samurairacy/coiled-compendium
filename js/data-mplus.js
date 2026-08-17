@@ -384,7 +384,7 @@ loot:{s:["iv_don"],i:[
  areas:[
   {n:"The Grove",mobs:[
    {n:"Lasher",k:"trash",a:[
-    {n:"Four-Spined",t:["dot","stacking"],c:["magic","freedom"],r:["tank","healer"],sev:2,e:"Stacks a magic damage-over-time on the tank through melee swings.",h:"Removable by magic dispel or by a freedom effect, so you have two ways to clear it more often. Note the pool video contests whether freedoms work — see the disputes list.",s:["tk_bv"]}]},
+    {n:"Spore Spines",t:["dot","stacking"],c:["magic","freedom"],r:["tank","healer"],sev:2,e:"Stacks a magic damage-over-time on the tank through melee swings.",h:"Removable by magic dispel or by a freedom effect, so you have two ways to clear it more often. Note the pool video contests whether freedoms work — see the disputes list.",s:["tk_bv"]}]},
    {n:"Lightgorged Lasher",k:"trash",a:[
     {n:"Lightbloom Pollination",t:["shield","heal"],c:["focus"],r:["dps"],sev:2,e:"Buffs and heals nearby allies while the shield holds.",h:"Focus it the moment it happens — the written guide treats this as an interrupt target, so if you can stop the cast outright, do.",s:["tk_bv","iv_bv"]}]},
    {n:"Radiant Spellsower",k:"caster",a:[
