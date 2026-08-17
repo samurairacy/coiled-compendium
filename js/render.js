@@ -229,32 +229,17 @@ const lootTable=d=>{
   const jewel=I.filter(x=>["Ring","Neck","Cloak"].includes(x.ty));
   const table=rows=>`<table><thead><tr><th>Item</th><th>Slot</th><th>Primary</th><th>Secondaries</th></tr></thead>
     <tbody>${rows.map(lootRow).join("")}</tbody></table>`;
-  return `<div class="sec"><h2>The end-of-run chest</h2><span class="n">${n} items</span></div>
-  <p class="note">Nothing here drops from a boss. Mythic+ pays out once, from a chest that appears when the
-  dungeon is finished — in time or not — and that chest holds the whole table below. <b>Two</b> players in the
-  group receive an item, picked at random, and what each of them is eligible for follows their
-  <b>loot specialisation</b> rather than the spec they actually played. So the useful questions are which slot
-  an item fills and whether you can wear it, not which boss it hangs off.${srcMark(d.loot.s)}</p>
+  /* This page used to open with four paragraphs explaining how Mythic+ loot
+     works and how trinket roles were inferred. Both were true and both were
+     onboarding — noise on a page people open mid-run already knowing what a
+     chest is. The chest rule now rides the section heading; the inference
+     caveat lives where it applies, on the chips themselves (they read
+     UNCONFIRMED and carry the full reasoning in their tooltip). The long
+     version survives on the Loot index, which is where someone asking the
+     question would actually be. */
+  return `<div class="sec"><h2>The end-of-run chest</h2><span class="n">${n} items · two drop per run</span></div>
 
   ${trink.length?`<div class="sec"><h2>Trinkets</h2><span class="n">${trink.length}</span></div>
-  <p class="note">Where a trinket carries a primary stat it gates who can use it — Intellect to casters and
-  healers, Strength and Agility to melee and physical ranged. <b>But five of the trinkets in this season have no
-  primary stat at all</b>, and two of those carry no static stat whatsoever, so the stat line alone will not tell
-  you who a trinket is for. The definitive answer is the specialisation restriction on the item itself, which is
-  not published anywhere this compendium can read — so where the stat line is silent, read the effect. An effect
-  keyed to <em>you</em> taking damage, or one that procs from being meleed, is a tanking trinket. One that shields
-  or heals a targeted ally is a healer's. And the effect frequently carries the primary stat itself, by the same
-  rules as the stat line — <em>Mindpiercer's Sigil</em> has no stats printed on it and grants Intellect on proc.</p>
-  <p class="note">Tanks are eligible for tank trinkets, but most set loot specialisation to a damage spec:
-  survivability only out-earns throughput once a key is genuinely dangerous.</p>
-  <p class="note">${ic("i-warn",13)} The role on each trinket below is marked <b>UNCONFIRMED</b> because it is the
-  one judgement on this page nobody published. It answers <em>whose loot table is this on</em> — not who could
-  wring value out of it. The stat line sets the outer bound: Intellect alone can only be a caster or a healer,
-  Strength or Agility alone can never be either. Then the effect narrows it. A purely offensive proc is a damage
-  dealer's even when a Strength tank could equip it and play well with it; a defensive effect, or one triggered by
-  dodging, parrying or blocking, is a tank's; one that heals or shields an ally is a healer's. Effects that simply
-  hand you stats are the exception — they stay as broad as the stat line allows, which is why the few trinkets
-  carrying all three primary stats <em>and</em> a stat-granting effect are marked for everyone.</p>
   <div class="trinkets">${trink.map(x=>`<div class="card trink">
     <div class="tihead">${itemIcon(x)}<h3>${esc(x.n)}</h3></div>
     <div class="tags tichips">${primChip(x.p)}${roleChips(x)}${x.x&&x.x.length?secChip(x.x):""}</div>
