@@ -674,49 +674,78 @@ const inData=(arr,f)=>arr.filter(v=>LOOTALL.some(o=>f(o.i,v)));
    A spec therefore sees every trinket its stat line permits.
    ═══════════════════════════════════════════════════════════════════════ */
 const WCLASS={
- "Mage":        {a:"Cloth",  w:["Dagger","Staff","Sword","Wand","Off-hand"]},
- "Priest":      {a:"Cloth",  w:["Dagger","Mace","Staff","Wand","Off-hand"]},
- "Warlock":     {a:"Cloth",  w:["Dagger","Staff","Sword","Wand","Off-hand"]},
- "Demon Hunter":{a:"Leather",w:["Warglaive","Sword","Axe","Fist","Dagger"]},
- "Druid":       {a:"Leather",w:["Dagger","Fist","Mace","Polearm","Staff","Off-hand"]},
- "Monk":        {a:"Leather",w:["Axe","Mace","Sword","Fist","Polearm","Staff"]},
- "Rogue":       {a:"Leather",w:["Dagger","Sword","Axe","Fist","Mace"]},
- "Hunter":      {a:"Mail",   w:["Bow","Crossbow","Gun","Axe","Sword","Polearm","Staff","Dagger","Fist"]},
- "Shaman":      {a:"Mail",   w:["Axe","Mace","Dagger","Fist","Staff","Shield","Off-hand"]},
- "Evoker":      {a:"Mail",   w:["Axe","Dagger","Fist","Mace","Staff","Sword","Off-hand"]},
- "Death Knight":{a:"Plate",  w:["Axe","Mace","Sword","Polearm"]},
- "Paladin":     {a:"Plate",  w:["Axe","Mace","Sword","Polearm","Shield"]},
- "Warrior":     {a:"Plate",  w:["Axe","Mace","Sword","Polearm","Staff","Dagger","Fist","Shield"]}
+ "Mage":{a:"Cloth"},        "Priest":{a:"Cloth"},   "Warlock":{a:"Cloth"},
+ "Demon Hunter":{a:"Leather"},"Druid":{a:"Leather"},"Monk":{a:"Leather"},"Rogue":{a:"Leather"},
+ "Hunter":{a:"Mail"},       "Shaman":{a:"Mail"},    "Evoker":{a:"Mail"},
+ "Death Knight":{a:"Plate"},"Paladin":{a:"Plate"},  "Warrior":{a:"Plate"}
 };
-/* [class, spec, primary stat] — the roster is the one Icy Veins' Season 2 set
-   guide lists, which is also where Demon Hunter's third spec comes from. */
+/* Hand sets. Axe, Mace and Sword all exist in both one- and two-handed form
+   this season, so the hand gate is not cosmetic: Retribution wants the
+   two-handed axe and Protection wants the one-handed one. */
+const H1=["One-hand"], H2=["Two-hand"], H12=["One-hand","Two-hand"],
+      H1O=["One-hand","Off-hand"], H12O=["One-hand","Two-hand","Off-hand"],
+      HR=["Ranged"], HC=["One-hand","Two-hand","Off-hand","Ranged"];
+/* [class, spec, primary, weapon types, hand slots] — weapons and hands sit on
+   the SPEC because that is where the game puts them. Beast Mastery and
+   Marksmanship take a ranged weapon and no melee; Survival takes melee and no
+   ranged. Assassination and Subtlety are daggers only where Outlaw is anything
+   but. Retribution is two-handed and carries no shield where Protection is the
+   reverse. None of that is derivable from the class. */
 const SPECS=[
- ["Mage","Arcane","Int"],["Mage","Fire","Int"],["Mage","Frost","Int"],
- ["Priest","Discipline","Int"],["Priest","Holy","Int"],["Priest","Shadow","Int"],
- ["Warlock","Affliction","Int"],["Warlock","Demonology","Int"],["Warlock","Destruction","Int"],
- ["Demon Hunter","Havoc","Agi"],["Demon Hunter","Vengeance","Agi"],["Demon Hunter","Devourer","Agi"],
- ["Druid","Balance","Int"],["Druid","Feral","Agi"],["Druid","Guardian","Agi"],["Druid","Restoration","Int"],
- ["Monk","Brewmaster","Agi"],["Monk","Mistweaver","Int"],["Monk","Windwalker","Agi"],
- ["Rogue","Assassination","Agi"],["Rogue","Outlaw","Agi"],["Rogue","Subtlety","Agi"],
- ["Hunter","Beast Mastery","Agi"],["Hunter","Marksmanship","Agi"],["Hunter","Survival","Agi"],
- ["Shaman","Elemental","Int"],["Shaman","Enhancement","Agi"],["Shaman","Restoration","Int"],
- ["Evoker","Devastation","Int"],["Evoker","Preservation","Int"],["Evoker","Augmentation","Int"],
- ["Death Knight","Blood","Str"],["Death Knight","Frost","Str"],["Death Knight","Unholy","Str"],
- ["Paladin","Holy","Int"],["Paladin","Protection","Str"],["Paladin","Retribution","Str"],
- ["Warrior","Arms","Str"],["Warrior","Fury","Str"],["Warrior","Protection","Str"]
+ ["Mage","Arcane","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
+ ["Mage","Fire","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
+ ["Mage","Frost","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
+ ["Priest","Discipline","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC],
+ ["Priest","Holy","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC],
+ ["Priest","Shadow","Int",["Staff","Dagger","Mace","Wand","Off-hand"],HC],
+ ["Warlock","Affliction","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
+ ["Warlock","Demonology","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
+ ["Warlock","Destruction","Int",["Staff","Dagger","Sword","Wand","Off-hand"],HC],
+ ["Demon Hunter","Havoc","Agi",["Warglaive","Sword","Axe","Fist"],H1],
+ ["Demon Hunter","Vengeance","Agi",["Warglaive","Sword","Axe","Fist"],H1],
+ ["Demon Hunter","Devourer","Agi",["Warglaive","Sword","Axe","Fist"],H1],
+ ["Druid","Balance","Int",["Staff","Dagger","Mace","Off-hand"],H12O],
+ ["Druid","Feral","Agi",["Staff","Polearm","Dagger","Fist","Mace"],H12],
+ ["Druid","Guardian","Agi",["Staff","Polearm","Dagger","Fist","Mace"],H12],
+ ["Druid","Restoration","Int",["Staff","Dagger","Mace","Off-hand"],H12O],
+ ["Monk","Brewmaster","Agi",["Staff","Polearm","Axe","Mace","Sword","Fist"],H12],
+ ["Monk","Mistweaver","Int",["Staff","Mace","Sword","Fist","Off-hand"],H12O],
+ ["Monk","Windwalker","Agi",["Axe","Mace","Sword","Fist","Staff","Polearm"],H12],
+ ["Rogue","Assassination","Agi",["Dagger"],H1],
+ ["Rogue","Outlaw","Agi",["Sword","Axe","Mace","Fist"],H1],
+ ["Rogue","Subtlety","Agi",["Dagger"],H1],
+ ["Hunter","Beast Mastery","Agi",["Bow","Crossbow","Gun"],HR],
+ ["Hunter","Marksmanship","Agi",["Bow","Crossbow","Gun"],HR],
+ ["Hunter","Survival","Agi",["Polearm","Staff","Axe","Sword","Mace","Dagger","Fist"],H12],
+ ["Shaman","Elemental","Int",["Staff","Dagger","Mace","Axe","Fist","Shield","Off-hand"],H12O],
+ ["Shaman","Enhancement","Agi",["Axe","Mace","Fist","Dagger"],H1],
+ ["Shaman","Restoration","Int",["Staff","Dagger","Mace","Axe","Fist","Shield","Off-hand"],H12O],
+ ["Evoker","Devastation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O],
+ ["Evoker","Preservation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O],
+ ["Evoker","Augmentation","Int",["Staff","Dagger","Mace","Sword","Axe","Fist","Off-hand"],H12O],
+ ["Death Knight","Blood","Str",["Axe","Mace","Sword","Polearm"],H2],
+ ["Death Knight","Frost","Str",["Axe","Mace","Sword","Polearm"],H12],
+ ["Death Knight","Unholy","Str",["Axe","Mace","Sword","Polearm"],H2],
+ ["Paladin","Holy","Int",["Mace","Sword","Axe","Shield","Off-hand"],H1O],
+ ["Paladin","Protection","Str",["Mace","Sword","Axe","Shield"],H1O],
+ ["Paladin","Retribution","Str",["Mace","Sword","Axe","Polearm"],H2],
+ ["Warrior","Arms","Str",["Axe","Mace","Sword","Polearm","Staff"],H2],
+ ["Warrior","Fury","Str",["Axe","Mace","Sword","Polearm","Staff","Dagger","Fist"],H12],
+ ["Warrior","Protection","Str",["Axe","Mace","Sword","Shield"],H1O]
 ];
 const SPECKEY=s=>s[0]+"/"+s[1];
-const SPECMAP=Object.fromEntries(SPECS.map(s=>[SPECKEY(s),{c:s[0],s:s[1],p:s[2]}]));
-/* No primary at all means the item does not gate on stat — trinkets and
-   tokens mostly — so it stays eligible. */
+const SPECMAP=Object.fromEntries(SPECS.map(s=>
+  [SPECKEY(s),{c:s[0],s:s[1],p:s[2],w:s[3],h:s[4],a:WCLASS[s[0]].a}]));
+/* No primary at all means the item does not gate on stat \u2014 trinkets and
+   tokens mostly \u2014 so it stays eligible. */
 const specStatOK=(i,sp)=>!i.p||!i.p.length||i.p.includes(sp.p);
 function specCan(i,key){
   const sp=SPECMAP[key]; if(!sp) return true;
-  const cl=WCLASS[sp.c], ty=i.ty;
-  if(ARMOURS.includes(ty)) return ty===cl.a;              // armour: class gate only
-  if(ty==="Token") return i.tc===cl.a||i.tc==="All";      // tier token carries its armour
+  const ty=i.ty;
+  if(ARMOURS.includes(ty)) return ty===sp.a;              // armour: class gate only
+  if(ty==="Token") return i.tc===sp.a||i.tc==="All";      // tier token carries its armour
   if(ty&&(WEAPONRY.has(ty)||ty==="Shield"||ty==="Off-hand"))
-    return cl.w.includes(ty)&&specStatOK(i,sp);           // proficiency, then stat
+    return sp.w.includes(ty)&&sp.h.includes(i.sl)&&specStatOK(i,sp);
   return specStatOK(i,sp);                                // trinkets, rings, necks, cloaks
 }
 
@@ -794,9 +823,13 @@ function pLoot(){
       ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,"UNCONFIRMED: "+LROLE[r],liveRo)).join("")}</div></div>
     <details class="fgroup specfg"${F.spec.size?" open":""}>
       <summary><h4>Specialisation <span class="fany">any of · ${SPECS.length} specs · derived, not published</span></h4></summary>
-      <p class="note specnote">Eligibility from three things the data actually knows: your armour class, your
-      spec's primary stat, and your class's weapon proficiency. Trinkets are shown wherever the stat line allows
-      them — the role marks are our own inference and are not used to narrow this further.</p>
+      <p class="note specnote">Eligibility from four things the data actually knows: your armour class, your
+      spec's primary stat, the weapon types the <em>spec</em> uses, and how many hands it needs. Weapons are a
+      spec matter rather than a class one, which is the whole point — Beast Mastery and Marksmanship take a ranged
+      weapon and no melee, Survival takes melee and no ranged; Assassination and Subtlety are daggers only where
+      Outlaw is anything but; Retribution is two-handed and never a shield where Protection is the reverse.
+      Trinkets appear wherever the stat line allows them: the role marks are our own inference, and narrowing by
+      them would pass a guess off as a rule.</p>
       ${ARMOURS.map(a=>`<div class="specarm"><span class="specarm-h">${a}</span>
         ${Object.keys(WCLASS).filter(c=>WCLASS[c].a===a).map(c=>`<div class="specrow">
           <span class="speccls">${esc(c)}</span>

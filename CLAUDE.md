@@ -68,6 +68,18 @@ item icons keyed by Blizzard slug.
   orders because each describes one walk of the same graph; **that is not
   a naming dispute**. `o` is a listing index for the switcher; `pos` is
   the only order claim a page may render for a fork boss.
+- **The spec facet models weapons per SPEC, not per class.** `SPECS` carries
+  [class, spec, primary, weapon types, hand slots]; `WCLASS` now holds only
+  armour. This is load-bearing: Beast Mastery and Marksmanship take ranged and
+  no melee, Survival melee and no ranged; Assassination and Subtlety are
+  daggers only, Outlaw anything but; Retribution is two-handed and shieldless,
+  Protection the reverse; no Death Knight spec takes a shield. Axe, Mace and
+  Sword all exist in both hands this season, so the hand gate is real. Some
+  correct answers are emergent rather than stated — Fury sees no staff because
+  every staff is Agi or Int — so **do not fix a spec by widening its list
+  until you have checked whether the stat gate is doing the work.**
+  `tools/check.py` asserts 40 specs, 13 classes, no duplicates, and that
+  every claimed weapon type exists in the data.
 - **Trinket `ro` answers "whose loot table is this on", not "who benefits".**
   The stat line sets the outer bound (Int alone → caster/healer; Str/Agi
   alone → never either), then the effect narrows it: a purely offensive

@@ -114,7 +114,30 @@ check(not bad_df, "raid df values within {n,h,m} (%d bad)" % len(bad_df))
 both = len(re.findall(r'df:\["n","h"\]', raid))
 check(both == 0, 'no explicit df:["n","h"] — absence is the both spelling (%d found)' % both)
 
-# ── 7. the shell: every script and stylesheet it names exists ──────────────
+# ── 7. the spec filter: 40 specs, real weapon types, nothing stranded ──────
+spec_blk = re.search(r"const SPECS=\[\n(.*?)\n\];", render, re.S)
+if not spec_blk:
+    check(False, "SPECS block not found")
+else:
+    rows = re.findall(r'\["([A-Za-z \']+)","([A-Za-z \']+)","(Str|Agi|Int)",\[([^\]]*)\],(\w+)\]',
+                      spec_blk.group(1))
+    check(len(rows) == 40, "SPECS has 40 specialisations (%d found)" % len(rows))
+    classes = {r[0] for r in rows}
+    check(len(classes) == 13, "SPECS covers 13 classes (%d found)" % len(classes))
+    dupes = [k for k, v in __import__("collections").Counter((r[0], r[1]) for r in rows).items() if v > 1]
+    check(not dupes, "no duplicated spec (%s)" % (dupes or "clean"))
+    # every weapon type a spec claims must actually exist as a ty in the data
+    real_ty = set(re.findall(r'ty:"([A-Za-z\- ]+)"', mplus + raid))
+    claimed = set()
+    for r in rows: claimed |= set(re.findall(r'"([A-Za-z\- ]+)"', r[3]))
+    unknown = sorted(claimed - real_ty)
+    check(not unknown, "spec weapon types all exist in the data (%s)" % (", ".join(unknown) or "clean"))
+    # hand-set identifiers must be defined
+    hands = {r[4] for r in rows}
+    defined = set(re.findall(r'\b(H1|H2|H12|H1O|H12O|HR|HC)=\[', render))
+    check(hands <= defined, "spec hand sets all defined (%s)" % (", ".join(sorted(hands - defined)) or "clean"))
+
+# ── 8. the shell: every script and stylesheet it names exists ──────────────
 refs = re.findall(r'(?:src|href)="((?:js|css)/[\w\-.]+)"', html)
 missing = [r_ for r_ in refs if not os.path.exists(R(*r_.split("/")))]
 check(len(refs) >= 6 and not missing, "index.html references resolve (%d refs, %d missing)" % (len(refs), len(missing)))
