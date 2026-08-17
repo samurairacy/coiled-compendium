@@ -101,7 +101,10 @@ item icons keyed by Blizzard slug.
   a wrong `ro` silently misfilters the spec facet. `rc:` is a source key for
   eligibility *seen in game*, and it **outranks every rule below** — the chips
   drop the unconfirmed tooltip and wear a tick, and `check.py` exempts those
-  rows. Two trinkets carry it so far; the other 39 roles are our reading.
+  rows. **All 27 Mythic+ trinket roles are observed** as of 2026-08-17 — the
+  owner walked the set in game — so `ro` is now *data* on that module, not a
+  reading. The 14 raid trinkets are still inferred and still marked so; the
+  raid is the open half of this job.
 - **The rule "a purely offensive proc is DPS-only" is FALSIFIED. Do not
   restore it.** It was in this file for a day. Then Coiled Fangstone — `Str`,
   a pure damage Use, no stat grant, nothing defensive anywhere in it — turned
@@ -123,7 +126,12 @@ item icons keyed by Blizzard slug.
   `rc:` is how the data records that it was looked at. Do not "tidy" the
   remaining inferred rows in either direction, and do not reason from one
   trinket to its shape-mates — the banner is the standing proof that the
-  shape does not carry the answer.
+  shape does not carry the answer. **Tiny Electromental in a Jar** is a second
+  confirmed melee-DPS-only item, and **Tumor of the Swarm runs the other way
+  entirely**: an attack-triggered damage proc with a self-heal, confirmed
+  tank-**only**, with melee DPS ineligible. That one is unreachable from the
+  tooltip by any rule in either direction, and it is why the M+ set was worth
+  walking item by item instead of being reasoned about.
 - **The tank direction of the rule still holds.** A defensive primary makes a
   tank trinket even when it also deals damage, because that damage is usually
   contingent on tanking (damage absorbed, health lost, dodge/parry/block).
