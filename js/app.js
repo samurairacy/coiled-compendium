@@ -63,7 +63,9 @@ addEventListener("hashchange",route);
    replaceState so painting never triggers a re-route; read only when a query
    is actually present, so plain #/mechanics keeps whatever you had. Sets are
    dot-joined — the values are slugs, and dots survive URLs unencoded. */
-const qsWrite=(base,p)=>{const q=p.toString().replace(/%2C/g,",");
+/* Commas and slashes are legal unescaped in a query component, and a facet URL
+   is meant to be pasted into chat — spec=Hunter/Survival reads, %2F does not. */
+const qsWrite=(base,p)=>{const q=p.toString().replace(/%2C/g,",").replace(/%2F/g,"/");
   history.replaceState(null,"","#/"+base+(q?"?"+q:""));};
 function mechQS(){const p=new URLSearchParams();
   if(FACETS.mod)p.set("from",FACETS.mod);
@@ -83,13 +85,12 @@ function lootQS(){const p=new URLSearchParams();
   if(LFACETS.big)p.set("big",LFACETS.big);
   if(LFACETS.fx)p.set("fx",LFACETS.fx);
   for(const k of ["sl","ty","p","x","ro"]) if(LFACETS[k].size)p.set(k,[...LFACETS[k]].join("."));
-  /* spec keys contain a slash, so they ride comma-separated rather than dot-joined */
-  if(LFACETS.spec.size)p.set("spec",[...LFACETS.spec].join(","));
+  if(LFACETS.spec)p.set("spec",LFACETS.spec);
   qsWrite("loot",p);}
 function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
   const set=k=>new Set((p.get(k)||"").split(".").filter(Boolean));
   LFACETS={sl:set("sl"),ty:set("ty"),p:set("p"),x:set("x"),ro:set("ro"),
-    spec:new Set((p.get("spec")||"").split(",").filter(Boolean)),
+    spec:p.get("spec")||null,
     big:p.get("big")||null,dg:p.get("dg")||null,fx:p.get("fx")||null,mod:p.get("from")||null};}
 
 /* facet clicks — delegated, so re-renders never lose the handler */
@@ -147,7 +148,7 @@ document.addEventListener("click",e=>{
     else LFACETS[key]=LFACETS[key]===v?null:v;
     paintLoot(); lootQS(); return;
   }
-  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),spec:new Set(),big:null,dg:null,fx:null,mod:null};
+  if(e.target.closest("#clearl")){LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,spec:null,dg:null,fx:null,mod:null};
     paintLoot(); lootQS();}
 });
 

@@ -509,11 +509,17 @@ td.li{display:flex;align-items:center;gap:.5rem}
    Collapsed by default so it costs nothing until wanted; grouped by armour
    class because that is the first gate eligibility applies, and a class
    label per row keeps the spec names short. ═══════════════════════════ */
-.specfg summary{cursor:pointer;list-style:none;display:flex;align-items:baseline}
+/* One arrow, and it lives inside the label so it sits to its left rather than
+   on a line of its own. The native marker is suppressed three ways because
+   browsers disagree about which one they honour. */
+.specfg summary{cursor:pointer;list-style:none}
 .specfg summary::-webkit-details-marker{display:none}
-.specfg summary::before{content:"▸";color:var(--ink-faint);margin-right:.45rem;font-size:.8rem;line-height:1.4}
-.specfg[open] summary::before{content:"▾"}
-.specfg summary h4{margin:0}
+.specfg summary::marker{content:""}
+.specfg summary h4{margin:0;display:flex;align-items:baseline;gap:.1rem}
+.spectw{display:inline-block;width:.9rem;color:var(--ink-faint);font-size:.7rem}
+.spectw::before{content:"▶"}
+.specfg[open] .spectw::before{content:"▼"}
+.specfg summary:hover .spectw{color:var(--accent)}
 .specnote{margin:.55rem 0 .8rem;max-width:74ch}
 .specarm{margin:0 0 .5rem}
 .specarm-h{
@@ -522,7 +528,13 @@ td.li{display:flex;align-items:center;gap:.5rem}
   padding-bottom:.15rem;margin-bottom:.3rem
 }
 .specrow{display:grid;grid-template-columns:8.5rem 1fr;gap:.5rem;align-items:start;margin-bottom:.2rem}
-.specrow .speccls{font-family:var(--face-term);font-size:.66rem;letter-spacing:.05em;color:var(--ink-muted);padding-top:.22rem}
+.specrow .speccls{font-family:var(--face-term);font-size:.66rem;letter-spacing:.05em;color:var(--ink-muted);
+  padding-top:.18rem;display:flex;align-items:center;gap:.35rem}
+/* class and spec icons: small, square, never a broken image */
+.cicon{border-radius:2px;flex:0 0 auto;vertical-align:middle}
+.specfg .fopt{display:inline-flex;align-items:center;gap:.3rem}
+.tokcls{display:inline-flex;align-items:center;gap:.25rem;margin-right:.5rem;white-space:nowrap}
+h3 .cicon{margin-right:.4rem}
 @media(max-width:700px){.specrow{grid-template-columns:1fr;gap:.15rem}}
 
 /* ── loot chip families ───────────────────────────────────────────────

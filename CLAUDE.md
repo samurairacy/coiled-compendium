@@ -79,7 +79,15 @@ item icons keyed by Blizzard slug.
   every staff is Agi or Int — so **do not fix a spec by widening its list
   until you have checked whether the stat gate is doing the work.**
   `tools/check.py` asserts 40 specs, 13 classes, no duplicates, and that
-  every claimed weapon type exists in the data.
+  every claimed weapon type exists in the data. **Alone among the loot
+  groups it is single-select** — "what can my spec use" is a question about
+  one character, and two specs at once answers nobody. So `LFACETS.spec` is
+  a plain string, not a Set, which is all the delegated handler needs to
+  make it exclusive; the `%2F` in its key rides the hash unescaped so a
+  shared link reads `?spec=Hunter/Survival`. Class and spec icons come from
+  `CLASSICON`/`SPECICON` via `clsIcon()`/`specIcon()` — same missing-key
+  contract as `abilIcon()`. Devourer, being new, has no published spec icon
+  and carries a documented stand-in.
 - **Trinket `ro` answers "whose loot table is this on", not "who benefits".**
   The stat line sets the outer bound (Int alone → caster/healer; Str/Agi
   alone → never either), then the effect narrows it: a purely offensive

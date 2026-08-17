@@ -245,6 +245,66 @@ const IMG={
                   e effect (FACT) · h handling (READ, opinion) · s sources
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ═══ CLASS AND SPEC ICONS ══════════════════════════════════════
+   Blizzard's own class and specialisation icons, keyed the same way ICONS is
+   and served from assets/icons/ so the page makes no third-party request.
+   Every slug was verified against the CDN — a wrong one 404s.
+
+   One stand-in, marked because it is one: Demon Hunter's Devourer is new in
+   Midnight and Wowhead publishes no spec icon for it, so it borrows the icon
+   of Devourer Bite, its own signature ability. Replace it the day a real spec
+   icon exists.
+   ═════════════════════════════════════════════════════════════════════ */
+const CLASSICON={
+"Warrior":"classicon_warrior","Paladin":"classicon_paladin","Hunter":"classicon_hunter",
+"Rogue":"classicon_rogue","Priest":"classicon_priest","Death Knight":"classicon_deathknight",
+"Shaman":"classicon_shaman","Mage":"classicon_mage","Warlock":"classicon_warlock",
+"Monk":"classicon_monk","Druid":"classicon_druid","Demon Hunter":"classicon_demonhunter",
+"Evoker":"classicon_evoker"
+};
+const SPECICON={
+"Warrior/Arms":"ability_warrior_savageblow",
+"Warrior/Fury":"ability_warrior_innerrage",
+"Warrior/Protection":"ability_warrior_defensivestance",
+"Paladin/Holy":"spell_holy_holybolt",
+"Paladin/Protection":"ability_paladin_shieldofthetemplar",
+"Paladin/Retribution":"spell_holy_auraoflight",
+"Hunter/Beast Mastery":"ability_hunter_bestialdiscipline",
+"Hunter/Marksmanship":"ability_hunter_focusedaim",
+"Hunter/Survival":"ability_hunter_camouflage",
+"Rogue/Assassination":"ability_rogue_eviscerate",
+"Rogue/Outlaw":"inv_sword_30",
+"Rogue/Subtlety":"ability_stealth",
+"Priest/Discipline":"spell_holy_powerwordshield",
+"Priest/Holy":"spell_holy_guardianspirit",
+"Priest/Shadow":"spell_shadow_shadowwordpain",
+"Death Knight/Blood":"spell_deathknight_bloodpresence",
+"Death Knight/Frost":"spell_deathknight_frostpresence",
+"Death Knight/Unholy":"spell_deathknight_unholypresence",
+"Shaman/Elemental":"spell_nature_lightning",
+"Shaman/Enhancement":"spell_shaman_improvedstormstrike",
+"Shaman/Restoration":"spell_nature_magicimmunity",
+"Mage/Arcane":"spell_holy_magicalsentry",
+"Mage/Fire":"spell_fire_firebolt02",
+"Mage/Frost":"spell_frost_frostbolt02",
+"Warlock/Affliction":"spell_shadow_deathcoil",
+"Warlock/Demonology":"spell_shadow_metamorphosis",
+"Warlock/Destruction":"spell_shadow_rainoffire",
+"Monk/Brewmaster":"spell_monk_brewmaster_spec",
+"Monk/Mistweaver":"spell_monk_mistweaver_spec",
+"Monk/Windwalker":"spell_monk_windwalker_spec",
+"Druid/Balance":"spell_nature_starfall",
+"Druid/Feral":"ability_druid_catform",
+"Druid/Guardian":"ability_racial_bearform",
+"Druid/Restoration":"spell_nature_healingtouch",
+"Demon Hunter/Havoc":"ability_demonhunter_specdps",
+"Demon Hunter/Vengeance":"ability_demonhunter_spectank",
+"Demon Hunter/Devourer":"inv_12_dh_void_ability_devourerbite",
+"Evoker/Devastation":"classicon_evoker_devastation",
+"Evoker/Preservation":"classicon_evoker_preservation",
+"Evoker/Augmentation":"classicon_evoker_augmentation"
+};
+
 /* ═══ ABILITY ICONS ══════════════════════════════════════════════════════
    Ability name → Blizzard icon slug, resolved against Wowhead's spell
    database. Files live in assets/icons/<slug>.jpg. 287 of the 329 ability

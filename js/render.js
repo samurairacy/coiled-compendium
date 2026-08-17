@@ -204,6 +204,12 @@ const primChip=p=>(p||[]).map(v=>`<span class="chip pstat p-${v.toLowerCase()}">
      role      who it's for      · square, dashed = our inference (unchanged)
    Fill, shape, weight and border-style do the separating; the label always
    states the fact, so colour is never carrying meaning alone. */
+/* Class and spec icons. Same contract as abilIcon: a missing key renders
+   nothing rather than a broken image. */
+const clsIcon=(cn,sz)=>CLASSICON[cn]
+  ?`<img class="cicon" src="assets/icons/${CLASSICON[cn]}.jpg" alt="" loading="lazy" decoding="async" width="${sz||18}" height="${sz||18}">`:"";
+const specIcon=key=>SPECICON[key]
+  ?`<img class="cicon" src="assets/icons/${SPECICON[key]}.jpg" alt="" loading="lazy" decoding="async" width="16" height="16">`:"";
 const slotChip=x=>x.sl?`<span class="chip slotc">${esc(x.sl)}</span>`:"";
 const typeChip=x=>x.ty&&x.ty!==x.sl
   ?`<span class="chip tyc">${esc(x.ty)}${x.tc?` · ${esc(x.tc)}`:""}</span>`:"";
@@ -643,7 +649,7 @@ const lootIdxRow=o=>`${o.hdr?`<div class="area-h" data-boss="${o.hdr.id}"><a hre
    crit" is the query people mean. Secondaries are the exception and stack as
    AND, because every item carries exactly two and picking both is how you ask
    for a specific pairing. Each group says which it is. */
-let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),spec:new Set(),big:null,dg:null,fx:null,mod:null};
+let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,spec:null,dg:null,fx:null,mod:null};
 const LOOTALL=[
   ...DUNGEONS.flatMap(d=>(d.loot?d.loot.i:[]).map(i=>({mod:"d",d,i}))),
   ...RAID.bosses.flatMap(b=>(b.loot||[]).map(i=>({mod:"r",b,i})))];
@@ -763,9 +769,9 @@ function lmatch(o,skip){
   if(skip!=="big"&&F.big&&!((i.x||[]).length&&i.x[0][0]===F.big)) return false;
   if(skip!=="fx"&&F.fx==="1"&&!isCantrip(i)) return false;
   if(skip!=="ro"&&F.ro.size&&!(i.ro||[]).some(r=>F.ro.has(r))) return false;
-  /* OR within the group, like every other loot facet: any selected spec that
-     could equip the item keeps it. */
-  if(skip!=="spec"&&F.spec.size&&![...F.spec].some(k=>specCan(i,k))) return false;
+  /* Single-select, unlike the other loot groups: "what can my spec use" is a
+     question about one character, and two specs at once answers nobody's. */
+  if(skip!=="spec"&&F.spec&&!specCan(i,F.spec)) return false;
   return true;
 }
 function pLoot(){
@@ -795,7 +801,8 @@ function pLoot(){
   const opt=(key,v,label,live)=>{
     const on=F[key] instanceof Set?F[key].has(v):F[key]===v;
     const dis=!on&&live&&!live.has(v);
-    return `<button class="fopt" data-lf="${key}" data-v="${esc(v)}" aria-pressed="${on}" ${dis?"disabled":""}>${esc(label||v)}</button>`;};
+    /* labels may carry an icon element, so they arrive pre-escaped */
+    return `<button class="fopt" data-lf="${key}" data-v="${esc(v)}" aria-pressed="${on}" ${dis?"disabled":""}>${label||esc(v)}</button>`;};
   const nR=LOOTALL.filter(o=>o.mod==="r").length;
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Loot</em></div>
   <h1>Every item in the season</h1>
@@ -807,40 +814,34 @@ function pLoot(){
     <div class="fgroup"><h4>From</h4><div class="fopts">
       ${opt("mod","d","Dungeons",null)}${opt("mod","r","Raid",null)}</div></div>
     <div class="fgroup"><h4>Slot <span class="fany">any of</span></h4><div class="fopts">
-      ${inData(LSLOT,(i,v)=>i.sl===v).map(v=>opt("sl",v,v,liveSl)).join("")}</div></div>
+      ${inData(LSLOT,(i,v)=>i.sl===v).map(v=>opt("sl",v,esc(v),liveSl)).join("")}</div></div>
     <div class="fgroup"><h4>Armour <span class="fany">any of</span></h4><div class="fopts">
-      ${inData(LARM,(i,v)=>i.ty===v).map(v=>opt("ty",v,v,liveTy)).join("")}
-      ${inData(LGEAR,(i,v)=>i.ty===v).map(v=>opt("ty",v,v,liveTy)).join("")}</div></div>
+      ${inData(LARM,(i,v)=>i.ty===v).map(v=>opt("ty",v,esc(v),liveTy)).join("")}
+      ${inData(LGEAR,(i,v)=>i.ty===v).map(v=>opt("ty",v,esc(v),liveTy)).join("")}</div></div>
     <div class="fgroup"><h4>Weapon <span class="fany">any of</span></h4><div class="fopts">
-      ${inData(LWEP,(i,v)=>i.ty===v).map(v=>opt("ty",v,v,liveTy)).join("")}</div></div>
+      ${inData(LWEP,(i,v)=>i.ty===v).map(v=>opt("ty",v,esc(v),liveTy)).join("")}</div></div>
     <div class="fgroup"><h4>Primary stat <span class="fany">any of</span></h4><div class="fopts">
-      ${LPRIM.map(v=>opt("p",v,{Str:"Strength",Agi:"Agility",Int:"Intellect"}[v],liveP)).join("")}</div></div>
+      ${LPRIM.map(v=>opt("p",v,esc({Str:"Strength",Agi:"Agility",Int:"Intellect"}[v]),liveP)).join("")}</div></div>
     <div class="fgroup"><h4>Secondaries <span class="fany">all of</span></h4><div class="fopts">
-      ${LSEC.map(v=>opt("x",v,v,liveX)).join("")}</div></div>
+      ${LSEC.map(v=>opt("x",v,esc(v),liveX)).join("")}</div></div>
     <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
-      ${LSEC.map(v=>opt("big",v,v,liveBig)).join("")}</div></div>
+      ${LSEC.map(v=>opt("big",v,esc(v),liveBig)).join("")}</div></div>
     <div class="fgroup"><h4>UNCONFIRMED: Role <span class="fany">any of · our call, not a source's</span></h4><div class="fopts">
-      ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,"UNCONFIRMED: "+LROLE[r],liveRo)).join("")}</div></div>
-    <details class="fgroup specfg"${F.spec.size?" open":""}>
-      <summary><h4>Specialisation <span class="fany">any of · ${SPECS.length} specs · derived, not published</span></h4></summary>
-      <p class="note specnote">Eligibility from four things the data actually knows: your armour class, your
-      spec's primary stat, the weapon types the <em>spec</em> uses, and how many hands it needs. Weapons are a
-      spec matter rather than a class one, which is the whole point — Beast Mastery and Marksmanship take a ranged
-      weapon and no melee, Survival takes melee and no ranged; Assassination and Subtlety are daggers only where
-      Outlaw is anything but; Retribution is two-handed and never a shield where Protection is the reverse.
-      Trinkets appear wherever the stat line allows them: the role marks are our own inference, and narrowing by
-      them would pass a guess off as a rule.</p>
+      ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,esc("UNCONFIRMED: "+LROLE[r]),liveRo)).join("")}</div></div>
+    <details class="fgroup specfg"${F.spec?" open":""}>
+      <summary><h4><span class="spectw" aria-hidden="true"></span>Specialisation
+        <span class="fany">one at a time · ${SPECS.length} specs · from armour, primary stat and the weapons the spec actually uses</span></h4></summary>
       ${ARMOURS.map(a=>`<div class="specarm"><span class="specarm-h">${a}</span>
         ${Object.keys(WCLASS).filter(c=>WCLASS[c].a===a).map(c=>`<div class="specrow">
-          <span class="speccls">${esc(c)}</span>
+          <span class="speccls">${clsIcon(c)}${esc(c)}</span>
           <div class="fopts">${SPECS.filter(s=>s[0]===c).map(s=>
-            opt("spec",SPECKEY(s),s[1],liveSpec)).join("")}</div></div>`).join("")}
+            opt("spec",SPECKEY(s),specIcon(SPECKEY(s))+esc(s[1]),liveSpec)).join("")}</div></div>`).join("")}
         </div>`).join("")}
     </details>
     <div class="fgroup"><h4>Cantrips</h4><div class="fopts">
       ${opt("fx","1","Cantrips",null)}</div></div>
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
-      ${DUNGEONS.map(d=>opt("dg",d.id,d.short,null)).join("")}</div></div>
+      ${DUNGEONS.map(d=>opt("dg",d.id,esc(d.short),null)).join("")}</div></div>
   </div>
   <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${LOOTALL.length} items indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearl">Clear all</button>`:""}</div>
@@ -937,7 +938,7 @@ function pPrep(){
   ${["Cloth","Leather","Mail","Plate"].map(arm=>{
     const cs=SETBONUS.filter(x=>x.a===arm);
     return `<div class="area-h">${arm} — shared tokens</div>`+cs.map(x=>`
-    <div class="card"><h3>${esc(x.c)}</h3><div class="meta">${esc(x.set)}${srcMark(["iv_ts"])}</div>
+    <div class="card"><h3>${clsIcon(x.c,22)}${esc(x.c)}</h3><div class="meta">${esc(x.set)}${srcMark(["iv_ts"])}</div>
     <table><thead><tr><th>Spec</th><th>2-piece</th><th>4-piece</th></tr></thead><tbody>
     ${x.specs.map(v=>`<tr><td class="mono">${esc(v.s)}</td><td>${esc(v.p2)}</td><td>${esc(v.p4)}</td></tr>`).join("")}
     </tbody></table></div>`).join("");}).join("")}
@@ -964,8 +965,13 @@ function pPrep(){
 const featRank=x=>x.sl==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?3:5;
 /* who a token is for: these are armour-typed tokens, so the share is the
    armour class roster; the Curio is everyone by design */
-const TOKCLS={Cloth:"Mage · Priest · Warlock",Leather:"Druid · Rogue · Monk · Demon Hunter",
-  Mail:"Hunter · Shaman · Evoker",Plate:"Warrior · Paladin · Death Knight",All:"Every class — trade for any set piece"};
+/* Which classes share a token. Rendered with their icons, so a reader spots
+   their own class before reading a word. */
+const TOKSHARE={Cloth:["Mage","Priest","Warlock"],Leather:["Druid","Rogue","Monk","Demon Hunter"],
+  Mail:["Hunter","Shaman","Evoker"],Plate:["Warrior","Paladin","Death Knight"]};
+const tokenShare=tc=>tc==="All"
+  ?`<span class="n">Every class — trade for any set piece</span>`
+  :(TOKSHARE[tc]||[]).map(c=>`<span class="tokcls" title="${esc(c)}">${clsIcon(c,16)}${esc(c)}</span>`).join("")||`<span class="n">—</span>`;
 
 /* The difficulty the reader is on. Persists — a Heroic raider stays on
    Heroic all night — and rides the URL as ?d=h so a link carries it. Built
@@ -1006,7 +1012,7 @@ function pBoss(id,tab){
   <table><thead><tr><th>Item</th><th>Slot</th><th>Type</th><th>Stats</th></tr></thead><tbody>
   ${loot.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
     <td class="mono">${esc(x.sl)}</td><td class="mono">${x.ty&&x.ty!==x.sl?esc(x.ty):`<span class="n">—</span>`}${x.tc?` · ${esc(x.tc)}`:""}</td>
-    <td class="statcell">${x.ty==="Token"?`<span class="n">${TOKCLS[x.tc]||"—"}</span>`
+    <td class="statcell">${x.ty==="Token"?tokenShare(x.tc)
       :`${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}${x.sl==="Trinket"?roleChips(x):""}`}</td></tr>
     ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`
       :x.sl==="Trinket"?`<tr class="fxrow"><td colspan="4"><p class="fx pending">Effect not yet published —

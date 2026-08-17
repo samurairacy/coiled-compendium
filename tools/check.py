@@ -47,6 +47,16 @@ def strict(name, src, wrap):
     except Exception as e:
         check(False, "%s does not parse as a literal: %s" % (name, e)); return None
 
+CLSI = strict("CLASSICON", shared, "{}")
+SPCI = strict("SPECICON", shared, "{}")
+check(CLSI is not None and len(CLSI) == 13, "CLASSICON has 13 classes (%s)" % (CLSI and len(CLSI)))
+check(SPCI is not None and len(SPCI) == 40, "SPECICON has 40 specs (%s)" % (SPCI and len(SPCI)))
+for nm, mp in (("CLASSICON", CLSI), ("SPECICON", SPCI)):
+    if mp:
+        gone = [s for s in set(mp.values())
+                if not os.path.exists(R("assets", "icons", s + ".jpg"))]
+        check(not gone, "%s slugs resolve to files (%d missing%s)" %
+              (nm, len(gone), ": " + ", ".join(gone[:3]) if gone else ""))
 ICONS = strict("ICONS", shared, "{}")
 IMG   = strict("IMG",   shared, "{}")
 CORR  = strict("CORRECTIONS", shared, "[]")
