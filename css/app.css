@@ -322,7 +322,7 @@ td.statcell .lean{margin-left:.15rem}
 /* trinket cards: icon and name as equals, chips underneath */
 .tihead{display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem}
 .tihead h3{font-size:1.22rem;line-height:1.25;margin:0}
-.tichips{margin:0 0 .55rem;display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
+.tichips{margin:0 0 .55rem;gap:.38rem}
 
 /* ═══ IMAGERY ═══ the accent scrim keeps colour doing the wayfinding ═══ */
 .tban{display:block;margin:-1.05rem -1.05rem .85rem;height:96px;overflow:hidden;position:relative}
@@ -441,7 +441,12 @@ td.statcell .lean{margin-left:.15rem}
 }
 /* Holds the column when no icon exists, without drawing an empty plate. */
 .aicon.none{display:inline-block;border-color:transparent;background:none}
-.abil .tags{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.38rem}
+/* Chip rows space themselves. This was scoped to .abil, so the same markup on
+   the Mechanics and Loot indexes fell back to inline layout with the chips
+   joined by "" — no gap at all, two 1px borders touching and reading as one
+   smeared bar. One rule, every context. */
+.tags{display:flex;flex-wrap:wrap;gap:.38rem;align-items:center}
+.abil .tags{margin-top:.38rem}
 .abil .effect{font-size:.92rem;margin:0;max-width:62ch}
 .abil .read{
   font-size:.89rem;color:var(--ink-muted);margin:.42rem 0 0;padding-left:.7rem;

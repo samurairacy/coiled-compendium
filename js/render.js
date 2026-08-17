@@ -150,7 +150,7 @@ function bossStats(d,e){
 }
 function encounterCard(d,e,roleFilter){
   const s=bossStats(d,e), img=e.img&&IMG[e.img];
-  const trinkets=(s.loot||[]).filter(x=>x.ty==="Trinket");
+  const trinkets=(s.loot||[]).filter(x=>x.sl==="Trinket");
   const stat=(k,v,cls)=>`<div class="bstat ${cls||""}"><b>${k}</b><span>${v}</span></div>`;
   return `<article class="bosscard" id="boss-${e.o}">
     <header class="bosstop">
@@ -204,7 +204,7 @@ const secChip=x=>{
 /* One definition, because the badge and the Cantrips facet must agree. A
    trinket is not a cantrip: every one of the 27 has an effect, that is what a
    trinket is, and they already have their own slot in the filter above. */
-const isCantrip=i=>i.ty!=="Trinket"&&!!(i.u||i.e);
+const isCantrip=i=>i.sl!=="Trinket"&&!!(i.u||i.e);
 /* Role is the one field on this page nobody published — it is read off the
    primary stat and the effect, so it ships marked UNCONFIRMED rather than
    dressed up as sourced.
@@ -219,12 +219,12 @@ const cantrip=x=>isCantrip(x)?`<span class="cantrip" title="Carries an effect, n
 const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
   <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
   <td>${secChip(x.x)}</td></tr>
-  ${x.ty!=="Trinket"&&(x.u||x.e)?`<tr class="fxrow"><td colspan="4">
+  ${x.sl!=="Trinket"&&(x.u||x.e)?`<tr class="fxrow"><td colspan="4">
     ${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}
     ${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`:""}`;
 const lootTable=d=>{
   const I=d.loot.i, n=I.length;
-  const trink=I.filter(x=>x.ty==="Trinket");
+  const trink=I.filter(x=>x.sl==="Trinket");
   const weap=I.filter(x=>WEAPONRY.has(x.ty)).sort((a,b)=>a.ty.localeCompare(b.ty));
   const jewel=I.filter(x=>["Ring","Neck","Cloak"].includes(x.ty));
   const table=rows=>`<table><thead><tr><th>Item</th><th>Slot</th><th>Primary</th><th>Secondaries</th></tr></thead>
@@ -615,11 +615,11 @@ const lootIdxRow=o=>`${o.hdr?`<div class="area-h" data-boss="${o.hdr.id}"><a hre
         ?`<a class="mdg" href="#/r/${o.b.id}/loot" data-boss="${o.b.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.b.short)}</a>`
         :`<a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>`}
       <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
-      <span class="mm">${esc(o.i.ty)} · ${esc(o.i.sl)}</span>
+      <span class="mm">${o.i.ty&&o.i.ty!==o.i.sl?`${esc(o.i.ty)} · `:""}${esc(o.i.sl)}</span>
       ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
     ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
     ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}
-    ${o.mod==="r"&&o.i.ty==="Trinket"&&!o.i.u&&!o.i.e?`<p class="fx pending">Effect not yet published —
+    ${o.mod==="r"&&o.i.sl==="Trinket"&&!o.i.u&&!o.i.e?`<p class="fx pending">Effect not yet published —
       Wowhead's tooltip for this item carries no Use or Equip text yet. Every raid trinket will do something;
       the text lands here the day the database has it.</p>`:""}</div>`;
 /* Within a group the options are OR, across groups AND — "Mail or Plate, with
@@ -633,7 +633,7 @@ const LOOTALL=[
 const LSLOT=["Head","Shoulder","Back","Chest","Wrist","Hands","Waist","Legs","Feet",
   "Neck","Ring","Trinket","One-hand","Two-hand","Off-hand","Ranged"];
 const LARM=["Cloth","Leather","Mail","Plate"];
-const LGEAR=["Cloak","Neck","Ring","Trinket","Shield","Off-hand"];
+const LGEAR=["Cloak","Neck","Ring","Shield","Off-hand"];
 const LWEP=["Dagger","Sword","Mace","Axe","Fist","Warglaive","Polearm","Staff","Bow","Crossbow","Gun","Wand"];
 const LPRIM=["Str","Agi","Int"], LSEC=["Crit","Haste","Mastery","Vers"];
 const inData=(arr,f)=>arr.filter(v=>LOOTALL.some(o=>f(o.i,v)));
@@ -826,7 +826,7 @@ function pPrep(){
 /* Featured-loot ranking, shared by boss pages and the loot index: trinkets,
    jewellery, cantrip-carriers, tier tokens — the chased stuff first,
    everything else in listing order. */
-const featRank=x=>x.ty==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?3:5;
+const featRank=x=>x.sl==="Trinket"?0:(x.ty==="Neck"||x.ty==="Ring")?1:(x.u||x.e)?2:x.ty==="Token"?3:5;
 /* who a token is for: these are armour-typed tokens, so the share is the
    armour class roster; the Curio is everyone by design */
 const TOKCLS={Cloth:"Mage · Priest · Warlock",Leather:"Druid · Rogue · Monk · Demon Hunter",
@@ -870,11 +870,11 @@ function pBoss(id,tab){
   ${loot.some(x=>x.ty==="Token")?`<p class="note">The <b>Token</b> rows are tier-set pieces: they drop as class tokens and trade for the set piece of that slot.</p>`:""}
   <table><thead><tr><th>Item</th><th>Slot</th><th>Type</th><th>Stats</th></tr></thead><tbody>
   ${loot.map(x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
-    <td class="mono">${esc(x.sl)}</td><td class="mono">${esc(x.ty)}${x.tc?` · ${esc(x.tc)}`:""}</td>
+    <td class="mono">${esc(x.sl)}</td><td class="mono">${x.ty&&x.ty!==x.sl?esc(x.ty):`<span class="n">—</span>`}${x.tc?` · ${esc(x.tc)}`:""}</td>
     <td class="statcell">${x.ty==="Token"?`<span class="n">${TOKCLS[x.tc]||"—"}</span>`
-      :`${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}${x.ty==="Trinket"?roleChips(x):""}`}</td></tr>
+      :`${primChip(x.p)||""}${x.x&&x.x.length?secChip(x.x):`<span class="n">—</span>`}${x.sl==="Trinket"?roleChips(x):""}`}</td></tr>
     ${x.u||x.e?`<tr class="fxrow"><td colspan="4">${x.u?`<p class="fx use"><b>Use</b> ${esc(x.u)}</p>`:""}${x.e?`<p class="fx equip"><b>Equip</b> ${esc(x.e)}</p>`:""}</td></tr>`
-      :x.ty==="Trinket"?`<tr class="fxrow"><td colspan="4"><p class="fx pending">Effect not yet published —
+      :x.sl==="Trinket"?`<tr class="fxrow"><td colspan="4"><p class="fx pending">Effect not yet published —
       the tooltip carries no Use or Equip text yet; it lands here when the database has it.</p></td></tr>`:""}`).join("")}
   </tbody></table>`:"";
   return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>${esc(b.n)}</em></div>
