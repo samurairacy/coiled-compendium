@@ -141,11 +141,13 @@ item icons keyed by Blizzard slug.
   their `ro` does not already: "Strength or Agility" spans every melee spec,
   and Intellect is implied by `rdps`/`healer`. Don't add `es` by analogy.
 - `check.py` asserts no **inferred** tank+DPS straddle outside the
-  all-three-primaries stat sticks (Gebbo's Bottomless Bag, Vile Vial, Ruby
-  Whelp Shell are everyone's; Sapling of the Dawnroot, all three primaries but
-  damage-only, is not). That is a heuristic tripwire against editorial
-  guessing, not a law — `rc:` rows are exempt precisely because observation
-  has already broken it once.
+  all-three-primaries stat sticks. That is a heuristic tripwire against
+  editorial guessing, not a law — `rc:` rows are exempt precisely because
+  observation keeps breaking it. It has already lost its own counter-example:
+  Sapling of the Dawnroot was cited here as all-three-primaries-but-damage-only
+  and therefore DPS-only, and it is observed eligible for **everyone**, tanks
+  and healers included. Every all-three-primaries trinket in the data is now
+  confirmed or presumed universal.
   **Two axes wear the same words — check which field you are editing.**
   Loot `ro` is the *gear pool*: every hunter takes Agility, so all three
   specs read `mdps` there. Ability `r` is *positioning*: Beast Mastery and
