@@ -212,12 +212,12 @@ const typeChip=x=>x.ty&&x.ty!==x.sl
    stats render as two equal chips, which says "even" without saying it. */
 const secChip=x=>{
   if(!x||!x.length) return "";
-  if(x.length===1) return `<span class="chip sec">${esc(x[0][0])}</span>`;
+  if(x.length===1) return `<span class="chip slean">${esc(x[0][0])}</span>`;
   const [a,b]=x, tot=a[1]+b[1];
   if(!tot||a[1]/tot<0.55)
-    return `<span class="chip sec">${esc(a[0])}</span><span class="chip sec">${esc(b[0])}</span>`;
-  return `<span class="chip sec big"><i>big</i>${esc(a[0])}</span>`
-        +`<span class="chip sec lil"><i>little</i>${esc(b[0])}</span>`;
+    return `<span class="chip slean">${esc(a[0])}</span><span class="chip slean">${esc(b[0])}</span>`;
+  return `<span class="chip slean hi"><i>big</i>${esc(a[0])}</span>`
+        +`<span class="chip slean lo"><i>little</i>${esc(b[0])}</span>`;
 };
 /* One definition, because the badge and the Cantrips facet must agree. A
    trinket is not a cantrip: every one of the 27 has an effect, that is what a

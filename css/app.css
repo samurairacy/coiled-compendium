@@ -518,10 +518,13 @@ td.li{display:flex;align-items:center;gap:.5rem}
    Every one states its fact in the label, so no chip depends on colour. */
 .tyc{background:var(--ground-raised);border-color:var(--rule);color:var(--ink)}
 .slotc{border-radius:999px;padding:.14rem .55rem;color:var(--ink-muted)}
-.sec{font-weight:500}
-.sec i{font-style:normal;opacity:.62;margin-right:.3rem;text-transform:lowercase;letter-spacing:.02em}
-.sec.big{color:var(--ink);font-weight:600;border-color:var(--ink-faint)}
-.sec.lil{border-style:dotted;color:var(--ink-faint)}
+/* .slean, not .sec — .sec is already the section-heading class further down
+   this file, and it was winning on source order, handing these chips
+   align-items:baseline and a section heading's bottom padding. */
+.slean{font-weight:500}
+.slean i{font-style:normal;opacity:.62;margin-right:.28rem;text-transform:lowercase;letter-spacing:.02em}
+.slean.hi{color:var(--ink);font-weight:600;border-color:var(--ink-faint)}
+.slean.lo{border-style:dotted;color:var(--ink-faint)}
 .pstat{border-style:solid;font-weight:600}
 .chip.p-str{border-color:#A6693C;color:#D69A63}
 .chip.p-agi{border-color:#4E8F6B;color:#7DC49A}
@@ -771,7 +774,7 @@ footer a{color:var(--ink-muted)}
   .abil{break-inside:avoid} .abil.sev3{border-left:3px solid #000;background:none}
   .chip{border-color:#999;color:#000}
   .tyc{background:none} .slotc{border-radius:999px}
-  .sec.big{border-color:#000;color:#000} .sec.lil{border-style:dotted;color:#555} a{color:#000;text-decoration:none}
+  .slean.hi{border-color:#000;color:#000} .slean.lo{border-style:dotted;color:#555} a{color:#000;text-decoration:none}
   .src{display:none}
   .tban,.hban,.dswitch,.bossmedia{display:none!important}
   /* raid pages print as the assignment sheet they want to be: the lens
