@@ -110,11 +110,20 @@ item icons keyed by Blizzard slug.
   payload). Tanks share the Str/Agi gear pool, and the game appears to gate
   trinkets mostly on **stat**, narrowing by role only for genuinely
   role-specific effects. So an offensive effect is **no evidence at all**
-  against tank eligibility, and 17 Str/Agi trinkets still marked DPS-only are
-  therefore *unverified*, not settled. **Leave them alone until someone looks
-  in game** — flipping them wholesale would be exactly the bulk-classifying
-  by shape that this project has been burned by, and the honest state of the
-  data is "inferred, and the inference is now suspect".
+  against tank eligibility, and the Str/Agi trinkets still marked DPS-only are
+  therefore *unverified*, not settled.
+- **But no replacement rule works either, and this is the important part.**
+  The obvious repair — "Str/Agi trinkets are simply tank-eligible too" — is
+  itself falsified: the **Tattered Amani War Banner is confirmed mdps-only in
+  game**, and it is `Str/Agi` with a stat-granting Use, the same shape as
+  Blazebinder's Hoof and Resonant Bellowstone, both of which *are* tank-
+  eligible. Three items of one shape, two answers. **Trinket loot eligibility
+  is per-item and is not derivable from the tooltip.** It is a table Blizzard
+  authors item by item, so the only thing that settles a role is looking, and
+  `rc:` is how the data records that it was looked at. Do not "tidy" the
+  remaining inferred rows in either direction, and do not reason from one
+  trinket to its shape-mates — the banner is the standing proof that the
+  shape does not carry the answer.
 - **The tank direction of the rule still holds.** A defensive primary makes a
   tank trinket even when it also deals damage, because that damage is usually
   contingent on tanking (damage absorbed, health lost, dodge/parry/block).

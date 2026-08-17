@@ -105,7 +105,7 @@ loot:{s:["iv_aof"],i:[
   {n:"Handwraps of Blasphemous Rites",ic:"inv_glove_cloth_outdooramaniloa_c_01",id:273773,sl:"Hands",ty:"Cloth",b:"Zul'jan",p:["Int"],x:[["Mastery",8],["Crit",7]]},
   {n:"Ancient General's Obsidian Pillars",ic:"inv_pant_plate_outdooramaniloa_c_01",id:273776,sl:"Legs",ty:"Plate",b:"Zul'jan",p:["Str","Int"],x:[["Crit",10],["Haste",9]]},
   {n:"Band of the Amani Warlord",ic:"inv_121_jewelry_ring02_green",id:273792,sl:"Ring",ty:"Ring",b:"Zul'jan",x:[["Haste",17],["Crit",10]]},
-  {n:"Tattered Amani War Banner",ic:"inv_121_trinket_dungeon_ulatek_banner",id:273797,sl:"Trinket",b:"Zul'jan",p:["Str","Agi"],u:"Plant the banner for 15 sec! Fighting within 12 yards of it fills you with Battle Fervor, granting your highest secondary stat. Defeating at least 1 enemy while the banner stands will extend Banner's duration by 5 sec. (1 Min, 30 Sec Cooldown)",ro:["mdps"]}]},
+  {n:"Tattered Amani War Banner",ic:"inv_121_trinket_dungeon_ulatek_banner",id:273797,sl:"Trinket",b:"Zul'jan",p:["Str","Agi"],u:"Plant the banner for 15 sec! Fighting within 12 yards of it fills you with Battle Fervor, granting your highest secondary stat. Defeating at least 1 enemy while the banner stands will extend Banner's duration by 5 sec. (1 Min, 30 Sec Cooldown)",ro:["mdps"],rc:"ig"}]},
  route:[
   {n:1,t:"Opening lust pull",m:"Primal Serpents, Twin Fang Harrowers, Ravenous Descendants",d:2,lust:true,p:"One kick assigned to each Primal Serpent; cover the rest with crowd control. They die fast enough under lust that the haste debuff never lands.",s:["tk_rt"]},
   {n:2,t:"Totem sweep",m:"Ravenous Descendants pulled forward",d:1,p:"Tag the extra Descendants into this pull to raise the count and keep the later pack from stacking six of them at once.",s:["tk_rt"]},
