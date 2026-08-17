@@ -229,14 +229,15 @@ const secChip=x=>{
    trinket is not a cantrip: every one of the 27 has an effect, that is what a
    trinket is, and they already have their own slot in the filter above. */
 const isCantrip=i=>i.sl!=="Trinket"&&!!(i.u||i.e);
-/* Role is the one field on this page nobody published — it is read off the
-   primary stat and the effect, so it ships marked UNCONFIRMED rather than
-   dressed up as sourced. An item carrying rc: has had its eligibility seen in
-   game and stops apologising: that beats any reading of the tooltip, and it
-   is the only thing that may contradict the adjudication rules in CLAUDE.md.
-   Blazebinder's Hoof is why the field exists — no primary stat at all, a
-   Strength grant with a damage payload, and genuinely on both the tank and
-   the melee loot tables.
+/* Role is the one field on this page nobody published. It began as our reading
+   of the stat line and the effect, shipped marked UNCONFIRMED; as of
+   2026-08-17 all 41 trinkets carry rc:, meaning the eligibility was seen in
+   game, so the marks are data and the page no longer disclaims them. That
+   sweep found 13 of the 41 wrong, in three different directions — items that
+   gained tank, one that LOST melee DPS (Tumor of the Swarm), and four that
+   really were DPS-only — which is why no rule here infers a role any more.
+   A row without rc: is still rendered dashed and still says so in its tooltip,
+   so anything added later without a look stands out on its own.
    Note what "Melee DPS" means HERE: this axis is the gear pool, not where you
    stand. Every hunter takes Agility, so all three specs read as melee for loot
    — and Survival genuinely is melee anyway. The ability role lens (r:) asks
@@ -244,7 +245,7 @@ const isCantrip=i=>i.sl!=="Trinket"&&!!(i.u||i.e);
    ranged and Survival stays melee. Same words, different axes. */
 const LROLE={tank:"Tank",healer:"Healer",rdps:"Ranged DPS",mdps:"Melee DPS"};
 const roleChips=i=>(i.ro||[]).map(r=>i.rc
-  ?`<span class="rochip r-${r} rc" title="Confirmed: eligibility seen in game (${esc(SOURCES[i.rc]?SOURCES[i.rc].l:i.rc)}).">${esc(LROLE[r]||r)}<span class="rctick" aria-hidden="true">\u2713</span></span>`
+  ?`<span class="rochip r-${r} rc" title="Loot eligibility seen in game (${esc(SOURCES[i.rc]?SOURCES[i.rc].l:i.rc)}).">${esc(LROLE[r]||r)}</span>`
   :`<span class="rochip r-${r}" title="Unconfirmed — inferred from the primary stat and the effect, not from a published source.">${esc(LROLE[r]||r)}</span>`).join("");
 const cantrip=x=>isCantrip(x)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
 const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
@@ -843,8 +844,8 @@ function pLoot(){
       ${LSEC.map(v=>opt("x",v,esc(v),liveX)).join("")}</div></div>
     <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
       ${LSEC.map(v=>opt("big",v,esc(v),liveBig)).join("")}</div></div>
-    <div class="fgroup"><h4>UNCONFIRMED: Role <span class="fany">any of · our call, except where seen in game</span></h4><div class="fopts">
-      ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,esc("UNCONFIRMED: "+LROLE[r]),liveRo)).join("")}</div></div>
+    <div class="fgroup"><h4>Role <span class="fany">any of · whose loot table it is, seen in game</span></h4><div class="fopts">
+      ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,esc(LROLE[r]),liveRo)).join("")}</div></div>
     <details class="fgroup specfg"${F.spec?" open":""}>
       <summary><h4><span class="spectw" aria-hidden="true"></span>Specialisation
         <span class="fany">one at a time · ${SPECS.length} specs · from armour, primary stat, the weapons the spec actually uses, and loot role on trinkets</span></h4></summary>

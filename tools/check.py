@@ -188,8 +188,8 @@ badrc = [name_of(t) for t in trinkets
 check(not badrc, "role confirmations cite a real source (%d bad%s)" %
       (len(badrc), ": " + ", ".join(badrc) if badrc else ""))
 nrc = sum(1 for t in trinkets if confirmed(t))
-print("  note   %d of %d trinket roles confirmed in game; the rest are inferred"
-      % (nrc, len(trinkets)))
+print("  note   %d of %d trinket roles seen in game%s"
+      % (nrc, len(trinkets), "" if nrc == len(trinkets) else " — the rest are inferred"))
 
 # ── 9. the shell: every script and stylesheet it names exists ──────────────
 refs = re.findall(r'(?:src|href)="((?:js|css)/[\w\-.]+)"', html)

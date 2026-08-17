@@ -534,10 +534,9 @@ td.li{display:flex;align-items:center;gap:.5rem}
 .cicon{border-radius:2px;flex:0 0 auto;vertical-align:middle}
 .specfg .fopt{display:inline-flex;align-items:center;gap:.3rem}
 .tokcls{display:inline-flex;align-items:center;gap:.25rem;margin-right:.5rem;white-space:nowrap}
-/* A role seen in game rather than inferred: solid border, and a tick so the
-   difference survives being read in greyscale. */
+/* A role seen in game rather than inferred. Every trinket is now solid; the
+   dashed default is what a row added without a look would wear. */
 .rochip.rc{border-style:solid}
-.rctick{margin-left:.28rem;font-size:.62rem;opacity:.85}
 h3 .cicon{margin-right:.4rem}
 @media(max-width:700px){.specrow{grid-template-columns:1fr;gap:.15rem}}
 

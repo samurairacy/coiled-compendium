@@ -101,10 +101,18 @@ item icons keyed by Blizzard slug.
   a wrong `ro` silently misfilters the spec facet. `rc:` is a source key for
   eligibility *seen in game*, and it **outranks every rule below** — the chips
   drop the unconfirmed tooltip and wear a tick, and `check.py` exempts those
-  rows. **All 27 Mythic+ trinket roles are observed** as of 2026-08-17 — the
-  owner walked the set in game — so `ro` is now *data* on that module, not a
-  reading. The 14 raid trinkets are still inferred and still marked so; the
-  raid is the open half of this job.
+  rows. **All 41 trinket roles are observed** as of 2026-08-17 — the owner
+  walked both modules in game — so `ro` is *data*, not a reading, and the page
+  no longer disclaims it: the "UNCONFIRMED: Role" facet heading and the
+  per-option prefixes are gone, because a disclaimer that undersells the data
+  misinforms just as surely as one that oversells it. The tick went too, being
+  uniform across 41 rows; the dashed-vs-solid chip border still carries the
+  distinction, so a row added later without a look wears the dashed default and
+  says so in its tooltip. **The sweep found 13 of 41 wrong** — nine gained
+  `tank`, one gained `healer`, one *lost* `mdps`, and four confirmed as
+  genuinely DPS-only. Adding a new trinket means adding a guess: mark it
+  without `rc:` and leave it dashed rather than quietly joining it to the
+  verified set.
 - **The rule "a purely offensive proc is DPS-only" is FALSIFIED. Do not
   restore it.** It was in this file for a day. Then Coiled Fangstone — `Str`,
   a pure damage Use, no stat grant, nothing defensive anywhere in it — turned
