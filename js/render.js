@@ -615,8 +615,8 @@ const lootIdxRow=o=>`${o.hdr?`<div class="area-h" data-boss="${o.hdr.id}"><a hre
         ?`<a class="mdg" href="#/r/${o.b.id}/loot" data-boss="${o.b.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.b.short)}</a>`
         :`<a class="mdg" href="#/d/${o.d.id}/loot" data-dungeon="${o.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(o.d.short)}</a>`}
       <span class="mn">${itemIcon(o.i)}${esc(o.i.n)}${cantrip(o.i)}</span>
-      <span class="mm">${o.i.ty&&o.i.ty!==o.i.sl?`${esc(o.i.ty)} · `:""}${esc(o.i.sl)}</span>
-      ${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
+      <span class="mm">${o.i.ty&&o.i.ty!==o.i.sl?`${esc(o.i.ty)} · `:""}${esc(o.i.sl)}</span></div>
+    <div class="tags" style="margin-top:.35rem">${primChip(o.i.p)}${secChip(o.i.x)}${roleChips(o.i)}</div>
     ${o.i.u?`<p class="fx use"><b>Use</b> ${esc(o.i.u)}</p>`:""}
     ${o.i.e?`<p class="fx equip"><b>Equip</b> ${esc(o.i.e)}</p>`:""}
     ${o.mod==="r"&&o.i.sl==="Trinket"&&!o.i.u&&!o.i.e?`<p class="fx pending">Effect not yet published —

@@ -447,6 +447,10 @@ td.statcell .lean{margin-left:.15rem}
    smeared bar. One rule, every context. */
 .tags{display:flex;flex-wrap:wrap;gap:.38rem;align-items:center}
 .abil .tags{margin-top:.38rem}
+/* Role chips carry a left margin for the inline contexts they also appear in
+   (trinket cards, table cells). Inside a flex row that margin stacks on top of
+   the gap and the row goes lopsided — the gap owns the spacing here. */
+.tags .rochip{margin-left:0}
 .abil .effect{font-size:.92rem;margin:0;max-width:62ch}
 .abil .read{
   font-size:.89rem;color:var(--ink-muted);margin:.42rem 0 0;padding-left:.7rem;
