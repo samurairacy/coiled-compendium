@@ -250,10 +250,11 @@ loot:{s:["iv_mr"],i:[
 /* ─────────────────────────── DEN OF NALORAKK ──────────────────────── */
 {id:"den-of-nalorakk",name:"Den of Nalorakk",short:"Nalorakk",banner:"den-of-nalorakk",sigil:"i-claw",origin:"Midnight",
  timer:{v:"32 min",s:["wh_dg"]},bosses:3,routing:"hybrid",
- blurb:"Amani forest that turns to snowfield halfway through, then to a spirit world and back. Three distinct environments, three very different tanking problems.",
+ blurb:"The inner sanctum is sealed when you arrive, so the dungeon starts by leaving: a pyre at the entrance sends the group on a spirit journey \u2014 an Amani forest, then a frozen waste \u2014 and a second pyre wakes you once the trials are walked. Only then does the den open and Nalorakk become reachable. Three environments, three very different tanking problems.",
  cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 32 minutes.",cov2:true,
  dispels:{poison:1,magic:2,curse:2,disease:0,enrage:3,bleed:2},
- gates:[{t:"Collect six offerings — berries from bushes, fish from the water, or barrels of apples among the trash — and deliver them to summon the first boss. More than six are available, so you can choose which trash you pull to reach them.",s:["tk_don"]},
+ gates:[{t:"The inner sanctum is sealed on arrival. Interact with the pyre at the entrance to begin the spirit journey \u2014 the forest and the snowfield are that vision, not places you walk to.",s:["ig"]},
+        {t:"Collect six offerings — berries from bushes, fish from the water, or barrels of apples among the trash — and deliver them to summon the first boss. More than six are available, so you can choose which trash you pull to reach them.",s:["tk_don"]},
         {t:"Kill the Winter Squall to stop the harsh winds in the snowfield.",s:["tk_don"]},
         {t:"Channel into the Pale Eye to summon the second boss; interact with an ethereal pyre afterwards to wake.",s:["tk_don"]}],
  buffs:[{n:"Warding Incense",e:"+1% Versatility to you and your party for 10 minutes. Two altars — one at the entrance, one just before the first boss.",w:"A player with 25 skill in Midnight Alchemy, or a Druid in Bear Form",loc:"Opening area, twice",s:["tk_don"]},

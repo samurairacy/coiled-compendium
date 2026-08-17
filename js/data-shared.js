@@ -36,6 +36,7 @@ const SOURCES={
  iv_vsa :{l:"ICY VEINS",t:2,k:"icyveins",a:"Icy Veins (Petko)",b:"Voidscar Arena Dungeon Guide",d:"2026-08-11",u:"https://www.icy-veins.com/wow/voidscar-arena-dungeon-guide"},
  iv_rlp :{l:"ICY VEINS",t:2,k:"icyveins",a:"Icy Veins (Petko)",b:"Ruby Life Pools Dungeon Guide",d:"2026-08-11",u:"https://www.icy-veins.com/wow/ruby-life-pools-dungeon-guide"},
  iv_kr  :{l:"ICY VEINS",t:2,k:"icyveins",a:"Icy Veins (Petko)",b:"King's Rest Dungeon Guide",d:"2026-08-11",u:"https://www.icy-veins.com/wow/kings-rest-dungeon-guide"},
+ ig     :{l:"IN-GAME",t:1,k:"capture",a:"In-game observation",b:"Walked in the client",d:"2026-08-17",u:null,note:"Direct observation of the content by this compendium's author. Tier 1 because the game itself is the primary source \u2014 but unlike the Encounter Journal it is one person recalling one run, so it is cited for structure and sequence rather than for numbers."},
  img    :{l:"CAPTURE",t:1,k:"capture",a:"In-game capture",b:"Boss and entrance imagery, patch 12.1 PTR",d:"2026-08-16",u:null,note:"Screenshots of the encounters with in-game nameplates legible. Useful as a check on spelling, since the nameplate is the game's own rendering of the name."},
  wh_dg  :{l:"WOWHEAD",t:2,k:"wowhead",a:"Wowhead (iMX3)",b:"Season 2 Mythic+ dungeon overviews, all eight",d:"2026-08-12",u:"https://www.wowhead.com/guide/mythic-plus-dungeons/midnight-season-2"},
  tk_aof :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Altar of Fangs Mythic+ Dungeon Guide",d:"2026-08-01",u:"https://www.youtube.com/watch?v=cgM-EioPF0g"},
