@@ -76,12 +76,16 @@ const wlClsSel=(l,blank)=>`<select data-wlcls data-k="${l.k}">
   <option value="">${blank||"class: not set"}</option>
   ${Object.keys(WCLASS).map(c=>`<option value="${esc(c)}"${l.cls===c?" selected":""}>${esc(c)}</option>`).join("")}</select>`;
 
-/* The + on every Loot index row. State updates in place on toggle; a full
-   re-render (facet change, route) recomputes it from the store. */
+/* The loot-sack on every Loot index row: an open sack with a + to add, the
+   same sack with a tick once it's in the bag. State updates in place on
+   toggle; a full re-render (facet change, route) recomputes it from the
+   store. Both symbols live in the index.html sprite (i-sack / i-sackin). */
+const wlBtnFace=on=>ic(on?"i-sackin":"i-sack",15);
+const wlBtnTip=(on,a)=>on?`On ${esc(a.name)} — click to remove`:`Add to ${a?esc(a.name):"a new wishlist"}`;
 function wlBtn(i){
   const a=wlActive(), on=!!(a&&wlHas(a,i.id));
   return `<button class="wlbtn" data-wl="toggle" data-id="${i.id}" aria-pressed="${on}"
-    title="${on?`On ${esc(a.name)} — click to remove`:`Add to ${a?esc(a.name):"a new wishlist"}`}">${on?"✓":"+"}</button>`;
+    title="${wlBtnTip(on,a)}">${wlBtnFace(on)}</button>`;
 }
 /* Context strip under the Loot facets: which list the + feeds. */
 function wlLootBar(){
@@ -320,14 +324,15 @@ document.addEventListener("click",e=>{
         · <a href="#/wl/${a.k}">view</a>`);
     }
     if(made) paintLoot();               /* first list: mount the context bar */
-    else{const on=wlHas(a,id); t.setAttribute("aria-pressed",on); t.textContent=on?"✓":"+";}
+    else{const on=wlHas(a,id); t.setAttribute("aria-pressed",on);
+      t.innerHTML=wlBtnFace(on); t.title=wlBtnTip(on,a);}
     return;
   }
   if(v==="undo"&&WLUNDO){
     const l=wlGet(WLUNDO.k);
     if(l){l.items.splice(Math.min(WLUNDO.ix,l.items.length),0,WLUNDO.entry); wlSave();
       const b=document.querySelector(`.wlbtn[data-id="${WLUNDO.entry.id}"]`);
-      if(b){b.setAttribute("aria-pressed",true); b.textContent="✓";}
+      if(b){b.setAttribute("aria-pressed",true); b.innerHTML=wlBtnFace(true); b.title=wlBtnTip(true,l);}
       wlRepaint(); wlToast("Restored");}
     WLUNDO=null; return;
   }

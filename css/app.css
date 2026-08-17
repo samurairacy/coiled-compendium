@@ -831,10 +831,11 @@ footer a{color:var(--ink-muted)}
    Everything here leans on existing tokens; the accent comes from the same
    [data-dungeon]/[data-boss] plumbing every other component uses. */
 .wlbtn{
-  font-family:var(--face-term);font-size:.72rem;font-weight:600;line-height:1;
-  width:1.35rem;height:1.35rem;margin-left:.45rem;flex:0 0 auto;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:1.45rem;height:1.45rem;margin-left:.45rem;flex:0 0 auto;
   border:1px solid var(--rule);border-radius:3px;background:transparent;
-  color:var(--ink-muted);cursor:pointer;vertical-align:middle}
+  color:var(--ink-muted);cursor:pointer;vertical-align:middle;padding:0}
+.wlbtn svg{display:block}
 .wlbtn:hover{border-color:var(--accent);color:var(--accent)}
 .wlbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
 .wlbar{
