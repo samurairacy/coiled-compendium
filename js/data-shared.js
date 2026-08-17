@@ -416,7 +416,7 @@ const ICONS={
 "Fel Missiles":"spell_fire_felrainoffire",
 "Fel Nova":"spell_fire_felflamering",
 "Fel Rage":"ability_creature_felfrenzy",
-"Fel Shield":"trade_engineering",
+"Felshield":"spell_fire_felfireward",
 "Fel Spray":"spell_fire_felflamebreath",
 "Fel Steps":"ability_bossfellord_felfissure",
 "Felfire Burst":"spell_fire_felflamebolt",
@@ -426,6 +426,9 @@ const ICONS={
 "Fire Bomb":"inv_eng_bombfire",
 "Fire Maw":"ability_warrior_dragonroar",
 "Fixate":"ability_fixated_state_blue",
+/* Flame Dance is a real spell (354318) that Blizzard shipped without art —
+   trade_engineering is Wowhead's own icon for it, so this entry is accurate
+   rather than a placeholder, even though it renders like one. */
 "Flame Dance":"trade_engineering",
 "Flame Shock":"spell_fire_flameshock",
 "Flay":"inv_archaeology_70_demon_flayedskinchronicle",
@@ -486,7 +489,7 @@ const ICONS={
 "Legion Strike":"inv_axe_09",
 "Light Bolt":"spell_holy_holybolt",
 "Light Bolt Volley":"ability_priest_flashoflight",
-"Light Fire":"trade_engineering",
+"Lightfire":"inv_ability_holyfire_buff",
 "Lightbloom Pollination":"spell_holy_surgeoflight",
 "Lightbloom's Essence":"inv_ability_holyfire_orb",
 "Lightblossom Beam":"ability_paladin_infusionoflight",
@@ -695,8 +698,50 @@ const ICONS={
 "Swarming Krolusks":"achievement_dungeon_thesandqueen",
 "Thornspike":"inv_misc_herb_goldthorn_bramble",
 "Ula'tek's Presence":"achievement_dungeon_templeofsethraliss",
-"Violent Sand":"spell_sandexplosion"
+"Violent Sand":"spell_sandexplosion",
+/* 2026-08-18 second pass: the first sweep's endpoint capped at ten mixed
+   results, so a spell whose name also matches a Zone or Quest never
+   surfaced. Murder in a Row was there the whole time. */
+"Murder in a Row":"inv_legendary_gun",
+"Unkillable Infernal":"spell_shadow_summoninfernal",
+/* Winter Squall, 2026-08-18: the mob carried one editorial row where it has
+   three named spells. Owner supplied the spell links. */
+"Harsh Winter":"spell_frost_arcticwinds",
+"Cloudpiercer":"ability_skyreach_wind_wall",
+"Static Discharge":"spell_shaman_staticshock"
 };
+
+/* ═══ ROWS THAT ARE NOT SPELLS ═══════════════════════════════════════════
+   Two kinds of iconless row exist and they mean opposite things, so they must
+   not look alike. These fifteen are iconless BY DESIGN: nine are structural —
+   a phase marker, a fight-structure note, our own coinage for a group of
+   mobs' shared behaviour — and six name an NPC or an add that stands as an
+   ability row because that is where the tactics live. Nothing was missed
+   researching them; there is no spell to find. They render with WoW's own
+   no-art cog (`trade_engineering`, which is what Wowhead itself shows for a
+   spell with no assigned icon).
+
+   Anything NOT listed here and missing from ICONS keeps the red question
+   mark, because that mark means "this should have an icon and we have not
+   found it" — the Vashnik add trio and Uncoiled Union are the live examples,
+   and they are worth re-querying as raid data lands. Adding a name here is a
+   claim that no spell exists, so make it deliberately.
+   ═══════════════════════════════════════════════════════════════════════ */
+const NOSPELL=[
+"Add Phase",
+"Fixate and Fear",
+"Fragment of Malacrass",
+"King Akul",
+"King Rahu'ai",
+"King T'Maji",
+"Light Mob Beams",
+"Orb Gauntlet",
+"Queen Phat'ta",
+"Released Inhibitors",
+"Spirits of the Veil",
+"Tazala",
+"Two-phase structure"
+];
 
 /* ═══ SEASON 2 TIER SET BONUSES ═══ 79 spec bonuses across 13 classes.
    Bonus text is Blizzard's own (via Icy Veins' set guide); percentages and
@@ -814,5 +859,10 @@ const CORRECTIONS=[
  ["A Knot of Snakes","Knot of Snakes","Temple of Sethraliss","ability",0],
  ["Lightning Spire","Lightning Spires","Temple of Sethraliss","ability",0],
  ["Consume Charge","Consumed Charge","Temple of Sethraliss","ability",0],
- ["Corrupted Lifeforce","Corrupted Life Force","Temple of Sethraliss","ability",0]
+ ["Corrupted Lifeforce","Corrupted Life Force","Temple of Sethraliss","ability",0],
+ /* 2026-08-18: compound names Blizzard writes as one word. The Manaheart
+    trinket tooltip still says "Fel Shield" in two — that quote is left as is. */
+ ["Felshield","Fel Shield","Murder Row","ability",0],
+ ["Lightfire","Light Fire","The Blinding Vale","ability",0],
+ ["Harsh Winter","Master of the Winds","Den of Nalorakk","ability",0]
 ];
