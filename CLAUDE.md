@@ -98,32 +98,45 @@ item icons keyed by Blizzard slug.
   and carries a documented stand-in.
 - **Trinket `ro` answers "whose loot table is this on", not "who benefits".**
   It is not decorative: since 2026-08-17 `specCan()` gates trinkets on it, so
-  a wrong `ro` silently misfilters the spec facet. The stat line sets the
-  outer bound (Int alone → caster/healer; Str/Agi alone → never either),
-  then the effect narrows it: a purely offensive proc is DPS-only *even on
-  Str/Agi a tank could equip and use well*; an ally heal or shield is a
-  healer's.
-- **On a trinket, the primary effect decides and a rider never widens it.**
-  A defensive primary is a tank trinket even when it also deals damage —
-  tank trinkets very often carry an offensive component, and it is usually
-  contingent on tanking (on damage absorbed, on health lost, on dodge/parry/
-  block). Manaheart's Binding Flame read `tank`+`mdps` for a while and was
-  wrong: it is an absorb shield whose stored damage erupts when the shield
-  breaks, so the eruption is *paid for* by having been hit. It is a tank
-  trinket. DPS are **ineligible to loot** a tank trinket even in a season
-  where the meta wants them to have one; a class with no tank spec of its own
-  needs a greed roll nobody contested, or a gift from an eligible player.
-  Conversely a stat grant with no defensive trigger stays DPS however well a
-  tank would use it — the Tattered Amani War Banner is `mdps` — while a stat
-  grant gated on being hit or on dodge/parry/block is a tank's (Permafrost
-  Essence, Idol of the Howling Nexus). **The one legitimate straddle is the
-  all-three-primaries stat stick**: Gebbo's Bottomless Bag, Vile Vial and
-  Ruby Whelp Shell are everyone's, where all-three-primaries plus a
-  damage-only effect (Sapling of the Dawnroot) stays DPS-only. `check.py`
-  now asserts exactly that — no trinket may be both tank and DPS unless its
-  stat line is Str+Agi+Int — which is the assertion that would have caught
-  Manaheart's. All 41 trinkets were re-adjudicated against this on
-  2026-08-17, the second pass finding one error, the one above.
+  a wrong `ro` silently misfilters the spec facet. `rc:` is a source key for
+  eligibility *seen in game*, and it **outranks every rule below** — the chips
+  drop the unconfirmed tooltip and wear a tick, and `check.py` exempts those
+  rows. Two trinkets carry it so far; the other 39 roles are our reading.
+- **The rule "a purely offensive proc is DPS-only" is FALSIFIED. Do not
+  restore it.** It was in this file for a day. Then Coiled Fangstone — `Str`,
+  a pure damage Use, no stat grant, nothing defensive anywhere in it — turned
+  out to be on the Strength *tank* table, observed in game, as did
+  Blazebinder's Hoof (no primary stat at all, a Strength grant with a damage
+  payload). Tanks share the Str/Agi gear pool, and the game appears to gate
+  trinkets mostly on **stat**, narrowing by role only for genuinely
+  role-specific effects. So an offensive effect is **no evidence at all**
+  against tank eligibility, and 17 Str/Agi trinkets still marked DPS-only are
+  therefore *unverified*, not settled. **Leave them alone until someone looks
+  in game** — flipping them wholesale would be exactly the bulk-classifying
+  by shape that this project has been burned by, and the honest state of the
+  data is "inferred, and the inference is now suspect".
+- **The tank direction of the rule still holds.** A defensive primary makes a
+  tank trinket even when it also deals damage, because that damage is usually
+  contingent on tanking (damage absorbed, health lost, dodge/parry/block).
+  Manaheart's Binding Flame read `tank`+`mdps` and was wrong: it is an absorb
+  shield whose stored damage erupts when the shield breaks, so the eruption is
+  *paid for* by having been hit. DPS are **ineligible to loot** a tank trinket
+  even in a season where the meta wants them to have one; a class with no tank
+  spec of its own needs an uncontested greed roll or a gift. What no longer
+  follows is the converse — an offensive primary does not mean "not a tank's".
+  An ally heal or shield is still a healer's.
+- **A trinket with no primary stat line can still be stat-gated by the stat it
+  grants** — a Strength proc is not on a rogue's loot table. `es:` carries
+  that, and only on the two rows where it changes an answer (Blazebinder's
+  Hoof, Idol of the War Loa). Four more name a stat but would gate nothing
+  their `ro` does not already: "Strength or Agility" spans every melee spec,
+  and Intellect is implied by `rdps`/`healer`. Don't add `es` by analogy.
+- `check.py` asserts no **inferred** tank+DPS straddle outside the
+  all-three-primaries stat sticks (Gebbo's Bottomless Bag, Vile Vial, Ruby
+  Whelp Shell are everyone's; Sapling of the Dawnroot, all three primaries but
+  damage-only, is not). That is a heuristic tripwire against editorial
+  guessing, not a law — `rc:` rows are exempt precisely because observation
+  has already broken it once.
   **Two axes wear the same words — check which field you are editing.**
   Loot `ro` is the *gear pool*: every hunter takes Agility, so all three
   specs read `mdps` there. Ability `r` is *positioning*: Beast Mastery and

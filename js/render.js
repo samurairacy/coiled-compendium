@@ -231,14 +231,21 @@ const secChip=x=>{
 const isCantrip=i=>i.sl!=="Trinket"&&!!(i.u||i.e);
 /* Role is the one field on this page nobody published — it is read off the
    primary stat and the effect, so it ships marked UNCONFIRMED rather than
-   dressed up as sourced.
+   dressed up as sourced. An item carrying rc: has had its eligibility seen in
+   game and stops apologising: that beats any reading of the tooltip, and it
+   is the only thing that may contradict the adjudication rules in CLAUDE.md.
+   Blazebinder's Hoof is why the field exists — no primary stat at all, a
+   Strength grant with a damage payload, and genuinely on both the tank and
+   the melee loot tables.
    Note what "Melee DPS" means HERE: this axis is the gear pool, not where you
    stand. Every hunter takes Agility, so all three specs read as melee for loot
    — and Survival genuinely is melee anyway. The ability role lens (r:) asks
    the other question, positioning, where Beast Mastery and Marksmanship are
    ranged and Survival stays melee. Same words, different axes. */
 const LROLE={tank:"Tank",healer:"Healer",rdps:"Ranged DPS",mdps:"Melee DPS"};
-const roleChips=i=>(i.ro||[]).map(r=>`<span class="rochip r-${r}" title="Unconfirmed — inferred from the primary stat and the effect, not from a published source.">${esc(LROLE[r]||r)}</span>`).join("");
+const roleChips=i=>(i.ro||[]).map(r=>i.rc
+  ?`<span class="rochip r-${r} rc" title="Confirmed: eligibility seen in game (${esc(SOURCES[i.rc]?SOURCES[i.rc].l:i.rc)}).">${esc(LROLE[r]||r)}<span class="rctick" aria-hidden="true">\u2713</span></span>`
+  :`<span class="rochip r-${r}" title="Unconfirmed — inferred from the primary stat and the effect, not from a published source.">${esc(LROLE[r]||r)}</span>`).join("");
 const cantrip=x=>isCantrip(x)?`<span class="cantrip" title="Carries an effect, not just stats.">Cantrip</span>`:"";
 const lootRow=x=>`<tr><td class="li">${itemIcon(x)}<b>${esc(x.n)}</b>${cantrip(x)}</td>
   <td class="mono">${esc(x.sl)}</td><td>${primChip(x.p)||`<span class="n">—</span>`}</td>
@@ -752,6 +759,11 @@ function specCan(i,key){
      own loot table, however well it could use one in the fight. Only trinkets
      carry ro, so nothing else narrows here. */
   if(i.ro&&i.ro.length&&!i.ro.includes(sp.ro)) return false;
+  /* A trinket with no primary stat line can still be stat-gated by the stat it
+     grants: a Strength proc is not on a rogue's loot table. es: carries that
+     where the item's own text names a stat, and only where it changes an
+     answer — see the note in CLAUDE.md before adding one by analogy. */
+  if(i.es&&i.es.length&&!i.es.includes(sp.p)) return false;
   const ty=i.ty;
   if(ARMOURS.includes(ty)) return ty===sp.a;              // armour: class gate only
   if(ty==="Token") return i.tc===sp.a||i.tc==="All";      // tier token carries its armour
@@ -831,7 +843,7 @@ function pLoot(){
       ${LSEC.map(v=>opt("x",v,esc(v),liveX)).join("")}</div></div>
     <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
       ${LSEC.map(v=>opt("big",v,esc(v),liveBig)).join("")}</div></div>
-    <div class="fgroup"><h4>UNCONFIRMED: Role <span class="fany">any of · our call, not a source's</span></h4><div class="fopts">
+    <div class="fgroup"><h4>UNCONFIRMED: Role <span class="fany">any of · our call, except where seen in game</span></h4><div class="fopts">
       ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,esc("UNCONFIRMED: "+LROLE[r]),liveRo)).join("")}</div></div>
     <details class="fgroup specfg"${F.spec?" open":""}>
       <summary><h4><span class="spectw" aria-hidden="true"></span>Specialisation

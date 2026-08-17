@@ -158,8 +158,14 @@ else:
 # ro answers "whose loot table is this on", so it is now load-bearing rather
 # than decorative. Manaheart's Binding Flame read tank+mdps for a while: its
 # primary effect is a self-absorb, and the damage rider does not make a tank
-# trinket lootable by DPS. The only trinkets that legitimately span tank and
-# DPS are all-three-primaries stat sticks (Gebbo's, Vile Vial, Ruby Whelp).
+# trinket lootable by DPS.
+#
+# The straddle rule below is a HEURISTIC over unobserved items, not a law, and
+# it has already been falsified once: Blazebinder's Hoof carries no primary
+# stat and is on both the tank and the melee table, seen in game. So rows
+# carrying rc: (a source key for observed eligibility) are exempt — observation
+# outranks the rule. What the assertion still catches is an *inferred* straddle,
+# which is the editorial mistake that actually happened.
 trinkets = [b.group(0) for b in re.finditer(r'\{n:"(?:[^"\\]|\\.)*"[^{}]*?\}', mplus + raid)
             if 'sl:"Trinket"' in b.group(0)]
 check(len(trinkets) == 41, "41 trinkets found (%d)" % len(trinkets))
@@ -170,11 +176,20 @@ check(not noro, "every trinket carries a role (%d without%s)" %
       (len(noro), ": " + ", ".join(noro[:3]) if noro else ""))
 badro = sorted({r for t in trinkets for r in arr(t, "ro")} - {"tank", "healer", "mdps", "rdps"})
 check(not badro, "trinket ro within {tank,healer,mdps,rdps} (%s)" % (", ".join(badro) or "clean"))
+confirmed = lambda t: re.search(r'\brc:"(\w+)"', t)
 straddle = [name_of(t) for t in trinkets
             if "tank" in arr(t, "ro") and ({"mdps", "rdps"} & set(arr(t, "ro")))
-            and set(arr(t, "p")) != {"Str", "Agi", "Int"}]
-check(not straddle, "no tank+DPS trinket outside all-three-stat sticks (%d%s)" %
+            and set(arr(t, "p")) != {"Str", "Agi", "Int"} and not confirmed(t)]
+check(not straddle, "no *inferred* tank+DPS straddle outside all-three-stat sticks (%d%s)" %
       (len(straddle), ": " + ", ".join(straddle) if straddle else ""))
+# a confirmation is only worth anything if it names a source that exists
+badrc = [name_of(t) for t in trinkets
+         if confirmed(t) and confirmed(t).group(1) not in src_vocab]
+check(not badrc, "role confirmations cite a real source (%d bad%s)" %
+      (len(badrc), ": " + ", ".join(badrc) if badrc else ""))
+nrc = sum(1 for t in trinkets if confirmed(t))
+print("  note   %d of %d trinket roles confirmed in game; the rest are inferred"
+      % (nrc, len(trinkets)))
 
 # ── 9. the shell: every script and stylesheet it names exists ──────────────
 refs = re.findall(r'(?:src|href)="((?:js|css)/[\w\-.]+)"', html)
