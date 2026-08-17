@@ -362,6 +362,12 @@ td.statcell .lean{margin-left:.15rem}
 .bossmedia.plate.members .bmrow{flex-wrap:wrap;gap:.55rem}
 .bossmedia.plate.members .bmrow a{flex:0 1 auto}
 .bossmedia.plate.members img{width:auto;height:clamp(200px,24vw,300px)}
+/* Inside a card the media column is 380px, so three portraits at natural
+   height each wanted ~290px and wrapped into a tall stack with the text
+   column left empty beside it. In a card they share the row instead. */
+.bosscard .bossmedia.plate.members .bmrow{flex-wrap:nowrap;gap:.4rem}
+.bosscard .bossmedia.plate.members .bmrow a{flex:1 1 0;min-width:0}
+.bosscard .bossmedia.plate.members img{width:100%;height:auto;min-width:0}
 /* raid boss pages: a single plate is the hero — near content width */
 #p-boss .bossmedia.plate{margin:.7rem 0 1.1rem;max-width:640px}
 #p-boss .bossmedia.plate.members{max-width:none}
