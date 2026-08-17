@@ -505,7 +505,27 @@ td.statcell .lean{margin-left:.15rem}
   color:var(--ink-faint);font-weight:400;margin-left:.4rem}
 /* ═══ LOOT ════════════════════════════════════════════════════════════════ */
 td.li{display:flex;align-items:center;gap:.5rem}
-.chip/* ── loot chip families ───────────────────────────────────────────────
+.chip/* ═══ SPEC FACET ═══ forty options need structure, not a wall of chips.
+   Collapsed by default so it costs nothing until wanted; grouped by armour
+   class because that is the first gate eligibility applies, and a class
+   label per row keeps the spec names short. ═══════════════════════════ */
+.specfg summary{cursor:pointer;list-style:none;display:flex;align-items:baseline}
+.specfg summary::-webkit-details-marker{display:none}
+.specfg summary::before{content:"▸";color:var(--ink-faint);margin-right:.45rem;font-size:.8rem;line-height:1.4}
+.specfg[open] summary::before{content:"▾"}
+.specfg summary h4{margin:0}
+.specnote{margin:.55rem 0 .8rem;max-width:74ch}
+.specarm{margin:0 0 .5rem}
+.specarm-h{
+  display:block;font-family:var(--face-term);font-size:.6rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--rule-soft);
+  padding-bottom:.15rem;margin-bottom:.3rem
+}
+.specrow{display:grid;grid-template-columns:8.5rem 1fr;gap:.5rem;align-items:start;margin-bottom:.2rem}
+.specrow .speccls{font-family:var(--face-term);font-size:.66rem;letter-spacing:.05em;color:var(--ink-muted);padding-top:.22rem}
+@media(max-width:700px){.specrow{grid-template-columns:1fr;gap:.15rem}}
+
+/* ── loot chip families ───────────────────────────────────────────────
    Five facts, five treatments. The palette is already crowded, so these
    separate by fill, shape, weight and border-style rather than by hue:
 

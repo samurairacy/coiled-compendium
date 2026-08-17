@@ -643,7 +643,7 @@ const lootIdxRow=o=>`${o.hdr?`<div class="area-h" data-boss="${o.hdr.id}"><a hre
    crit" is the query people mean. Secondaries are the exception and stack as
    AND, because every item carries exactly two and picking both is how you ask
    for a specific pairing. Each group says which it is. */
-let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),big:null,dg:null,fx:null,mod:null};
+let LFACETS={sl:new Set(),ty:new Set(),p:new Set(),x:new Set(),ro:new Set(),spec:new Set(),big:null,dg:null,fx:null,mod:null};
 const LOOTALL=[
   ...DUNGEONS.flatMap(d=>(d.loot?d.loot.i:[]).map(i=>({mod:"d",d,i}))),
   ...RAID.bosses.flatMap(b=>(b.loot||[]).map(i=>({mod:"r",b,i})))];
@@ -654,6 +654,71 @@ const LGEAR=["Cloak","Neck","Ring","Shield","Off-hand"];
 const LWEP=["Dagger","Sword","Mace","Axe","Fist","Warglaive","Polearm","Staff","Bow","Crossbow","Gun","Wand"];
 const LPRIM=["Str","Agi","Int"], LSEC=["Crit","Haste","Mastery","Vers"];
 const inData=(arr,f)=>arr.filter(v=>LOOTALL.some(o=>f(o.i,v)));
+
+/* ═══ SPECIALISATION FILTER ═══════════════════════════════════════════════
+   "Show me what my Fury Warrior can actually wear." Eligibility is derived,
+   not published, so it is marked as inference like the trinket roles — but
+   the three inputs are objective, and the data supports every one of them:
+
+     armour class   a class property. Plate item, Plate class, or nothing.
+     primary stat   a SPEC property — Holy Paladin wants Int off a Plate
+                    item, Retribution wants Str off the same one. Every
+                    weapon in the season carries a primary, so this does
+                    most of the work on weapons too.
+     proficiency    a CLASS property, which is why it lives on 13 rows
+                    rather than 40. Kept to the well-established live-game
+                    lists; Midnight has published no changes to them.
+
+   Deliberately NOT used: the trinket `ro` marks. Those are already our
+   inference, and stacking a guess on a guess would launder it into a fact.
+   A spec therefore sees every trinket its stat line permits.
+   ═══════════════════════════════════════════════════════════════════════ */
+const WCLASS={
+ "Mage":        {a:"Cloth",  w:["Dagger","Staff","Sword","Wand","Off-hand"]},
+ "Priest":      {a:"Cloth",  w:["Dagger","Mace","Staff","Wand","Off-hand"]},
+ "Warlock":     {a:"Cloth",  w:["Dagger","Staff","Sword","Wand","Off-hand"]},
+ "Demon Hunter":{a:"Leather",w:["Warglaive","Sword","Axe","Fist","Dagger"]},
+ "Druid":       {a:"Leather",w:["Dagger","Fist","Mace","Polearm","Staff","Off-hand"]},
+ "Monk":        {a:"Leather",w:["Axe","Mace","Sword","Fist","Polearm","Staff"]},
+ "Rogue":       {a:"Leather",w:["Dagger","Sword","Axe","Fist","Mace"]},
+ "Hunter":      {a:"Mail",   w:["Bow","Crossbow","Gun","Axe","Sword","Polearm","Staff","Dagger","Fist"]},
+ "Shaman":      {a:"Mail",   w:["Axe","Mace","Dagger","Fist","Staff","Shield","Off-hand"]},
+ "Evoker":      {a:"Mail",   w:["Axe","Dagger","Fist","Mace","Staff","Sword","Off-hand"]},
+ "Death Knight":{a:"Plate",  w:["Axe","Mace","Sword","Polearm"]},
+ "Paladin":     {a:"Plate",  w:["Axe","Mace","Sword","Polearm","Shield"]},
+ "Warrior":     {a:"Plate",  w:["Axe","Mace","Sword","Polearm","Staff","Dagger","Fist","Shield"]}
+};
+/* [class, spec, primary stat] — the roster is the one Icy Veins' Season 2 set
+   guide lists, which is also where Demon Hunter's third spec comes from. */
+const SPECS=[
+ ["Mage","Arcane","Int"],["Mage","Fire","Int"],["Mage","Frost","Int"],
+ ["Priest","Discipline","Int"],["Priest","Holy","Int"],["Priest","Shadow","Int"],
+ ["Warlock","Affliction","Int"],["Warlock","Demonology","Int"],["Warlock","Destruction","Int"],
+ ["Demon Hunter","Havoc","Agi"],["Demon Hunter","Vengeance","Agi"],["Demon Hunter","Devourer","Agi"],
+ ["Druid","Balance","Int"],["Druid","Feral","Agi"],["Druid","Guardian","Agi"],["Druid","Restoration","Int"],
+ ["Monk","Brewmaster","Agi"],["Monk","Mistweaver","Int"],["Monk","Windwalker","Agi"],
+ ["Rogue","Assassination","Agi"],["Rogue","Outlaw","Agi"],["Rogue","Subtlety","Agi"],
+ ["Hunter","Beast Mastery","Agi"],["Hunter","Marksmanship","Agi"],["Hunter","Survival","Agi"],
+ ["Shaman","Elemental","Int"],["Shaman","Enhancement","Agi"],["Shaman","Restoration","Int"],
+ ["Evoker","Devastation","Int"],["Evoker","Preservation","Int"],["Evoker","Augmentation","Int"],
+ ["Death Knight","Blood","Str"],["Death Knight","Frost","Str"],["Death Knight","Unholy","Str"],
+ ["Paladin","Holy","Int"],["Paladin","Protection","Str"],["Paladin","Retribution","Str"],
+ ["Warrior","Arms","Str"],["Warrior","Fury","Str"],["Warrior","Protection","Str"]
+];
+const SPECKEY=s=>s[0]+"/"+s[1];
+const SPECMAP=Object.fromEntries(SPECS.map(s=>[SPECKEY(s),{c:s[0],s:s[1],p:s[2]}]));
+/* No primary at all means the item does not gate on stat — trinkets and
+   tokens mostly — so it stays eligible. */
+const specStatOK=(i,sp)=>!i.p||!i.p.length||i.p.includes(sp.p);
+function specCan(i,key){
+  const sp=SPECMAP[key]; if(!sp) return true;
+  const cl=WCLASS[sp.c], ty=i.ty;
+  if(ARMOURS.includes(ty)) return ty===cl.a;              // armour: class gate only
+  if(ty==="Token") return i.tc===cl.a||i.tc==="All";      // tier token carries its armour
+  if(ty&&(WEAPONRY.has(ty)||ty==="Shield"||ty==="Off-hand"))
+    return cl.w.includes(ty)&&specStatOK(i,sp);           // proficiency, then stat
+  return specStatOK(i,sp);                                // trinkets, rings, necks, cloaks
+}
 
 /* skip lets a group ask "what would still be reachable if I were not applied",
    which is what keeps an OR group from disabling its own siblings. */
@@ -669,6 +734,9 @@ function lmatch(o,skip){
   if(skip!=="big"&&F.big&&!((i.x||[]).length&&i.x[0][0]===F.big)) return false;
   if(skip!=="fx"&&F.fx==="1"&&!isCantrip(i)) return false;
   if(skip!=="ro"&&F.ro.size&&!(i.ro||[]).some(r=>F.ro.has(r))) return false;
+  /* OR within the group, like every other loot facet: any selected spec that
+     could equip the item keeps it. */
+  if(skip!=="spec"&&F.spec.size&&![...F.spec].some(k=>specCan(i,k))) return false;
   return true;
 }
 function pLoot(){
@@ -690,6 +758,11 @@ function pLoot(){
   const liveP=reach("p",i=>i.p||[]), liveX=reach("x",i=>(i.x||[]).map(v=>v[0]));
   const liveBig=reach("big",i=>(i.x||[]).length?[i.x[0][0]]:[]);
   const liveRo=reach("ro",i=>i.ro||[]);
+  /* reach() collects values off items, but a spec is not an item property —
+     so ask the question the other way round: which specs could equip anything
+     still reachable once their own selection is set aside. */
+  const specPool=LOOTALL.filter(o=>lmatch(o,"spec"));
+  const liveSpec=new Set(SPECS.map(SPECKEY).filter(k=>specPool.some(o=>specCan(o.i,k))));
   const opt=(key,v,label,live)=>{
     const on=F[key] instanceof Set?F[key].has(v):F[key]===v;
     const dis=!on&&live&&!live.has(v);
@@ -719,6 +792,18 @@ function pLoot(){
       ${LSEC.map(v=>opt("big",v,v,liveBig)).join("")}</div></div>
     <div class="fgroup"><h4>UNCONFIRMED: Role <span class="fany">any of · our call, not a source's</span></h4><div class="fopts">
       ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,"UNCONFIRMED: "+LROLE[r],liveRo)).join("")}</div></div>
+    <details class="fgroup specfg"${F.spec.size?" open":""}>
+      <summary><h4>Specialisation <span class="fany">any of · ${SPECS.length} specs · derived, not published</span></h4></summary>
+      <p class="note specnote">Eligibility from three things the data actually knows: your armour class, your
+      spec's primary stat, and your class's weapon proficiency. Trinkets are shown wherever the stat line allows
+      them — the role marks are our own inference and are not used to narrow this further.</p>
+      ${ARMOURS.map(a=>`<div class="specarm"><span class="specarm-h">${a}</span>
+        ${Object.keys(WCLASS).filter(c=>WCLASS[c].a===a).map(c=>`<div class="specrow">
+          <span class="speccls">${esc(c)}</span>
+          <div class="fopts">${SPECS.filter(s=>s[0]===c).map(s=>
+            opt("spec",SPECKEY(s),s[1],liveSpec)).join("")}</div></div>`).join("")}
+        </div>`).join("")}
+    </details>
     <div class="fgroup"><h4>Cantrips</h4><div class="fopts">
       ${opt("fx","1","Cantrips",null)}</div></div>
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
