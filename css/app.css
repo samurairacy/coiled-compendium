@@ -832,8 +832,8 @@ footer a{color:var(--ink-muted)}
    [data-dungeon]/[data-boss] plumbing every other component uses. */
 .wlbtn{
   display:inline-flex;align-items:center;justify-content:center;
-  width:1.45rem;height:1.45rem;margin-left:.45rem;flex:0 0 auto;
-  border:1px solid var(--rule);border-radius:3px;background:transparent;
+  width:2rem;height:2rem;margin-left:.5rem;flex:0 0 auto;
+  border:1px solid var(--rule);border-radius:4px;background:transparent;
   color:var(--ink-muted);cursor:pointer;vertical-align:middle;padding:0}
 .wlbtn svg{display:block}
 .wlbtn:hover{border-color:var(--accent);color:var(--accent)}

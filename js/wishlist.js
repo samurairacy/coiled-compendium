@@ -80,7 +80,7 @@ const wlClsSel=(l,blank)=>`<select data-wlcls data-k="${l.k}">
    same sack with a tick once it's in the bag. State updates in place on
    toggle; a full re-render (facet change, route) recomputes it from the
    store. Both symbols live in the index.html sprite (i-sack / i-sackin). */
-const wlBtnFace=on=>ic(on?"i-sackin":"i-sack",15);
+const wlBtnFace=on=>ic(on?"i-sackin":"i-sack",20);
 const wlBtnTip=(on,a)=>on?`On ${esc(a.name)} — click to remove`:`Add to ${a?esc(a.name):"a new wishlist"}`;
 function wlBtn(i){
   const a=wlActive(), on=!!(a&&wlHas(a,i.id));
