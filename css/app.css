@@ -940,3 +940,38 @@ footer a{color:var(--ink-muted)}
 .dmap{margin:.6rem 0 1rem;border:1px solid var(--rule);border-left:3px solid var(--d-accent,var(--accent));background:var(--ground-sunken)}
 .dmap img{display:block;width:100%;height:auto}
 .dmap figcaption{font-family:var(--face-term);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint);padding:.4rem .6rem;border-top:1px solid var(--rule-soft)}
+
+/* ═══ THE PLAY ═══ what you do about it, as opposed to what happens. Sits
+   above the mechanics so a filtered page answers the question before it
+   starts listing casts. */
+.playbox{border:1px solid var(--rule);border-left:3px solid var(--accent);
+  background:var(--ground-raised);border-radius:3px;margin:0 0 .8rem;padding:.55rem .7rem}
+.playhead{font-family:var(--face-term);font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);margin-bottom:.4rem}
+.playrow{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.6rem;
+  align-items:baseline;padding:.28rem 0;border-top:1px solid var(--rule-soft)}
+.playrow:first-of-type{border-top:none}
+.playrow p{margin:0}
+.playrole{display:inline-flex;align-items:center;gap:.3rem;font-family:var(--face-term);
+  font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-muted)}
+.playrow.r-tank .playrole{color:#B79BE4}
+.playrow.r-healer .playrole{color:#7DC49A}
+.playrow.r-mdps .playrole{color:#D69A63}
+.playrow.r-rdps .playrole{color:#8FB0DE}
+.playbox.none{border-left-color:var(--rule)}
+.playbox.none .note{margin:0}
+/* the ability-level note is the same idea at cast resolution */
+.read.play::before{content:"PLAY — ";font-family:var(--face-term);font-size:.6rem;
+  letter-spacing:.09em;color:var(--accent)}
+/* trash threat: derived from the mob's worst ability, so filler reads quiet
+   and the mobs that end runs read loud */
+.threat{font-family:var(--face-term);font-size:.56rem;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;padding:.08rem .34rem;border-radius:2px;margin-left:.4rem;white-space:nowrap}
+.threat.t1{border:1px dashed var(--rule);color:var(--ink-faint)}
+.threat.t2{border:1px solid var(--signal-warn);color:var(--signal-warn)}
+.threat.t3{border:1px solid var(--signal-urgent);color:var(--signal-urgent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--signal-urgent) 22%,transparent)}
+.mobplay{margin:.3rem 0 .5rem;font-size:.9rem}
+.mobplay b{font-family:var(--face-term);font-size:.6rem;letter-spacing:.09em;
+  color:var(--accent);margin-right:.35rem}
+@media(max-width:600px){.playrow{grid-template-columns:minmax(0,1fr);gap:.15rem}}

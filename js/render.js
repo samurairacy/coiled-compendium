@@ -101,7 +101,7 @@ function abilityRow(a,roleFilter,diff){
     <div><div class="an">${abilIcon(a.n)}${esc(a.n)}${mythBadge(a)}${diffBadge(a)}${alt(a)}</div><div class="tags">${tags}${roles}</div></div>
     <div><p class="effect">${esc(a.e)}${srcMark(a.s)}</p>
       ${ctrs?`<div class="tags">${ctrs}</div>`:""}
-      ${a.h?`<p class="read">${esc(a.h)}</p>`:""}
+      ${a.h?`<p class="read play">${esc(a.h)}</p>`:""}
       ${a.hh&&diff==="h"?`<p class="read hh"><b>On Heroic:</b> ${esc(a.hh)}</p>`:""}</div></div>`;
 }
 /* Every trash block carries a gravity tier taken straight from the mob's own
@@ -114,13 +114,20 @@ function mobBlock(m,roleFilter){
   const rows=(m.a||[]).map(a=>abilityRow(a,roleFilter)).join("");
   if(!rows.trim()) return "";
   const k=m.k||"trash", gi=MOBICON[k];
-  return `<div class="card mob k-${k}">
+  /* Threat is DERIVED from the worst ability the mob actually has, so it can
+     never drift out of sync with the rows beneath it. th: overrides only where
+     volume makes a mob dangerous without any single scary cast. */
+  const th=m.th||Math.max(1,...(m.a||[]).map(a=>a.sev||1));
+  const TH=["","Minor","Dangerous","Deadly"];
+  return `<div class="card mob k-${k} th${th}">
     <div class="mobtop"><h3>${esc(m.n)}</h3>
       <span class="kindtag k-${k}">${gi?ic(gi,11):""}${esc(KINDS[k]||k)}</span>
+      <span class="threat t${th}" title="How much this mob can cost you, taken from its worst ability.">${esc(TH[th])}</span>
       ${m.alt?`<span class="alt">also: ${esc(m.alt)}</span>`:""}</div>
     ${m.shape?`<div class="bshape lv${m.lv}"><span>${esc(m.shape)}</span><em>${["","Straightforward","Moderate","Demanding"][m.lv]}</em></div>`:""}
     ${m.sub?`<p class="mobsub">${esc(m.sub)}</p>`:""}
     ${m.brief?`<p class="bossbrief">${esc(m.brief)}</p>`:""}
+    ${m.play?`<p class="mobplay"><b>Play</b> ${esc(m.play)}</p>`:""}
     ${rows}</div>`;
 }
 
@@ -182,6 +189,29 @@ const bossMedia=(imgKeys,fallbackName)=>{
       const img=`<img src="${IMG[k]}" alt="${esc(JNAMES[k]||fallbackName)}${journal?" — dungeon-journal model":" in game"}" loading="lazy" decoding="async" title="${esc(JNAMES[k]||"")}">`;
       return journal?`<a href="${IMG[k]}" target="_blank" rel="noopener">${img}</a>`:img;}).join("")}</div>
     <figcaption>${ks.length>1?ks.map(k=>esc(JNAMES[k]||"")).filter(Boolean).join(" · ")+" — ":""}${caption}</figcaption></figure>`;};
+/* ── THE PLAY ───────────────────────────────────────────────────────────
+   Mechanics tell you what happens; this tells you what you do about it. One
+   statement per role, written so a tank can filter to Tank and read exactly
+   one thing that covers most of the encounter. Keys are tank/healer/mdps/rdps
+   with `dps` as shorthand for both DPS lenses; a missing role simply does not
+   render, so partial coverage degrades quietly instead of showing a blank.
+   The lens governs: Everyone shows all of them, a role shows only its own. */
+const PLAYROLE={tank:["Tank","i-tank"],healer:["Healer","i-heal"],
+  mdps:["Melee","i-dps"],rdps:["Ranged","i-dps"],dps:["DPS","i-dps"]};
+function playBlock(p,roleFilter){
+  if(!p) return "";
+  /* dps is shorthand: a melee or ranged lens falls back to it, and with no
+     lens it prints once as DPS rather than twice. */
+  const pick=k=>p[k]||((k==="mdps"||k==="rdps")?p.dps:null);
+  const keys=roleFilter?[roleFilter]:["tank","healer",...(p.mdps||p.rdps?["mdps","rdps"]:["dps"])];
+  const rows=keys.map(k=>{const txt=pick(k); if(!txt) return "";
+    const [label,icon]=PLAYROLE[k]||[k,"i-dps"];
+    return `<div class="playrow r-${k}"><span class="playrole">${ic(icon,12)}${esc(label)}</span>
+      <p>${esc(txt)}</p></div>`;}).join("");
+  if(!rows.trim()) return roleFilter
+    ? `<div class="playbox none"><p class="note">No role-specific play recorded for this one yet.</p></div>`:"";
+  return `<div class="playbox"><div class="playhead">How to play it</div>${rows}</div>`;
+}
 function encounterCard(d,e,roleFilter){
   const s=bossStats(d,e), img=e.img&&bossMedia(e.img,e.n);
   const trinkets=(s.loot||[]).filter(x=>x.sl==="Trinket");
@@ -197,6 +227,7 @@ function encounterCard(d,e,roleFilter){
       ${img||`<figure class="bossmedia none"><div class="noimg">${ic("i-boss",26)}<span>No capture</span></div>
         <figcaption>Imagery missing for this encounter</figcaption></figure>`}
       <div class="bossright">
+      ${playBlock(e.play,roleFilter)}
       ${e.brief?`<p class="bossbrief">${esc(e.brief)}</p>`:""}
       <div class="bossstats">
         ${stat("Abilities",s.n)}
@@ -1092,6 +1123,7 @@ function pBoss(id,tab){
   ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
   ${b.brief?`<p>${esc(b.brief)}</p>`:""}
   ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}`:""}
+  ${playBlock(b.play,ROLEF)}
   ${abilCount(b)?phases.map(renderPhase).join(""):`
   <p class="note">${ic("i-warn",13)} The order and name are confirmed against Wowhead; the encounter guide has
   not been written yet. Bosses are being sourced and added one at a time — the same way the dungeons were.</p>`}

@@ -182,6 +182,19 @@ item icons keyed by Blizzard slug.
   is an open editorial task** (owner-flagged): refine only on evidence —
   prose, transcripts, or live logs — some abilities programmatically target
   ranged players, and guessing which is worse than staying coarse.
+- **`play:` answers "what do I do", which is a different question from what
+  the mechanics answer.** Every encounter and raid boss carries
+  `play:{tank,healer,mdps,rdps}` — `dps` is shorthand accepted for both DPS
+  lenses, and a missing role simply does not render. `playBlock()` filters on
+  the role lens, so choosing Tank collapses a page to one paragraph plus the
+  rows carrying `r:["tank"]`, which is the whole point: the owner could read a
+  mechanic and still not know the job. The ability-level `h:` is the same idea
+  at cast resolution and is labelled **PLAY**, not READ — the rename is load-
+  bearing, because READ invited editorial commentary and PLAY demands an
+  instruction. Trash carries a one-line `play:` and a **threat grade derived
+  from its worst ability severity** (`th:` overrides only where volume makes a
+  mob dangerous without any single scary cast), so filler reads quiet and the
+  run-enders read loud.
 - **The difficulty axis** exists only in the raid: `df:["h"]` marks
   Heroic-only abilities (absence means both — never write `["n","h"]`,
   the checker enforces it), `hh:` carries a Heroic addendum. The toggle
