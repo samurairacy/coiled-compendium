@@ -126,8 +126,9 @@ function mobBlock(m,roleFilter){
       ${m.alt?`<span class="alt">also: ${esc(m.alt)}</span>`:""}</div>
     ${m.shape?`<div class="bshape lv${m.lv}"><span>${esc(m.shape)}</span><em>${["","Straightforward","Moderate","Demanding"][m.lv]}</em></div>`:""}
     ${m.sub?`<p class="mobsub">${esc(m.sub)}</p>`:""}
-    ${m.brief?`<p class="bossbrief">${esc(m.brief)}</p>`:""}
-    ${m.play?`<p class="mobplay"><b>Play</b> ${esc(m.play)}</p>`:""}
+    ${briefBlock(m.brief)}
+    ${typeof m.play==="object"?playBlock(m.play,roleFilter)
+      :m.play?`<p class="mobplay"><b>Play</b> ${esc(m.play)}</p>`:""}
     ${rows}</div>`;
 }
 
@@ -196,6 +197,11 @@ const bossMedia=(imgKeys,fallbackName)=>{
    with `dps` as shorthand for both DPS lenses; a missing role simply does not
    render, so partial coverage degrades quietly instead of showing a blank.
    The lens governs: Everyone shows all of them, a role shows only its own. */
+/* The brief used to open the card, so it needed no header. Now that the play
+   block sits above it, an unlabelled paragraph reads orphaned — and naming it
+   makes the pairing legible: this is what happens, that is what you do. */
+const briefBlock=(txt,cls)=>txt
+  ?`<div class="brieflabel">What happens</div><p class="${cls||"bossbrief"}">${esc(txt)}</p>`:"";
 const PLAYROLE={tank:["Tank","i-tank"],healer:["Healer","i-heal"],
   mdps:["Melee","i-dps"],rdps:["Ranged","i-dps"],dps:["DPS","i-dps"]};
 function playBlock(p,roleFilter){
@@ -210,7 +216,20 @@ function playBlock(p,roleFilter){
       <p>${esc(txt)}</p></div>`;}).join("");
   if(!rows.trim()) return roleFilter
     ? `<div class="playbox none"><p class="note">No role-specific play recorded for this one yet.</p></div>`:"";
-  return `<div class="playbox"><div class="playhead">How to play it</div>${rows}</div>`;
+  /* Collapsed by default, but it must not read as decoration: the bar carries
+     the accent, a chevron, a hover state and a preview of which roles are
+     inside, so a skimmer can see there is something worth opening and that
+     opening is the thing to do. Native <details> keeps it keyboard-reachable
+     without script. */
+  const peek=keys.filter(k=>pick(k)).map(k=>(PLAYROLE[k]||[k])[0]).join(" · ");
+  /* Collapsed while browsing everything, OPEN the moment a role lens is on:
+     choosing Tank is the user saying what they came for, and making them
+     click again for it would be the friction this feature exists to remove. */
+  return `<details class="playbox"${roleFilter?" open":""}>
+    <summary class="playsum"><span class="playtw" aria-hidden="true"></span>
+      <span class="playhead">How to play it</span>
+      <span class="playpeek">${esc(peek)}</span></summary>
+    <div class="playrows">${rows}</div></details>`;
 }
 function encounterCard(d,e,roleFilter){
   const s=bossStats(d,e), img=e.img&&bossMedia(e.img,e.n);
@@ -228,7 +247,7 @@ function encounterCard(d,e,roleFilter){
         <figcaption>Imagery missing for this encounter</figcaption></figure>`}
       <div class="bossright">
       ${playBlock(e.play,roleFilter)}
-      ${e.brief?`<p class="bossbrief">${esc(e.brief)}</p>`:""}
+      ${briefBlock(e.brief)}
       <div class="bossstats">
         ${stat("Abilities",s.n)}
         ${stat("Will end runs",s.sev3||"—",s.sev3?"hot":"")}
@@ -1121,7 +1140,7 @@ function pBoss(id,tab){
   ${b.jp?bossMedia(b.jp,b.n):""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
   ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
-  ${b.brief?`<p>${esc(b.brief)}</p>`:""}
+  ${briefBlock(b.brief,"raidbrief")}
   ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}`:""}
   ${playBlock(b.play,ROLEF)}
   ${abilCount(b)?phases.map(renderPhase).join(""):`

@@ -945,9 +945,27 @@ footer a{color:var(--ink-muted)}
    above the mechanics so a filtered page answers the question before it
    starts listing casts. */
 .playbox{border:1px solid var(--rule);border-left:3px solid var(--accent);
-  background:var(--ground-raised);border-radius:3px;margin:0 0 .8rem;padding:.55rem .7rem}
-.playhead{font-family:var(--face-term);font-size:.6rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-faint);margin-bottom:.4rem}
+  background:var(--ground-raised);border-radius:3px;margin:0 0 .8rem}
+/* The bar has to look pressable at a glance: accent wash, a chevron that
+   turns, a hover that brightens, and a preview of which roles are inside so
+   a skimmer knows what opening buys them. Collapsed by default, never bland. */
+.playsum{cursor:pointer;list-style:none;display:flex;align-items:center;gap:.5rem;
+  padding:.5rem .7rem;border-radius:2px;
+  background:color-mix(in srgb,var(--accent) 12%,transparent);
+  transition:background .15s ease,box-shadow .15s ease}
+.playsum::-webkit-details-marker{display:none}
+.playsum::marker{content:""}
+.playsum:hover{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.playsum:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.playtw{color:var(--accent);font-size:.62rem;line-height:1;flex:0 0 auto}
+.playtw::before{content:"▶"}
+.playbox[open] .playtw::before{content:"▼"}
+.playbox[open] .playsum{border-bottom:1px solid var(--rule-soft);border-radius:2px 2px 0 0}
+.playhead{font-family:var(--face-term);font-size:.7rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent)}
+.playpeek{margin-left:auto;font-family:var(--face-term);font-size:.58rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.playrows{padding:.15rem .7rem .5rem}
 .playrow{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.6rem;
   align-items:baseline;padding:.28rem 0;border-top:1px solid var(--rule-soft)}
 .playrow:first-of-type{border-top:none}
@@ -975,3 +993,7 @@ footer a{color:var(--ink-muted)}
 .mobplay b{font-family:var(--face-term);font-size:.6rem;letter-spacing:.09em;
   color:var(--accent);margin-right:.35rem}
 @media(max-width:600px){.playrow{grid-template-columns:minmax(0,1fr);gap:.15rem}}
+/* pairs with .playhead: quieter, because "what happens" is context and
+   "how to play it" is the thing you came for */
+.brieflabel{font-family:var(--face-term);font-size:.6rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);margin:.2rem 0 .25rem}
