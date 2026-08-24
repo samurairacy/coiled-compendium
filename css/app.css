@@ -314,13 +314,12 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
 .dseg[aria-pressed="true"]{background:var(--d-accent);color:var(--d-ink);font-weight:700}
 .linklike{color:var(--accent);text-decoration:underline;text-underline-offset:3px;padding:0;font-size:inherit}
 .linklike:hover{color:var(--ink)}
-.read.hh b{color:var(--d-accent)}
 .hnote{border-left:2px solid var(--d-accent);padding-left:.7rem}
 td.statcell{white-space:normal}
 td.statcell .chip{margin-right:.4rem;margin-bottom:.15rem}
 td.statcell .lean{margin-left:.15rem}
 .fx.pending{color:var(--ink-faint);font-style:italic;border-left:2px dashed var(--rule);padding-left:.6rem}
-.mythonly.hb{background:var(--d-accent);color:var(--d-ink)}
+.mythonly.hb{background:var(--heroic);color:#25101A}
 .cov.warn{border-color:var(--signal-urgent)}
 .cov.warn svg{color:var(--signal-urgent)}
 
@@ -851,7 +850,6 @@ footer a{color:var(--ink-muted)}
   .area-h{break-after:avoid;color:#000}
   .mres,.rboss{break-inside:avoid;border-color:#bbb}
   .rboss .rnum{background:#000;color:#fff}
-  .read.hh b{color:#000}
   .bosscard{break-inside:avoid;border:1px solid #bbb;border-left:3px solid #000;background:#fff}
   .bossid{background:#000;color:#fff}
   .bossbody{grid-template-columns:1fr}
