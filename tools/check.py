@@ -148,6 +148,47 @@ used_s = set(k for m in re.finditer(r'\bs:\[((?:"\w+",?)+)\]', mplus + raid) for
 used_s.discard("img")   # the capture pseudo-source, rendered specially
 check(used_s <= src_vocab, "source keys all in SOURCES (%s)" % (", ".join(sorted(used_s - src_vocab)) or "clean"))
 
+# ── 5b. no ability object may name the same key twice ──────────────────────
+# JavaScript takes the LAST occurrence and says nothing. Eighteen rows carried
+# t: twice, so the first array was dead code — invisible until the 2026-08-25
+# lethality sweep wrote a tag into the dead half and it never rendered.
+dupkey = []
+for fname, src in (("mplus", mplus), ("raid", raid)):
+    for i, ln in enumerate(src.split("\n"), 1):
+        if '{n:"' not in ln:
+            continue
+        for key in ("t", "c", "r", "s", "e", "h"):
+            n = len(re.findall(r'(?<=[,{])%s:[\["]' % key, ln))
+            if n > 1:
+                dupkey.append("%s:%d %s: x%d" % (fname, i, key, n))
+check(not dupkey, "no ability object names a key twice (%s)"
+      % ("; ".join(dupkey[:4]) if dupkey else "clean"))
+
+# ── 5c. lethality: the two loudest badges on the site ──────────────────────
+# oneshot and wipe ride in t: so the index filters them for free, but they are
+# an editorial claim of the strongest kind — the bar is that the row's own
+# sourced text says it kills. lh:1 marks lethality that only applies on Heroic,
+# so it is meaningless without one of the two tags and only legal in the raid.
+leth = re.findall(r'\{n:"([^"]+)",t:\[[^\]]*"(oneshot|wipe)"', mplus + raid)
+check(len(leth) >= 10, "lethality tags present (%d rows)" % len(leth))
+orphan_lh = [m.group(1) for m in re.finditer(r'\{n:"([^"]+)",t:\[([^\]]*)\](?:,lh:1)', mplus + raid)
+             if not re.search(r'"(oneshot|wipe)"', m.group(2))]
+check(not orphan_lh, "lh:1 only on a row that carries a lethality tag (%s)"
+      % (", ".join(orphan_lh) or "clean"))
+check("lh:1" not in mplus, "lh:1 is raid-only — Mythic+ has no difficulty axis (%s)"
+      % ("clean" if "lh:1" not in mplus else "found in data-mplus"))
+
+# ── 5d. every phase and every trash area states its objective ──────────────
+# The rung between "what the fight is" and a list of casts. A phase header with
+# no brief under it sends the reader back to synthesising it themselves, which
+# is the job this guide exists to have already done.
+ph = re.findall(r'\{n:"[^"]+",trigger:"[^"]*",(brief:)?', raid)
+check(all(ph), "every raid phase carries a brief (%d of %d)" % (sum(1 for x in ph if x), len(ph)))
+ar = re.findall(r'\{n:"[^"]+",(brief:)?"?[^,]*mobs:\[', mplus)
+ar2 = re.findall(r'\{n:"[^"]+",brief:"[^"]*",mobs:\[', mplus)
+n_areas = len(re.findall(r'\{n:"[^"]+",[^\n]*?mobs:\[', mplus))
+check(len(ar2) == n_areas, "every trash area carries a brief (%d of %d)" % (len(ar2), n_areas))
+
 # ── 6. raid discipline: df values, and absence means both ──────────────────
 bad_df = [m.group(1) for m in re.finditer(r'df:\[([^\]]*)\]', raid)
           if not set(re.findall(r'"(\w+)"', m.group(1))) <= {"n", "h", "m"}]

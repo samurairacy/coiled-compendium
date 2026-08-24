@@ -38,6 +38,13 @@ silently didn't for months; correction canonicals must appear in the data
 because a rename sweep once orphaned search aliases; icon slugs and image
 paths must exist on disk; raid `df` discipline is enforced from day one.
 
+**No ability object may name the same key twice**, and this one is worth
+knowing about because it is invisible: JavaScript takes the last occurrence
+and says nothing. Nineteen rows carried `t:` (one `c:`, one `h:`) twice, so
+the first array had been dead code for months — harmless until the 2026-08-25
+lethality sweep wrote a tag into the dead half and it never rendered. The
+duplicates are merged and `check.py` now fails on any recurrence.
+
 Images: `assets/img/` holds 32 banners/captures (once 703 KB of inline
 base64 — never inline images again), `assets/icons/` holds ~540 ability and
 item icons keyed by Blizzard slug.
@@ -195,12 +202,53 @@ item icons keyed by Blizzard slug.
   from its worst ability severity** (`th:` overrides only where volume makes a
   mob dangerous without any single scary cast), so filler reads quiet and the
   run-enders read loud.
+- **"How bad is it" is TWO questions and they are kept apart.** *Severity*
+  (`sev:1..3`) grades what one failure **costs**; *lethality* (`oneshot` /
+  `wipe` in `t:`) says whether the mechanic **kills**. They are orthogonal —
+  a Punishing mechanic can still one-shot, and most Run-enders never kill
+  anyone outright. **Severity now prints the word, never the number.** The
+  bare "Severity 3" told a reader nothing actionable and, because 1s and 2s
+  were never rendered at all, the scale read as an in-joke with one member;
+  `SEVS` in data-shared holds the names (Chip / Punishing / Run-ender), level
+  1 renders nothing, and `sevLegend()` says so on every page that lists
+  abilities. **The bar for the two skull badges is deliberately high and
+  deliberately checkable: the row's own sourced text must say it kills a
+  player outright or ends the group, and the failure the mechanic itself
+  defines must produce that death with no second event required.** Compounds
+  stay untagged at the severity they earn — "lethal if it overlaps anything
+  else" (Blade Dance), "a string of avoids is what makes him lethal"
+  (Punishing Might), "blocking a beam and THEN eating a melee" (Galvanized),
+  "eating these is simply death" via a later buster (Sickening Bite). 21 rows
+  carry a tag out of 417. **Do not widen this by analogy** — a badge that
+  quietly meant "probably quite bad" is a badge nobody reads twice. Lethality
+  rides in `t:` so the mechanics index filters it for free, but never renders
+  as an ordinary chip: it is lifted out beside the name like Mythic-only.
+  `lh:1` marks lethality that only exists on Heroic (raid-only; check.py
+  enforces both that and that `lh` never appears without a tag).
+- **Every phase and every trash area states an OBJECTIVE.** `brief:` on the 24
+  raid phase objects and the 24 Mythic+ `areas` entries, rendered under the
+  header by `objBlock()`. This is the rung that was missing: a boss page went
+  from "what the whole fight is" straight to a list of casts, so anyone
+  wanting the shape of a phase had to read six abilities and synthesise it —
+  which is the guide's job, not the reader's. The register is what the section
+  is *for* and what stops you. `check.py` fails if any of the 48 is absent.
 - **The difficulty axis** exists only in the raid: `df:["h"]` marks
   Heroic-only abilities (absence means both — never write `["n","h"]`,
   the checker enforces it), `hh:` carries a Heroic addendum. The toggle
   persists in localStorage, rides the URL as `?d=h`, and **never hides
-  silently**: on Normal, Heroic-only rows collapse to a counted line. It
-  is a segmented control so Mythic later is a data change, not a rebuild.
+  silently**: on Normal, Heroic-only rows collapse to a counted line, and
+  that count now includes `hh:` amendments to rows that *are* shown.
+- **Heroic has to be visible without being read.** It used to be one sentence
+  at the end of a brief paragraph — invisible to a skimmer. Four fields carry
+  it now and all render through `heroLine()` behind a flag: `briefh:` on the
+  boss, `bh:` on a phase, `playh:{tank,healer,mdps,rdps,dps}` beside the
+  matching role row, and the existing ability `hh:`. **`hh` stays Heroic-gated
+  (it is an in-fight instruction); the other three render on both difficulties
+  (they describe the fight, and a Normal reader is entitled to know what
+  changes).** The flag colour is `--heroic`, a warm rose, and it is
+  load-bearing that it is **constant across all eight boss accents** — the
+  raid palette runs green → cyan → blue → violet, so the one warm hue means
+  "this line is about the other difficulty", never "this is Sszorak".
 - **Ula'tek is a named gap.** No source has tested her (Icy Veins says so
   outright); her page carries journal-derived structure behind an explicit
   warning. Don't fill the gap with confidence; fill it with live data.
@@ -260,6 +308,13 @@ item icons keyed by Blizzard slug.
   the observed trinket `ro` are load-bearing arithmetic, not just filters.
 - **Mobs carry a gravity tier in `k`** (`mini`→`lt`→`caster`/`trash`→
   `fodder`), and the trash card styles itself from it.
+- **Two sticky bars, and the second one is measured, not guessed.** The
+  dungeon/boss switcher parks at `top:var(--bar)`; the dungeon page's own tab
+  bar (`.tabs.stick`) parks under both at `calc(var(--bar) + var(--dsw))`.
+  `--dsw` is set by `route()` in app.js from the switcher's actual
+  `offsetHeight` after every paint, and is 0 on pages with no switcher. **Do
+  not hard-code it** — a literal pixel value becomes a gap or an overlap the
+  first time someone changes their browser's text size.
 - **Accents do the wayfinding.** `[data-dungeon]` sets `--d-accent` per
   dungeon; raid pages reuse the same `--d-*` names via `body[data-raid]`
   and `[data-boss]`, so every accent-driven component works on both

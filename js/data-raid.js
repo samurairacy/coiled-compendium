@@ -57,15 +57,17 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
 
  /* ── 1 · NEK'ZALI THE SOULCOILER ─────────────────────────────────────── */
  {id:"nekzali",o:1,n:"Nek'zali the Soulcoiler",play:{tank:"Two tanks, and the boss goes to whichever coffin cluster needs clearing — you are steering her, not parking her. Add control comes before boss damage every time; the Well is what kills you.",healer:"Four healers is the settled shape because the Well feeds her and she pays it back into the raid. Energy is the clock: 100 is the enrage, so cooldowns follow add waves rather than a timer.",dps:"Everything orbits the Soulcoil Well — adds feed it, it feeds her. Casters strip the Amani shields; hunters cannot, because their damage is Physical."},jp:"j-nekzali",short:"Nek'zali",
+  playh:{tank:"Barrage spirits now stack five Hollowing Strikes on whoever they hit, so the line has to be genuinely empty — a body-block costs the raid the detonation and the victim their healing.",dps:"Every corpse leaves a Vessel of Awakening, and every Vessel left standing joins Phase 2 empowered. Melee soak the Pyre on top of a corpse pile; ranged skip it deliberately and sweep the strays with their own Flames."},
   pos:"Opens the raid",lv:1,sub:"Tower defence, and the tower is a hole in the ground",
-  brief:"Everything orbits the Soulcoil Well: adds feed it energy, energy feeds her, 100 energy is the enrage. Add control first, boss damage second. Settled shape is two tanks, four healers, rest damage. Casters strip the Amani shields — hunters cannot, their damage is Physical — and the boss is dragged to whichever coffin cluster is glowing. Tanks taunt early, around three or four stacks, so the swap falls after each Possession Barrage. Essence Rend carriers walk to the wall before dispel; those puddles return in Phase 2. Heroic adds a second intermission job: burn every corpse with the Pyre soak and the Flames outside it, then lust Phase 2 and beat the bar.",
+  brief:"Everything orbits the Soulcoil Well: adds feed it energy, energy feeds her, 100 energy is the enrage. Add control first, boss damage second. Settled shape is two tanks, four healers, rest damage. Casters strip the Amani shields — hunters cannot, their damage is Physical — and the boss is dragged to whichever coffin cluster is glowing. Tanks taunt early, around three or four stacks, so the swap falls after each Possession Barrage. Essence Rend carriers walk to the wall before dispel; those puddles return in Phase 2. Lust the Phase 2 transition and beat the bar before 100 energy.",
+  briefh:"The intermission gains a second job. Corpses leave Vessels of Awakening behind, and any Vessel still standing when Phase 2 starts comes back as an empowered add — so burn them, with the Pyre soak and with the Flames the ranged place outside it.",
   reads:[{by:"Method",t:"Simple core loop with real texture underneath: puddle placement in Phase 1 decides how annoying Phase 2 gets, and the corpse-burning intermission is genuinely clever. Rated 3/5.",s:["me_nek"]},
    {by:"Tactyks",t:"A much more complicated first boss than we're used to — expect it to land slightly undertuned to compensate, but who actually knows.",s:["tk_va"]}],
   phases:[
-   {n:"Phase 1",trigger:"Pull to 50% health",a:[
+   {n:"Phase 1",trigger:"Pull to 50% health",brief:"Hold the Well. Adds march for it, every arrival feeds her 5 energy, and the phase is won by killing them before they arrive rather than by damage on the boss. Casters break the shields, the tank drags her onto whichever coffin cluster is glowing, and Essence Rend carriers walk to the wall before anyone dispels — every puddle placed here is a Phase 2 problem.",bh:"Corpses leave a Vessel of Awakening behind, and any Vessel still standing when the intermission starts comes back as an empowered add. Phase 1 kills are Phase 2 housekeeping.",a:[
     {n:"Restless Amani",t:["adds","shield"],c:["magic","focus","kite"],r:["dps"],sev:3,
      e:"Undead Amani rise from the coffins and march for the Well behind a magic absorb worth a healthy slice of their health bar. Every add that arrives feeds her 5 energy and triggers a Soulcoil Rite.",
-     h:"Drag the boss to the biggest glowing coffin cluster for cleave, break shields with casters — hunter damage is Physical and does nothing — and kill them before they arrive. One slip is survivable; several in a row is a wipe. Whether they can be gripped and slowed through the shield is contested; see the open questions. And the Well punishes tourists too — a player who wanders in triggers a Rite of their own. And the Well punishes tourists too — a player who wanders in triggers a Rite of their own.",
+     h:"Drag the boss to the biggest glowing coffin cluster for cleave, break shields with casters — hunter damage is Physical and does nothing — and kill them before they arrive. One slip is survivable; several in a row is a wipe. Whether they can be gripped and slowed through the shield is contested; see the open questions. And the Well punishes tourists too — a player who wanders in triggers a Rite of their own.",
      hh:"Corpses leave a Vessel of Awakening behind and blight players within 15 yards — and the intermission will raise unburned Vessels as empowered adds, so Phase 1 kills become Phase 2 problems.",
      s:["iv_nek","me_nek","jf_va","rcp_nek"]},
     {n:"Soulcoil Ignition",t:["groupdmg","dot","stacking","channel"],c:["topoff","defensive"],r:["healer"],sev:3,
@@ -85,7 +87,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"Her melee stacks a healing-received cut on the tank.",
      h:"Each stack is a healing cut and Barrage adds five at once, so the tank plan is built around it: taunt at three-to-four stacks on the pull, then swap on cooldown as stacks drop — which lands naturally right after a Barrage.",
      s:["iv_nek","me_nek"]}]},
-   {n:"Intermission — Ritual of Awakening",trigger:"At 50% she retreats to the Well, immune",a:[
+   {n:"Intermission — Ritual of Awakening",trigger:"At 50% she retreats to the Well, immune",brief:"Kill both Echoes to end it. They arrive one at a time on opposite sides and come out with an aggro table, so a tank picks each up on landing while the raid cleaves the still-spawning Amani into them.",bh:"There is a second job: the Hungering Pyre soak burns any corpses underneath it, and the ranged who deliberately skip it sweep the strays with their own circles. Corpses left unburned are the empowered adds of Phase 2.",a:[
     {n:"Soul Transfer",t:["adds","channel"],c:["focus","dodge"],r:["dps"],sev:2,
      e:"A channel raises an Echo of Jawae — the first on one side of the room, the second on the opposite side once the first dies. Amani keep spawning throughout.",
      h:"Don't stand in the beam when it completes — and a tank picks the Echo up the moment it lands, because it comes out with an aggro table. Kill both Echoes to end the intermission; cleave the Amani into them.",
@@ -98,12 +100,12 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"Everyone who skips the Pyre soak gets a small burn circle of their own.",
      h:"Aim it at leftover corpses the main soak missed — ranged deliberately sit out the Pyre to sweep the strays.",
      s:["iv_nek","me_nek"]}]},
-   {n:"Phase 2",trigger:"Both Echoes dead; her energy resets",a:[
+   {n:"Phase 2",trigger:"Both Echoes dead; her energy resets",brief:"A race with no plan B. Invoke stacks a Rite on the whole raid that no longer falls off, so the healing problem grows with every cast — lust on the phase change and kill her before 100 energy brings Uncoiled Rage. Every puddle from Phase 1 now wanders the room on each Invoke, which is why Phase 1 was fought tidily.",a:[
     {n:"Invoke",t:["groupdmg","dot","stacking"],c:["unavoidable","topoff"],r:["healer"],sev:3,
      e:"Soulcoil Rite for the whole raid that no longer falls off, ramping with every cast — and each Invoke sends your Phase 1 puddles wandering around the Well.",
      h:"This is the timer: lust on phase start and kill her before 100 energy brings Uncoiled Rage. There is no plan B.",
      s:["iv_nek","me_nek"]},
-    {n:"Uncoiled Rage",t:["enrage"],c:["unavoidable"],r:["dps"],sev:3,
+    {n:"Uncoiled Rage",t:["enrage","wipe"],c:["unavoidable"],r:["dps"],sev:3,
      e:"At full energy she unleashes — a soft enrage the raid does not outlive.",
      h:"Everything before this point was about delaying it: clean add control buys the Phase 2 you need.",
      s:["iv_nek","wg_va"]}]}],
@@ -128,12 +130,14 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
 
  /* ── 2 · ENTOMBED SENTINELS · Sentinel wing ──────────────────────────── */
  {id:"entombed-sentinels",o:2,n:"Entombed Sentinels",play:{tank:"Two statues, and they must not be tanked together — separate them and keep them apart for the whole fight.",healer:"Damage arrives in synchronised pulses from the pair rather than continuously; heal the pulse, not the gap.",dps:"Keep the pair apart and bring their health down evenly — letting one outpace the other is what causes the overlap."},short:"Sentinels",
+  playh:{tank:"Bloodvenom Injection expires after the swap, while you are holding the other golem — walk to a wall in advance, and drop it on clean floor: onto an existing pool it slides somewhere you did not choose.",healer:"An undispelled Blighted Blood leaves a pool when it expires, so a missed dispel costs floor as well as health — tell the carrier to walk it next to the others.",dps:"Everything stains. Every extra Miasma soaker is an extra puddle, a cleared droplet sends Living Venom back along the ground you were standing on, and overfilling in the intermission kills outright rather than knocking back."},
   pos:"Sentinel wing · after Nek'zali, either wing first",lv:2,
   sub:"Two golems, two raids, and a maths exam",
-  brief:"Breath of Ula'tek and Blood of Ula'tek, fought by two half-raids simultaneously. Two rules govern: keep them 40 yards apart, keep their health even. The intermission then asks twenty people to add to four without panicking. Split evenly before the pull, a tank and healers each side, and lust immediately — there is no burn window later. Both groups and both tanks trade sides at every intermission so the marks expire. The red side starts in a corner and stays there: everything it does leaves a puddle, and space is the resource that runs out. Heroic only — on Normal nothing stains and both groups reuse the same corners.",
+  brief:"Breath of Ula'tek and Blood of Ula'tek, fought by two half-raids simultaneously. Two rules govern: keep them 40 yards apart, keep their health even. The intermission then asks twenty people to add to four without panicking. Split evenly before the pull, a tank and healers each side, and lust immediately — there is no burn window later. Both groups and both tanks trade sides at every intermission so the marks expire.",
+  briefh:"Everything the red side does leaves a puddle, so it starts in a corner and stays there — space is the resource that runs out. On Normal nothing stains and both groups reuse the same ground. Overfilling in the intermission also kills outright rather than knocking back.",
   reads:[{by:"Method",t:"A standard council fight until the intermission, which will produce more clips than the rest of the tier combined. The first fight in the raid where coordination beats raw damage. Rated 4/5.",s:["me_sen"]}],
   phases:[
-   {n:"Both golems",trigger:"The whole fight, split raid",a:[
+   {n:"Both golems",trigger:"The whole fight, split raid",brief:"Two fights at once, and both rules are geometry. Keep the golems 40 yards apart or they take 99% less damage; keep their health level or the intermission refunds whatever lead you built. Split evenly before the pull, a tank and healers each side, and lust immediately — there is no burn window later.",a:[
     {n:"Ula'tek's Dominance",t:["shield"],c:["position"],r:["tank"],sev:3,
      e:"Within 40 yards of each other the golems take 99% less damage.",
      h:"Tank them on opposite sides, split the raid evenly, and keep the damage even too — Vitriolic Stasis refunds any lead by healing the weaker golem up to the stronger.",
@@ -142,7 +146,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"Each golem stacks its own 40-second DoT on everyone in range; the end of every sequence is the loudest part.",
      h:"Both groups and both tanks swap sides at every intermission so the old side's stacks fall off. Multi-dotters greeding both bosses collect both marks — keep it short.",
      s:["iv_sen","me_sen"]}]},
-   {n:"Breath of Ula'tek",trigger:"The green golem's side",a:[
+   {n:"Breath of Ula'tek",trigger:"The green golem's side",brief:"The easier half, and the one that can spare bodies. Droplets are cleared by standing on them, one or two each, with tanks as the cheapest soakers in the room. Venom Coagulation is drop-everything the moment it appears. There is no second tank on this side, so Empowering Slam ramps until the intermission swap.",bh:"A destroyed droplet sends Living Venom back toward the boss along the ground you were standing on, so clear from somewhere the return trip is not through the raid.",a:[
     {n:"Toxic Droplets",t:["soak","denial"],c:["soak","spread"],r:["dps"],sev:2,
      e:"Venom droplets litter the ground and detonate raid-wide if left; stepping on one destroys it for a hit and a small DoT.",
      h:"One or two per player, spread the work — nobody hero-soaks three, though tanks make the cheapest soakers in the room.",
@@ -156,7 +160,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"Heavy Physical hits that ramp on the same target and only reset on a new one.",
      h:"There is no second tank on your side — which is exactly why tanks trade golems at the intermission. He casts it three or four times a phase, so the end of a long phase is where the defensives belong.",
      s:["iv_sen","me_sen"]}]},
-   {n:"Blood of Ula'tek",trigger:"The red golem's side — the harder half",a:[
+   {n:"Blood of Ula'tek",trigger:"The red golem's side — the harder half",brief:"The harder half, and the one that runs out of floor. Unstable Miasma wants five bodies to split it, then the whole group walks to the corner chosen before the pull. Blighted Blood is dispelled on sight here — the opposite of Nek'zali's rule — so a second dispel fits before it expires.",bh:"Everything stains: Clinging Murk and any undispelled Blighted Blood both leave pools, which is why the red side starts in a corner and stays there. On Normal nothing stains and both groups can reuse the same ground.",a:[
     {n:"Unstable Miasma",t:["soak","groupdmg"],c:["soak","position"],r:["healer","dps"],sev:3,
      e:"A marked player detonates after a few seconds for damage split among everyone nearby, smearing every soaker with Clinging Murk.",
      h:"Five players can split it; more is fine but on Heroic every extra soaker is an extra puddle. Soak, then walk the group to a designated corner before the drops land — the red side starts in a corner precisely so the walls can hold its mess.",
@@ -171,12 +175,12 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"A ramping tank hit whose debuff drops a massive pool when it runs out.",
      h:"Roughly four injections a phase, and the expiry lands after the swap, while you're tanking the other golem — walk to a wall in advance. Physics matter: dropped on clean floor the puddle stays put; dropped onto an existing one it slides somewhere you didn't choose.",
      s:["iv_sen","me_sen"]}]},
-   {n:"Intermission — Vitriolic Stasis",trigger:"At 100 energy both charge the middle",a:[
+   {n:"Intermission — Vitriolic Stasis",trigger:"At 100 energy both charge the middle",brief:"Thirty seconds where the bosses cannot be hurt and the only enemy is panic. The weaker golem heals up to the stronger, which is the refund that makes health balance mandatory. Everyone is infected: pre-spread before it starts, then pair off so the two counts total exactly four. Mistakes go to a designated corner. Both groups and both tanks trade sides on the way out.",bh:"Overfilling kills outright instead of knocking back, so the only forgiving answer is a full immunity.",a:[
     {n:"Vitriolic Stasis",t:["heal","channel"],c:["unavoidable"],r:["dps"],sev:2,
      e:"For 30 seconds the golems are near-immune and the weaker heals up to match the stronger.",
      h:"The refund mechanism that makes balance mandatory. Use the downtime to solve the toxins; swap sides when it ends.",
      s:["iv_sen","me_sen","wg_va"]},
-    {n:"Helical Toxins",t:["debuff","spread"],c:["position","immune"],r:["dps","healer","tank"],sev:3,
+    {n:"Helical Toxins",t:["debuff","spread","oneshot"],lh:1,c:["position","immune"],r:["dps","healer","tank"],sev:3,
      e:"Everyone is infected and must pair off so their counts total exactly four.",
      h:"Pre-spread before the intermission begins, then walk, read, pair — the bosses are immune throughout, so the only enemy is panic. Mistakes go to a designated punishment corner; a full immunity survives the failure. The three sources describe the counting differently; see the open questions.",
      hh:"Overfilling kills outright instead of knocking back.",
@@ -197,14 +201,16 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
 
  /* ── 3 · VASHNIK THE MALIGNANT · Sentinel wing ───────────────────────── */
  {id:"vashnik",o:3,n:"Vashnik the Malignant",play:{tank:"Boss position IS the mechanic: every Imbibe empowers the two fountains nearest him, so you are choosing which venom the raid drinks, roughly every ninety seconds. Nothing may reach the Cavity in the middle.",healer:"You know what is coming ninety seconds out, because the tank picks it — flame, blood or shadow. Almost everything else is survivable; the Cavity is not.",dps:"Kill adds fire first, then blood, then shadow. Grip the burning ones in one at a time so their death detonations never land together, and lust on the pull."},jp:"j-vashnik",short:"Vashnik",
+  playh:{tank:"Catalytic Bile drops circles at his feet that you can eat cheaply — take those rather than dragging a ranged out of position for them.",rdps:"Catalytic Bile: spread around him rather than trailing him. Coverage beats reaction, and every circle left empty is a raid hit.",mdps:"The Burning Venoms death surge is a DoT here, so the staggered kill order stops being a preference and starts being the plan."},
   pos:"Sentinel wing · follows the Sentinels",lv:2,
   sub:"The alchemist drinks from two fountains, and you pick which",
   brief:"Three venom fountains ring the room — Flame, Blood, Shadow — and every Imbibe empowers the two nearest, spawning that flavour of add. Boss position IS the mechanic: you are choosing your poison roughly every 90 seconds. Both published rotations amount to the same discipline, never the same fountain twice running; Tactyks opens Flame and Blood then walks clockwise to delay the double-Flame window, Method starts Blood and Shadow. Lust on the pull. Kill adds fire first, then blood, then shadow, and grip the burning ones in one at a time so their death detonations never land together. Nothing may reach the Cavity; almost everything else is survivable.",
+  briefh:"Catalytic Bile adds a coverage job: an orb over the Cavity rains soak circles that each want exactly one body, and every empty one is a raid hit — so the ranged spread around him rather than trailing him. The Burning Venoms death surge also becomes a DoT, which is what turns two detonations landing together from loud into lethal.",
   phases:[
-   {n:"The rotation",trigger:"Continuous — Imbibe about every 90 seconds",a:[
+   {n:"The rotation",trigger:"Continuous — Imbibe about every 90 seconds",brief:"You choose the poison. Every Imbibe empowers the two fountains nearest him and spawns that flavour of add, so where the tank parks him ninety seconds from now is the fight. Never the same fountain twice running. Kill order is fire, then blood, then shadow, and nothing reaches the Cavity in the middle.",bh:"Catalytic Bile adds a coverage job for the ranged: spread around him rather than trailing him, because every soak circle left empty is a raid hit.",a:[
     {n:"Imbibe",t:["groupdmg","stacking","adds"],c:["position","preposition"],r:["tank","healer"],sev:3,
      e:"He drinks from the two fountains nearest him — a raid-wide hit — gaining a stacking infusion, plus a Toxic Vapor stack that ticks the raid every couple of seconds and never stops growing — his damage of that venom type doubles and the matching adds gain half again as much health per stack.",
-     h:"Park him between the two fountains you want and rotate — never the same fountain more than twice running. The Blood fountain sits further out than it looks: crossing the floor line is not enough, actually get there. Tactyks opens at Flame+Blood with Death Grips pulling the burning adds in, then walks clockwise — it delays the double-Flame window until the fourth drink. Method walks Blood+Shadow, Shadow+Flame, Flame+Blood instead — either works, because the only iron rule is never the same fountain twice running. Method walks Blood+Shadow, Shadow+Flame, Flame+Blood instead — either works, because the only iron rule is never the same fountain twice running.",
+     h:"Park him between the two fountains you want and rotate — never the same fountain more than twice running. The Blood fountain sits further out than it looks: crossing the floor line is not enough, actually get there. Tactyks opens at Flame+Blood with Death Grips pulling the burning adds in, then walks clockwise — it delays the double-Flame window until the fourth drink. Method walks Blood+Shadow, Shadow+Flame, Flame+Blood instead — either works, because the only iron rule is never the same fountain twice running.",
      s:["iv_vas","me_vas"]},
     {n:"Malignant Burst",t:["groupdmg","adds"],c:["focus","kite"],r:["dps"],sev:3,
      e:"Every summoned add crawls for the Malignant Cavity in the centre; any that arrives detonates against the whole raid.",
@@ -222,17 +228,17 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"A great orb above the Cavity bursts, raining soak circles that each want exactly one body — every empty one is a raid hit.",
      h:"Ranged spread around him rather than trailing him — coverage beats reaction — and the active tank can cheaply eat any that land at the boss's feet.",
      s:["iv_vas","tk_vtk","me_vas"]}]},
-   {n:"Fountain of Flame",trigger:"When Flame is drunk — Conflagrating Expulsion",a:[
+   {n:"Fountain of Flame",trigger:"When Flame is drunk — Conflagrating Expulsion",brief:"Highest-priority adds in the room. Two fire elementals pulse raid damage while they live and detonate on death, so grip them in one at a time and kill them staggered. Exploding Infection carriers run out and get healed on the way; the dispel IS the detonation, so cleanse one at a time and at distance.",bh:"The death surge becomes a DoT, which is what makes two detonations landing together lethal rather than merely loud.",a:[
     {n:"Burning Venoms",t:["adds","groupdmg","death"],c:["focus","stack"],r:["dps","healer"],sev:3,
      e:"Two fire elementals pulse raid damage while alive and detonate a Caustic Surge on death.",
-     h:"Highest priority in the room — grip them in one at a time and kill them staggered; a lust-and-AMZ start eats the first set whole, but that trick only works once. They share the shadow adds' sixty-second CC window before Hardened Venom makes them immune. They share the shadow adds' sixty-second CC window before Hardened Venom makes them immune.",
+     h:"Highest priority in the room — grip them in one at a time and kill them staggered; a lust-and-AMZ start eats the first set whole, but that trick only works once. They share the shadow adds' sixty-second CC window before Hardened Venom makes them immune.",
      hh:"The death surge is a DoT: kill them staggered, because two at once can be lethal.",
      s:["iv_vas","me_vas"]},
     {n:"Exploding Infection",t:["debuff","spread"],c:["position","magic","topoff"],r:["healer","dps"],sev:2,
      e:"A fire circle and an arrow: the carrier runs out and detonates, hitting softer the further they get.",
      h:"Heal the runner on the way out; the dispel itself is the detonation, so cleanse one at a time, at distance — never all of them in a panic.",
      s:["iv_vas"]}]},
-   {n:"Fountain of Blood",trigger:"When Blood is drunk — Hemo Expulsion",a:[
+   {n:"Fountain of Blood",trigger:"When Blood is drunk — Hemo Expulsion",brief:"A generation problem. One blob splits into two and those into four, so finish them deliberately instead of cleaving everything at once and manufacturing a wave. Siphoning Infection is the fight's one body-block: stand in the carrier's circle, because healing them does nothing at all.",a:[
     {n:"Clotting Venom",t:["adds"],c:["focus","cc"],r:["dps"],sev:2,
      e:"One blob that splits in two on death, and those split again — three generations of walkers, one to two to four.",
      h:"Finish it deliberately: every split is a fresh set heading for the middle. Whether anything after the first generation can be controlled is contested — see the open questions — so plan as if none of it can.",
@@ -241,7 +247,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"A huge healing absorb plus a total healing cut, so casting into them does nothing — the carrier drains health from anyone standing in their circle instead.",
      h:"Stand on your infected friend — it is the one mechanic in the wing where body-blocking is the cure, and a tank parked in the overlap of two circles heals both carriers at once.",
      s:["iv_vas","me_vas"]}]},
-   {n:"Fountain of Shadow",trigger:"When Shadow is drunk — Gloom Expulsion",a:[
+   {n:"Fountain of Shadow",trigger:"When Shadow is drunk — Gloom Expulsion",brief:"The cheapest fountain, and a debt with a due date. Five shielded shades are the lowest kill priority and can be slowed or sheeped freely for their first minute; after that Hardened Venom makes them immune and half again as fast. Stygian carriers keep moving near the raid, never through it.",a:[
     {n:"Shrouded Venoms",t:["adds","shield","death","denial"],c:["kite","cc"],r:["dps"],sev:1,
      e:"Five shielded shades, the lowest kill priority, that each leave an Umbral Ejection zone on death.",
      h:"Slow or sheep them freely for their first minute — then Hardened Venom sets in, they turn immune and half again as fast, and the debt comes due. Until then let cleave handle it — grip fire adds on top of them when Flame is also up.",
@@ -265,12 +271,18 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Icon",sl:"Chest",ty:"Token",tc:"Plate",b:"Vashnik the Malignant",ic:"inv_jewelcrafting_rubyserpent",id:270929}]},
 
  /* ── 4 · THE LOST EXPLORERS · Explorer wing ──────────────────────────── */
- {id:"lost-explorers",o:4,n:"The Lost Explorers",play:{tank:"A three-target council under Mor'zahi, and on Heroic the damage reduction forces you into pairs — Gebbo untankable and patrolling through the middle of whatever plan you made.",healer:"Mor'zahi's aura ticks into the whole raid for the entire fight, so your floor never drops. Every death enrages the survivors and the enrages are not equal.",dps:"Feeding a turtle the Grab Fish resets Mor'zahi's bar and detonates that turtle's ultimate on your schedule instead of his — each can only be fed once, so three fish is the whole clock."},jp:["j-morzahi","j-scrollsage-iku","j-first-mate-nama","j-trader-gebbo"],short:"Explorers",
+ {id:"lost-explorers",o:4,n:"The Lost Explorers",play:{tank:"A three-target council under Mor'zahi. Gebbo cannot be tanked at all — he simply patrols — so the job is holding whichever pair the difficulty leaves you. Shredding Shards is the swap point: defensive through Iku's channel and swap AFTER it ends, never before Nama's Steady Strikes stacks have dropped, because taunting early refreshes them onto the wrong tank and that is how tanks die here.",healer:"Mor'zahi's aura ticks into the whole raid for the entire fight, so your floor never drops. Every death enrages the survivors and the enrages are not equal.",dps:"Feeding a turtle the Grab Fish resets Mor'zahi's bar and detonates that turtle's ultimate on your schedule instead of his — each can only be fed once, so three fish is the whole clock."},jp:["j-morzahi","j-scrollsage-iku","j-first-mate-nama","j-trader-gebbo"],short:"Explorers",
+  playh:{tank:"United Defense means pairs, not a stack: hold Iku and Nama together and clear of Gebbo's patrol, rotate the pairing, and remember all three still have to die together.",dps:"No free cleave — the council is split, so damage is assigned rather than sprayed. Explosive Surprise also leaves a giant puddle over fewer mushrooms, so the bounce is tighter."},
   pos:"Explorer wing · after Nek'zali, either wing first",lv:2,
   sub:"Three tortollans, one puppeteer, and a fish",
-  brief:"Three-target council — Trader Gebbo, First Mate Nama, Scrollsage Iku — enslaved by the sorcerer Mor'zahi, who builds toward a raid-ending Final Ascension. Feeding a turtle the Grab Fish resets his bar and detonates that turtle's ultimate on your schedule instead of his. Each can be fed once, so three fish is the entire clock. Normal permits stacking all three and free cleave; Heroic's damage reduction forces pairs, with Gebbo untankable and patrolling through the middle of the plan. Lust on the pull and bring them down level — every death enrages the survivors, and the enrages are not equal. Feed order is contested between the guides; see the open questions.",
+  brief:"Three-target council — Trader Gebbo, First Mate Nama, Scrollsage Iku — enslaved by the sorcerer Mor'zahi, who builds toward a raid-ending Final Ascension. Feeding a turtle the Grab Fish resets his bar and detonates that turtle's ultimate on your schedule instead of his. Each can be fed once, so three fish is the entire clock. Lust on the pull and bring them down level — every death enrages the survivors, and the enrages are not equal. Feed order is contested between the guides; see the open questions.",
+  briefh:"United Defense is the difference: all three within 30 yards take 99% less damage, so Normal's stack-everything-and-cleave becomes a paired fight — Iku and Nama together, clear of Gebbo's route, pairing rotated. Gebbo cannot be tanked and patrols through the middle of whatever plan you made. Explosive Surprise also leaves a giant puddle, over fewer mushrooms.",
   phases:[
-   {n:"The council",trigger:"All three at once; lust on pull",a:[
+   {n:"The council",trigger:"All three at once; lust on pull",brief:"Three bodies and one clock. Mor'zahi's bar runs to Final Ascension and the only brake is feeding a turtle the Grab Fish out of Gebbo's crates — once each, three resets, no fourth. Lust on the pull, bring all three down level because every death enrages the survivors, and keep a two-or-three player kick rotation on Icebound Flames for the whole fight.",bh:"United Defense gives all three 99% damage reduction within 30 yards of each other, so Normal's stack-everything-on-Gebbo becomes a paired fight: Iku and Nama together, clear of Gebbo's patrol, and the pairing rotates.",a:[
+    {n:"Final Ascension",t:["channel","wipe"],c:["unavoidable","focus"],r:["dps","healer","tank"],sev:3,
+     e:"Mor'zahi fills an energy bar for the whole encounter, and completing it ends the raid. The three tortollans are the delivery mechanism; this is the thing being delivered.",
+     h:"One brake exists, and it is Throw Junk: feed a turtle the Grab Fish at 90-95 energy and his bar resets. Each boss can be fed exactly once, so the fight holds three resets and no fourth \u2014 every other decision is subordinate to that clock.",
+     s:["iv_exp","wg_va","me_exp"]},
     {n:"Malevolent Presence",t:["groupdmg"],c:["unavoidable","topoff"],r:["healer"],sev:1,
      e:"Mor'zahi's aura ticks damage into the whole raid for the whole fight.",
      h:"The council's noise floor — budget healing for it rather than reacting to it.",
@@ -299,17 +311,17 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"Iku's roughly seven-hit channel, each tick harder than the last — while Nama's Steady Strikes stack a Physical amp on whoever holds him, a few percent per swing.",
      h:"Defensive through the channel and swap AFTER it ends — never before Nama's stacks have dropped off, because taunting early refreshes them onto the wrong tank and that is how tanks die here.",
      s:["iv_exp","tk_vtk","me_exp"]}]},
-   {n:"The ultimates",trigger:"One per fed boss, on your schedule",a:[
+   {n:"The ultimates",trigger:"One per fed boss, on your schedule",brief:"One per fed turtle, fired on your schedule rather than Mor'zahi's — which is the entire reason feed order is worth arguing about. Gebbo's bombs go to the edge and his mushrooms are shared after the wave passes; Nama's leaps want three assigned soak groups or the whole raid walking the marks in order; Iku's volley is the hardest of the three and is cleared in pairs, at the edges, staggered.",bh:"Explosive Surprise leaves a giant puddle Normal never sees, and there are fewer mushrooms to share — two or three rather than five.",a:[
     {n:"Explosive Surprise",t:["soak","knockback"],c:["position","mobility"],r:["dps"],sev:3,
      e:"Gebbo's bombs mark players while Bouncy Mushrooms sprout near the raid — about five on Normal, two or three on Heroic; each detonation sends a Blast Wave across the whole platform.",
-     h:"Park bombs at the edge away from the mushrooms, then time your bounce — wait for the wave, jump it, and share the mushroom; it dies a few seconds after first touch. Going early strands everyone behind you. Blinks and leaps clear the wave too, for the classes that have them. Blinks and leaps clear the wave too, for the classes that have them.",
+     h:"Park bombs at the edge away from the mushrooms, then time your bounce — wait for the wave, jump it, and share the mushroom; it dies a few seconds after first touch. Going early strands everyone behind you. Blinks and leaps clear the wave too, for the classes that have them.",
      hh:"The detonation also leaves a giant puddle that Normal never sees.",
      s:["iv_exp","tk_va","me_exp"]},
     {n:"Mighty Thud",t:["soak","knockback"],c:["soak","preposition"],r:["healer","dps"],sev:3,
      e:"Nama marks three players and leaps to each in distance order, closest first, splitting each landing among everyone within six yards — an empty landing hits the entire raid, and every landing leaves an aftershock puddle behind.",
      h:"Two schools both work: three assigned soak groups on markers, or line the three marks up and walk the whole raid through them in order, eating each split together. Pick one before the pull, not during.",
      s:["iv_exp","wg_va","me_exp"]},
-    {n:"Frostfire Volley",t:["groupdmg","denial","dot"],c:["position","topoff"],r:["healer","mdps","rdps","tank"],sev:3,
+    {n:"Frostfire Volley",t:["groupdmg","denial","dot","wipe"],c:["position","topoff"],r:["healer","mdps","rdps","tank"],sev:3,
      e:"Frost marks the melee — tanks included — and fire marks the ranged; every expiry drops a nasty DoT on its carrier and a patch on the floor.",
      h:"Carry them to the edges, then clear in pairs: a frost carrier touches a fire patch and vice versa, each clear costing a raid hit — so stagger them, don't race — but never sit on one: an uncleansed carrier struck by the opposite element next set detonates an Elemental Explosion the raid does not survive. The hardest of the three ultimates, and the whole volley is a healing-cooldown window.",
      s:["iv_exp","wg_va","tk_va","tk_vtk","me_exp"]}]}],
@@ -329,13 +341,15 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Remnant",sl:"Shoulder",ty:"Token",tc:"Plate",b:"The Lost Explorers",ic:"inv_jewelcrafting_rubyserpent",id:270925}]},
 
  /* ── 5 · SSZORAK · Explorer wing ─────────────────────────────────────── */
- {id:"sszorak",o:5,n:"Sszorak",play:{tank:"Walk yours to the stack point and face it to freeze it for the frontal — they never fixate tanks, so your whole job is presenting the boss correctly to everyone else.",healer:"The altar's caustic haze ticks the entire raid throughout, so this is a stamina fight rather than a spike fight.",dps:"Freezing happens at the stack point, so bring yours there rather than fighting where you stand."},jp:"j-sszorak",short:"Sszorak",
+ {id:"sszorak",o:5,n:"Sszorak",play:{tank:"Apex Predator is five cones in random order, every one of them aimed at you, and they telegraph mid-cast — so never pre-taunt: see which it is, then act. Ravage is yours alone and faced away; Mutilate splits across the soak group and needs no defensive, so keep them for Ravage. Tank him at the edge from the pull, because the cyst drops hurt up close and their placement is the fight.",healer:"The altar's caustic haze ticks the entire raid from pull to kill, so this is a stamina fight rather than a spike fight — which is what makes a fifth healer genuinely tempting. The spikes are Ravage and the intermission; Corroding Venom is a slow swap counter underneath it all.",dps:"The homework is in the first three seconds: read the wind motes, because they name the intermission's push order and the cysts placed now are the only thing that survives it. Two soak groups of at least five alternate the Mutilates, and Dig In is 25 seconds at 30% increased damage taken — the burn window."},jp:"j-sszorak",short:"Sszorak",
+  playh:{tank:"Caustic Claws litters 30% amp residue through Venomous Surge, so work an edge the intermission will sweep clean.",healer:"Mutilate soakers take 500% more from the next one, so the two groups alternate and it is always the group that just soaked which needs you least.",dps:"Two soak groups of five bodies minimum, genuinely alternating — the 500% amp on the next Mutilate is what makes one big group fatal."},
   pos:"Explorer wing · follows the Explorers",lv:2,
   sub:"Read the winds on pull, or the intermission reads you",
-  brief:"Apex predator on the Altar of Six Winds. The homework happens in the first three seconds: the wind motes on the tunnels tell you the intermission's push order, and everything placed before then decides whether the hurricane is a plan or a wipe. Two soak groups of at least five split the Mutilates. Markers go opposite each tunnel for the cysts. Tank toward the edge so the Heroic residue sweeps off the platform. Damage intake justifies a fifth healer, and raids split on whether to lust the pull or the Dig In window, where he takes 30% more while shoving everyone around.",
+  brief:"Apex predator on the Altar of Six Winds. The homework happens in the first three seconds: the wind motes on the tunnels tell you the intermission's push order, and everything placed before then decides whether the hurricane is a plan or a wipe. Two soak groups of at least five split the Mutilates. Markers go opposite each tunnel for the cysts. Damage intake justifies a fifth healer, and raids split on whether to lust the pull or the Dig In window, where he takes 30% more while shoving everyone around.",
+  briefh:"Two amendments, both about floor and margin. Mutilate soakers take 500% more from the next one, so the two groups genuinely have to alternate; and Caustic Claws litters 30% amp residue during Venomous Surge, which is why the boss is tanked toward an edge the intermission will sweep clean.",
   reads:[{by:"Tactyks",t:"Shaping up to be the favourite boss of the raid — it barely changed across the whole PTR cycle, which is usually the sign they got it right early.",s:["tk_va","tk_vtk"]}],
   phases:[
-   {n:"Main phase",trigger:"Intermission roughly every two minutes",a:[
+   {n:"Main phase",trigger:"Intermission roughly every two minutes",brief:"Everything is decided in the first three seconds: the wind motes name the intermission's push order, and the cysts placed now are the only thing that survives it. Two soak groups of at least five alternate the Mutilates, markers go opposite each tunnel for the cyst drops, and the boss is tanked at the edge, well away from where those drops land.",bh:"Mutilate soakers take 500% more from the next one, so the two groups genuinely have to alternate. Caustic Claws also litters 30% amp residue, which is why the tank works an edge the intermission will sweep clean.",a:[
     {n:"Ula'tek's Presence",t:["groupdmg"],c:["unavoidable","topoff"],r:["healer"],sev:2,
      e:"The altar's caustic haze ticks the entire raid throughout the fight.",
      h:"The damage floor that makes a fifth healer genuinely tempting here.",
@@ -352,13 +366,13 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      s:["iv_ssz","me_ssz","wz_va"]},
     {n:"Raging Crosswinds",t:["knockback","spread"],c:["position"],r:["dps","healer"],sev:2,
      e:"Most of the raid gets a wind pushing one of two directions.",
-     h:"Find a partner blowing the other way and collide — two winds cancel mid-air and drop you where you started. The collision hitbox is the whole circle, so nobody needs to pixel-aim, and a miss drifts you slowly rather than launching you. The collision hitbox is the whole circle, so nobody needs to pixel-aim, and a miss drifts you slowly rather than launching you. Never burn a knockback immunity on it: the winds come in exactly even pairs, and cancelling yours strands someone else partnerless.",
+     h:"Find a partner blowing the other way and collide — two winds cancel mid-air and drop you where you started. The collision hitbox is the whole circle, so nobody needs to pixel-aim, and a miss drifts you slowly rather than launching you. Never burn a knockback immunity on it: the winds come in exactly even pairs, and cancelling yours strands someone else partnerless.",
      s:["iv_ssz","me_ssz"]},
     {n:"Corroding Venom",t:["tankbuster","stacking"],c:["defensive"],r:["tank"],sev:2,
      e:"Every swing stacks a few percent more Physical taken — the swap debuff underneath the combo.",
      h:"Around six stacks, which lines up with the combo's natural swap points.",
      s:["iv_ssz","me_ssz"]}]},
-   {n:"Intermission — Howling Maelstrom",trigger:"The altar takes over",a:[
+   {n:"Intermission — Howling Maelstrom",trigger:"The altar takes over",brief:"Survive the throw, then spend the window. The tunnels fire in mote order and shove the raid across the platform; land in the cyst you placed opposite the active tunnel and it bounces you back, then re-centre before the next one so the throw is straight. Dig In runs 25 seconds at 30% increased damage taken — the burn window, and where some raids choose to spend lust.",a:[
     {n:"Howling Maelstrom",t:["knockback","env"],c:["preposition","position"],r:["dps","healer","tank"],sev:3,
      e:"The wind tunnels fire in mote order and shove the raid across the platform; pools pushed over the edge are deleted.",
      h:"Get thrown into the cyst you placed opposite the active tunnel and it bounces you safely back — then re-centre before the next tunnel fires so the throw is straight. This is why the fight started with reading the room.",
@@ -383,17 +397,19 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
 
  /* ── 6 · THE TWIN FANGS · the wings converge ─────────────────────────── */
  {id:"twin-fangs",o:6,n:"The Twin Fangs",play:{tank:"Two serpents, and when one dies the survivor enters a vengeful rage that grows every four seconds — even health is the whole tanking plan.",healer:"Uncoiled Wrath stacks on the survivor indefinitely, so a sloppy kill order turns a healable fight into a race you have already lost.",dps:"Bring them down together. Vexhul and Ithraz have to die close to simultaneously or the survivor's rage stacks past what the raid can hold."},jp:["j-vexhul","j-ithraz"],short:"Twin Fangs",
+  playh:{tank:"Congealed Gore slows by 60% during the submerge, which is how the beam catches people who thought they had the timing.",healer:"The venom cap is ten rather than eleven: one soak of margin gone, across the whole fight.",dps:"Feasted allows one bite each, so the cleanse becomes three soak teams of seven-plus, or two teams with immunities eating the last."},
   pos:"Where the wings converge — both wings first",lv:3,
   sub:"Vexhul poisons you; Ithraz is the antidote, and he bites",
-  brief:"Two serpents, no shared health, killed together. Everything stacks Eternal Venom, and the only cleanse is deliberately standing in Ithraz's Ravenous Feast — the raid manages its own poison budget through a bite. Neither boss can be moved, so the raid spreads where it pulls and lusts immediately. Stay inside their generous hitboxes: leaving melee range starts a bolt barrage worse than anything you were dodging. Heroic's one-bite limit means three soak teams of seven or more, or two teams with immunities eating the last. Three cycles of shrinking floor, then the room is gone.",
+  brief:"Two serpents, no shared health, killed together. Everything stacks Eternal Venom, and the only cleanse is deliberately standing in Ithraz's Ravenous Feast — the raid manages its own poison budget through a bite. Neither boss can be moved, so the raid spreads where it pulls and lusts immediately. Stay inside their generous hitboxes: leaving melee range starts a bolt barrage worse than anything you were dodging. Three cycles of shrinking floor, then the room is gone.",
+  briefh:"Feasted allows each player only one of the three bites, so the cleanse becomes three soak teams of seven or more, or two teams with immunities eating the last. The venom cap also tightens from eleven stacks to ten — a whole soak of margin, gone.",
   phases:[
-   {n:"Both serpents",trigger:"The venom economy runs the whole fight",a:[
-    {n:"Eternal Venom",t:["dot","stacking","debuff"],c:["soak","topoff"],r:["healer","dps","tank"],sev:3,
+   {n:"Both serpents",trigger:"The venom economy runs the whole fight",brief:"A poison budget, spent and repaid. Everything stacks Eternal Venom and the only cleanse is a bite, so every soak assignment is really a question of who can afford the stack. Neither serpent can be moved, so the raid spreads where it pulls and lusts on the pull — and nobody leaves melee range of one, because the bolts are worse than whatever you were dodging.",bh:"The cap tightens from eleven stacks to ten, which is a whole soak of margin gone.",a:[
+    {n:"Eternal Venom",t:["dot","stacking","debuff","oneshot"],c:["soak","topoff"],r:["healer","dps","tank"],sev:3,
      e:"A permanent stacking poison fed by half the kit, lethal at its cap — eleven stacks on Normal; each Ravenous Feast hit removes exactly one.",
      h:"Track stacks like a resource — who soaks what is decided by who can afford it. Stay inside the serpents' generous hitboxes — leave melee range of either and it spams bolts that hurt more than anything you were dodging. And kill them level: lose one early and the survivor ramps about a quarter harder every few seconds until it ends you.",
      hh:"The cap tightens to ten.",
      s:["iv_twf","wg_va","tk_va","tk_vtk","me_twf"]}]},
-   {n:"Vexhul",trigger:"The poisoner",a:[
+   {n:"Vexhul",trigger:"The poisoner",brief:"The side that hands out stacks. Caustic Deluge shoves the tank and litters globules that low-stack players clear — never two by accident, and never none, because an ignored globule pops in ten seconds and gifts the stack to everybody. Spawn of Vexhul is a drop-everything kill the moment they surface.",a:[
     {n:"Caustic Deluge",t:["tankbuster","knockback"],c:["position","soak"],r:["tank","dps"],sev:2,
      e:"A pushback beam on the tank that spawns Caustic Globules along the way.",
      h:"One of the raid's genuinely dangerous tank moments: big defensive AND a movement ability, because the push is aggressive and leaving the hitbox starts the bolts. Low-stack players soak the globules — never collect two by accident, and never leave one: an ignored globule pops in ten seconds and gifts the whole raid a stack. Soaking is triage, not charity.",
@@ -406,8 +422,8 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"The cast itself is stackless raid damage — the waves that follow are what carry stacks, one per hit.",
      h:"Note which side they enter from — the surprise is the damage.",
      s:["iv_twf","me_twf"]}]},
-   {n:"Ithraz",trigger:"The cleanse, at a price",a:[
-    {n:"Stone Breaker",t:["tankbuster","knockback","soak"],c:["soak","defensive"],r:["tank","mdps"],sev:3,
+   {n:"Ithraz",trigger:"The cleanse, at a price",brief:"The side that takes stacks back, and charges for it. Stone Breaker's three zones detonate in the order they spawned and each wants a body; Ravenous Feast's three bites are the only cleanse in the fight, so the people carrying the most go first. Coiling Ichor walks to the wall, and its final tick is the one that kills.",bh:"Feasted allows each player only one of the three bites: three soak teams of seven-plus, or two teams with immunities eating the last.",a:[
+    {n:"Stone Breaker",t:["tankbuster","knockback","soak","oneshot"],c:["soak","defensive"],r:["tank","mdps"],sev:3,
      e:"A roar knocks the tank away, then three slam zones land at three fixed points — left, centre, right — detonating in the order they spawned; unsoaked slams hit the whole raid.",
      h:"Watch the spawn order and walk it — there's time — with a short defensive saved for hits two and three, which stack. Swap after the set. Melee: the zones land in your space, and walking into one uninvited is an instant obituary.",
      s:["iv_twf","wg_va","tk_vtk","me_twf"]},
@@ -420,14 +436,14 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      h:"The antidote. Position so the knock lands you somewhere legal, send the people who need the cleanse most — and on Normal a mobile tank can charge back between bites and eat all three for a triple cleanse. Get back to your serpent fast afterwards; the bolts are waiting.",
      hh:"Feasted allows each player only one of the three bites — run three teams of seven-plus, or two teams with immunities eating the last bite.",
      s:["iv_twf","wg_va","tk_vtk","me_twf"]}]},
-   {n:"Intermission — Submerge",trigger:"After two full sequences, both dive",a:[
+   {n:"Intermission — Submerge",trigger:"After two full sequences, both dive",brief:"Read the spin and walk it out. Vexhul's beam sweeps about three-quarters of the platform in whichever direction his orbs are turning, so the raid pre-stacks opposite his tank, crosses the beam early onto ground it has already burnt, then follows behind it while Ithraz rains from one of the other anchor points. Two mechanics, one walking pattern. The third submerge is the enrage.",bh:"Congealed Gore slows by 60% in here, which is how the beam catches people who thought they had the timing.",a:[
     {n:"Vile Flood",t:["channel","frontal"],c:["preposition","dodge"],r:["dps","healer","tank"],sev:3,
      e:"Vexhul's beam sweeps the platform in a circle, stacking venom on everyone it catches.",
      h:"The orbs circling him pre-cast show the direction — they can spin either way, so actually read them — and it locks in on his tank as it fires, then sweeps about three-quarters of the platform, not the full circle. The raid pre-stacks opposite the tank, crosses the beam early — the strip where you crossed is already-burnt safe ground, since it never sweeps the full circle — then follows behind it; the aiming tank needs mobility home before the bolts stack up.",
      s:["iv_twf","tk_vtk","me_twf"]},
-    {n:"Sanguine Storm",t:["env","groupdmg"],c:["dodge","mobility"],r:["dps","healer"],sev:2,
+    {n:"Sanguine Storm",t:["env","groupdmg","wipe"],c:["dodge","mobility"],r:["dps","healer"],sev:3,
      e:"Ithraz surfaces at a random one of the other two anchor points and rains blood impacts across the platform through the sweep.",
-     h:"Sidestep while rotating — two mechanics, one walking pattern — and don't pre-commit to where Ithraz lands, because it varies. The third submerge is the end of the argument: both surface mid-room and rain without pause until the raid stops existing. The third submerge is the end of the argument: both surface mid-room and rain without pause until the raid stops existing.",
+     h:"Sidestep while rotating — two mechanics, one walking pattern — and don't pre-commit to where Ithraz lands, because it varies. The third submerge is the end of the argument: both surface mid-room and rain without pause until the raid stops existing.",
      hh:"Congealed Gore slows by 60% here, which is how the beam catches people.",
      s:["iv_twf","wg_va","me_twf"]}]}],
   loot:[
@@ -445,13 +461,15 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
    {n:"Venomforged Effigy",sl:"Head",ty:"Token",tc:"Plate",b:"The Twin Fangs",ic:"inv_jewelcrafting_rubyserpent",id:270917}]},
 
  /* ── 7 · THE COILED ALTAR ────────────────────────────────────────────── */
- {id:"coiled-altar",o:7,n:"The Coiled Altar",play:{tank:"Only Zul'jan keeps a frontal, and it has to catch orbs and ghosts alike — the Hex Lord stops melee. Both are active with uncoupled health, and when one dies the other enrages.",healer:"Fragments crawl toward Zul'jan and every arrival heals the bosses, so interceptions are damage you take deliberately to prevent healing you cannot outpace.",dps:"Intercept the Fragments of Malacrass before they reach Zul'jan — each arrival heals the bosses and each interception detonates against the raid, so it is a trade you make on purpose."},jp:["j-zuljan-raid","j-hex-lord-malacrass"],short:"Altar",
+ {id:"coiled-altar",o:7,n:"The Coiled Altar",play:{tank:"Three frontals, one job: aim them. Phase 1, Sever goes through the parked venom orbs, because that cone is the only thing that destroys them. Phase 2, Soul Sever goes through the parked ghost herd, because that cone is the only thing that kills them. And Soul Sever Gravebounds whoever eats it: collect your three scattered Soul Fragments inside about fifteen seconds or die — that errand lands on you every cast, and an unmoved Gloombomb hands you the same one. In the intermission tanks soak the Fragments of Malacrass first and one at a time; in Phase 3 the Hex Lord stops meleeing and shoots his tank instead, so that side is mitigating spell damage rather than swings.",healer:"Two clocks. A Gravebound tank has about fifteen seconds to find three Soul Fragments and healing does not help them — everything around that window does, because Veil of Twilight is a real damage check where healer cooldowns pull equal weight with the damage. Then the intermission: Fragments crawl toward Zul'jan, every arrival heals both bosses, and every interception is damage the raid takes on purpose to prevent healing it cannot outpace.",dps:"Phase 1 you meter orbs; Phase 2 you herd ghosts and break a veil. Walk your Manifestation to the agreed stack point and face it to freeze it — they only move when you look away, and Soul Sever is the only kill button — then burn Veil of Twilight and hold the kick as late as you dare. In the intermission intercept the Fragments before they reach Zul'jan: each arrival heals the bosses, each interception detonates, and you are not meant to stop them all."},jp:["j-zuljan-raid","j-hex-lord-malacrass"],short:"Altar",
+  playh:{tank:"Gloombomb clips now Gravebound rather than merely hurt, so the fragment errand can arrive from somebody else's lazy movement. Phase 3 keeps Guillotine and upgrades it to Grim Guillotine — heal-absorbing, harder-hitting, and clipping everyone when it fires.",healer:"Venom Rupture stacks as a DoT and Grim Guillotine carries a heal absorb, so orb destructions are metered to what you can eat rather than cleared when convenient.",dps:"A ghost reaching its target recasts Dreadmarch, so contact is a spiral rather than a cost. Guillotine soakers take 500% more from the next one: two half-raid groups, alternating."},
   pos:"Seventh — the story fight",lv:3,
   sub:"Zul'jan, then Malacrass, then both at once",
   brief:"The villains of the patch, in sequence and then in chorus. Kill Zul'jan while metering venom orbs through Sever, kill Malacrass while herding his ghosts, survive the Soulbinding race, then fight both at once — and when one falls the other enrages. The orb job belongs to the off-tank and the most mobile ranged, everyone else stacked clear so the frontal never clips a bystander. Ghosts get one assigned stack point and a tank aiming through it. Kill Zul'jan centre-room, not in a corner: he revives exactly where he fell. Save lust for the intermission, where he takes double damage and every point burned is health Phase 3 never sees.",
+  briefh:"Contact stops being expensive and becomes a spiral: a ghost that reaches its target recasts Dreadmarch, and a Gloombomb blast Gravebounds by itself. Guillotine soakers take 500% more from the next one, and in Phase 3 Guillotine returns as Grim Guillotine — heal-absorbing, harder-hitting, and clipping everyone when it fires. On Normal neither Guillotine nor Gloombomb follows into Phase 3 at all.",
   reads:[{by:"Tactyks",t:"A doozy — genuinely very hard, with enough going on that it may deserve a standalone guide once live tuning shows its hand.",s:["tk_va"]}],
   phases:[
-   {n:"Phase 1 — Zul'jan",trigger:"Pull to Zul'jan at 0%",a:[
+   {n:"Phase 1 — Zul'jan",trigger:"Pull to Zul'jan at 0%",brief:"Meter the venom. Toxic Deluge leaves orbs that pulse at the raid until something destroys them, and the only thing that destroys them is Sever — so assigned carriers walk orbs to one stack point and the tank aims every frontal through it. Everyone else stands clear of that stack. Kill him centre-room, not in a corner: he revives exactly where he fell.",bh:"Venom Rupture stacks as a DoT, so destructions are metered to what the healers can eat, and Guillotine soakers take 500% more from the next one — two half-raid groups, alternating.",a:[
     {n:"Fangs of the Coiled Altar",t:["groupdmg","denial"],c:["topoff"],r:["healer","tank"],sev:2,
      e:"Rolling raid damage with Twinfang Toxin on the tanks, while Noxious Ground eats the room's edges — and the stacks empower his melee with bonus Nature damage.",
      h:"Stack near him and keep the floor budget in mind — this fight spends space like the Twins do. Tanks: at high stacks he is the hardest-meleeing boss in the raid so far; hold something for it.",
@@ -478,21 +496,21 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"Spinning axes roam the arena for the whole phase.",
      h:"Track them while carrying orbs or fleeing the Kiss — the deaths here are collisions, not damage checks. Leftover orbs all detonate when he falls, so end the phase clean.",
      s:["iv_alt"]}]},
-   {n:"Phase 2 — Hex Lord Malacrass",trigger:"Zul'jan dies; the Hex Lord steps in",a:[
-    {n:"Dreadmarch",t:["debuff","adds","shield"],c:["stack","cc","focus"],r:["dps"],sev:3,
+   {n:"Phase 2 — Hex Lord Malacrass",trigger:"Zul'jan dies; the Hex Lord steps in",brief:"Herd the ghosts, then beat the veil. Manifestations move only when their fixated player looks away, so each carrier walks theirs to one agreed stack point and faces it — and the tank's whole job is aiming Soul Sever through the parked herd, because that frontal is the only thing that kills them. Everything else answers to Eternal Nightfall: burn the veil, then hold the kick as late as you dare. End the phase with the ghosts dead and your toes off the edge, because his death knocks back.",bh:"A ghost that reaches its target recasts Dreadmarch, so contact stops being expensive and becomes a spiral. Spiritcackle joins too, roughly one every forty seconds, and goes interrupt-immune at full energy.",a:[
+    {n:"Dreadmarch",t:["debuff","adds","shield","oneshot"],c:["stack","cc","focus"],r:["dps"],sev:3,
      e:"Mind-controlled players shield up and march for the platform edge to jump; breaking the shield frees them and births two Manifestations of Dread apiece.",
      h:"Stay stacked so passive cleave cracks shields fast, and remember CC works on the possessed — Ring of Peace and Death Grip both count as a rescue.",
      s:["iv_alt","wg_va"]},
     {n:"Unnerving Fixation",t:["fixate","adds"],c:["position","los"],r:["dps"],sev:3,
      e:"The Manifestations are immune to everything and move only when their fixated player looks away — Boos, straight out of Mario.",
-     h:"Walk yours to the stack point, then face it to freeze it for the frontal — they never fixate tanks, so the tank's whole job is aiming Soul Sever through the parked herd. The only kill button is Soul Sever. On Normal a ghost's touch merely hurts and shoves; the recast spiral is Heroic's. On Normal a ghost's touch merely hurts and shoves; the recast spiral is Heroic's.",
+     h:"Walk yours to the stack point, then face it to freeze it for the frontal — they never fixate tanks, so the tank's whole job is aiming Soul Sever through the parked herd. The only kill button is Soul Sever. On Normal a ghost's touch merely hurts and shoves; the recast spiral is Heroic's.",
      hh:"A ghost that reaches its target recasts Dreadmarch — contact is never acceptable.",
      s:["iv_alt","bs_alt"]},
-    {n:"Soul Sever",t:["frontal","tankbuster","debuff"],c:["position","mobility"],r:["tank"],sev:3,
+    {n:"Soul Sever",t:["frontal","tankbuster","debuff","oneshot"],c:["position","mobility"],r:["tank"],sev:3,
      e:"Sever again, but victims are Gravebound: reclaim your three scattered Soul Fragments or die.",
      h:"Taunt per cast, aim through the parked ghosts, and the outgoing tank collects fragments immediately — a triangle of three, roughly fifteen seconds on the skull-marked debuff, and missing one is death, not damage. Getting clipped by an unmoved Gloombomb hands you the same errand.",
      s:["iv_alt"]},
-    {n:"Gloombomb",t:["spread","debuff"],c:["spread","position"],r:["rdps","healer"],sev:2,
+    {n:"Gloombomb",t:["spread","debuff","oneshot"],lh:1,c:["spread","position"],r:["rdps","healer"],sev:2,
      e:"Purple circles on the ranged that detonate where they stand.",
      h:"Walk out, never overlap — anyone clipped inherits the Gravebound fragment errand.",
      hh:"The blast itself Gravebounds: lazy movement becomes lethal, not rude.",
@@ -501,20 +519,20 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
      e:"A cackling add that spams Wail of Terror and pokes random players with Retaliatory Malice.",
      h:"Two or three assigned ranged kicks, held late — it teleports on every interrupt, and if it blinks into melee it dies to cleave on the spot. Don't slow-roll forever: at full energy it becomes interrupt-immune. One spawns roughly every forty seconds.",
      s:["iv_alt","tk_va","bs_alt"]},
-    {n:"Eternal Nightfall",t:["channel","groupdmg","shield"],c:["interrupt","focus"],r:["dps"],sev:3,
+    {n:"Eternal Nightfall",t:["channel","groupdmg","shield","wipe"],c:["interrupt","focus"],r:["dps"],sev:3,
      e:"He shields with Veil of Twilight and starts the raid-ender — and while the veil holds, it pulses healing absorbs across the raid.",
      h:"Burn the veil, then kick — as late as you dare, because every second of the delay is free damage. The veil was tuned up late in testing: treat it as a real damage check, and shield-break bonuses matter, and healer cooldowns pull equal weight with the damage here. End the phase with the ghosts dead and your toes off the edge: his death knocks back.",
      s:["iv_alt","wg_va","tk_va","bs_alt","jf_va"]}]},
-   {n:"Intermission — Soulbinding",trigger:"Malacrass falls, and refuses to stay down",a:[
+   {n:"Intermission — Soulbinding",trigger:"Malacrass falls, and refuses to stay down",brief:"The free damage, and the toll charged for it. Malacrass is untouchable while he pours healing into a reviving Zul'jan who takes double damage throughout — lust, potions, everything, because every point burned here is health Phase 3 never sees. The toll is the Fragments: they crawl for Zul'jan, each arrival heals both bosses, each interception detonates. Tanks eat them first and one at a time, and you are not meant to stop them all.",a:[
     {n:"Soulbinding",t:["heal","channel"],c:["focus","unavoidable"],r:["dps"],sev:3,
      e:"He tethers to Zul'jan — untouchable himself — pouring Ghastly Regeneration into a Zul'jan who revives exactly where he fell and takes double damage while the ritual runs.",
      h:"Lust, potions, everything: every point burned here is health Phase 3 never sees. And the revival spot is a Phase 1 decision — kill Zul'jan centre-room, not in a corner.",
      s:["iv_alt","wg_va","tk_va","tk_vtk"]},
     {n:"Fragment of Malacrass",t:["adds","soak"],c:["soak","stagger"],r:["tank","healer"],sev:3,
      e:"Fragments crawl toward Zul'jan; each arrival heals the bosses, each interception detonates against the raid.",
-     h:"Ring around Zul'jan and eat them one at a time — staggered, because two Spirit Erasures at once is how this intermission kills. Tanks soak first, damage second. You will not stop them all, and that is the design — staying alive outranks a perfect goal-line record. You will not stop them all, and that is the design — staying alive outranks a perfect goal-line record.",
+     h:"Ring around Zul'jan and eat them one at a time — staggered, because two Spirit Erasures at once is how this intermission kills. Tanks soak first, damage second. You will not stop them all, and that is the design — staying alive outranks a perfect goal-line record.",
      s:["iv_alt","bs_alt"]}]},
-   {n:"Phase 3 — both",trigger:"Everything at once",a:[
+   {n:"Phase 3 — both",trigger:"Everything at once",brief:"Two bosses, uncoupled health, and an enrage waiting for whichever one you leave alone. Stack them, cleave, and bring them down level. Only Zul'jan keeps a frontal and it still has to catch orbs and ghosts; the Hex Lord stops meleeing entirely and shoots his tank instead, so that tank is mitigating spell damage rather than swings.",bh:"Guillotine and Gloombomb keep coming, and Guillotine upgrades to Grim Guillotine — heal-absorbing, harder-hitting, and clipping everyone when it fires. On Normal neither appears, so you can commit to one half of the room and hold it.",a:[
     {n:"Uncoiled Union",t:["enrage","groupdmg"],c:["focus","stack"],r:["dps","tank"],sev:3,
      e:"Both are active, health uncoupled, and when one dies the other enrages. Only Zul'jan keeps a frontal — it must catch orbs and ghosts alike — while the Hex Lord stops meleeing entirely and shoots Shadow bolts at his tank instead — and Fangs turns its channel into raid-wide healing absorbs.",
      h:"Stack them for cleave and bring them down evenly; a lopsided kill order volunteers the raid for an enraged Hex Lord. The Hex Lord's tank is soaking spell damage, not swings — plan mitigation accordingly.",
@@ -542,7 +560,7 @@ const RAID={id:"venomous-abyss",name:"The Venomous Abyss",short:"Abyss",
   gap:"Ula'tek was not available for PTR testing, so no tested strategy exists anywhere yet — Icy Veins says so outright and will write theirs when the raid is live. What follows is journal-derived structure via wow.gg (whose descriptions are Mythic-based by their own note), recorded so the shape is known. Treat every line as unconfirmed until live.",
   brief:"Freed after a thousand years. She floods the platform in waves, hatches her own eggs into vipers, and eats the floor as the fight runs. The burn windows are hers to give: Rage of the Shackled exposes her Venomous Heart, and everything else is about still having a platform when she does. No meta to report — she was never tested on the PTR, so no guild has built a strategy and no guide has published one. The shape above is journal-derived; the first Heroic kills will write the rest.",
   phases:[
-   {n:"The goddess",trigger:"Structure unconfirmed until live",a:[
+   {n:"The goddess",trigger:"Structure unconfirmed until live",brief:"Nobody has fought this. What follows is journal structure rather than tested strategy: waves that hatch her eggs wherever they wash, coils to share on assignment, and a platform that shrinks all fight. The only thing resembling a plan is Rage of the Shackled, which exposes the Venomous Heart — everything else is about still having floor when it does.",a:[
     {n:"Caustic Waves",t:["env","adds"],c:["dodge","position"],r:["dps","healer"],sev:3,
      e:"Venom waves roll the platform; any wave that washes over her eggs hatches Venomscale Vipers on the spot, whose birth flings Putrid Membrane onto players.",
      h:"Dodge the wave and mind what it is about to touch — the wave is also an incubator.",

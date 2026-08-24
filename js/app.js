@@ -48,6 +48,14 @@ function route(){
   const cur=el.querySelector(".dswitch a[aria-current]");
   if(cur&&cur.parentElement.scrollWidth>cur.parentElement.clientWidth)
     cur.parentElement.scrollLeft=cur.offsetLeft-cur.parentElement.clientWidth/2+cur.offsetWidth/2;
+  /* The dungeon switcher already parks under the header; the tab bar has to
+     park under BOTH, and its offset is whatever the switcher measures at this
+     font size and zoom. Measured rather than guessed — a hard-coded number is
+     a gap or an overlap the first time someone changes their browser's text
+     size. Pages with no switcher get 0 and the bar parks straight under the
+     header. */
+  const sw=el.querySelector(".dswitch");
+  document.documentElement.style.setProperty("--dsw",(sw?sw.offsetHeight:0)+"px");
   /* which nav entry owns this page: module pages roll up to their module */
   const navKey=(key==="d"||key==="dungeons"||key==="mplus"||key==="routes")?"mplus"
               :(key==="raid"||key==="r")?"raid":key;

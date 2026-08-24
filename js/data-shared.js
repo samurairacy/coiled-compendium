@@ -83,8 +83,30 @@ const TAGS={
  denial:{l:"Area denial",i:"i-drop"}, env:{l:"Environmental",i:"i-warn"},
  death:{l:"On death",i:"i-warn"}, heal:{l:"Enemy healing",i:"i-heal"},
  stacking:{l:"Stacking",i:"i-stack"}, mobility:{l:"Movement",i:"i-move"},
- myth:{l:"Mythic only",i:"i-warn"}, noarmor:{l:"Ignores armour",i:"i-tank"}
+ myth:{l:"Mythic only",i:"i-warn"}, noarmor:{l:"Ignores armour",i:"i-tank"},
+ oneshot:{l:"One-shot",i:"i-skull"}, wipe:{l:"Wipe",i:"i-skull"}
 };
+/* ═══ HOW BAD IS IT ═══════════════════════════════════════════════════════
+   Two different questions, and the site used to answer half of one of them.
+
+   SEVERITY grades COST: how much a single failure takes off you. It is now
+   printed as a word and never as a bare number — "Severity 3" told a reader
+   nothing they could act on, and because 1s and 2s were never rendered the
+   scale looked like an in-joke with one member. Unmarked rows are level 1.
+
+   LETHALITY is binary, orthogonal, and answers DOES IT KILL. Given a high
+   enough key or a bad enough pull almost anything one-shots somebody, so the
+   bar here is deliberately high and deliberately checkable: the ability's own
+   sourced text has to say it kills a player outright, or ends the group. No
+   inference from shape, no "this looks scary". A badge that quietly means
+   "probably quite bad" is a badge nobody reads twice. ══════════════════════ */
+const SEVS={
+ 1:["Chip","Costs health or uptime. Eating one is survivable."],
+ 2:["Punishing","Kills a careless player, or spends a cooldown. Repeated failures lose the run."],
+ 3:["Run-ender","One failure routinely ends the pull. Treat it as non-negotiable."]};
+const LETHAL={
+ oneshot:["One-shot","Kills the player outright when it lands. A bigger health bar is not the answer; the counter is."],
+ wipe:["Wipe","Ends the whole group if it resolves. This is the cast runs are lost to."]};
 const CTRS={
  interrupt:{l:"Interrupt",i:"i-kick"}, cc:{l:"CC the channel",i:"i-kick"},
  drop:{l:"Combat drop",i:"i-kick"}, purge:{l:"Purge",i:"i-dispel"},

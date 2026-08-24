@@ -50,6 +50,40 @@ const chip=(id,map,cls)=>{const t=(map||TAGS)[id];if(!t)return"";
   return `<span class="chip ${cls||""} x-${id}">${ic(t.i)}${esc(t.l)}</span>`;};
 const mythBadge=a=>(a.t||[]).includes("myth")
   ? `<span class="mythonly" title="Only appears on Mythic difficulty — including every Mythic+ key.">${ic("i-warn",10)}Mythic only</span>` : "";
+/* ── lethality ── the loudest thing on a row, and the rarest ──────────────
+   One-shot and Wipe live in t: so the mechanics index filters them for free,
+   but they never render as ordinary chips: a fact about whether the mechanic
+   KILLS does not belong in the same visual family as "Frontal". They are
+   lifted out of the chip row and worn beside the name, the same treatment
+   Mythic-only already gets, because that is where a skimmer's eye lands.
+   lh:1 means the lethality only applies on Heroic — the ability exists on
+   both difficulties, but only the Heroic version kills outright, and saying
+   so is cheaper than a second tag nobody would maintain. */
+const LETHALKEYS=Object.keys(LETHAL);
+const isLethal=a=>(a.t||[]).some(t=>LETHAL[t]);
+const lethalBadge=a=>(a.t||[]).filter(t=>LETHAL[t]).map(t=>
+  `<span class="lethal l-${t}" title="${esc(LETHAL[t][1])}${a.lh?" On Heroic only — Normal is survivable.":""}">${ic("i-skull",11)}${LETHAL[t][0]}${a.lh?" · Heroic":""}</span>`).join("");
+/* Severity says the WORD, never the number. Level 1 renders nothing: a chip
+   on every single row is noise, and the legend states that unmarked means
+   chip damage, which is the fact the old bare "3" left a reader to guess. */
+const sevChip=a=>{const s=SEVS[a.sev]; return a.sev>=2&&s
+  ? `<span class="sevc s${a.sev}" title="Severity — ${esc(s[1])}">${esc(s[0])}</span>`:"";};
+/* Printed once above any list of abilities. Krug: don't hide the key to a
+   scale the reader is being asked to act on. */
+const sevLegend=()=>`<p class="sevkey">${ic("i-info",13)}
+  <b>Severity</b> is what one failure costs:
+  <span class="sevc s3">Run-ender</span> one mistake routinely ends the pull ·
+  <span class="sevc s2">Punishing</span> kills a careless player or spends a cooldown ·
+  unmarked is chip damage. Separately,
+  <span class="lethal l-oneshot">${ic("i-skull",11)}One-shot</span> and
+  <span class="lethal l-wipe">${ic("i-skull",11)}Wipe</span> mark mechanics that kill outright —
+  those are facts about the mechanic, not opinions about how hard it is.</p>`;
+/* Heroic used to be one sentence at the end of a paragraph, or a bolded run-in
+   nobody's eye stopped at. It gets a flag and a rule of its own now: the raid
+   is two games and the reader has to be able to see which one a line is about
+   without reading it. */
+const heroLine=(txt,cls)=>txt
+  ?`<p class="heroicline ${cls||""}"><span class="hflag">${ic("i-warn",10)}Heroic</span>${esc(txt)}</p>`:"";
 const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
   healer:`<span class="chip c-heal">${ic("i-heal")}Healer</span>`,
   dps:`<span class="chip c-dps">${ic("i-dps")}DPS</span>`,
@@ -94,15 +128,16 @@ function abilityRow(a,roleFilter,diff){
      Mythic+ guide it is not a counter or a shape — it is a note about where
      you will ever meet the thing, which belongs beside the name. It stays in
      TAGS so the mechanics index can still filter on it. */
-  const tags=(a.t||[]).filter(t=>t!=="myth").map(t=>chip(t,TAGS,em(t))).join("");
+  const tags=(a.t||[]).filter(t=>t!=="myth"&&!LETHAL[t]).map(t=>chip(t,TAGS,em(t))).join("");
   const ctrs=(a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("");
   const roles=(a.r||[]).map(roleChip).join("");
-  return `<div class="abil ${a.sev===3?"sev3":a.sev===2?"sev2":""}">
-    <div><div class="an">${abilIcon(a.n)}${esc(a.n)}${mythBadge(a)}${diffBadge(a)}${alt(a)}</div><div class="tags">${tags}${roles}</div></div>
+  return `<div class="abil ${a.sev===3?"sev3":a.sev===2?"sev2":""}${isLethal(a)?" lethalrow":""}">
+    <div><div class="an">${abilIcon(a.n)}${esc(a.n)}${lethalBadge(a)}${mythBadge(a)}${diffBadge(a)}${alt(a)}</div>
+      <div class="tags">${sevChip(a)}${tags}${roles}</div></div>
     <div><p class="effect">${esc(a.e)}${srcMark(a.s)}</p>
       ${ctrs?`<div class="tags">${ctrs}</div>`:""}
       ${a.h?`<p class="read play">${esc(a.h)}</p>`:""}
-      ${a.hh&&diff==="h"?`<p class="read hh"><b>On Heroic:</b> ${esc(a.hh)}</p>`:""}</div></div>`;
+      ${a.hh&&diff==="h"?heroLine(a.hh,"inrow"):""}</div></div>`;
 }
 /* Every trash block carries a gravity tier taken straight from the mob's own
    k, so nothing is styled by hand: mini-bosses read loudest, lieutenants sit a
@@ -117,7 +152,7 @@ function mobBlock(m,roleFilter){
   /* Threat is DERIVED from the worst ability the mob actually has, so it can
      never drift out of sync with the rows beneath it. th: overrides only where
      volume makes a mob dangerous without any single scary cast. */
-  const th=m.th||Math.max(1,...(m.a||[]).map(a=>a.sev||1));
+  const th=(m.a||[]).some(isLethal)?3:(m.th||Math.max(1,...(m.a||[]).map(a=>a.sev||1)));
   const TH=["","Minor","Dangerous","Deadly"];
   return `<div class="card mob k-${k} th${th}">
     <div class="mobtop"><h3>${esc(m.n)}</h3>
@@ -161,6 +196,7 @@ function bossStats(d,e){
   const quiet=Object.keys(cf).filter(c=>!LOUD.includes(c)).sort((p,q)=>cf[q]-cf[p]);
   return {n:a.length,
     sev3:a.filter(x=>x.sev===3).length,
+    kills:a.filter(isLethal).map(x=>x.n),
     myth:a.filter(x=>(x.t||[]).includes("myth")).length,
     roles:["tank","healer","dps"].filter(r=>a.some(x=>(x.r||[]).includes(r))),
     demands:[...loud,...quiet].slice(0,7),
@@ -200,20 +236,35 @@ const bossMedia=(imgKeys,fallbackName)=>{
 /* The brief used to open the card, so it needed no header. Now that the play
    block sits above it, an unlabelled paragraph reads orphaned — and naming it
    makes the pairing legible: this is what happens, that is what you do. */
-const briefBlock=(txt,cls)=>txt
-  ?`<div class="brieflabel">What happens</div><p class="${cls||"bossbrief"}">${esc(txt)}</p>`:"";
+const briefBlock=(txt,cls,hero)=>txt
+  ?`<div class="brieflabel">What happens</div><p class="${cls||"bossbrief"}">${esc(txt)}</p>`+heroLine(hero,"inbrief"):"";
+/* ── the phase brief ── the missing rung on the ladder ─────────────────────
+   A boss page went straight from "what the whole fight is" to a list of casts,
+   so anyone wanting "what is this phase FOR" had to read six abilities and
+   synthesise it themselves. That synthesis is the guide's job. OBJECTIVE is
+   the label because that is the register: a phase has a thing you are trying
+   to achieve and a thing that stops you, and the sentence should name both.
+   Mythic+ has no boss phases, but its trash areas are the same rung — a
+   header with a pile of mobs under it — so they carry the same field. */
+const objBlock=(txt,hero)=>txt
+  ?`<div class="objective"><span class="objlabel">Objective</span><p>${esc(txt)}</p>${heroLine(hero,"inobj")}</div>`:"";
 const PLAYROLE={tank:["Tank","i-tank"],healer:["Healer","i-heal"],
   mdps:["Melee","i-dps"],rdps:["Ranged","i-dps"],dps:["DPS","i-dps"]};
-function playBlock(p,roleFilter){
+function playBlock(p,roleFilter,ph){
   if(!p) return "";
   /* dps is shorthand: a melee or ranged lens falls back to it, and with no
      lens it prints once as DPS rather than twice. */
   const pick=k=>p[k]||((k==="mdps"||k==="rdps")?p.dps:null);
+  /* The Heroic layer is a second object with the same keys, carried only where
+     the difficulty actually changes that role's job. It renders inside the
+     role's own row, so a tank reading their one paragraph sees the Heroic
+     amendment attached to it rather than somewhere further down the page. */
+  const pickH=k=>ph?(ph[k]||((k==="mdps"||k==="rdps")?ph.dps:null)):null;
   const keys=roleFilter?[roleFilter]:["tank","healer",...(p.mdps||p.rdps?["mdps","rdps"]:["dps"])];
   const rows=keys.map(k=>{const txt=pick(k); if(!txt) return "";
     const [label,icon]=PLAYROLE[k]||[k,"i-dps"];
     return `<div class="playrow r-${k}"><span class="playrole">${ic(icon,12)}${esc(label)}</span>
-      <p>${esc(txt)}</p></div>`;}).join("");
+      <div><p>${esc(txt)}</p>${heroLine(pickH(k),"inplay")}</div></div>`;}).join("");
   if(!rows.trim()) return roleFilter
     ? `<div class="playbox none"><p class="note">No role-specific play recorded for this one yet.</p></div>`:"";
   /* Collapsed by default, but it must not read as decoration: the bar carries
@@ -250,7 +301,8 @@ function encounterCard(d,e,roleFilter){
       ${briefBlock(e.brief)}
       <div class="bossstats">
         ${stat("Abilities",s.n)}
-        ${stat("Will end runs",s.sev3||"—",s.sev3?"hot":"")}
+        ${stat("Run-enders",s.sev3||"—",s.sev3?"hot":"")}
+        ${s.kills.length?stat("Kills outright",s.kills.map(esc).join(", "),"hot wide"):""}
         ${s.myth?stat("Mythic only",s.myth,"myth"):""}
         ${stat("Whose problem",s.roles.map(roleChip).join("")||"—","wide")}
         ${stat("What it demands",s.demands.map(c=>chip(c,CTRS,"c-counter")).join("")||"—","wide")}
@@ -533,13 +585,13 @@ function pDungeon(id,tab){
     <span class="pill">${esc(ROUTING[d.routing].split(" — ")[0])} routing</span>
     <span class="pill warn">${ic("i-warn")}PTR data</span></div>
   <p class="lede">${esc(d.blurb)}</p>
-  <div class="tabs">${T.map(([k,l,c])=>`<a href="#/d/${d.id}/${k}" ${k===tab?'aria-current="page"':""}>${l}${c?`<span class="c">${c}</span>`:""}</a>`).join("")}</div>`;
+  <div class="tabs stick">${T.map(([k,l,c])=>`<a href="#/d/${d.id}/${k}" ${k===tab?'aria-current="page"':""}>${l}${c?`<span class="c">${c}</span>`:""}</a>`).join("")}</div>`;
 
   let body="";
   if(tab==="overview"){
     body=covBox(d)+
     `<div class="sec"><h2>Three things that kill groups here</h2><span class="n">Read this if you read nothing else</span></div>
-    ${d.killers.map(k=>`<div class="killer"><div class="kn">${esc(k.n)}<span>SEVERITY 3</span></div><p>${esc(k.w)}${srcMark(k.s)}</p></div>`).join("")}
+    ${d.killers.map(k=>`<div class="killer"><div class="kn">${esc(k.n)}<span>RUN-ENDER</span></div><p>${esc(k.w)}${srcMark(k.s)}</p></div>`).join("")}
     <div class="sec"><h2>What blocks progress</h2><span class="n">Gates</span></div>
     ${d.gates.map(g=>`<p class="note">${ic("i-gate",13)} ${esc(g.t)}${srcMark(g.s)}</p>`).join("")}
     ${d.map&&IMG[d.map]?`<div class="sec"><h2>Map</h2><span class="n">Every pack marked</span></div>
@@ -560,14 +612,14 @@ function pDungeon(id,tab){
   }
   else if(tab==="bosses"){
     body=`<div class="sec"><h2>Encounters</h2><span class="n">In order</span></div>`+
-      roleBar()+roleNote()+
+      roleBar()+roleNote()+sevLegend()+
       d.encounters.map(e=>encounterCard(d,e,ROLEF)).join("");
   }
   else if(tab==="trash"){
     body=`<div class="sec"><h2>Trash by area</h2><span class="n">In the order you meet it</span></div>`+
-      roleBar()+roleNote()+
+      roleBar()+roleNote()+sevLegend()+
       d.areas.map(ar=>{const blocks=ar.mobs.map(m=>mobBlock(m,ROLEF)).join("");
-        return blocks.trim()?`<div class="area-h">${esc(ar.n)}</div>`+blocks:"";}).join("");
+        return blocks.trim()?`<div class="area-h">${esc(ar.n)}</div>`+objBlock(ar.brief)+blocks:"";}).join("");
   }
   else if(tab==="route"){
     body=`<div class="sec"><h2>Pug route</h2><span class="n">${d.route.length} pulls</span></div>
@@ -671,23 +723,25 @@ const mechChip=x=>x.mod==="r"
   :`<a class="mdg" href="#/d/${x.d.id}" data-dungeon="${x.d.id}" style="background:var(--d-accent);color:var(--d-ink);text-decoration:none">${esc(x.d.short)}</a>`;
 const mechRow=x=>`<div class="mres"><div class="mtop">
       ${mechChip(x)}
-      <span class="mn">${abilIcon(x.a.n)}${esc(x.a.n)}${mythBadge(x.a)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}${x.ph?` · ${esc(x.ph)}`:""}</span>
-      ${x.a.sev===3?`<span class="chip" style="border-color:var(--signal-urgent);color:var(--signal-urgent)">${ic("i-warn")}Sev 3</span>`:""}</div>
-    <div class="tags" style="margin-top:.35rem">${(x.a.t||[]).filter(t=>t!=="myth").map(t=>chip(t,TAGS,t==="noarmor"?"c-noarmor":"")).join("")}${(x.a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("")}</div>
+      <span class="mn">${abilIcon(x.a.n)}${esc(x.a.n)}${lethalBadge(x.a)}${mythBadge(x.a)}</span><span class="mm">${esc(x.src)} · ${esc(x.kind)}${x.ph?` · ${esc(x.ph)}`:""}</span></div>
+    <div class="tags" style="margin-top:.35rem">${sevChip(x.a)}${(x.a.t||[]).filter(t=>t!=="myth"&&!LETHAL[t]).map(t=>chip(t,TAGS,t==="noarmor"?"c-noarmor":"")).join("")}${(x.a.c||[]).map(c=>chip(c,CTRS,"c-counter")).join("")}</div>
     <p>${esc(x.a.e)}${srcMark(x.a.s)}</p></div>`;
 /* What a reader wants at a chunk boundary: how far in they are, which dungeons
    that stretch covered, and whether any of it will end a run. */
 const mechNote=(shown,total,slice)=>{
   const dg=[...new Set(slice.map(x=>x.mod==="r"?RAID.short:x.d.short))];
   const s3=slice.filter(x=>x.a.sev===3).length;
-  return milestone(shown,total,[dg.join(", "),s3?`${s3} will end runs`:""]);
+  const kl=slice.filter(x=>isLethal(x.a)).length;
+  return milestone(shown,total,[dg.join(", "),s3?`${s3} run-ender${s3>1?"s":""}`:"",kl?`${kl} kill${kl>1?"":"s"} outright`:""]);
 };
 let MRES=[];
 function pMechanics(){
   const res=ALL.filter(matches); MRES=res;
   const live=new Set(res.flatMap(x=>x.a.t||[])), liveC=new Set(res.flatMap(x=>x.a.c||[]));
   const n=Object.values(FACETS).reduce((k,v)=>k+(v instanceof Set?v.size:(v?1:0)),0);
-  const opts=(map,key,liveSet)=>Object.entries(map).map(([k,v])=>{
+  /* Lethality lives in TAGS so it filters for free, but it is not a shape —
+     it gets its own group below rather than a slot between Frontal and Line. */
+  const opts=(map,key,liveSet)=>Object.entries(map).filter(([k])=>!(map===TAGS&&LETHAL[k])).map(([k,v])=>{
     const on=FACETS[key] instanceof Set?FACETS[key].has(k):FACETS[key]===k;
     const dis=!on&&!liveSet.has(k);
     return `<button class="fopt" data-f="${key}" data-v="${k}" aria-pressed="${on}" ${dis?"disabled":""}>${ic(v.i)}${esc(v.l)}</button>`;}).join("");
@@ -704,8 +758,13 @@ function pMechanics(){
     <div class="fgroup"><h4>What stops it</h4><div class="fopts">${opts(CTRS,"ctr",liveC)}</div></div>
     <div class="fgroup"><h4>What it is</h4><div class="fopts">${opts(TAGS,"tag",live)}</div></div>
     <div class="fgroup"><h4>Whose problem</h4><div class="fopts">
-      ${["tank","healer","dps"].map(r=>`<button class="fopt" data-f="role" data-v="${r}" aria-pressed="${FACETS.role===r}">${ic(r==="tank"?"i-tank":r==="healer"?"i-heal":"i-dps")}${r[0].toUpperCase()+r.slice(1)}</button>`).join("")}
-      <button class="fopt" data-f="sev" data-v="3" aria-pressed="${FACETS.sev==3}">${ic("i-warn")}Severity 3 only</button></div></div>
+      ${["tank","healer","dps"].map(r=>`<button class="fopt" data-f="role" data-v="${r}" aria-pressed="${FACETS.role===r}">${ic(r==="tank"?"i-tank":r==="healer"?"i-heal":"i-dps")}${r[0].toUpperCase()+r.slice(1)}</button>`).join("")}</div></div>
+    <div class="fgroup"><h4>How bad</h4><div class="fopts">
+      <button class="fopt" data-f="tag" data-v="oneshot" aria-pressed="${FACETS.tag.has("oneshot")}">${ic("i-skull")}One-shot</button>
+      <button class="fopt" data-f="tag" data-v="wipe" aria-pressed="${FACETS.tag.has("wipe")}">${ic("i-skull")}Wipe</button>
+      <button class="fopt" data-f="sev" data-v="3" aria-pressed="${FACETS.sev==3}">${ic("i-warn")}Run-enders</button>
+      <button class="fopt" data-f="sev" data-v="2" aria-pressed="${FACETS.sev==2}">${ic("i-warn")}Punishing or worse</button></div>
+      <p class="fhint">One-shot kills the player; Wipe ends the group. Severity is what one failure costs.</p></div>
     <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
       ${DUNGEONS.map(d=>`<button class="fopt" data-f="dg" data-v="${d.id}" aria-pressed="${FACETS.dg===d.id}">${esc(d.short)}</button>`).join("")}</div></div>
   </div>
@@ -1102,11 +1161,18 @@ function pBoss(id,tab){
     const hidden=(p.a||[]).length-onDiff.length;
     const visible=onDiff.filter(a=>roleMatch(a,ROLEF));
     const roleHid=onDiff.length-visible.length;
+    /* Heroic addenda are Heroic-only by the same contract the rows are, but
+       hiding them without saying so would let a Normal reader form a wrong
+       picture of the fight — so they are counted into the same note. */
+    const addenda=DIFF==="h"?0:onDiff.filter(a=>a.hh).length;
     if(!visible.length&&!hidden&&!roleHid) return "";
     return `<div class="area-h">${esc(p.n)}${p.trigger?` <span class="n" style="text-transform:none;letter-spacing:0">· ${esc(p.trigger)}</span>`:""}</div>
+    ${objBlock(p.brief,p.bh)}
     <div class="bossabils">${visible.map(a=>abilityRow(a,null,DIFF)).join("")}</div>
-    ${hidden?`<p class="note hnote">${ic("i-info",13)} ${hidden} more abilit${hidden>1?"ies":"y"} on Heroic —
-      <button class="linklike" data-diff="h">switch to Heroic</button> to see ${hidden>1?"them":"it"}.</p>`:""}
+    ${hidden||addenda?`<p class="note hnote">${ic("i-info",13)} On Heroic: ${[
+      hidden?`${hidden} further abilit${hidden>1?"ies":"y"}`:"",
+      addenda?`${addenda} of the above change${addenda>1?"":"s"}`:""].filter(Boolean).join(", and ")} —
+      <button class="linklike" data-diff="h">switch difficulty</button> to see ${hidden+addenda>1?"them":"it"}.</p>`:""}
     ${roleHid?`<p class="note hnote">${ic("i-info",13)} ${roleHid} abilit${roleHid>1?"ies":"y"} hidden by the role
       lens — <button class="linklike" data-role="">show everyone's view</button>.</p>`:""}`;};
   /* Featured first: trinkets, jewellery, cantrip-carriers, then tier tokens —
@@ -1140,9 +1206,9 @@ function pBoss(id,tab){
   ${b.jp?bossMedia(b.jp,b.n):""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
   ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
-  ${briefBlock(b.brief,"raidbrief")}
-  ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}`:""}
-  ${playBlock(b.play,ROLEF)}
+  ${briefBlock(b.brief,"raidbrief",b.briefh)}
+  ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}${sevLegend()}`:""}
+  ${playBlock(b.play,ROLEF,b.playh)}
   ${abilCount(b)?phases.map(renderPhase).join(""):`
   <p class="note">${ic("i-warn",13)} The order and name are confirmed against Wowhead; the encounter guide has
   not been written yet. Bosses are being sourced and added one at a time — the same way the dungeons were.</p>`}
@@ -1281,11 +1347,11 @@ function pGlossary(){
    ["Zul'jan","Zul'jin","Altar of Fangs final boss. Zul'jin is his dead father — a real, different character."],
    ["Zul'jarra","Zandalari Forces","Zul'jan's sister and the Season 2 renown faction. Zandalari is a real, different troll faction."],
    ["Atal'Utek","Atal'Dazar","The 12.1 subzone. Atal'Dazar is an unrelated Battle for Azeroth dungeon."],
-   ["Xy'exa Manahar","Kith'ix Manahar","Murder Row first boss. The written guide calls her Kystia Manaheart, which is likelier — Manaheart is exactly what a captioner turns into Manahar."],
-   ["Ataraxis","Atroxus, Ataraxus","Voidscar Arena second boss. The creator transcript uses both spellings within one video; the written guide settles on Atroxus."],
-   ["Taz'grah","Ta'agra, Taz'Rah","Voidscar Arena first boss."],
+   ["Kystia Manaheart","Xy'exa Manahar, Kith'ix Manahar","Murder Row first boss. Manaheart is exactly what a captioner turns into Manahar."],
+   ["Atroxus","Ataraxis, Ataraxus","Voidscar Arena second boss. The creator transcript uses several spellings within one video; the journal settles it."],
+   ["Taz'Rah","Taz'grah, Ta'agra","Voidscar Arena first boss."],
    ["Geti'ikku, Cut of Death","Gatiku","The King's Rest two-hand sword. Confirmed by the published loot table."],
-   ["Aku'mai the Light Hunter","Ikuzz the Light Hunter","Genuinely unresolved. Aku'mai is a real Blackfathom Deeps name, which is exactly the kind of substitution auto-captioning makes — so the written guide's spelling may well be right."],
+   ["Ikuzz the Light Hunter","Aku'mai the Light Hunter","Blinding Vale, right path. Aku'mai is a real Blackfathom Deeps name, which is exactly the substitution auto-captioning makes — but the in-game nameplate reads Ikuzz, which settles it."],
    ["Sszorak","Sorak, Sister Rag, Sisters of Elune, Coven","Auto-captions, raid guide videos"],
    ["Nek'zali the Soulcoiler","Nexxus-Asol, Exzolar the Soul Coiler","Auto-captions, raid guide videos"],
    ["Mor'zahi","Morzaki, Mor'oes, Ursoc","Auto-captions, raid guide videos"],
@@ -1338,11 +1404,27 @@ function pGlossary(){
   <tr><td class="mono"><b>Very heavy</b></td><td>Among the biggest hits in the pool. Do not eat it unprepared.</td></tr>
   <tr><td class="mono"><b>Massive</b></td><td>The top band. Untanked or unmitigated, this is how runs end.</td></tr>
   </tbody></table>
+  <div class="sec"><h2>How bad is it</h2><span class="n">Two questions, kept apart</span></div>
+  <p class="note">These used to be one number and it said nothing. <b>Severity</b> grades what a single failure
+  <em>costs</em>; <b>One-shot</b> and <b>Wipe</b> say whether the mechanic <em>kills</em>. They are independent — a
+  Punishing mechanic can still one-shot you, and plenty of Run-enders never kill anybody outright.</p>
+  <table><thead><tr><th>Mark</th><th>Means</th></tr></thead><tbody>
+  ${[3,2,1].map(k=>`<tr><td>${k>=2?`<span class="sevc s${k}">${esc(SEVS[k][0])}</span>`
+    :`<span class="n">unmarked</span>`}</td><td>${esc(SEVS[k][1])}</td></tr>`).join("")}
+  ${Object.keys(LETHAL).map(k=>`<tr><td><span class="lethal l-${k}">${ic("i-skull",11)}${esc(LETHAL[k][0])}</span></td>
+    <td>${esc(LETHAL[k][1])}</td></tr>`).join("")}
+  </tbody></table>
+  <p class="note">${ic("i-info",13)} Given a high enough key or a bad enough pull almost anything can kill somebody,
+  so the bar for the two skull marks is deliberately high and deliberately checkable: the ability's own sourced text
+  has to say it kills a player outright or ends the group. Compounds — <em>lethal if it overlaps something else</em>,
+  <em>a string of avoids is what makes him lethal</em> — stay unmarked at the severity they earn. A mark that quietly
+  meant "probably quite bad" would be a mark nobody reads twice. Where the lethality only exists on Heroic, the badge
+  says so.</p>
   <div class="sec"><h2>Tag vocabulary</h2><span class="n">What the chips mean</span></div>
   <p class="note">Every ability carries chips describing what it is and what stops it. Both vocabularies are closed
   sets, which is what makes the <a href="#/mechanics">mechanics index</a> possible.</p>
   <div class="split"><div class="card"><h3>What it is</h3><div class="tags" style="margin-top:.6rem">
-    ${Object.keys(TAGS).map(k=>chip(k,TAGS)).join("")}</div></div>
+    ${Object.keys(TAGS).filter(k=>!LETHAL[k]).map(k=>chip(k,TAGS)).join("")}</div></div>
   <div class="card"><h3>What stops it</h3><div class="tags" style="margin-top:.6rem">
     ${Object.keys(CTRS).map(k=>chip(k,CTRS,"c-counter")).join("")}</div></div></div>`;
 }

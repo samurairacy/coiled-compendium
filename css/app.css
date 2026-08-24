@@ -38,6 +38,11 @@
   --signal-urgent: #F0503C;
   --signal-warn:   #E0A93B;
   --signal-ok:     #6FA96B;
+  /* Difficulty is not a signal and not a dungeon: the raid accents run green →
+     cyan → blue → violet, so Heroic takes the one warm hue none of them uses.
+     It has to stay constant across all eight boss palettes, because it means
+     "this line is about the other difficulty", never "this is Sszorak". */
+  --heroic:        #E58BB2;
 
   /* ── dispel families. WoW's own debuff-border hues, lightened for this
         ground. Players already read these off raid frames, so the colour is
@@ -997,3 +1002,99 @@ footer a{color:var(--ink-muted)}
    "how to play it" is the thing you came for */
 .brieflabel{font-family:var(--face-term);font-size:.6rem;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-faint);margin:.2rem 0 .25rem}
+
+/* ═══ LETHALITY ═══ the loudest marks on the site, and deliberately rare.
+   One-shot outlines; Wipe fills. The step from outline to solid is the step
+   from "you die" to "everyone dies", and the label states which either way,
+   so the fill is emphasis rather than the meaning. ══════════════════════ */
+.lethal{
+  display:inline-flex;align-items:center;gap:.24rem;font-family:var(--face-term);
+  font-size:.58rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  padding:.1rem .38rem;border-radius:2px;white-space:nowrap;vertical-align:middle;
+  margin-left:.45rem
+}
+.lethal.l-oneshot{border:1px solid var(--signal-urgent);color:var(--signal-urgent);
+  background:color-mix(in srgb,var(--signal-urgent) 12%,transparent)}
+.lethal.l-wipe{background:var(--signal-urgent);color:#180806;border:1px solid var(--signal-urgent)}
+.lethal svg{opacity:.9;flex:none}
+/* A row carrying either gets the run-ender rule regardless of its severity —
+   the two axes are independent, and a Punishing one-shot must not read quieter
+   than a Run-ender that merely hurts. */
+.abil.lethalrow{border-left:3px solid var(--signal-urgent);padding-left:.85rem;
+  background:linear-gradient(90deg,rgba(240,80,60,.09),transparent 46%)}
+
+/* ═══ SEVERITY ═══ the word, never the number. Level 1 prints nothing; the
+   legend says so, which is the fact the bare "3" left readers to guess. ══ */
+.sevc{
+  display:inline-flex;align-items:center;font-family:var(--face-term);
+  font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.14rem .4rem;border-radius:2px;white-space:nowrap;margin-right:.3rem;cursor:help
+}
+.sevc.s3{background:color-mix(in srgb,var(--signal-urgent) 20%,transparent);
+  color:var(--signal-urgent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--signal-urgent) 45%,transparent)}
+.sevc.s2{background:color-mix(in srgb,var(--signal-warn) 16%,transparent);
+  color:var(--signal-warn);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--signal-warn) 38%,transparent)}
+.sevkey{
+  font-size:.82rem;color:var(--ink-muted);margin:.1rem 0 1.1rem;line-height:2;
+  border-left:2px solid var(--rule);padding-left:.75rem;max-width:96ch
+}
+.sevkey b{color:var(--ink)}
+.sevkey svg{color:var(--ink-faint);vertical-align:-2px}
+.sevkey .lethal{margin-left:.15rem}
+
+/* ═══ HEROIC ═══ the raid is two games, and a reader must be able to see
+   which one a line is about before reading it. One flag, one rule, one hue,
+   constant across every boss accent. ═════════════════════════════════════ */
+.heroicline{
+  border-left:2px solid var(--heroic);padding:.05rem 0 .05rem .7rem;
+  margin:.45rem 0 0;font-size:.9rem;color:var(--ink);max-width:70ch
+}
+.hflag{
+  display:inline-flex;align-items:center;gap:.22rem;font-family:var(--face-term);
+  font-size:.57rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  padding:.08rem .36rem;border-radius:2px;background:var(--heroic);color:#25101A;
+  margin-right:.45rem;vertical-align:.08em;white-space:nowrap
+}
+.heroicline.inrow{font-size:.86rem;color:var(--ink-muted);margin-top:.4rem}
+.heroicline.inrow .hflag{background:transparent;color:var(--heroic);
+  box-shadow:inset 0 0 0 1px var(--heroic)}
+.heroicline.inplay{font-size:.88rem;margin-top:.35rem}
+.heroicline.inbrief{margin-top:.6rem;font-size:.93rem}
+
+/* ═══ OBJECTIVE ═══ the rung between "what the fight is" and a list of casts:
+   what THIS phase (or trash area) is for, and what stops you. ════════════ */
+.objective{
+  border-left:3px solid var(--d-accent,var(--accent));background:var(--ground-raised);
+  padding:.6rem .8rem;margin:0 0 1rem;border-radius:0 3px 3px 0
+}
+.objective>p{margin:0;font-size:.94rem;line-height:1.6;color:var(--ink);max-width:80ch}
+.objlabel{
+  display:block;font-family:var(--face-term);font-size:.6rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--d-accent,var(--accent));
+  margin-bottom:.3rem
+}
+.area-h+.objective{margin-top:-.15rem}
+
+/* ═══ STICKY TABS ═══ the dungeon switcher already parks under the header;
+   the page's own tabs park under both. --dsw is measured per route in app.js
+   because a hard-coded height is a gap or an overlap at any other text size. */
+.tabs.stick{
+  position:sticky;top:calc(var(--bar) + var(--dsw,0px));z-index:29;
+  background:rgba(14,12,9,.94);backdrop-filter:blur(8px);
+  margin-top:1rem;padding-top:.15rem
+}
+
+/* the play row grew a Heroic amendment, so its text column is a block */
+.playrow>div{min-width:0}
+.playrow>div>p{margin:0}
+
+@media print{
+  .sevkey,.tabs.stick{display:none!important}
+  .lethal.l-wipe{background:#000;color:#fff}
+  .lethal.l-oneshot{border-color:#000;color:#000}
+  .sevc{color:#000;box-shadow:inset 0 0 0 1px #000;background:none}
+  .heroicline{border-left-color:#000}
+  .hflag{background:#000;color:#fff}
+  .objective{background:none;border-left-color:#000;break-inside:avoid}
+  .objlabel{color:#000}
+}
