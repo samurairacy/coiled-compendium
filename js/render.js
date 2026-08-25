@@ -695,6 +695,24 @@ const milestone=(shown,total,bits)=>shown>=total
   : `<div class="milestone"><span class="mspos">${shown} <i>of</i> ${total}</span>
       <span class="msbits">${bits.filter(Boolean).join(" &nbsp;·&nbsp; ")}</span></div>`;
 
+/* ── how a group of options behaves, said out loud ─────────────────────────
+   Three modes, and they were previously indistinguishable from each other:
+     one   pick one; choosing another replaces it. Options are PILLS.
+     any   pick any; a row matching ANY of them qualifies. Options are SQUARE.
+     all   pick any; a row must match ALL of them. Options are SQUARE.
+   Shape carries the exclusive/multiple distinction and the label carries the
+   OR/AND distinction, so neither depends on colour and neither needs a hover.
+   The mode also names its own set: the heading IS the set the options are
+   mutual with, which is the question "mutual with what?" answered in place. */
+const FMODE={one:["pick one","Choosing another replaces this one."],
+             any:["any of","A row matching any one of these qualifies."],
+             all:["all of","A row must match every one you pick."]};
+const fmode=m=>FMODE[m]?`<span class="fany m-${m}" title="${esc(FMODE[m][1])}">${FMODE[m][0]}</span>`:"";
+const fgroup=(label,mode,inner)=>`<div class="fgroup m-${mode}">
+  <h4>${esc(label)} ${fmode(mode)}</h4><div class="fopts">${inner}</div></div>`;
+const fsub=(label,mode,inner)=>`<div class="fsub m-${mode}">
+  <h5>${esc(label)} ${fmode(mode)}</h5><div class="fopts">${inner}</div></div>`;
+
 let FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null,mod:null};
 /* One index, both modules. Every row carries mod:"d"|"r"; dungeon rows have
    x.d, raid rows have x.b. The dungeon facet only ever matches dungeon rows,
@@ -752,21 +770,24 @@ function pMechanics(){
   what they are and by what stops them. This is the view no published guide gives you: filter by a counter you
   actually have, and see the whole season through it.</p>
   <div class="facets">
-    <div class="fgroup"><h4>From</h4><div class="fopts">
+    ${fgroup("From","one",`
       <button class="fopt" data-f="mod" data-v="d" aria-pressed="${FACETS.mod==="d"}">${ic("i-gate")}Dungeons</button>
-      <button class="fopt" data-f="mod" data-v="r" aria-pressed="${FACETS.mod==="r"}">${ic("i-serpent")}Raid</button></div></div>
-    <div class="fgroup"><h4>What stops it</h4><div class="fopts">${opts(CTRS,"ctr",liveC)}</div></div>
-    <div class="fgroup"><h4>What it is</h4><div class="fopts">${opts(TAGS,"tag",live)}</div></div>
-    <div class="fgroup"><h4>Whose problem</h4><div class="fopts">
-      ${["tank","healer","dps"].map(r=>`<button class="fopt" data-f="role" data-v="${r}" aria-pressed="${FACETS.role===r}">${ic(r==="tank"?"i-tank":r==="healer"?"i-heal":"i-dps")}${r[0].toUpperCase()+r.slice(1)}</button>`).join("")}</div></div>
-    <div class="fgroup"><h4>How bad</h4><div class="fopts">
-      <button class="fopt" data-f="tag" data-v="oneshot" aria-pressed="${FACETS.tag.has("oneshot")}">${ic("i-skull")}One-shot</button>
-      <button class="fopt" data-f="tag" data-v="wipe" aria-pressed="${FACETS.tag.has("wipe")}">${ic("i-skull")}Wipe</button>
-      <button class="fopt" data-f="sev" data-v="3" aria-pressed="${FACETS.sev==3}">${ic("i-warn")}Run-enders</button>
-      <button class="fopt" data-f="sev" data-v="2" aria-pressed="${FACETS.sev==2}">${ic("i-warn")}Punishing or worse</button></div>
-      <p class="fhint">One-shot kills the player; Wipe ends the group. Severity is what one failure costs.</p></div>
-    <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
-      ${DUNGEONS.map(d=>`<button class="fopt" data-f="dg" data-v="${d.id}" aria-pressed="${FACETS.dg===d.id}">${esc(d.short)}</button>`).join("")}</div></div>
+      <button class="fopt" data-f="mod" data-v="r" aria-pressed="${FACETS.mod==="r"}">${ic("i-serpent")}Raid</button>`)}
+    ${fgroup("What stops it","all",opts(CTRS,"ctr",liveC))}
+    ${fgroup("What it is","all",opts(TAGS,"tag",live))}
+    ${fgroup("Whose problem","one",
+      ["tank","healer","dps"].map(r=>`<button class="fopt" data-f="role" data-v="${r}" aria-pressed="${FACETS.role===r}">${ic(r==="tank"?"i-tank":r==="healer"?"i-heal":"i-dps")}${r[0].toUpperCase()+r.slice(1)}</button>`).join(""))}
+    <div class="fgroup"><h4>How bad</h4>
+      ${fsub("Kills outright","all",`
+        <button class="fopt" data-f="tag" data-v="oneshot" aria-pressed="${FACETS.tag.has("oneshot")}">${ic("i-skull")}One-shot</button>
+        <button class="fopt" data-f="tag" data-v="wipe" aria-pressed="${FACETS.tag.has("wipe")}">${ic("i-skull")}Wipe</button>`)}
+      ${fsub("Severity","one",`
+        <button class="fopt" data-f="sev" data-v="3" aria-pressed="${FACETS.sev===3}">${ic("i-warn")}Run-enders</button>
+        <button class="fopt" data-f="sev" data-v="2" aria-pressed="${FACETS.sev===2}">${ic("i-warn")}Punishing or worse</button>`)}
+      <p class="fhint">One-shot kills the player; Wipe ends the group. Severity is what one failure costs.
+      Nothing is both a One-shot and a Wipe, so picking both returns nothing.</p></div>
+    ${fgroup("Dungeon","one",
+      DUNGEONS.map(d=>`<button class="fopt" data-f="dg" data-v="${d.id}" aria-pressed="${FACETS.dg===d.id}">${esc(d.short)}</button>`).join(""))}
   </div>
   <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${ALL.length} abilities indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearf">Clear all</button>`:""}</div>
@@ -976,26 +997,25 @@ function pLoot(){
   questions cross dungeons: what Mail exists with mastery on it, which Agility trinkets are worth setting loot
   specialisation for. The raid is the opposite — the boss is the loot table, once a week.</p>
   <div class="facets">
-    <div class="fgroup"><h4>From</h4><div class="fopts">
-      ${opt("mod","d","Dungeons",null)}${opt("mod","r","Raid",null)}</div></div>
-    <div class="fgroup"><h4>Slot <span class="fany">any of</span></h4><div class="fopts">
+    ${fgroup("From","one",`${opt("mod","d","Dungeons",null)}${opt("mod","r","Raid",null)}`)}
+    <div class="fgroup m-any"><h4>Slot ${fmode("any")}</h4><div class="fopts">
       ${inData(LSLOT,(i,v)=>i.sl===v).map(v=>opt("sl",v,esc(v),liveSl)).join("")}</div></div>
-    <div class="fgroup"><h4>Armour <span class="fany">any of</span></h4><div class="fopts">
+    <div class="fgroup m-any"><h4>Armour ${fmode("any")}</h4><div class="fopts">
       ${inData(LARM,(i,v)=>i.ty===v).map(v=>opt("ty",v,esc(v),liveTy)).join("")}
       ${inData(LGEAR,(i,v)=>i.ty===v).map(v=>opt("ty",v,esc(v),liveTy)).join("")}</div></div>
-    <div class="fgroup"><h4>Weapon <span class="fany">any of</span></h4><div class="fopts">
+    <div class="fgroup m-any"><h4>Weapon ${fmode("any")}</h4><div class="fopts">
       ${inData(LWEP,(i,v)=>i.ty===v).map(v=>opt("ty",v,esc(v),liveTy)).join("")}</div></div>
-    <div class="fgroup"><h4>Primary stat <span class="fany">any of</span></h4><div class="fopts">
+    <div class="fgroup m-any"><h4>Primary stat ${fmode("any")}</h4><div class="fopts">
       ${LPRIM.map(v=>opt("p",v,esc({Str:"Strength",Agi:"Agility",Int:"Intellect"}[v]),liveP)).join("")}</div></div>
-    <div class="fgroup"><h4>Secondaries <span class="fany">all of</span></h4><div class="fopts">
+    <div class="fgroup m-all"><h4>Secondaries ${fmode("all")}</h4><div class="fopts">
       ${LSEC.map(v=>opt("x",v,esc(v),liveX)).join("")}</div></div>
-    <div class="fgroup"><h4>Big stat <span class="fany">the heavier of the two</span></h4><div class="fopts">
+    <div class="fgroup m-one"><h4>Big stat ${fmode("one")} <span class="fany">the heavier of the two</span></h4><div class="fopts">
       ${LSEC.map(v=>opt("big",v,esc(v),liveBig)).join("")}</div></div>
-    <div class="fgroup"><h4>Role <span class="fany">any of · whose loot table it is, seen in game</span></h4><div class="fopts">
+    <div class="fgroup m-any"><h4>Role ${fmode("any")} <span class="fany">whose loot table it is, seen in game</span></h4><div class="fopts">
       ${["tank","healer","rdps","mdps"].map(r=>opt("ro",r,esc(LROLE[r]),liveRo)).join("")}</div></div>
-    <details class="fgroup specfg"${F.spec?" open":""}>
+    <details class="fgroup specfg m-one"${F.spec?" open":""}>
       <summary><h4><span class="spectw" aria-hidden="true"></span>Specialisation
-        <span class="fany">one at a time · ${SPECS.length} specs · from armour, primary stat, the weapons the spec actually uses, and loot role on trinkets</span></h4></summary>
+        ${fmode("one")} <span class="fany">${SPECS.length} specs · from armour, primary stat, the weapons the spec actually uses, and loot role on trinkets</span></h4></summary>
       ${ARMOURS.map(a=>`<div class="specarm"><span class="specarm-h">${a}</span>
         ${Object.keys(WCLASS).filter(c=>WCLASS[c].a===a).map(c=>`<div class="specrow">
           <span class="speccls">${clsIcon(c)}${esc(c)}</span>
@@ -1003,10 +1023,8 @@ function pLoot(){
             opt("spec",SPECKEY(s),specIcon(SPECKEY(s))+esc(s[1]),liveSpec)).join("")}</div></div>`).join("")}
         </div>`).join("")}
     </details>
-    <div class="fgroup"><h4>Cantrips</h4><div class="fopts">
-      ${opt("fx","1","Cantrips",null)}</div></div>
-    <div class="fgroup"><h4>Dungeon</h4><div class="fopts">
-      ${DUNGEONS.map(d=>opt("dg",d.id,esc(d.short),null)).join("")}</div></div>
+    ${fgroup("Cantrips","one",opt("fx","1","Cantrips",null))}
+    ${fgroup("Dungeon","one",DUNGEONS.map(d=>opt("dg",d.id,esc(d.short),null)).join(""))}
   </div>
   <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${LOOTALL.length} items indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearl">Clear all</button>`:""}</div>

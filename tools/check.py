@@ -285,4 +285,15 @@ print()
 if FAIL:
     print("%d CHECK%s FAILED" % (len(FAIL), "S" if len(FAIL) > 1 else ""))
     sys.exit(1)
-print("all checks passed")
+print("all structural checks passed")
+
+# ── the editorial pass ─────────────────────────────────────────────────────
+# check.py guards the shape of the data; lint.py guards the writing. One
+# command runs both, because a second command is a command that gets skipped.
+import subprocess
+print("\n-- editorial lint --")
+# stdout block-buffers into a pipe, so flush before handing that pipe to a
+# child — otherwise the child's output lands ahead of ours and looks lost.
+sys.stdout.flush()
+rc = subprocess.call([sys.executable, R("tools", "lint.py")])
+sys.exit(rc)

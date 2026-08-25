@@ -1096,3 +1096,24 @@ footer a{color:var(--ink-muted)}
   .objective{background:none;border-left-color:#000;break-inside:avoid}
   .objlabel{color:#000}
 }
+
+/* ═══ FACET MODES ═══ whether a group is pick-one or pick-many was
+   indistinguishable, so a reader could only find out by clicking. Shape now
+   carries it: exclusive options are PILLS, multi-select options stay SQUARE —
+   the same radio-versus-checkbox convention every form uses, without the
+   controls. The label beside the heading carries the OR/AND half, and the
+   heading itself names the set the options are mutual with. ═══════════ */
+.fgroup.m-one .fopt,
+.fsub.m-one .fopt{border-radius:999px;padding-left:.7rem;padding-right:.7rem}
+.fany.m-one{color:var(--accent);border-bottom:1px dotted color-mix(in srgb,var(--accent) 45%,transparent)}
+.fany.m-any,.fany.m-all{color:var(--ink-faint);border-bottom:1px dotted var(--rule)}
+.fany[title]{cursor:help}
+/* a group that carries two behaviours says so on each row rather than once */
+.fsub{margin:.1rem 0 .5rem}
+.fsub:last-of-type{margin-bottom:.35rem}
+.fsub h5{
+  font-family:var(--face-term);font-size:.62rem;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-faint);margin:0 0 .3rem
+}
+.fhint{font-size:.76rem;color:var(--ink-faint);margin:.35rem 0 0;max-width:70ch;line-height:1.55}
+@media print{.fsub h5,.fany{color:#000}}

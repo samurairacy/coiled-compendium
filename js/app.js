@@ -149,7 +149,10 @@ document.addEventListener("click",e=>{
   if(f&&!f.disabled){
     const {f:key,v}=f.dataset;
     if(FACETS[key] instanceof Set){FACETS[key].has(v)?FACETS[key].delete(v):FACETS[key].add(v);}
-    else FACETS[key]=FACETS[key]===v?null:(key==="sev"?+v:v);
+    /* sev is stored as a NUMBER and the dataset hands back a STRING, so the
+       old `FACETS[key]===v` was 3==="3" — never true, and the severity buttons
+       could be swapped but never switched off. Coerce first, then compare. */
+    else{const nv=key==="sev"?+v:v; FACETS[key]=FACETS[key]===nv?null:nv;}
     paintMech(); mechQS(); return;
   }
   if(e.target.closest("#clearf")){FACETS={tag:new Set(),ctr:new Set(),role:null,sev:null,dg:null,mod:null};
