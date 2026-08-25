@@ -83,6 +83,18 @@ const SOURCES={
     could not: the journal prefixes Gore Rattle, Spectral Coils and Grasping
     Fangs with "Heroic", and this describes all three as the spine of the
     NORMAL fight — so those markers are section icons, not difficulty gates. */
+ /* Blizzard's own rolling hotfix notes — one article, updated per day, and
+    the highest-authority source this project has for CHANGE over time. A
+    guide written on launch day and a guide written a week later can both be
+    right; this is how you tell which fight each was describing. */
+ /* Community discourse, which is a different KIND of source rather than
+    more of the same: it records what actually killed people, what a guide
+    published on launch day already got wrong, and which mechanics everyone
+    misreads. Anecdote by default, so it is cited where several independent
+    reports converge and the prose says it is a player account. */
+ wh_ul  :{l:"WOWHEAD",t:2,k:"wowhead",a:"Wowhead (iMX3)",b:"Ula'tek Raid Boss Guide — Strategy and Abilities",d:"2026-08-20",u:"https://www.wowhead.com/guide/midnight/raids/venomous-abyss-ulatek-boss-strategy-abilities"},
+ rd_va  :{l:"WEEK ONE",t:3,k:"creator",a:"Week-one raid threads",b:"r/wow and r/CompetitiveWoW, first-week Venomous Abyss reports",d:"2026-08-19",u:"https://old.reddit.com/r/wow/comments/1vspvo7/hardest_normal_raid_in_a_while/"},
+ bz_hf  :{l:"HOTFIX",t:1,k:"blizzard",a:"Blizzard Entertainment",b:"Hotfixes, rolling — Midnight 12.1",d:"2026-08-21",u:"https://worldofwarcraft.blizzard.com/en-us/news/24296142"},
  sq_uln :{l:"SQUISHEI",t:3,k:"creator",  a:"Squishei",b:"Ula'tek Boss Guide, The Venomous Abyss — Normal (video, post-launch)",d:"2026-08-19",u:"https://www.youtube.com/watch?v=DoR7kJze1-A"}
 };
 
@@ -231,6 +243,11 @@ const DISPUTES=[
   a:{p:"The first blob is immune but the split generations can be slowed and controlled.",s:["iv_vas","wg_va"]},
   b:{p:"Every generation is CC-immune — the PTR bugs made it look otherwise, but immunity is the intent. Method's video agrees: crowd-control immune, splits when killed, keep killing until every piece is gone.",s:["tk_va","me_vas"]},
   r:"First live pull of the Blood fountain settles it, and the add-handling plan hangs on the answer.",dg:"raid"},
+ {id:"va-ulatek-lust",q:"When do you lust on Ula'tek — Stage One or Phase 3?",
+  a:{p:"Stage One, as the Spectral Coils soaks come in, so the burn runs straight into the first Rage of the Shackled and the exposed Venomous Heart.",s:["sq_uln"]},
+  b:{p:"Phase 3. The published boss guide states it flatly as the fight's lust window, and week-one raiders consistently describe the final phase as the hard part.",s:["wh_ul","rd_va"]},
+  extra:"Not a contradiction about the mechanics — both agree Rage of the Shackled doubles damage on the Heart and that Phase 3 is where raids die. They disagree about which problem lust is for: clearing the early damage check quickly, or surviving the phase that actually ends pulls. The Stage One case is stronger on Normal, where Phase 3 is short if the first two stages went cleanly; the Phase 3 case is stronger anywhere the floor runs out.",
+  r:"Log both. A raid that lusts Stage One and still reaches Phase 3 with a comfortable health bar has answered it; one that arrives at the fourth platform out of cooldowns has answered it the other way.",dg:"raid"},
  {id:"va-feed-order",q:"Which Explorer do you feed the fish first?",
   a:{p:"Gebbo, then Nama, then Iku — clear the easiest ultimate early and bank the hard one for a practiced raid.",s:["iv_exp","tk_va"]},
   b:{p:"Iku, then Nama, then Gebbo — Frostfire Volley is the ultimate that wipes raids, so detonate it while everything else is calm.",s:["me_exp"]},
