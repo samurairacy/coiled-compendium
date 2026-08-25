@@ -655,6 +655,26 @@ h3 .cicon{margin-right:.4rem}
    than words. Near-uniform length is the point: the bar reads as eight
    slots instead of a ragged list of names. */
 .dswitch .dsw-lab{font-family:var(--face-term);font-size:.76rem;letter-spacing:.1em;font-weight:700}
+/* The code bar carries eight three-letter labels and can afford to be read
+   from across the room. Scoped to .dsw-code: the raid switcher shares
+   .dswitch but carries boss NAMES, which already fill the row — scaling
+   those by half would force a horizontal scroll at an ordinary width.
+   The taller bar needs no offset fix anywhere: --dsw is measured from the
+   switcher's real height after every paint, which is what it is for. */
+.dsw-code{gap:.3rem;padding:.5rem 0 .48rem}
+.dsw-code a{gap:.5rem;padding:.48rem .85rem}
+.dsw-code a svg{width:22px;height:22px}
+.dsw-code .dsw-lab{font-size:1.14rem;letter-spacing:.11em}
+/* Eight codes at full size need about 780px. Above that the row fits and
+   the size is the point; below it the bar would scroll on a phone with
+   half the dungeons off-screen, so it steps down to roughly a third up on
+   the old size rather than a half. Still bigger everywhere, just not
+   bigger at the cost of being usable. */
+@media (max-width:700px){
+  .dsw-code a{gap:.4rem;padding:.4rem .62rem}
+  .dsw-code a svg{width:19px;height:19px}
+  .dsw-code .dsw-lab{font-size:1rem}
+}
 .dswitch a:hover{color:var(--ink);background:var(--ground-raised)}
 .dswitch a:hover svg{opacity:1}
 .dswitch a[aria-current]{color:var(--d-accent);border-color:var(--d-accent);font-weight:600}

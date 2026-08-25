@@ -642,7 +642,7 @@ function pDungeon(id,tab){
            ["loot","Loot",d.loot?d.loot.i.length:0],
            ["sources","Sources",""]];
   const head=`<div class="crumb"><a href="#/">Compendium</a> › <a href="#/dungeons">Dungeons</a> › <em>${esc(d.name)}</em></div>
-  <nav class="dswitch" id="dswitch" aria-label="Switch dungeon">${DUNGEONS.map(x=>
+  <nav class="dswitch dsw-code" id="dswitch" aria-label="Switch dungeon">${DUNGEONS.map(x=>
     `<a href="#/d/${x.id}/${tab}" data-dungeon="${x.id}" ${x.id===d.id?'aria-current="page"':""}
       title="${esc(x.name)}${x.code?" ("+esc(x.code)+")":""} · ${esc(x.timer.v)}"><svg aria-hidden="true"><use href="#${x.sigil}"/></svg><span class="dsw-lab">${esc(x.code||x.short)}</span></a>`).join("")}</nav>
   ${d.banner&&IMG[d.banner]?`<div class="hban"><img src="${IMG[d.banner]}" alt="Entrance to ${esc(d.name)}" decoding="async"></div>`:""}
