@@ -74,6 +74,18 @@ const SOURCES={
     claim the text says so, and its two disagreements with Tactyks are filed
     as open questions rather than quietly resolved. */
  sha_tnk:{l:"SHA",t:3,k:"creator",  a:"Sha",b:"Tank Tips and Tricks for Dungeon Bosses, Mythic+ Season 2 (video)",d:"2026-08-18",u:"https://www.youtube.com/watch?v=pBrG9id-5OM"},
+ /* Sha's ROUTE series is a separate work from his tank-tips video: eight
+    videos, 14-21 Aug, plus one shared sheet. Cited separately because a
+    routing claim should point at the routing video. Tank-perspective,
+    PTR-tested into the high teens, and unusually careful about saying
+    where MDT itself is wrong. */
+ sha_rt:{l:"SHA · ROUTES",t:3,k:"creator",  a:"Sha",b:"Easy Route series, Midnight Season 2 (eight videos, 14-21 Aug)",d:"2026-08-21",u:"https://docs.google.com/spreadsheets/d/1dMYdKWOk7rAb7XRMtsfOQBQYXebMffhqIa8kMKxrjPw/edit"},
+ /* New to the ledger, and treated as such. Explicitly a STARTER route:
+    no skip that needs a jump, a meld, a race or a spec. He does include
+    walk-around mini-boss avoidance, on the grounds that taking every
+    optional mini-boss puts you at 120% count. Did not publish a Blinding
+    Vale route at all, because MDT had not been updated for it. */
+ yd_rt:{l:"YODA",t:3,k:"creator",  a:"YoDaTV",b:"Use These EASY Routes for Midnight Season 2 Mythic+ (video + doc)",d:"2026-08-18",u:"https://www.youtube.com/watch?v=G0pwB8Yz--U"},
  /* The ledger's first HEALER source, and the only one that walks all
     eight dungeons from that chair. Read it with one caveat, which he
     states himself over and over: it is PTR footage published the day the
@@ -149,6 +161,57 @@ const TAGS={
    repeated 72 times. Roles with nothing sourced render nothing. */
 const ROLEPROFILE={
  healer:["The season has one damage shape, and it repeats in all eight dungeons: unavoidable party damage from a big yellow-nameplate mob, landing at the same time as a single-target debuff or bolt on one player. Learn to read a pull for which mob supplies which half. Most pulls also want a cooldown spent in the first few seconds rather than saved — the damage starts before you are ready for it.","yt_heal"]
+};
+
+/* ═══ ROUTE PROVIDERS ═══ Three authors, three publishing formats, and all
+   three readable live from the browser — verified against this site's own
+   origin. Nothing is copied into this repository: a route is fetched when the
+   reader asks for it, so it is always the author's current version and we
+   never host their work.
+
+   k       how to fetch and parse it
+   by      who to credit, shown on the card
+   l       what the reader is being sent to
+   home    the human page, ALWAYS rendered — it is the fallback for every way
+           a fetch can fail, and the only thing that still works offline
+   data    the machine-readable export we actually fetch
+
+   Sha's sheet also holds an "Advanced Routes (My Push Group)" block. It is not
+   read here: his cover sheet says the efficient pushing routes are for Patreon
+   supporters, and the export exposing them is not the same as him publishing
+   them. Only the EARLY SEASON block is used. ═════════════════════════ */
+const ROUTESRC={
+ wago:{by:"Tactyks",src:"tk_rt",l:"Wago",
+   t:"Pug route",
+   d:"Deliberately conservative — no skips, minimised interrupts, minimised danger. The route the pull-by-pull below annotates.",
+   home:s=>"https://wago.io/"+s, data:s=>"https://data.wago.io/api/raw/encoded?id="+s},
+ sha:{by:"Sha",src:"sha_rt",l:"Google Sheet",
+   t:"Early season",
+   d:"Tank-side and \u2018hold W\u2019 by design, tested on the PTR into the high teens. He is unusually careful about saying where MDT itself is wrong.",
+   home:()=>"https://docs.google.com/spreadsheets/d/1dMYdKWOk7rAb7XRMtsfOQBQYXebMffhqIa8kMKxrjPw/edit",
+   data:()=>"https://docs.google.com/spreadsheets/d/1dMYdKWOk7rAb7XRMtsfOQBQYXebMffhqIa8kMKxrjPw/export?format=csv&gid=1523714828"},
+ yoda:{by:"YoDaTV",src:"yd_rt",l:"Google Doc",
+   t:"Starter",
+   d:"Explicitly not a pushing route: no skip that needs a jump, a meld, a race or a spec. Does include walking around optional mini-bosses, because taking every one puts you well over count.",
+   home:()=>"https://docs.google.com/document/d/1Mpu6zWWdc9EqomDRMW8P1gZPNCg9-jw6QmppL3aGy8o/edit",
+   data:()=>"https://docs.google.com/document/d/1Mpu6zWWdc9EqomDRMW8P1gZPNCg9-jw6QmppL3aGy8o/export?format=txt"}
+};
+
+/* Finding a dungeon inside someone else's document. Auto-captions and hand-
+   typed headings disagree constantly — Nalorakk becomes Nalak and Valorock,
+   Voidscar becomes Void Scar, the Vale becomes the Veil — and Yoda types
+   King\u2019s Rest with a curly apostrophe, which is what silently mis-filed his
+   route under Temple of Sethraliss the first time this was parsed. Normalise
+   punctuation, then match on these. */
+const RALIAS={
+ "altar-of-fangs":["altar of fangs","altar of the fangs","altar of thanes","altar of flames"],
+ "murder-row":["murder row"],
+ "den-of-nalorakk":["den of nalorakk","den of nalak","den of valorock","den of nalorak"],
+ "blinding-vale":["the blinding vale","blinding vale","blinding veil"],
+ "voidscar-arena":["voidscar arena","void scar arena","voidscar","voice of arena"],
+ "kings-rest":["kings rest","king s rest","kings' rest"],
+ "ruby-life-pools":["ruby life pools"],
+ "temple-of-sethraliss":["temple of sethraliss","temple of sethales","temple of seth"]
 };
 
 const SEVS={

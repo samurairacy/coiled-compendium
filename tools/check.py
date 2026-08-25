@@ -110,12 +110,13 @@ if IMG is not None:
 # ── 3. bosses: equals encounters.length, per dungeon ───────────────────────
 # The header patterns tolerate ANY optional field between id: and what they
 # anchor on — quoted strings, inline objects, bare literals. They have been
-# widened twice: once when code: was added, again when wago:{...} was, because
-# the first widening only allowed key:"value" and an OBJECT slipped past it.
+# widened three times: for code:, then for wago:{...}, then for routes:[...].
+# Each time the previous form was too narrow by exactly one kind of value and
+# the checks found ZERO rather than failing on substance.
 # Both times the checks silently found zero rather than failing on substance,
 # which is the worst way for a checker to break. Do not re-pin these adjacent.
-DHEAD = r'\{id:"[\w\-]+",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|[\w.]+),)*?name:"(?:[^"\\]|\\.)*",short:'
-ids = re.findall(r'\{id:"([\w\-]+)",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|[\w.]+),)*?name:"(?:[^"\\]|\\.)*",short:', mplus)
+DHEAD = r'\{id:"[\w\-]+",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|\[[^\[\]]*\]|[\w.]+),)*?name:"(?:[^"\\]|\\.)*",short:'
+ids = re.findall(r'\{id:"([\w\-]+)",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|\[[^\[\]]*\]|[\w.]+),)*?name:"(?:[^"\\]|\\.)*",short:', mplus)
 declared = re.findall(r'bosses:(\d+)', mplus)
 enc_counts = [len(re.findall(r'\{n:"(?:[^"\\]|\\.)*",o:\d+,', seg)) for seg in
               re.split(DHEAD, mplus)[1:]]
@@ -124,7 +125,7 @@ enc_counts = [len(re.findall(r'\{n:"(?:[^"\\]|\\.)*",o:\d+,', seg)) for seg in
 # Eight, unique, uppercase. They are a second NAME and the search index leans
 # on them, so a typo would quietly make a dungeon unfindable by the exact
 # string most players type into group finder.
-codes = re.findall(r'\{id:"[\w\-]+",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|[\w.]+),)*?code:"([A-Z]+)"', mplus)
+codes = re.findall(r'\{id:"[\w\-]+",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|\[[^\[\]]*\]|[\w.]+),)*?code:"([A-Z]+)"', mplus)
 check(len(codes) == 8 and len(set(codes)) == 8,
       "8 unique in-game dungeon codes (%d found, %d unique)" % (len(codes), len(set(codes))))
 ok = len(ids) == 8 and len(declared) == 8 and all(int(d) == c for d, c in zip(declared, enc_counts))
@@ -319,24 +320,42 @@ refs = re.findall(r'(?:src|href)="((?:js|css)/[\w\-.]+)"', html)
 missing = [r_ for r_ in refs if not os.path.exists(R(*r_.split("/")))]
 check(len(refs) >= 6 and not missing, "index.html references resolve (%d refs, %d missing)" % (len(refs), len(missing)))
 
-# ── 8c. the eight Wago route slugs ───────────────────────────────
-# The MDT import string is fetched from Wago at click time and never stored
-# here, so all that lives in the data is a slug. A mistyped one fails in the
-# least useful way possible: the fetch 404s and the button says "Wago
-# unreachable", which reads as Wago being down rather than as our typo.
+# ── 8c. published route providers ────────────────────────────────
+# Route strings are fetched from each author's own page at click time and never
+# stored here, so all the data holds is which authors publish for which dungeon
+# and, for Wago, a nine-character slug.
 #
-# Not checked: whether a slug still RESOLVES. That needs a network call,
-# check.py is offline by design, and a route deleted upstream is not a defect
-# in this repository — the button degrades to the visible link for that.
-wago = re.findall(r'wago:\{s:"([^"]+)",by:"([^"]+)"\}', mplus)
-slugs = [s for s, _ in wago]
-badslug = [s for s in slugs if not re.fullmatch(r'[A-Za-z0-9_-]{9}', s)]
-noby = [s for s, b in wago if not b.strip()]
-check(len(wago) == 8 and len(set(slugs)) == 8 and not badslug and not noby,
-      "8 unique Wago route slugs, each attributed (%d found, %d unique%s%s)"
-      % (len(wago), len(set(slugs)),
-         "" if not badslug else ", malformed: " + ",".join(badslug),
-         "" if not noby else ", unattributed: " + ",".join(noby)))
+# Four ways this goes wrong quietly:
+#   a provider key ROUTESRC does not define renders no card at all
+#   a wago entry with no id fetches nothing
+#   a malformed slug fails as "Unreachable", blaming Wago for our typo
+#   a dungeon with no routes loses its Published routes block silently
+#
+# Not checked: whether a slug or document still RESOLVES. That needs a network
+# call, check.py is offline by design, and an author deleting a route is not a
+# defect in this repository \u2014 every card carries their link for that.
+provkeys = set(re.findall(r'^ (\w+):\{by:"', shared, re.M))
+rblocks = re.findall(r'routes:\[(.*?)\],code:', mplus)
+rprob = []
+for i, blk in enumerate(rblocks):
+    ents = re.findall(r'\{k:"(\w+)"(.*?)\}', blk)
+    if not ents:
+        rprob.append("dungeon %d has an empty routes list" % i)
+    for k, rest in ents:
+        if k not in provkeys:
+            rprob.append("unknown provider %r" % k)
+        if k == "wago":
+            m = re.search(r'id:"([^"]*)"', rest)
+            if not m:
+                rprob.append("wago entry with no id")
+            elif not re.fullmatch(r'[A-Za-z0-9_-]{9}', m.group(1)):
+                rprob.append("malformed slug %r" % m.group(1))
+slugs = re.findall(r'\{k:"wago",id:"([^"]+)"\}', mplus)
+if len(set(slugs)) != len(slugs):
+    rprob.append("duplicate Wago slug")
+check(len(rblocks) == 8 and len(slugs) == 8 and not rprob,
+      "8 dungeons carry published routes, providers all known (%d dungeons, %d Wago slugs%s)"
+      % (len(rblocks), len(slugs), "" if not rprob else " \u2014 " + "; ".join(sorted(set(rprob)))))
 
 # ── 9b. no anchor may carry a bare fragment href ─────────────────────
 # The hash IS the route. <a href="#sourcing-ulatek"> sets location.hash, and

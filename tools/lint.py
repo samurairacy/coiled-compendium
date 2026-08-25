@@ -72,12 +72,13 @@ KNOWN = set("""
  mobs encounters calls rewards noLoot isNew origin sigil banner name i l
  patch opens minIlvl entrance fork wings ids after converge difficulties
  schedule ilvl brackets crests way trigger m won by extra dg v zone tp note code hf
+ routes none home data live src
 """.split())
 
 # creator display name -> source-key prefix that would justify naming them
 ATTRIB = [("Tactyks", "tk_"), ("Method", "me_"), ("Icy Veins", "iv_"),
           ("Sha", "sha_"), ("wow.gg", "wg_"), ("Wowhead", "wh_"),
-          ("Ready Check", "rcp_"), ("BrettStefani", "bs_"), ("JFunk", "jf_")]
+          ("Ready Check", "rcp_"), ("YoDaTV", "yd_"), ("yumytv", "yt_"), ("BrettStefani", "bs_"), ("JFunk", "jf_")]
 
 LETHAL_WORDS = re.compile(
     r"kill|lethal|fatal|death|dies|die\b|wipe|obituary|does not survive|"

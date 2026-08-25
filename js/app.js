@@ -111,28 +111,100 @@ function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
     big:p.get("big")||null,dg:p.get("dg")||null,fx:p.get("fx")||null,mod:p.get("from")||null};}
 
 
-/* ' MDT ROUTE STRINGS ' Fetched from Wago on demand, never stored here.
-   Two endpoints on deliberately different footing:
-     /api/raw/encoded  ' in Wago's published OpenAPI contract. The button.
-     /api/check        ' UNDOCUMENTED. The version badge, and nothing more.
-   The documented sibling /api/check/weakauras returns [] for an MDT id, so
-   there is no supported substitute. Hence the split: if /api/check ever goes
-   away a badge silently never appears, and copying still works. The button
-   must never depend on the badge.
-   Every failure is reported ON THE BUTTON. A reader who presses it and sees
-   nothing concludes the site is broken; one who reads "Wago unreachable" uses
-   the link sitting next to it. */
+
+/* ' MDT ROUTE STRINGS ' Fetched from each author's own published source on
+   demand, never stored here. Three providers, three formats:
+
+     wago  one page per route, structured API, in Wago's published contract
+     sha   one Google Sheet row per dungeon, with a Last Updated column
+     yoda  a Google Doc heading followed by the string
+
+   The last is the fragile one. Yoda types King's Rest with a CURLY apostrophe;
+   matching it naively missed the heading and silently filed his King's Rest
+   route under Temple of Sethraliss. Nobody would have seen an error, they
+   would just have imported the wrong dungeon. Hence: normalise punctuation,
+   bind each string to the heading that most recently matched, never overwrite
+   a dungeon already found, and validate the result before it can reach a
+   clipboard.
+
+   Every failure is reported ON the button, and every card carries the author's
+   own link, which is the thing that still works when none of this does. */
 const WAGO="https://data.wago.io";
+const RDOC={};                       /* provider key -> parsed {dungeonId:string} */
+
+/* Curly quotes, collapsed whitespace, lower case. Anything that stops two
+   humans typing the same dungeon name from being two different strings. */
+const rnorm=s=>String(s||"").replace(/[\u2018\u2019\u02BC`']/g," ")
+  .replace(/[^a-z0-9]+/gi," ").trim().toLowerCase();
+
+const rmatch=label=>{const L=rnorm(label);
+  if(!L||L.length>60)return null;
+  for(const id in RALIAS)
+    if(RALIAS[id].some(a=>L===rnorm(a)||L.startsWith(rnorm(a))))return id;
+  return null;};
+
+const isRoute=s=>/^!/.test(s)&&s.length>=40;
+
+/* Sha's sheet. Only the EARLY SEASON block ' his cover sheet reserves the
+   pushing routes for Patreon supporters, and an export exposing them is not
+   the same as him publishing them here. */
+function parseSha(csv){
+  const out={}; let block=null, cur=null;
+  csv.split(/\r?\n/).forEach(line=>{
+    /* good-enough CSV: fields may be quoted and contain commas */
+    const cells=(line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)||[])
+      .map(c=>c.replace(/,$/,"").replace(/^"|"$/g,"").replace(/""/g,'"').trim());
+    const head=rnorm(cells[0]||"");
+    if(head.startsWith("early season"))  {block="early"; return;}
+    if(head.startsWith("updated")||head.startsWith("advanced routes")){block="other"; return;}
+    if(block!=="early")return;
+    const m=cells[0]?rmatch(cells[0]):null;
+    if(m)cur=m;
+    cells.forEach(c=>{if(cur&&isRoute(c)&&!out[cur])out[cur]=c;});
+  });
+  return out;
+}
+
+/* Yoda's doc: a heading line, then the string. A heading that matches nothing
+   leaves cur alone, so his "MDT IS BUGGED" aside does not break the binding. */
+function parseYoda(txt){
+  const out={}; let cur=null;
+  txt.split(/\r?\n/).map(l=>l.trim()).forEach(l=>{
+    if(!l)return;
+    if(isRoute(l)){ if(cur&&!out[cur])out[cur]=l; return; }
+    const m=rmatch(l); if(m)cur=m;
+  });
+  return out;
+}
+
+async function routeString(kind,dungeonId,slug){
+  const src=ROUTESRC[kind];
+  if(kind==="wago"){
+    const r=await fetch(src.data(slug),{cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const s=(await r.text()).trim();
+    if(!isRoute(s))throw new Error("not an import string");
+    return s;
+  }
+  if(!RDOC[kind]){
+    const r=await fetch(src.data());
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const body=await r.text();
+    RDOC[kind]=(kind==="sha")?parseSha(body):parseYoda(body);
+  }
+  const s=RDOC[kind][dungeonId];
+  if(!s)throw new Error("no route for this dungeon");
+  return s;
+}
 
 /* Clipboard needs a secure context AND a user gesture, and may still be
-   refused. Falling back to a selected textarea is uglier but never a dead
-   end. Returns how it went so the caller can say so. */
+   refused. Falling back to a selected textarea is uglier but never a dead end. */
 async function toClipboard(text){
   try{
     if(navigator.clipboard&&window.isSecureContext){
       await navigator.clipboard.writeText(text); return "copied";
     }
-  }catch(e){/* fall through ' refused or unavailable */}
+  }catch(e){/* refused or unavailable */}
   try{
     const ta=document.createElement("textarea");
     ta.value=text; ta.setAttribute("readonly","");
@@ -146,45 +218,44 @@ async function toClipboard(text){
   }catch(e){ return "failed"; }
 }
 
-async function wagoCopy(btn){
-  const slug=btn.dataset.wago, lab=btn.querySelector("span");
+async function routeCopy(btn){
   if(btn.dataset.busy)return;
+  const [kind,dungeonId,slug]=btn.dataset.route.split("|");
+  const lab=btn.querySelector("span");
   btn.dataset.busy="1"; const was=lab.textContent;
   const done=(msg,cls)=>{lab.textContent=msg; btn.className="wbtn "+(cls||"");
-    setTimeout(()=>{lab.textContent=was; btn.className="wbtn"; delete btn.dataset.busy;},3200);};
+    setTimeout(()=>{lab.textContent=was; btn.className="wbtn"; delete btn.dataset.busy;},3600);};
   lab.textContent="Fetching\u2026";
   try{
-    const r=await fetch(WAGO+"/api/raw/encoded?id="+encodeURIComponent(slug),{cache:"no-store"});
-    if(!r.ok)throw new Error("HTTP "+r.status);
-    const s=(await r.text()).trim();
-    /* Guard against pasting something that is not a route: a redirect to an
-       error page or an HTML body would otherwise land in the clipboard and
-       fail confusingly inside the addon instead of here. */
-    if(!/^!/.test(s)||s.length<40)throw new Error("not an import string");
+    const s=await routeString(kind,dungeonId,slug||"");
     const how=await toClipboard(s);
     if(how==="copied")done("Copied \u2014 paste into MDT","ok");
     else if(how==="manual")done("Select and copy the box","warn");
     else done("Could not copy \u2014 use the link","warn");
   }catch(err){
-    done("Wago unreachable \u2014 use the link","warn");
+    const why=/no route/.test(err.message)?"Not in their document \u2014 use the link"
+                                          :"Unreachable \u2014 use the link";
+    done(why,"warn");
   }
 }
 
-/* One request covers all eight routes. Fire and forget: no await at the call
-   site, no paint blocked, and total silence on failure ' an absent badge is
-   the correct outcome, not an error to report. */
+/* Wago version badges. One request covers all eight routes. Fire and forget:
+   never blocks paint, and total silence on failure ' an absent badge is the
+   correct outcome, not an error worth reporting. This rides the UNDOCUMENTED
+   /api/check, which is why nothing else may depend on it. */
 let WAGOVER=null;
 async function wagoVersions(){
   const slots=[...document.querySelectorAll("[data-wagover]")];
   if(!slots.length)return;
   if(!WAGOVER){
-    const ids=[...new Set(DUNGEONS.filter(d=>d.wago).map(d=>d.wago.s))];
+    const ids=[...new Set(DUNGEONS.flatMap(d=>(d.routes||[])
+      .filter(r=>r.k==="wago"&&r.id).map(r=>r.id)))];
+    if(!ids.length)return;
     try{
       const r=await fetch(WAGO+"/api/check?ids="+ids.join(","));
       if(!r.ok)return;
-      const rows=await r.json();
       WAGOVER={};
-      rows.forEach(x=>{WAGOVER[x.slug]={v:x.versionString,m:x.modified};});
+      (await r.json()).forEach(x=>{WAGOVER[x.slug]={v:x.versionString,m:x.modified};});
     }catch(e){ return; }
   }
   slots.forEach(el=>{
@@ -204,8 +275,8 @@ document.addEventListener("click",e=>{
      the route, so setting it sends route() looking for a page called "id",
      which lands you on home. Anything jumping within the current page uses
      data-goto and is scrolled here instead, leaving the hash alone. */
-  const wg=e.target.closest("[data-wago]");
-  if(wg){e.preventDefault();wagoCopy(wg);return;}
+  const wg=e.target.closest("[data-route]");
+  if(wg){e.preventDefault();routeCopy(wg);return;}
   const gt=e.target.closest("[data-goto]");
   if(gt){const el=$("#"+gt.dataset.goto);
     if(el){e.preventDefault();

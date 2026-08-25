@@ -100,28 +100,52 @@ const heroLine=(txt,cls)=>txt
    Worth carrying because it is what people type in group finder and what a
    pug leader shouts — the site should answer to the name a player
    uses, not only the one the loading screen prints. */
-/* — MDT ROUTE — The import string is fetched from Wago on click and never
-   stored here: it cannot go stale, and we never host someone else's work.
-   The LINK is the contract and the button is the convenience — Wago being
-   down, an undocumented endpoint retiring, a file:// origin or a refused
-   clipboard all break the button, and in every case the anchor must still
-   be there. So it renders unconditionally, never behind a successful
-   fetch. */
-const wagoBlock=d=>{
-  if(!d.wago)return "";
-  const u=`https://wago.io/${d.wago.s}`;
-  return `<div class="wago">
-    <div class="wago-h">${ic("i-map",14)}<b>The route as an MDT import</b>
-      <span class="wago-by">${esc(d.wago.by)}</span>
-      <span class="wago-ver" data-wagover="${esc(d.wago.s)}"></span></div>
-    <p>Fetched from Wago the moment you press the button, so it is whatever
-       ${esc(d.wago.by)} has published today rather than a copy taken here. Paste it
-       into Mythic Dungeon Tools with <span class="mono">Ctrl-V</span>.</p>
+/* ' PUBLISHED ROUTES ' One card per author. The string is fetched from their
+   own page when the reader presses the button and is never stored here, so it
+   cannot go stale and we never host anyone's work.
+
+   The badge is the point of the redesign: LIVE means we will fetch from the
+   author's own source on click, LINK ONLY means we cannot and the reader has
+   to go and look. Right now 23 of 24 cards are live and the exception is
+   Yoda's Blinding Vale, which he never published because MDT was not updated.
+
+   The author's link renders on every card either way. It is the fallback for
+   a dead endpoint, a rewritten document, a refused clipboard and a file://
+   origin, so it must never be hidden behind a working button. */
+const routeCard=(d,r)=>{
+  const src=ROUTESRC[r.k]; if(!src)return "";
+  const home=r.k==="wago"?src.home(r.id):src.home();
+  const live=!r.none;
+  return `<div class="rcard${live?"":" dead"}">
+    <div class="rc-h">
+      <b>${esc(src.by)}</b><span class="rc-t">${esc(src.t)}</span>
+      <span class="rbadge ${live?"is-live":"is-link"}"
+        title="${live
+          ?`Fetched from ${esc(src.by)}&#39;s own ${esc(src.l)} the moment you press Copy, so it is always their current version. Nothing is stored on this site.`
+          :`No string to fetch &#8212; this one has to be read on their page.`}">${live?"Live":"Link only"}</span>
+      ${r.k==="wago"?`<span class="wago-ver" data-wagover="${esc(r.id)}"></span>`:""}
+    </div>
+    <p>${esc(src.d)}</p>
+    ${r.n?`<p class="rc-note">${ic("i-info",12)}${esc(r.n)}</p>`:""}
+    ${r.none?`<p class="rc-note">${ic("i-warn",12)}${esc(r.none)}</p>`:""}
     <div class="wago-act">
-      <button class="wbtn" data-wago="${esc(d.wago.s)}">${ic("i-copy",13)}<span>Copy MDT string</span></button>
-      <a class="wlink" href="${u}" target="_blank" rel="noopener noreferrer">${ic("i-gate",12)}Open on wago.io</a>
+      ${live?`<button class="wbtn" data-route="${esc(r.k)}|${esc(d.id)}|${esc(r.id||"")}">${ic("i-copy",13)}<span>Copy MDT string</span></button>`:""}
+      <a class="wlink" href="${home}" target="_blank" rel="noopener noreferrer">${ic("i-gate",12)}${esc(src.l)}</a>
     </div></div>`;
 };
+
+const routeOptions=d=>{
+  const rs=(d.routes||[]).filter(r=>ROUTESRC[r.k]);
+  if(!rs.length)return "";
+  return `<div class="sec"><h2>Published routes</h2><span class="n">${rs.length} option${rs.length>1?"s":""}</span></div>
+  <p class="note">${ic("i-info",13)} All three are <b>starter and early-season routes</b>, and each author says so in
+  their own words &#8212; conservative pulls, few or no skips, nothing that needs a jump, a meld or a specific class.
+  None of them is a high-key pushing route. Strings are fetched from the author&#39;s own page when you press Copy,
+  so they are always current; nothing is copied onto this site.</p>
+  <div class="rgrid">${rs.map(r=>routeCard(d,r)).join("")}</div>`;
+};
+
+const wagoBlock=d=>"";   /* superseded by routeOptions */
 
 const dcode=d=>d.code?`<span class="dcode" title="In-game code for ${esc(d.name)} — what group finder calls it">${esc(d.code)}</span>`:"";
 const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
@@ -668,10 +692,10 @@ function pDungeon(id,tab){
         return blocks.trim()?`<div class="area-h">${esc(ar.n)}</div>`+objBlock(ar.brief)+blocks:"";}).join("");
   }
   else if(tab==="route"){
-    body=`<div class="sec"><h2>Pug route</h2><span class="n">${d.route.length} pulls</span></div>
-    <p class="note">Deliberately conservative: no skips, minimised interrupts, minimised danger. Faster groups
+    body=routeOptions(d)+
+    `<div class="sec"><h2>Pull by pull</h2><span class="n">${d.route.length} pulls</span></div>
+    <p class="note">This is <b>Tactyks&#39; route</b>, annotated. Deliberately conservative: no skips, minimised interrupts, minimised danger. Faster groups
     combine several of these. Numbers in accent are lust windows; red outlines are the pulls that wiped groups on the PTR.</p>
-    ${wagoBlock(d)}
     ${d.route.map(p=>`<div class="pull ${p.lust?"lust":""} ${p.d===3?"d3":""}"><div class="num">${p.n}</div>
       <div><div class="pn">${esc(p.t)}</div><div class="tags" style="margin-top:.3rem">
         <span class="chip">${esc(p.m)}</span>${p.lust?`<span class="chip c-counter">${ic("i-enrage")}Lust</span>`:""}

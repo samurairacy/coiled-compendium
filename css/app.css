@@ -1166,6 +1166,45 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
    it sits above; the dungeon accent says which dungeon it belongs to.
    The LINK is not decoration. It is the fallback for every way the button can
    fail, so it stays legible rather than being tucked away. ══════════ */
+/* ' PUBLISHED ROUTES ' One card per author. Cards are a grid so three
+   authors read as three options rather than a stack of notices. */
+.rgrid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:.8rem;margin:0 0 1.6rem
+}
+.rcard{
+  border:1px solid var(--rule);border-radius:3px;padding:.8rem .9rem .85rem;
+  background:var(--ground-raised);display:flex;flex-direction:column
+}
+.rcard.dead{border-style:dashed;background:transparent}
+.rc-h{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin-bottom:.4rem}
+.rc-h b{font-size:.98rem;color:var(--ink)}
+.rc-t{
+  font-family:var(--face-term);font-size:.58rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-faint)
+}
+/* The badge answers one question: will pressing Copy reach the author's own
+   page, or do you have to go and look? Accent for live, faint dashed for not
+   ' the same grammar the unconfirmed trinket chips use. */
+.rbadge{
+  font-family:var(--face-term);font-size:.55rem;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;padding:.1rem .34rem;border-radius:2px;cursor:help;white-space:nowrap
+}
+.rbadge.is-live{
+  color:var(--d-accent,var(--accent));border:1px solid var(--d-accent,var(--accent));
+  background:color-mix(in srgb,var(--d-accent,var(--accent)) 12%,transparent)
+}
+.rbadge.is-link{color:var(--ink-faint);border:1px dashed var(--ink-faint);background:none}
+.rcard p{font-size:.83rem;color:var(--ink-muted);margin:0 0 .6rem;max-width:none;line-height:1.6}
+.rc-note{
+  font-size:.79rem!important;color:var(--ink-faint)!important;
+  display:flex;gap:.35rem;align-items:flex-start
+}
+.rc-note svg{flex:none;margin-top:.22rem;color:var(--ink-faint)}
+.rcard .wago-act{margin-top:auto;padding-top:.2rem}
+.rcard .wago-ver:not(:empty){margin-left:auto}
+@media print{.rgrid{display:block}.rcard{break-inside:avoid;margin-bottom:.6rem}}
+
 .wago{
   border:1px dashed var(--d-accent,var(--accent));border-radius:3px;
   background:color-mix(in srgb,var(--d-accent,var(--accent)) 5%,transparent);
