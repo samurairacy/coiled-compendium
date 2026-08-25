@@ -1117,3 +1117,21 @@ footer a{color:var(--ink-muted)}
 }
 .fhint{font-size:.76rem;color:var(--ink-faint);margin:.35rem 0 0;max-width:70ch;line-height:1.55}
 @media print{.fsub h5,.fany{color:#000}}
+
+/* ═══ DUNGEON CODE ═══ Blizzard's own shorthand from the in-game Best Runs
+   panel, and the string a player actually types into group finder. It is not
+   metadata like a timer or a boss count, so it does not become another pill:
+   terminal face, boxed, accent-bordered, sitting with the NAME because that is
+   what it is — a second name. ═══════════════════════════════════════════ */
+.dcode{
+  display:inline-block;font-family:var(--face-term);font-size:.6rem;font-weight:700;
+  letter-spacing:.14em;vertical-align:middle;margin-left:.55rem;padding:.12rem .34rem;
+  color:var(--d-accent,var(--accent));border:1px solid var(--d-accent,var(--accent));
+  border-radius:2px;background:color-mix(in srgb,var(--d-accent,var(--accent)) 10%,transparent);
+  cursor:help;position:relative;top:-.08em
+}
+h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
+.fopt .dcode{margin-left:0;margin-right:.35rem;font-size:.55rem;padding:.06rem .26rem;
+  border-color:currentColor;color:inherit;background:none}
+.fopt[aria-pressed="true"] .dcode{border-color:var(--accent-ink);opacity:.75}
+@media print{.dcode{color:#000;border-color:#000;background:none}}

@@ -84,6 +84,11 @@ const sevLegend=()=>`<p class="sevkey">${ic("i-info",13)}
    without reading it. */
 const heroLine=(txt,cls)=>txt
   ?`<p class="heroicline ${cls||""}"><span class="hflag">${ic("i-warn",10)}Heroic</span>${esc(txt)}</p>`:"";
+/* Blizzard's own dungeon shorthand, read off the in-game Best Runs panel.
+   Worth carrying because it is what people type in group finder and what a
+   pug leader shouts — the site should answer to the name a player
+   uses, not only the one the loading screen prints. */
+const dcode=d=>d.code?`<span class="dcode" title="In-game code for ${esc(d.name)} — what group finder calls it">${esc(d.code)}</span>`:"";
 const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
   healer:`<span class="chip c-heal">${ic("i-heal")}Healer</span>`,
   dps:`<span class="chip c-dps">${ic("i-dps")}DPS</span>`,
@@ -517,7 +522,7 @@ function pHome(){
 function tile(d){
   return `<a class="tile" href="#/d/${d.id}" data-dungeon="${d.id}">
     ${d.banner&&IMG[d.banner]?`<span class="tban"><img src="${IMG[d.banner]}" alt="" loading="lazy"></span>`:""}
-    <div class="tile-top"><div><h3>${esc(d.name)}</h3><div class="sub">${esc(d.origin)} · ${d.bosses} bosses</div></div>
+    <div class="tile-top"><div><h3>${esc(d.name)}${dcode(d)}</h3><div class="sub">${esc(d.origin)} · ${d.bosses} bosses</div></div>
       <svg class="sig" aria-hidden="true"><use href="#${d.sigil}"/></svg></div>
     <p>${esc(d.blurb)}</p>
     <div class="tile-foot">${d.isNew?`<span class="pill new">New</span>`:""}
@@ -575,9 +580,9 @@ function pDungeon(id,tab){
   const head=`<div class="crumb"><a href="#/">Compendium</a> › <a href="#/dungeons">Dungeons</a> › <em>${esc(d.name)}</em></div>
   <nav class="dswitch" id="dswitch" aria-label="Switch dungeon">${DUNGEONS.map(x=>
     `<a href="#/d/${x.id}/${tab}" data-dungeon="${x.id}" ${x.id===d.id?'aria-current="page"':""}
-      title="${esc(x.name)} · ${esc(x.timer.v)}"><svg aria-hidden="true"><use href="#${x.sigil}"/></svg>${esc(x.short)}</a>`).join("")}</nav>
+      title="${esc(x.name)}${x.code?" ("+esc(x.code)+")":""} · ${esc(x.timer.v)}"><svg aria-hidden="true"><use href="#${x.sigil}"/></svg>${esc(x.short)}</a>`).join("")}</nav>
   ${d.banner&&IMG[d.banner]?`<div class="hban"><img src="${IMG[d.banner]}" alt="Entrance to ${esc(d.name)}" decoding="async"></div>`:""}
-  <h1>${esc(d.name)}</h1>
+  <h1>${esc(d.name)}${dcode(d)}</h1>
   <div class="tile-foot" style="border:none;padding:.8rem 0 0">
     ${d.isNew?`<span class="pill new">New this season</span>`:`<span class="pill">${esc(d.origin)} return</span>`}
     <span class="pill">${ic("i-clock")}${esc(d.timer.v)}</span>
@@ -787,7 +792,7 @@ function pMechanics(){
       <p class="fhint">One-shot kills the player; Wipe ends the group. Severity is what one failure costs.
       Nothing is both a One-shot and a Wipe, so picking both returns nothing.</p></div>
     ${fgroup("Dungeon","one",
-      DUNGEONS.map(d=>`<button class="fopt" data-f="dg" data-v="${d.id}" aria-pressed="${FACETS.dg===d.id}">${esc(d.short)}</button>`).join(""))}
+      DUNGEONS.map(d=>`<button class="fopt" data-f="dg" data-v="${d.id}" aria-pressed="${FACETS.dg===d.id}" title="${esc(d.name)}">${dcode(d)}${esc(d.short)}</button>`).join(""))}
   </div>
   <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${ALL.length} abilities indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearf">Clear all</button>`:""}</div>
@@ -1024,7 +1029,7 @@ function pLoot(){
         </div>`).join("")}
     </details>
     ${fgroup("Cantrips","one",opt("fx","1","Cantrips",null))}
-    ${fgroup("Dungeon","one",DUNGEONS.map(d=>opt("dg",d.id,esc(d.short),null)).join(""))}
+    ${fgroup("Dungeon","one",DUNGEONS.map(d=>opt("dg",d.id,dcode(d)+esc(d.short),null)).join(""))}
   </div>
   <div class="fstate"><b>${res.length}</b> match${res.length===1?"":"es"} · ${LOOTALL.length} items indexed${n?` · ${n} filter${n>1?"s":""} active`:""}
     ${n?`<button class="clear" id="clearl">Clear all</button>`:""}</div>

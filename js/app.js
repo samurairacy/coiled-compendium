@@ -170,7 +170,8 @@ document.addEventListener("click",e=>{
 
 /* ═══ SEARCH ═════════════════════════════════════════════════════════ */
 const INDEX=[
- ...DUNGEONS.map(d=>({t:d.name,m:`Dungeon · ${d.origin} · ${d.bosses} bosses`,h:`#/d/${d.id}`})),
+ /* the code rides in the title so the matcher finds it: people search AOF */
+ ...DUNGEONS.map(d=>({t:d.code?`${d.name} (${d.code})`:d.name,m:`Dungeon · ${d.origin} · ${d.bosses} bosses`,h:`#/d/${d.id}`})),
  /* ability rows carry their module: dungeon rows point into the dungeon,
     raid rows into the boss page */
  ...ALL.map(x=>x.mod==="r"

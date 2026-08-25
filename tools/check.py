@@ -108,10 +108,22 @@ if IMG is not None:
     check(len(jkeys) > 0, "journal portrait keys present (%d referenced)" % len(jkeys))
 
 # ── 3. bosses: equals encounters.length, per dungeon ───────────────────────
-ids = re.findall(r'\{id:"([\w\-]+)",name:"(?:[^"\\]|\\.)*",short:', mplus)
+# The header pattern tolerates optional fields between id: and name:. It used to
+# pin them adjacent, so adding code: silently emptied the encounter counts rather
+# than failing loudly — the worst way for a checker to break.
+DHEAD = r'\{id:"[\w\-]+",(?:\w+:"[^"]*",)*?name:"(?:[^"\\]|\\.)*",short:'
+ids = re.findall(r'\{id:"([\w\-]+)",(?:\w+:"[^"]*",)*?name:"(?:[^"\\]|\\.)*",short:', mplus)
 declared = re.findall(r'bosses:(\d+)', mplus)
 enc_counts = [len(re.findall(r'\{n:"(?:[^"\\]|\\.)*",o:\d+,', seg)) for seg in
-              re.split(r'\{id:"[\w\-]+",name:"(?:[^"\\]|\\.)*",short:', mplus)[1:]]
+              re.split(DHEAD, mplus)[1:]]
+
+# ── 3b. Blizzard's in-game dungeon codes ───────────────────────────────────
+# Eight, unique, uppercase. They are a second NAME and the search index leans
+# on them, so a typo would quietly make a dungeon unfindable by the exact
+# string most players type into group finder.
+codes = re.findall(r'\{id:"[\w\-]+",code:"([A-Z]+)"', mplus)
+check(len(codes) == 8 and len(set(codes)) == 8,
+      "8 unique in-game dungeon codes (%d found, %d unique)" % (len(codes), len(set(codes))))
 ok = len(ids) == 8 and len(declared) == 8 and all(int(d) == c for d, c in zip(declared, enc_counts))
 check(ok, "bosses: equals encounters.length for all 8 dungeons" +
       ("" if ok else " (%s vs %s)" % (declared, enc_counts)))

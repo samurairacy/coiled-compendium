@@ -5,7 +5,7 @@
 const DUNGEONS=[
 
 /* ───────────────────────────── ALTAR OF FANGS ─────────────────────── */
-{id:"altar-of-fangs",name:"Altar of Fangs",short:"Altar",map:"mdt-altar-of-fangs",banner:"altar-of-fangs",sigil:"i-fang",origin:"Midnight",isNew:true,
+{id:"altar-of-fangs",code:"AOF",name:"Altar of Fangs",short:"Altar",map:"mdt-altar-of-fangs",banner:"altar-of-fangs",sigil:"i-fang",origin:"Midnight",isNew:true,
  timer:{v:"29 min",s:["bz_game","wh_dg"]},bosses:3,routing:"limited",
  blurb:"The season's only new dungeon, beneath the Vaults of Atal'Utek. Three bosses, venom everywhere, and a final encounter built entirely around a stack counter that kills you if it expires.",
  cov:"Three independent sources plus the Encounter Journal. The 29-minute timer is confirmed twice over — Blizzard's own figure and an independent written overview agree exactly.",cov2:true,
@@ -120,7 +120,7 @@ loot:{s:["iv_aof"],i:[
         {t:"The Piercing Hiss interrupt is the wrong kind of DPS-responsibility mechanic: when it goes off, the tank dies and the DPS who missed it is mildly inconvenienced.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]}]},
 
 /* ───────────────────────────── MURDER ROW ─────────────────────────── */
-{id:"murder-row",name:"Murder Row",short:"Murder Row",map:"mdt-murder-row",banner:"murder-row",sigil:"i-dagger",origin:"Midnight",
+{id:"murder-row",code:"MR",name:"Murder Row",short:"Murder Row",map:"mdt-murder-row",banner:"murder-row",sigil:"i-dagger",origin:"Midnight",
  timer:{v:"34 min",s:["wh_dg"]},bosses:4,routing:"limited",
  blurb:"Silvermoon's underbelly, held back from Season 1 and still carrying its divisive tavern event. Starts as blood elves and criminals, ends as a demon problem.",
  cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 34 minutes — the most generous in the pool, which is worth knowing before you panic at the tavern event.",cov2:true,
@@ -248,7 +248,7 @@ loot:{s:["iv_mr"],i:[
         {t:"Murder Row carries the season's only relevant curse, and even that one is counterable without a curse dispel.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]}]},
 
 /* ─────────────────────────── DEN OF NALORAKK ──────────────────────── */
-{id:"den-of-nalorakk",name:"Den of Nalorakk",short:"Nalorakk",map:"mdt-den-of-nalorakk",banner:"den-of-nalorakk",sigil:"i-claw",origin:"Midnight",
+{id:"den-of-nalorakk",code:"DON",name:"Den of Nalorakk",short:"Nalorakk",map:"mdt-den-of-nalorakk",banner:"den-of-nalorakk",sigil:"i-claw",origin:"Midnight",
  timer:{v:"32 min",s:["wh_dg"]},bosses:3,routing:"hybrid",
  blurb:"The inner sanctum is sealed when you arrive, so the dungeon starts by leaving: a pyre at the entrance sends the group on a spirit journey \u2014 an Amani forest, then a frozen waste \u2014 and a second pyre wakes you once the trials are walked. Only then does the den open and Nalorakk become reachable. Three environments, three very different tanking problems.",
  cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 32 minutes.",cov2:true,
@@ -366,7 +366,7 @@ loot:{s:["iv_don"],i:[
  reads:[{t:"A hybrid routing dungeon — the offerings and the large open second area give real choice for the first two-thirds, then it becomes linear to the final boss.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]}]},
 
 /* ────────────────────────── THE BLINDING VALE ─────────────────────── */
-{id:"blinding-vale",name:"The Blinding Vale",short:"Blinding Vale",map:"mdt-blinding-vale",banner:"the-blinding-vale",sigil:"i-bloom",origin:"Midnight",
+{id:"blinding-vale",code:"BV",name:"The Blinding Vale",short:"Blinding Vale",map:"mdt-blinding-vale",banner:"the-blinding-vale",sigil:"i-bloom",origin:"Midnight",
  timer:{v:"31 min",s:["wh_dg"]},bosses:4,routing:"flexible",
  blurb:"The most open dungeon in the pool. A left-or-right fork decides which of the first two bosses you meet first, and there is far more trash available than you need for count.",
  cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 31 minutes. The routing source still flags this dungeon's MDT data as likely wrong, and the two guides now disagree on whether Pulverizing Strikes can be dodged.",cov2:true,
@@ -481,7 +481,7 @@ loot:{s:["iv_bv"],i:[
         {t:"MDT's data for this dungeon looks wrong in places — both positioning and pack composition. Expect an early-season correction.",by:"Tactyks",d:"2026-08-15",s:["tk_rt"]}]},
 
 /* ─────────────────────────── VOIDSCAR ARENA ───────────────────────── */
-{id:"voidscar-arena",name:"Voidscar Arena",short:"Voidscar",map:"mdt-voidscar-arena",banner:"voidscar-arena",sigil:"i-rift",origin:"Midnight",
+{id:"voidscar-arena",code:"VSA",name:"Voidscar Arena",short:"Voidscar",map:"mdt-voidscar-arena",banner:"voidscar-arena",sigil:"i-rift",origin:"Midnight",
  timer:{v:"30 min",s:["wh_dg"]},bosses:3,routing:"hybrid",
  blurb:"Two path choices, two stat buffs, and a wave-based arena in the middle. Reported to have the most lenient timer in the pool.",
  cov:"Three independent sources plus the Encounter Journal and two Blizzard hotfixes. Timer confirmed at 30 minutes — which sits awkwardly with the community view that this dungeon has the most lenient timer, since only Ruby Life Pools is shorter.",cov2:true,
@@ -607,7 +607,7 @@ loot:{s:["iv_vsa"],i:[
         {t:"Reported to have the most lenient timer of the eight.",by:"Community consensus",d:"2026-08-15",s:["tk_pool"]}]},
 
 /* ───────────────────────────── KING'S REST ────────────────────────── */
-{id:"kings-rest",name:"King's Rest",short:"King's Rest",map:"mdt-kings-rest",banner:"kings-rest",sigil:"i-tomb",origin:"BfA",
+{id:"kings-rest",code:"KR",name:"King's Rest",short:"King's Rest",map:"mdt-kings-rest",banner:"kings-rest",sigil:"i-tomb",origin:"BfA",
  timer:{v:"33 min",s:["wh_dg"]},bosses:4,routing:"locked",
  blurb:"The Zandalari royal mausoleum, back from Battle for Azeroth with a static third-boss order and a much less dangerous Shadow of Zul. Trash count is the contested question of the season.",
  cov:"Three independent sources plus the Encounter Journal. Timer confirmed at 33 minutes, replacing the unverified figure with the same number from a written guide. The trash requirement remains the compendium's oldest open question.",cov2:true,
@@ -739,7 +739,7 @@ loot:{s:["iv_kr"],i:[
         {t:"Would not be surprised if it ends up my least favourite dungeon of the season.",by:"Tactyks",d:"2026-07-25",s:["tk_pool"]}]},
 
 /* ────────────────────────── RUBY LIFE POOLS ───────────────────────── */
-{id:"ruby-life-pools",name:"Ruby Life Pools",short:"Ruby",map:"mdt-ruby-life-pools",banner:"ruby-life-pools",sigil:"i-egg",origin:"Dragonflight",
+{id:"ruby-life-pools",code:"RLP",name:"Ruby Life Pools",short:"Ruby",map:"mdt-ruby-life-pools",banner:"ruby-life-pools",sigil:"i-egg",origin:"Dragonflight",
  timer:{v:"28 min",s:["wh_dg"]},bosses:3,routing:"limited",
  blurb:"The Dragonflight return, described as meaningfully softened — the patrolling mini-bosses are grounded now, and several encounters gained counterplay they did not have.",
  cov:"Three independent sources plus a Blizzard hotfix. The Kyrakka threshold dispute is settled at 40% by the Encounter Journal. Timer confirmed at 28 minutes — the shortest in the pool.",cov2:true,
@@ -853,7 +853,7 @@ loot:{s:["iv_rlp"],i:[
         {t:"Limited routing — a lot of required mobs. Also one of the dungeons with enough roleplay and running between packs to make stack-maintenance trinkets unreliable.",by:"Tactyks",d:"2026-07-25",s:["tk_pool","tk_trk"]}]},
 
 /* ─────────────────────── TEMPLE OF SETHRALISS ─────────────────────── */
-{id:"temple-of-sethraliss",name:"Temple of Sethraliss",short:"Sethraliss",map:"mdt-temple-of-sethraliss",banner:"temple-of-sethraliss",sigil:"i-serpent",origin:"BfA",
+{id:"temple-of-sethraliss",code:"TOS",name:"Temple of Sethraliss",short:"Sethraliss",map:"mdt-temple-of-sethraliss",banner:"temple-of-sethraliss",sigil:"i-serpent",origin:"BfA",
  timer:{v:"33 min",s:["wh_dg"]},bosses:4,routing:"limited",
  blurb:"The other Battle for Azeroth return. Two stun-orb gauntlets, a great deal of lightning, and a final encounter that is a trash fight wearing a boss's name.",
  cov:"Now corroborated. A written encounter guide for this dungeon still does not exist, but a written dungeon overview does — and it supplies the timer, the full interrupt and dispel assignments, and a loot table. Trash detail remains thinner here than elsewhere.",cov2:true,

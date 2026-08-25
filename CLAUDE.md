@@ -345,6 +345,14 @@ item icons keyed by Blizzard slug.
   `offsetHeight` after every paint, and is 0 on pages with no switcher. **Do
   not hard-code it** — a literal pixel value becomes a gap or an overlap the
   first time someone changes their browser's text size.
+- **Dungeons carry Blizzard's own in-game code** in `code:` — AOF, MR, DON,
+  BV, VSA, KR, RLP, TOS, read off the in-game Best Runs panel. It is a second
+  NAME rather than metadata, so it renders next to the name (tile, `h1`, both
+  index facets) in its own boxed treatment rather than becoming another pill,
+  and it rides in the search title so typing `AOF` finds the dungeon. Adding
+  it broke two `check.py` regexes that had pinned `id:` directly against
+  `name:` — those now tolerate optional fields, because a checker that
+  silently counts zero is worse than one that fails.
 - **Accents do the wayfinding.** `[data-dungeon]` sets `--d-accent` per
   dungeon; raid pages reuse the same `--d-*` names via `body[data-raid]`
   and `[data-boss]`, so every accent-driven component works on both
