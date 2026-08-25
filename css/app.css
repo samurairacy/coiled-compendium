@@ -241,10 +241,13 @@ main{padding:0 clamp(.9rem,3vw,2rem) 6rem}
   padding:1.05rem 1.05rem 1rem;transition:transform var(--dur) var(--ease),border-color var(--dur) var(--ease)
 }
 .tile:hover{transform:translateY(-3px);border-color:var(--d-accent)}
-.tile-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.5rem}
+.tile-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.1rem}
 .tile svg.sig{width:30px;height:30px;color:var(--d-accent);flex:none}
 .tile h3{font-size:1.16rem;color:var(--ink);line-height:1.16}
-.tile .sub{font-family:var(--face-term);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:.25rem}
+/* Full tile width, not the leftover beside the sigil: this line carries the
+   code plus the longest origin in the pool and must never be the reason a
+   tile grows a row. */
+.tile .sub{font-family:var(--face-term);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:.1rem 0 .5rem}
 .tile p{font-size:.87rem;color:var(--ink-muted);margin:.6rem 0 .75rem;max-width:none}
 .tile-foot{display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;padding-top:.7rem;border-top:1px solid var(--rule-soft)}
 
@@ -648,6 +651,10 @@ h3 .cicon{margin-right:.4rem}
   border:1px solid transparent;border-radius:2px;transition:color var(--dur) var(--ease)
 }
 .dswitch a svg{width:15px;height:15px;color:var(--d-accent);opacity:.55;flex:none}
+/* Labels are the in-game codes, so they are set as identifiers rather
+   than words. Near-uniform length is the point: the bar reads as eight
+   slots instead of a ragged list of names. */
+.dswitch .dsw-lab{font-family:var(--face-term);font-size:.76rem;letter-spacing:.1em;font-weight:700}
 .dswitch a:hover{color:var(--ink);background:var(--ground-raised)}
 .dswitch a:hover svg{opacity:1}
 .dswitch a[aria-current]{color:var(--d-accent);border-color:var(--d-accent);font-weight:600}
@@ -1144,6 +1151,10 @@ footer a{color:var(--ink-muted)}
   cursor:help;position:relative;top:-.08em
 }
 h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
+/* On a tile the code leads the meta line rather than trailing the name,
+   so it loses the left margin and gains a right one. Sitting among mono
+   uppercase text of nearly its own size, it needs no optical lift. */
+.tile .sub .dcode{margin-left:0;margin-right:.5rem;top:0;font-size:.62rem}
 .fopt .dcode{margin-left:0;margin-right:.35rem;font-size:.55rem;padding:.06rem .26rem;
   border-color:currentColor;color:inherit;background:none}
 .fopt[aria-pressed="true"] .dcode{border-color:var(--accent-ink);opacity:.75}

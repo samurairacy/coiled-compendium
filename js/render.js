@@ -538,8 +538,9 @@ function pHome(){
 function tile(d){
   return `<a class="tile" href="#/d/${d.id}" data-dungeon="${d.id}">
     ${d.banner&&IMG[d.banner]?`<span class="tban"><img src="${IMG[d.banner]}" alt="" loading="lazy"></span>`:""}
-    <div class="tile-top"><div><h3>${esc(d.name)}${dcode(d)}</h3><div class="sub">${esc(d.origin)} · ${d.bosses} bosses</div></div>
+    <div class="tile-top"><div><h3>${esc(d.name)}</h3></div>
       <svg class="sig" aria-hidden="true"><use href="#${d.sigil}"/></svg></div>
+    <div class="sub">${dcode(d)}${esc(d.origin)} · ${d.bosses} bosses</div>
     <p>${esc(d.blurb)}</p>
     <div class="tile-foot">${d.isNew?`<span class="pill new">New</span>`:""}
       <span class="pill">${ic("i-clock")}${esc(d.timer.v)}</span>
@@ -596,7 +597,7 @@ function pDungeon(id,tab){
   const head=`<div class="crumb"><a href="#/">Compendium</a> › <a href="#/dungeons">Dungeons</a> › <em>${esc(d.name)}</em></div>
   <nav class="dswitch" id="dswitch" aria-label="Switch dungeon">${DUNGEONS.map(x=>
     `<a href="#/d/${x.id}/${tab}" data-dungeon="${x.id}" ${x.id===d.id?'aria-current="page"':""}
-      title="${esc(x.name)}${x.code?" ("+esc(x.code)+")":""} · ${esc(x.timer.v)}"><svg aria-hidden="true"><use href="#${x.sigil}"/></svg>${esc(x.short)}</a>`).join("")}</nav>
+      title="${esc(x.name)}${x.code?" ("+esc(x.code)+")":""} · ${esc(x.timer.v)}"><svg aria-hidden="true"><use href="#${x.sigil}"/></svg><span class="dsw-lab">${esc(x.code||x.short)}</span></a>`).join("")}</nav>
   ${d.banner&&IMG[d.banner]?`<div class="hban"><img src="${IMG[d.banner]}" alt="Entrance to ${esc(d.name)}" decoding="async"></div>`:""}
   <h1>${esc(d.name)}${dcode(d)}</h1>
   <div class="tile-foot" style="border:none;padding:.8rem 0 0">

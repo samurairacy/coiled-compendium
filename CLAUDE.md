@@ -357,12 +357,23 @@ item icons keyed by Blizzard slug.
   first time someone changes their browser's text size.
 - **Dungeons carry Blizzard's own in-game code** in `code:` — AOF, MR, DON,
   BV, VSA, KR, RLP, TOS, read off the in-game Best Runs panel. It is a second
-  NAME rather than metadata, so it renders next to the name (tile, `h1`, both
-  index facets) in its own boxed treatment rather than becoming another pill,
-  and it rides in the search title so typing `AOF` finds the dungeon. Adding
-  it broke two `check.py` regexes that had pinned `id:` directly against
-  `name:` — those now tolerate optional fields, because a checker that
-  silently counts zero is worse than one that fails.
+  NAME rather than metadata, so it gets a boxed treatment rather than becoming
+  another pill, and it rides in the search title so typing `AOF` finds the
+  dungeon. **Where it renders is load-bearing and has settled after two
+  moves.** On the `h1` it sits beside the name, which has a whole line to
+  itself. On a **tile** it LEADS the meta line (`AOF MIDNIGHT · 3 BOSSES`),
+  because beside the title it competed for that line and Temple of Sethraliss
+  lost — and the meta line is a sibling of `.tile-top`, not a child, so it
+  spans the whole tile rather than the space left beside the sigil. That is
+  not cosmetic: nested, `RLP DRAGONFLIGHT · 3 BOSSES` wanted 208px in 210 and
+  wrapped on rounding, which merely moved the ragged tile from TOS to RLP.
+  In the **dungeon switcher** the code has REPLACED the short name outright;
+  eight near-uniform labels read as a row of slots where eight names read as
+  a ragged list, and the `title` still carries name, code and timer. Both
+  index facets lead with the code too. Adding the field broke two `check.py`
+  regexes that had pinned `id:` directly against `name:` — those now tolerate
+  optional fields, because a checker that silently counts zero is worse than
+  one that fails.
 - **Accents do the wayfinding.** `[data-dungeon]` sets `--d-accent` per
   dungeon; raid pages reuse the same `--d-*` names via `body[data-raid]`
   and `[data-boss]`, so every accent-driven component works on both
