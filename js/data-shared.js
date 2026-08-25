@@ -73,7 +73,12 @@ const SOURCES={
     all 28 encounters with its own footage. Where it is the ONLY source for a
     claim the text says so, and its two disagreements with Tactyks are filed
     as open questions rather than quietly resolved. */
- sha_tnk:{l:"SHA",t:3,k:"creator",  a:"Sha",b:"Tank Tips and Tricks for Dungeon Bosses, Mythic+ Season 2 (video)",d:"2026-08-18",u:"https://www.youtube.com/watch?v=pBrG9id-5OM"}
+ sha_tnk:{l:"SHA",t:3,k:"creator",  a:"Sha",b:"Tank Tips and Tricks for Dungeon Bosses, Mythic+ Season 2 (video)",d:"2026-08-18",u:"https://www.youtube.com/watch?v=pBrG9id-5OM"},
+ /* The only published account of Ula'tek being fought. Also new to the
+    ledger, so it owns the STRATEGY on that page and none of the facts —
+    those come from the Encounter Journal, which arrived the same day and
+    outranks it. Its tether skip may not survive a hotfix; the page says so. */
+ sq_ula :{l:"SQUISHEI",t:3,k:"creator",  a:"Squishei",b:"Heroic Ula'tek Boss Guide, The Venomous Abyss (video, post-launch)",d:"2026-08-24",u:"https://www.youtube.com/watch?v=iAhwG2Duau8"}
 };
 
 /* ═══ TAG VOCABULARIES ═══ icon + label. Colour is never the only cue. ═══ */
@@ -1023,5 +1028,11 @@ const CORRECTIONS=[
  ["Spore Spines","Four-Spined","The Blinding Vale","ability",0],
  /* 2026-08-18: the dungeon journal itself spells these with the apostrophes */
  ["Ko'kia Blazehoof","Kokia Blazehoof","Ruby Life Pools","boss",0],
- ["T'zala","Tazala","King's Rest","ability",0]
+ ["T'zala","Tazala","King's Rest","ability",0],
+ /* 2026-08-25: Ula'tek finally has a source, and it arrived auto-captioned.
+    The Encounter Journal settles every one of these. */
+ ["Ula'tek","Oollettech, Ulletch, Oolletch, Ulitech","Venomous Abyss","boss",0],
+ ["Blightscale Shrieker","Shrier","Venomous Abyss","ability",0],
+ ["Serpent's Bite","Serpent Bite","Venomous Abyss","ability",0],
+ ["Grasping Fangs","Grasping Fang","Venomous Abyss","ability",0]
 ];
