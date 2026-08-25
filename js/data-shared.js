@@ -74,6 +74,13 @@ const SOURCES={
     claim the text says so, and its two disagreements with Tactyks are filed
     as open questions rather than quietly resolved. */
  sha_tnk:{l:"SHA",t:3,k:"creator",  a:"Sha",b:"Tank Tips and Tricks for Dungeon Bosses, Mythic+ Season 2 (video)",d:"2026-08-18",u:"https://www.youtube.com/watch?v=pBrG9id-5OM"},
+ /* The ledger's first HEALER source, and the only one that walks all
+    eight dungeons from that chair. Read it with one caveat, which he
+    states himself over and over: it is PTR footage published the day the
+    season opened, so every reading of DIFFICULTY in it predates both live
+    tuning and the 18-21 Aug hotfixes. His MECHANICS are cited freely; his
+    "this got nerfed, this is chill" is not cited at all. */
+ yt_heal:{l:"YUMY",t:3,k:"creator",  a:"yumytv",b:"How To Heal Every Season 2 M+ Dungeon (video, PTR footage)",d:"2026-08-18",u:"https://www.youtube.com/watch?v=ySJWG5-cUDM"},
  /* The only published account of Ula'tek being fought. Also new to the
     ledger, so it owns the STRATEGY on that page and none of the facts —
     those come from the Encounter Journal, which arrived the same day and
@@ -136,6 +143,14 @@ const TAGS={
    sourced text has to say it kills a player outright, or ends the group. No
    inference from shape, no "this looks scary". A badge that quietly means
    "probably quite bad" is a badge nobody reads twice. ══════════════════════ */
+/* One standing line per role, shown when that lens is on. This is for a
+   claim that is true of the WHOLE season rather than any one boss — the
+   kind of thing a play: line cannot carry because it would have to be
+   repeated 72 times. Roles with nothing sourced render nothing. */
+const ROLEPROFILE={
+ healer:["The season has one damage shape, and it repeats in all eight dungeons: unavoidable party damage from a big yellow-nameplate mob, landing at the same time as a single-target debuff or bolt on one player. Learn to read a pull for which mob supplies which half. Most pulls also want a cooldown spent in the first few seconds rather than saved — the damage starts before you are ready for it.","yt_heal"]
+};
+
 const SEVS={
  1:["Chip","Costs health or uptime. Eating one is survivable."],
  2:["Punishing","Kills a careless player, or spends a cooldown. Repeated failures lose the run."],

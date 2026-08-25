@@ -1043,6 +1043,19 @@ footer a{color:var(--ink-muted)}
 /* ═══ HEROIC ═══ the raid is two games, and a reader must be able to see
    which one a line is about before reading it. One flag, one rule, one hue,
    constant across every boss accent. ═════════════════════════════════════ */
+/* The standing per-role note from ROLEPROFILE. A season-wide claim, so it
+   rides the lens rather than any one boss, and it is deliberately quieter
+   than the Heroic flag below it: context, not a warning. */
+.roleprofile{
+  border-left:2px solid var(--rule);padding:.1rem 0 .1rem .7rem;
+  margin:.5rem 0 .9rem;font-size:.86rem;color:var(--ink-muted);line-height:1.65;
+  max-width:var(--measure)
+}
+.rplabel{
+  display:inline-block;font-family:var(--face-term);font-size:.57rem;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);
+  margin-right:.5rem;vertical-align:.1em;white-space:nowrap
+}
 .heroicline{
   border-left:2px solid var(--heroic);padding:.05rem 0 .05rem .7rem;
   margin:.45rem 0 0;font-size:.9rem;color:var(--ink);max-width:70ch

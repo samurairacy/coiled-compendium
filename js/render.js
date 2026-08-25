@@ -128,7 +128,10 @@ const roleBar=()=>`<div class="dtoggle rlens" role="group" aria-label="Role lens
 const roleNote=()=>ROLEF?`<p class="note">${ic("i-info",13)} Viewing as
   <b>${({tank:"Tank",healer:"Healer",mdps:"Melee DPS",rdps:"Ranged DPS"})[ROLEF]}</b> — abilities that never
   concern the role are hidden, and mobs with nothing left to say don't render.
-  <button class="linklike" data-role="">Show everyone's view</button>.</p>`:"";
+  <button class="linklike" data-role="">Show everyone's view</button>.</p>`
+  + (ROLEPROFILE[ROLEF]
+     ? `<p class="roleprofile"><span class="rplabel">This season</span>${esc(ROLEPROFILE[ROLEF][0])}${srcMark([ROLEPROFILE[ROLEF][1]])}</p>` : "")
+  :"";
 
 /* Raid abilities carry a difficulty dimension the dungeons never had:
    df:["h"] marks Heroic-only, hh: is a Heroic addendum to the tactic. The
