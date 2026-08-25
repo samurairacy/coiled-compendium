@@ -1243,7 +1243,7 @@ function pBoss(id,tab){
   ${b.img&&IMG[b.img]?`<div class="hban"><img src="${IMG[b.img]}" alt="${esc(b.n)} in game" decoding="async"></div>`:""}
   ${b.jp?bossMedia(b.jp,b.n):""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
-  ${b.gap?`<p class="gapflag">${ic("i-warn",13)} <b>This page rests on thinner sourcing than the rest.</b> <a href="#sourcing-${b.id}">How it knows what it knows ↓</a></p>`:""}
+  ${b.gap?`<p class="gapflag">${ic("i-warn",13)} <b>This page rests on thinner sourcing than the rest.</b> <button class="linklike" data-goto="sourcing-${b.id}">How it knows what it knows ↓</button></p>`:""}
   ${briefBlock(b.brief,"raidbrief",b.briefh)}
   ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}${sevLegend()}`:""}
   ${playBlock(b.play,ROLEF,b.playh)}

@@ -13,7 +13,9 @@
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<!-- data-goto, not a bare fragment: the hash is the router, so href="#main"
+     navigates to the home page instead of jumping to the content. -->
+<a class="skip" href="#main" data-goto="main">Skip to content</a>
 
 <!-- ═══ ICON SPRITE ═══ Every chip carries an icon AND a text label.
      Colour is never the only signifier. -->

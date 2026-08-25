@@ -1166,6 +1166,12 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
    measure, so it blew the alignment out and buried the encounter under
    sourcing prose. It is a footnote: it goes last, it respects the measure,
    and a slim flag up top points down to it. ═══════════════════════════ */
+/* A data-goto target lands under as many as two sticky bars (the nav, and
+   the dungeon/boss switcher measured into --dsw), so without a scroll
+   margin the heading you jumped to is the one thing hidden. */
+#main,[id^="sourcing-"]{scroll-margin-top:calc(var(--bar) + var(--dsw,0px) + 1rem)}
+[id^="sourcing-"]:focus{outline:none}
+
 .gapflag{
   font-size:.85rem;color:var(--ink-muted);margin:.6rem 0 1.1rem;max-width:var(--measure);
   border-left:2px solid var(--signal-urgent);padding-left:.7rem

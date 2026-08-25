@@ -108,6 +108,19 @@ function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
 
 /* facet clicks — delegated, so re-renders never lose the handler */
 document.addEventListener("click",e=>{
+  /* In-page jumps. A bare href="#id" CANNOT work on this site: the hash is
+     the route, so setting it sends route() looking for a page called "id",
+     which lands you on home. Anything jumping within the current page uses
+     data-goto and is scrolled here instead, leaving the hash alone. */
+  const gt=e.target.closest("[data-goto]");
+  if(gt){const el=$("#"+gt.dataset.goto);
+    if(el){e.preventDefault();
+      const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({behavior:still?"auto":"smooth",block:"start"});
+      /* focus follows the scroll or the keyboard user is left behind at
+         the top of the page; -1 keeps it out of the tab order after. */
+      el.setAttribute("tabindex","-1");el.focus({preventScroll:true});}
+    return;}
   /* difficulty toggle and role lens — anywhere either renders. Persist,
      reflect both in the URL, repaint the current page in place. */
   const lensQS=()=>{const q=[];

@@ -316,6 +316,29 @@ refs = re.findall(r'(?:src|href)="((?:js|css)/[\w\-.]+)"', html)
 missing = [r_ for r_ in refs if not os.path.exists(R(*r_.split("/")))]
 check(len(refs) >= 6 and not missing, "index.html references resolve (%d refs, %d missing)" % (len(refs), len(missing)))
 
+# ── 9b. no anchor may carry a bare fragment href ─────────────────────
+# The hash IS the route. <a href="#sourcing-ulatek"> sets location.hash, and
+# route() slices the first two characters off expecting "#/", so it looks up a
+# page called "ourcing-ulatek", finds nothing, and shows home. This shipped
+# twice: on the sourcing footnote, and on the skip-to-content link, which had
+# been silently sending keyboard users to the home page for the whole life of
+# the site. In-page jumps use data-goto and are scrolled by app.js instead.
+#
+# <use href="#i-warn"> is a different thing entirely and stays legal — an SVG
+# sprite reference never touches location.
+ANCHOR = re.compile(r'<a\b[^>]*?href="#(?!/)([^"]*)"')
+badanchor = []
+for f in ("index.html", "js/render.js", "js/wishlist.js", "js/app.js"):
+    body = io.open(R(*f.split("/")), encoding="utf-8").read()
+    for m in ANCHOR.finditer(body):
+        # data-goto may sit either side of href, so judge the whole tag, not
+        # the match — which stops at href's closing quote.
+        tag = body[m.start():body.find(">", m.start()) + 1]
+        if "data-goto" not in tag:
+            badanchor.append("%s: #%s" % (f, m.group(1)))
+check(not badanchor, "no bare fragment hrefs (the hash is the router)%s"
+      % ("" if not badanchor else " — " + "; ".join(badanchor)))
+
 print()
 if FAIL:
     print("%d CHECK%s FAILED" % (len(FAIL), "S" if len(FAIL) > 1 else ""))
