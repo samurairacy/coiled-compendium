@@ -78,7 +78,12 @@ const SOURCES={
     ledger, so it owns the STRATEGY on that page and none of the facts —
     those come from the Encounter Journal, which arrived the same day and
     outranks it. Its tether skip may not survive a hotfix; the page says so. */
- sq_ula :{l:"SQUISHEI",t:3,k:"creator",  a:"Squishei",b:"Heroic Ula'tek Boss Guide, The Venomous Abyss (video, post-launch)",d:"2026-08-24",u:"https://www.youtube.com/watch?v=iAhwG2Duau8"}
+ sq_ula :{l:"SQUISHEI",t:3,k:"creator",  a:"Squishei",b:"Heroic Ula'tek Boss Guide, The Venomous Abyss (video, post-launch)",d:"2026-08-24",u:"https://www.youtube.com/watch?v=iAhwG2Duau8"},
+ /* The Normal guide, five days earlier. It settles a question the journal
+    could not: the journal prefixes Gore Rattle, Spectral Coils and Grasping
+    Fangs with "Heroic", and this describes all three as the spine of the
+    NORMAL fight — so those markers are section icons, not difficulty gates. */
+ sq_uln :{l:"SQUISHEI",t:3,k:"creator",  a:"Squishei",b:"Ula'tek Boss Guide, The Venomous Abyss — Normal (video, post-launch)",d:"2026-08-19",u:"https://www.youtube.com/watch?v=DoR7kJze1-A"}
 };
 
 /* ═══ TAG VOCABULARIES ═══ icon + label. Colour is never the only cue. ═══ */

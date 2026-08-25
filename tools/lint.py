@@ -81,7 +81,7 @@ ATTRIB = [("Tactyks", "tk_"), ("Method", "me_"), ("Icy Veins", "iv_"),
 
 LETHAL_WORDS = re.compile(
     r"kill|lethal|fatal|death|dies|die\b|wipe|obituary|does not survive|"
-    r"does not outlive|stops existing|raid-end|run-end|is over|"
+    r"outliv|stops existing|raid-end|run-end|is over|"
     r"ends the (raid|group|run|pull|encounter)", re.I)
 
 
