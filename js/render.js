@@ -1243,7 +1243,7 @@ function pBoss(id,tab){
   ${b.img&&IMG[b.img]?`<div class="hban"><img src="${IMG[b.img]}" alt="${esc(b.n)} in game" decoding="async"></div>`:""}
   ${b.jp?bossMedia(b.jp,b.n):""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
-  ${b.gap?`<div class="cov warn" style="margin-bottom:1rem">${ic("i-warn",16)}<div><b>Untested territory.</b> ${esc(b.gap)}</div></div>`:""}
+  ${b.gap?`<p class="gapflag">${ic("i-warn",13)} <b>This page rests on thinner sourcing than the rest.</b> <a href="#sourcing-${b.id}">How it knows what it knows ↓</a></p>`:""}
   ${briefBlock(b.brief,"raidbrief",b.briefh)}
   ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}${sevLegend()}`:""}
   ${playBlock(b.play,ROLEF,b.playh)}
@@ -1252,7 +1252,10 @@ function pBoss(id,tab){
   not been written yet. Bosses are being sourced and added one at a time — the same way the dungeons were.</p>`}
   ${lootRows}
   ${(b.reads||[]).length?`<div class="sec"><h2>Reads</h2><span class="n">Opinion, attributed</span></div>
-    ${b.reads.map(x=>`<div class="card"><div class="meta">${esc(x.by)}</div><p class="read">${esc(x.t)}${srcMark(x.s)}</p></div>`).join("")}`:""}`;
+    ${b.reads.map(x=>`<div class="card"><div class="meta">${esc(x.by)}</div><p class="read">${esc(x.t)}${srcMark(x.s)}</p></div>`).join("")}`:""}
+  ${b.gap?`<div class="sec" id="sourcing-${b.id}"><h2>How this page knows what it knows</h2>
+    <span class="n">Sourcing footnote</span></div>
+    <div class="gapnote">${ic("i-warn",15)}<p>${esc(b.gap)}</p></div>`:""}`;
 }
 
 function pRoutes(){

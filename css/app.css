@@ -1159,3 +1159,23 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
   .hotfix{border-left-color:#000;background:none}
   .hfstamp{background:#000;color:#fff}
 }
+
+/* ═══ SOURCING FOOTNOTE ═══ was a .cov warn sitting above the fight, and .cov
+   is a flex row built for the dungeon overview where being first and full
+   width is the point. On a boss page it was the only block ignoring the
+   measure, so it blew the alignment out and buried the encounter under
+   sourcing prose. It is a footnote: it goes last, it respects the measure,
+   and a slim flag up top points down to it. ═══════════════════════════ */
+.gapflag{
+  font-size:.85rem;color:var(--ink-muted);margin:.6rem 0 1.1rem;max-width:var(--measure);
+  border-left:2px solid var(--signal-urgent);padding-left:.7rem
+}
+.gapflag b{color:var(--ink)}
+.gapflag svg{color:var(--signal-urgent);vertical-align:-2px}
+.gapnote{
+  display:flex;gap:.65rem;align-items:flex-start;max-width:var(--measure);
+  background:var(--ground-sunken);border:1px solid var(--rule);
+  border-left:3px solid var(--signal-urgent);padding:.8rem 1rem;margin:0 0 1.4rem
+}
+.gapnote svg{color:var(--signal-urgent);flex:none;margin-top:.2rem}
+.gapnote p{margin:0;font-size:.88rem;color:var(--ink-muted);line-height:1.65;max-width:none}
