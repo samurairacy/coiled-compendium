@@ -148,6 +148,25 @@ used_s = set(k for m in re.finditer(r'\bs:\[((?:"\w+",?)+)\]', mplus + raid) for
 used_s.discard("img")   # the capture pseudo-source, rendered specially
 check(used_s <= src_vocab, "source keys all in SOURCES (%s)" % (", ".join(sorted(used_s - src_vocab)) or "clean"))
 
+# ── 5a. every data line must actually parse as JavaScript strings ─────────
+# A straight " inside a double-quoted string silently ends it, and the rest of
+# the line becomes garbage JavaScript. That shipped on 2026-08-25 and took the
+# whole raid module down; only the browser noticed. Walk the quotes.
+# Narrow on purpose: a double-quoted FIELD value must be followed by a
+# delimiter. Anything else means the value ended early on a straight quote the
+# author meant as punctuation. Comments and single-quoted strings never match
+# the key:"..." shape, so they cannot produce false alarms.
+FIELDQ = re.compile(r'(?<![A-Za-z0-9_])[a-z][a-zA-Z]{0,7}:"(?:[^"\\]|\\.)*"')
+badq = []
+for fname, src in (("mplus", mplus), ("raid", raid), ("shared", shared)):
+    for i, ln in enumerate(src.splitlines(), 1):
+        for m in FIELDQ.finditer(ln):
+            rest = ln[m.end():].lstrip()
+            if rest and rest[0] not in ",}])":
+                badq.append("%s:%d %s<<HERE" % (fname, i, ln[max(0, m.end() - 34):m.end()]))
+check(not badq, "field strings close at a delimiter (%s)"
+      % ("; ".join(badq[:3]) if badq else "clean"))
+
 # ── 5b. no ability object may name the same key twice ──────────────────────
 # JavaScript takes the LAST occurrence and says nothing. Eighteen rows carried
 # t: twice, so the first array was dead code — invisible until the 2026-08-25

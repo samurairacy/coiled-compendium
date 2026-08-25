@@ -177,7 +177,7 @@ const covBox=d=>`<div class="cov ok">${ic("i-info",16)}<div><b>Source coverage.<
   ${d.encounters.some(e=>e.o&&!e.img)?`<br><b style="color:var(--signal-warn)">No boss imagery for this dungeon.</b> Every other dungeon has a portrait for each encounter.`:""}</div></div>`;
 const dispelStrip=dis=>{const names={poison:"Poison",magic:"Magic",curse:"Curse",disease:"Disease",enrage:"Enrage",bleed:"Bleed"};
   return Object.entries(dis).map(([k,v])=>`<span class="pill ${v>=3?"acc":""}" title="${v===0?"Not relevant here":v===1?"Minor":v===2?"Useful":"Matters a lot"}">${ic("i-dispel")}${names[k]} ${"●".repeat(v)||"—"}</span>`).join("");};
-const DGMAP={"rlp-":"ruby-life-pools","aof-":"altar-of-fangs","kr-":"kings-rest","vsa-":"voidscar-arena","bv-":"blinding-vale"};
+const DGMAP={"va-":"raid","rlp-":"ruby-life-pools","aof-":"altar-of-fangs","kr-":"kings-rest","vsa-":"voidscar-arena","bv-":"blinding-vale"};
 const dgOf=id=>{for(const k in DGMAP) if(id.startsWith(k)) return DGMAP[k]; return null;};
 function resolvedBlock(dg){
   const rs=RESOLVED.filter(x=>dgOf(x.id)===dg);
@@ -1078,6 +1078,7 @@ function pRaid(){
   <div class="rlist">${[F.converge,...RAID.bosses.filter(b=>b.o>=7).map(b=>b.id)].map(tile).join("")}</div>
 
   ${disputeBlock("raid")}
+  ${resolvedBlock("raid")}
 
   <div class="sec"><h2>When it opens</h2><span class="n">Staggered</span></div>
   <table><thead><tr><th>Week</th><th>What opens</th></tr></thead><tbody>

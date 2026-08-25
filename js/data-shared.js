@@ -56,8 +56,8 @@ const SOURCES={
  me_twf :{l:"METHOD",t:3,k:"creator",  a:"Method",b:"The Twin Fangs Boss Guide video (presented by Purke of <Honolulu>)",d:"2026-08-14",u:"https://www.youtube.com/watch?v=SoOCwJT2qYI"},
  bs_alt :{l:"BRETTSTEFANI",t:3,k:"creator",  a:"BrettStefani",b:"TLDR Coiled Altar Boss Guide",d:"2026-08-12",u:"https://www.youtube.com/watch?v=818k4yfy8D4"},
  jf_va  :{l:"JFUNKGAMING",t:3,k:"creator",  a:"JFunkGaming",b:"Venomous Abyss Heroic-Mythic Boss Guides",d:"2026-08-12",u:"https://www.youtube.com/watch?v=o7lua5gr850"},
- rcp_nek:{l:"READY CHECK ",t:3,k:"creator",  a:"Ready Check Pull",b:"Nek'zali Guide",d:"2026-08-10",u:"https://www.youtube.com/watch?v=YBn4-mMBLs4"},
- rcp_pre:{l:"READY CHECK ",t:3,k:"creator",  a:"Ready Check Pull",b:"The Venomous Abyss All-Boss Preview",d:"2026-07-20",u:"https://www.youtube.com/watch?v=W2zNL31Ly-A"},
+ rcp_nek:{l:"READY CHECK",t:3,k:"creator",  a:"Ready Check Pull",b:"Nek'zali Guide",d:"2026-08-10",u:"https://www.youtube.com/watch?v=YBn4-mMBLs4"},
+ rcp_pre:{l:"READY CHECK",t:3,k:"creator",  a:"Ready Check Pull",b:"The Venomous Abyss All-Boss Preview",d:"2026-07-20",u:"https://www.youtube.com/watch?v=W2zNL31Ly-A"},
  wz_va  :{l:"WOW SO ZESTY",t:3,k:"creator",  a:"WoW So Zesty",b:"Venomous Abyss Heroic Raid Guide",d:"2026-08-12",u:"https://www.youtube.com/watch?v=Wpf2oTR2EOg"},
  iv_ts  :{l:"ICY VEINS",t:2,k:"icyveins",a:"Icy Veins (Neryssa)",b:"Midnight Season 2 Tier Sets Guide",d:"2026-08-06",u:"https://www.icy-veins.com/wow/midnight-season-2-tier-sets-guide"},
  tk_va  :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Normal/Heroic Venomous Abyss Raid Guide (video)",d:"2026-08-13",u:"https://www.youtube.com/watch?v=L__7PvkXaoc"},
@@ -94,6 +94,10 @@ const SOURCES={
     reports converge and the prose says it is a player account. */
  wh_ul  :{l:"WOWHEAD",t:2,k:"wowhead",a:"Wowhead (iMX3)",b:"Ula'tek Raid Boss Guide — Strategy and Abilities",d:"2026-08-20",u:"https://www.wowhead.com/guide/midnight/raids/venomous-abyss-ulatek-boss-strategy-abilities"},
  rd_va  :{l:"WEEK ONE",t:3,k:"creator",a:"Week-one raid threads",b:"r/wow and r/CompetitiveWoW, first-week Venomous Abyss reports",d:"2026-08-19",u:"https://old.reddit.com/r/wow/comments/1vspvo7/hardest_normal_raid_in_a_while/"},
+ /* The live spell database, as opposed to the Encounter Journal prose.
+    Where a guide argues about what an ability DOES, the aura duration and
+    tick rate usually settle it outright. */
+ wh_sp  :{l:"SPELL DATA",t:2,k:"wowhead",a:"Wowhead",b:"Live spell database, patch 12.1",d:"2026-08-25",u:"https://www.wowhead.com/spells"},
  bz_hf  :{l:"HOTFIX",t:1,k:"blizzard",a:"Blizzard Entertainment",b:"Hotfixes, rolling — Midnight 12.1",d:"2026-08-21",u:"https://worldofwarcraft.blizzard.com/en-us/news/24296142"},
  sq_uln :{l:"SQUISHEI",t:3,k:"creator",  a:"Squishei",b:"Ula'tek Boss Guide, The Venomous Abyss — Normal (video, post-launch)",d:"2026-08-19",u:"https://www.youtube.com/watch?v=DoR7kJze1-A"}
 };
@@ -217,24 +221,6 @@ const DISPUTES=[
   a:{p:"Left. The Light-Starved Blossom buff is the better of the two and the trash composition looks slightly easier.",s:["tk_bv"]},
   b:{p:"Right. The left side has considerably more interrupts and an extra Sporeblight Belcher; the right side's bolt-casters can be safely ignored once packs are grouped.",s:["tk_rt"]},
   r:"Same author reversed between 2 Aug and 15 Aug. The later position is the routing-specific one.",dg:"blinding-vale"},
- {id:"va-helical",q:"How does Helical Toxins actually count to four?",
-  a:{p:"Colliding with other players merges your linked-orb counts, and the merged total must equal exactly four; on Heroic an overfilled merge kills outright.",s:["iv_sen"]},
-  b:{p:"Every player carries four orbs, some red and some green, and you touch exactly one partner so the combined GREEN orbs equal four; failures take Cultivated Burst, which an immunity survives.",s:["me_sen"]},
-  extra:"A third description — stacking venom potency by touch until it reads exactly four — comes from a guide whose fight descriptions are Mythic-based by its own note, so it may simply be the Mythic variant. Tactyks' PTR footage shows position A's arithmetic: one-two-three stacks colliding to a merged four, with ample time. A fourth creator describes the same stacks model, with overfill granting a marked debuff that drops a massive pool when it expires.",
-  r:"One combat log of the intermission on Normal or Heroic settles the counting rule.",dg:"raid"},
- {id:"va-ignition",q:"What shape is Soulcoil Ignition — five stacks at once, or four Rites in sequence?",
-  a:{p:"The cast applies five stacks of Soulcoil Rite to every player, with Ritual Burn arriving alongside on Heroic.",s:["iv_nek"]},
-  b:{p:"The cast is effectively four Soulcoil Rites in a row — sequential raid hits — with the echoes raining out of the Well during the channel.",s:["me_nek"]},
-  r:"Materially different healing assignments; the first live log answers it.",dg:"raid"},
- {id:"va-livingvenom",q:"Where does Living Venom on the Sentinels come from?",
-  a:{p:"A Heroic effect of destroyed Toxic Droplets: the freed venom travels back toward Breath of Ula'tek and damages everyone on the path.",s:["iv_sen"]},
-  b:{p:"A mini frontal from the boss that fires green lines outward which then return — dodged on the way out and again on the way back.",s:["me_sen"]},
-  extra:"Tactyks' footage supports A's geometry: the venom travels from wherever the droplet was soaked back to the green golem, even from across the room. Another source splits the difference — venom lands around the room, then fires toward the boss — which is still A's family, not B's.",
-  r:"Watch one pull of the green golem. The answer changes where the melee stand.",dg:"raid"},
- {id:"va-amani-cc",q:"Can the Restless Amani be controlled while their shield holds?",
-  a:{p:"No — while the shield is up they cannot be stopped, only stripped: break it with magic damage first.",s:["iv_sen","iv_nek"]},
-  b:{p:"Yes — grips, taunts and slows all land through the shield; the shield only gates damage, not control. A second creator agrees, calling grips, slows and stuns necessary, and notes the shield covers only a fraction of their health.",s:["tk_va","tk_vtk","rcp_nek","jf_va"]},
-  r:"One Death Grip on a shielded add answers it. If B is right, kiting is a whole extra tool on this boss.",dg:"raid"},
  {id:"va-barrage-count",q:"How many spirits does Possession Barrage fire?",
   a:{p:"Four spirits, each detonating on its first body.",s:["me_nek"]},
   b:{p:"Five — stated twice, and five stacks of Hollowing Strikes land on the victim to match.",s:["tk_va","tk_vtk"]},
@@ -260,6 +246,18 @@ const DISPUTES=[
 
 /* ═══ RESOLVED — kept for the record, never left in the live list above ═══ */
 const RESOLVED=[
+ {id:"va-amani-cc",q:"Can the Restless Amani be controlled while their shield holds?",
+  won:"Yes — but they cannot be KILLED",by:["wh_ej","wh_sp"],
+  p:"The question was badly posed, and so were the guides that answered it. Gravebound Advance is a magic absorb worth 25% of the Amani's health, and while it holds they cannot be destroyed. That is a statement about DEATH, and at least two guides read it as a statement about CONTROL as well, telling raids either that grips and slows are useless or that they work freely. Neither is right: the shield gates killing, not stopping, and live class guides route Binding Shot and Tar Trap onto shielded Amani for their entire walk to the Well. Break the shield with magic damage because Physical does nothing to it — which is the real reason a hunter cannot be the one assigned to crack it — but control the walk meanwhile."},
+ {id:"va-ignition",q:"What shape is Soulcoil Ignition — five stacks at once, or four Rites in sequence?",
+  won:"Four in sequence",by:["wh_sp"],
+  p:"Settled by reading the spell rather than the prose. The aura lasts four seconds and ticks once a second: four Soulcoil Rites, one per second, not five landing together. The 'five' almost certainly leaked in from elsewhere in the encounter, where five is everywhere — each Amani reaching the Well feeds her five energy. Worth knowing because the two shapes want different healing: four ticks you can ramp into, one spike you cannot."},
+ {id:"va-helical",q:"How does Helical Toxins actually count to four?",
+  won:"1 finds 3, 2 finds 2",by:["wh_ej"],
+  p:"Three sources described this three ways and the live rule is the simplest of them. Every player carries 1, 2 or 3 orbs; touch exactly ONE player whose count completes yours to four. There is no stage where somebody builds a 2 out of two 1s first — that was a Mythic design suggestion raised in PTR feedback, and it appears to have leaked into live documentation. On Heroic the failure changes character: overfilling past four kills both players rather than knocking them apart, so nobody moves until they have read a number."},
+ {id:"va-livingvenom",q:"Where does Living Venom on the Sentinels come from?",
+  won:"Both descriptions are the same event",by:["wh_ej"],
+  p:"Not a contradiction after all, which is worth recording as its own kind of answer. The spell is venom ejected by Breath of Ula'tek that returns to him about four seconds later. The guide saying destroyed Toxic Droplets release it is describing the trigger a PLAYER interacts with on Heroic. Same event, two altitudes — one written from the encounter script, one from the floor. Neither source was wrong; they were answering different questions."},
  {id:"rlp-phase",q:"At what health does Kyrakka join Erkhart Stormvein?",
   won:"40%",by:["wh_ej"],
   p:"The creator guide said 40%, the written guide said 50%. The Encounter Journal says Kyrakka lands when EITHER of them reaches 40% — so the creator was right, and both guides missed that the threshold applies to whichever boss hits it first.",d:"2026-08-16"},

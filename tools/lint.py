@@ -180,7 +180,7 @@ declared = set(re.findall(r'^\s*(\w+)\s*:\{l:"',
                re.search(r"const SOURCES=\{(.*?)\n\};", shared, re.S).group(1), re.M))
 body = "".join(DATA.values()) + shared
 used = set()
-for m in re.finditer(r'\b(?:s|rc)\s*:\s*(?:\[([^\]]*)\]|"(\w+)")', body):
+for m in re.finditer(r'\b(?:s|rc|by)\s*:\s*(?:\[([^\]]*)\]|"(\w+)")', body):
     used |= set(re.findall(r'"(\w+)"', m.group(1) or '"%s"' % m.group(2)))
 for k in sorted(declared - used - {"img"}):
     bad("WARN", "orphan-source", "SOURCES", '"%s" is declared and cited nowhere '
