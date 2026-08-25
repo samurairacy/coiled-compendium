@@ -187,7 +187,10 @@ async function routeString(kind,dungeonId,slug){
     return s;
   }
   if(!RDOC[kind]){
-    const r=await fetch(src.data());
+    /* no-store like the Wago call: if the author edits their document we want
+       the edit, not whatever the browser kept. RDOC still caches the PARSED
+       result for this page session so eight dungeons cost one request. */
+    const r=await fetch(src.data(),{cache:"no-store"});
     if(!r.ok)throw new Error("HTTP "+r.status);
     const body=await r.text();
     RDOC[kind]=(kind==="sha")?parseSha(body):parseYoda(body);
@@ -223,9 +226,8 @@ async function routeCopy(btn){
   const [kind,dungeonId,slug]=btn.dataset.route.split("|");
   const lab=btn.querySelector("span");
   btn.dataset.busy="1"; const was=lab.textContent;
-  const alt=btn.classList.contains("alt")?" alt":"";
-  const done=(msg,cls)=>{lab.textContent=msg; btn.className="wbtn"+alt+" "+(cls||"");
-    setTimeout(()=>{lab.textContent=was; btn.className="wbtn"+alt; delete btn.dataset.busy;},3600);};
+  const done=(msg,cls)=>{lab.textContent=msg; btn.className="wbtn "+(cls||"");
+    setTimeout(()=>{lab.textContent=was; btn.className="wbtn"; delete btn.dataset.busy;},3600);};
   lab.textContent="Fetching\u2026";
   try{
     const s=await routeString(kind,dungeonId,slug||"");

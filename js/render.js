@@ -118,7 +118,7 @@ const routeCard=(d,r)=>{
   const live=!r.none;
   return `<div class="rcard${live?"":" dead"}">
     <div class="rc-h">
-      <b>${esc(src.by)}</b><span class="rc-t">${esc(src.t)}</span>
+      <b>${esc(src.by)}</b><span class="rc-t">${esc(src.t)}</span>${r.k==="wago"?`<span class="rc-anno" title="The pull-by-pull notes below this section describe this route specifically. The other two are published alternatives we link but do not annotate.">Annotated below</span>`:""}
       <span class="rbadge ${live?"is-live":"is-link"}"
         title="${live
           ?`Fetched from ${esc(src.by)}&#39;s own ${esc(src.l)} the moment you press Copy, so it is always their current version. Nothing is stored on this site.`
@@ -129,7 +129,7 @@ const routeCard=(d,r)=>{
     ${r.n?`<p class="rc-note">${ic("i-info",12)}${esc(r.n)}</p>`:""}
     ${r.none?`<p class="rc-note">${ic("i-warn",12)}${esc(r.none)}</p>`:""}
     <div class="wago-act">
-      ${live?`<button class="wbtn${r.k==="wago"?"":" alt"}" data-route="${esc(r.k)}|${esc(d.id)}|${esc(r.id||"")}">${ic("i-copy",13)}<span>Copy MDT string</span></button>`:""}
+      ${live?`<button class="wbtn" data-route="${esc(r.k)}|${esc(d.id)}|${esc(r.id||"")}">${ic("i-copy",13)}<span>Copy MDT string</span></button>`:""}
       <a class="wlink" href="${home}" target="_blank" rel="noopener noreferrer">${ic("i-gate",12)}${esc(src.l)}</a>
     </div></div>`;
 };
