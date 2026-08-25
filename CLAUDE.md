@@ -59,6 +59,16 @@ item icons keyed by Blizzard slug.
   facet state (`#/mechanics?from=r&ctr=poison`, `#/loot?ty=Mail.Plate`) and
   boss difficulty (`#/r/nekzali?d=h`) are URL state, written with
   `replaceState` so painting never re-routes.
+- **A bare `href="#id"` is not an anchor here, it is a route** — and it
+  resolves to the home page. Setting the hash sends `route()` looking for a
+  page called `id`, which matches nothing and falls through. This shipped
+  twice: on the Ula'tek sourcing footnote, and on the **skip-to-content
+  link**, which had been sending keyboard users to the home page for as
+  long as the shell existed. In-page jumps use `data-goto="<id>"` and are
+  scrolled by the delegated handler in app.js, which never touches
+  `location`; targets carry a `scroll-margin-top` clearing both sticky
+  bars. `check.py` fails on any bare fragment href in an `<a>`. SVG sprite
+  refs (`<use href="#i-warn">`) are a different thing and stay legal.
 - **Two modules, one brand.** The nav is two module entries (accent dots),
   a divider, then the shared indexes: Mechanics, Loot, Season, Sources,
   Glossary. Mechanics and Loot are single indexes spanning both modules
