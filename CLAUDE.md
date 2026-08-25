@@ -249,9 +249,22 @@ item icons keyed by Blizzard slug.
   load-bearing that it is **constant across all eight boss accents** — the
   raid palette runs green → cyan → blue → violet, so the one warm hue means
   "this line is about the other difficulty", never "this is Sszorak".
-- **Ula'tek is a named gap.** No source has tested her (Icy Veins says so
-  outright); her page carries journal-derived structure behind an explicit
-  warning. Don't fill the gap with confidence; fill it with live data.
+- **Ula'tek WAS the named gap and no longer is — note how it closed.** Two
+  sources landed on 24–25 Aug: Blizzard's **Encounter Journal for the Heroic
+  encounter** (`wh_ej`, tier 1) and **one** published Heroic strategy guide
+  (`sq_ula`, Squishei, new to the ledger). They do different jobs and the page
+  keeps them apart: **the journal owns every name, radius, duration and
+  threshold; the guide owns the strategy and nothing else.** The journal also
+  *explains* the guide rather than merely agreeing with it — Soul Constrictor
+  is why you soak only every other Spectral Coil, Warden's Protection is why
+  the warden dies before anyone touches an egg. Four stages now, journal-named:
+  Fury of the Serpent Mother, Children of the Doomscale, The Shattering,
+  Ula'tek's Ascension. **Strategy there is still single-sourced**, and the
+  Stage Two tether skip may not survive a hotfix; the page says both. Most of
+  her 20 abilities wear the red question mark because Wowhead's spell database
+  has nothing for this raid yet — `/spells/name:` returns empty even for
+  abilities we have had for weeks, so an icon pass waits on the database
+  rather than on effort.
 - **The ledger now has a POST-LAUNCH tier of one, and it outranks theory.**
   `tk_hero` (21 Aug 2026) is a guild describing what week one actually did;
   everything else in this repository was written before the raid opened.
