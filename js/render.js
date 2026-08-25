@@ -100,6 +100,29 @@ const heroLine=(txt,cls)=>txt
    Worth carrying because it is what people type in group finder and what a
    pug leader shouts — the site should answer to the name a player
    uses, not only the one the loading screen prints. */
+/* — MDT ROUTE — The import string is fetched from Wago on click and never
+   stored here: it cannot go stale, and we never host someone else's work.
+   The LINK is the contract and the button is the convenience — Wago being
+   down, an undocumented endpoint retiring, a file:// origin or a refused
+   clipboard all break the button, and in every case the anchor must still
+   be there. So it renders unconditionally, never behind a successful
+   fetch. */
+const wagoBlock=d=>{
+  if(!d.wago)return "";
+  const u=`https://wago.io/${d.wago.s}`;
+  return `<div class="wago">
+    <div class="wago-h">${ic("i-map",14)}<b>The route as an MDT import</b>
+      <span class="wago-by">${esc(d.wago.by)}</span>
+      <span class="wago-ver" data-wagover="${esc(d.wago.s)}"></span></div>
+    <p>Fetched from Wago the moment you press the button, so it is whatever
+       ${esc(d.wago.by)} has published today rather than a copy taken here. Paste it
+       into Mythic Dungeon Tools with <span class="mono">Ctrl-V</span>.</p>
+    <div class="wago-act">
+      <button class="wbtn" data-wago="${esc(d.wago.s)}">${ic("i-copy",13)}<span>Copy MDT string</span></button>
+      <a class="wlink" href="${u}" target="_blank" rel="noopener noreferrer">${ic("i-gate",12)}Open on wago.io</a>
+    </div></div>`;
+};
+
 const dcode=d=>d.code?`<span class="dcode" title="In-game code for ${esc(d.name)} — what group finder calls it">${esc(d.code)}</span>`:"";
 const roleChip=r=>({tank:`<span class="chip c-tank">${ic("i-tank")}Tank</span>`,
   healer:`<span class="chip c-heal">${ic("i-heal")}Healer</span>`,
@@ -648,6 +671,7 @@ function pDungeon(id,tab){
     body=`<div class="sec"><h2>Pug route</h2><span class="n">${d.route.length} pulls</span></div>
     <p class="note">Deliberately conservative: no skips, minimised interrupts, minimised danger. Faster groups
     combine several of these. Numbers in accent are lust windows; red outlines are the pulls that wiped groups on the PTR.</p>
+    ${wagoBlock(d)}
     ${d.route.map(p=>`<div class="pull ${p.lust?"lust":""} ${p.d===3?"d3":""}"><div class="num">${p.n}</div>
       <div><div class="pn">${esc(p.t)}</div><div class="tags" style="margin-top:.3rem">
         <span class="chip">${esc(p.m)}</span>${p.lust?`<span class="chip c-counter">${ic("i-enrage")}Lust</span>`:""}

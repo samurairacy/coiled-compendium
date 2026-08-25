@@ -56,6 +56,10 @@ function route(){
      header. */
   const sw=el.querySelector(".dswitch");
   document.documentElement.style.setProperty("--dsw",(sw?sw.offsetHeight:0)+"px");
+  /* Fill any MDT version badges this paint created. Fire and forget: it
+     must never block the paint, and silence is the right outcome if the
+     undocumented endpoint it depends on is gone. */
+  if(typeof wagoVersions==="function")wagoVersions();
   /* which nav entry owns this page: module pages roll up to their module */
   const navKey=(key==="d"||key==="dungeons"||key==="mplus"||key==="routes")?"mplus"
               :(key==="raid"||key==="r")?"raid":key;
@@ -106,12 +110,102 @@ function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
     spec:p.get("spec")||null,
     big:p.get("big")||null,dg:p.get("dg")||null,fx:p.get("fx")||null,mod:p.get("from")||null};}
 
+
+/* ' MDT ROUTE STRINGS ' Fetched from Wago on demand, never stored here.
+   Two endpoints on deliberately different footing:
+     /api/raw/encoded  ' in Wago's published OpenAPI contract. The button.
+     /api/check        ' UNDOCUMENTED. The version badge, and nothing more.
+   The documented sibling /api/check/weakauras returns [] for an MDT id, so
+   there is no supported substitute. Hence the split: if /api/check ever goes
+   away a badge silently never appears, and copying still works. The button
+   must never depend on the badge.
+   Every failure is reported ON THE BUTTON. A reader who presses it and sees
+   nothing concludes the site is broken; one who reads "Wago unreachable" uses
+   the link sitting next to it. */
+const WAGO="https://data.wago.io";
+
+/* Clipboard needs a secure context AND a user gesture, and may still be
+   refused. Falling back to a selected textarea is uglier but never a dead
+   end. Returns how it went so the caller can say so. */
+async function toClipboard(text){
+  try{
+    if(navigator.clipboard&&window.isSecureContext){
+      await navigator.clipboard.writeText(text); return "copied";
+    }
+  }catch(e){/* fall through ' refused or unavailable */}
+  try{
+    const ta=document.createElement("textarea");
+    ta.value=text; ta.setAttribute("readonly","");
+    ta.style.cssText="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);"+
+      "width:min(90vw,640px);height:8rem;z-index:200";
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    const ok=document.execCommand&&document.execCommand("copy");
+    if(ok){ta.remove(); return "copied";}
+    ta.addEventListener("blur",()=>ta.remove(),{once:true});
+    return "manual";
+  }catch(e){ return "failed"; }
+}
+
+async function wagoCopy(btn){
+  const slug=btn.dataset.wago, lab=btn.querySelector("span");
+  if(btn.dataset.busy)return;
+  btn.dataset.busy="1"; const was=lab.textContent;
+  const done=(msg,cls)=>{lab.textContent=msg; btn.className="wbtn "+(cls||"");
+    setTimeout(()=>{lab.textContent=was; btn.className="wbtn"; delete btn.dataset.busy;},3200);};
+  lab.textContent="Fetching\u2026";
+  try{
+    const r=await fetch(WAGO+"/api/raw/encoded?id="+encodeURIComponent(slug),{cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const s=(await r.text()).trim();
+    /* Guard against pasting something that is not a route: a redirect to an
+       error page or an HTML body would otherwise land in the clipboard and
+       fail confusingly inside the addon instead of here. */
+    if(!/^!/.test(s)||s.length<40)throw new Error("not an import string");
+    const how=await toClipboard(s);
+    if(how==="copied")done("Copied \u2014 paste into MDT","ok");
+    else if(how==="manual")done("Select and copy the box","warn");
+    else done("Could not copy \u2014 use the link","warn");
+  }catch(err){
+    done("Wago unreachable \u2014 use the link","warn");
+  }
+}
+
+/* One request covers all eight routes. Fire and forget: no await at the call
+   site, no paint blocked, and total silence on failure ' an absent badge is
+   the correct outcome, not an error to report. */
+let WAGOVER=null;
+async function wagoVersions(){
+  const slots=[...document.querySelectorAll("[data-wagover]")];
+  if(!slots.length)return;
+  if(!WAGOVER){
+    const ids=[...new Set(DUNGEONS.filter(d=>d.wago).map(d=>d.wago.s))];
+    try{
+      const r=await fetch(WAGO+"/api/check?ids="+ids.join(","));
+      if(!r.ok)return;
+      const rows=await r.json();
+      WAGOVER={};
+      rows.forEach(x=>{WAGOVER[x.slug]={v:x.versionString,m:x.modified};});
+    }catch(e){ return; }
+  }
+  slots.forEach(el=>{
+    const v=WAGOVER[el.dataset.wagover]; if(!v)return;
+    /* versionString arrives as "1.0.1-2" ' the suffix is Wago's internal
+       revision counter and means nothing to a reader. */
+    const ver=String(v.v||"").split("-")[0];
+    const d=v.m?new Date(v.m):null;
+    const when=d&&!isNaN(d)?d.toLocaleDateString(undefined,{day:"numeric",month:"short"}):"";
+    el.textContent="v"+ver+(when?" \u00b7 updated "+when:"");
+  });
+}
+
 /* facet clicks — delegated, so re-renders never lose the handler */
 document.addEventListener("click",e=>{
   /* In-page jumps. A bare href="#id" CANNOT work on this site: the hash is
      the route, so setting it sends route() looking for a page called "id",
      which lands you on home. Anything jumping within the current page uses
      data-goto and is scrolled here instead, leaving the hash alone. */
+  const wg=e.target.closest("[data-wago]");
+  if(wg){e.preventDefault();wagoCopy(wg);return;}
   const gt=e.target.closest("[data-goto]");
   if(gt){const el=$("#"+gt.dataset.goto);
     if(el){e.preventDefault();
