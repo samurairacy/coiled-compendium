@@ -129,7 +129,7 @@ const routeCard=(d,r)=>{
     ${r.n?`<p class="rc-note">${ic("i-info",12)}${esc(r.n)}</p>`:""}
     ${r.none?`<p class="rc-note">${ic("i-warn",12)}${esc(r.none)}</p>`:""}
     <div class="wago-act">
-      ${live?`<button class="wbtn" data-route="${esc(r.k)}|${esc(d.id)}|${esc(r.id||"")}">${ic("i-copy",13)}<span>Copy MDT string</span></button>`:""}
+      ${live?`<button class="wbtn${r.k==="wago"?"":" alt"}" data-route="${esc(r.k)}|${esc(d.id)}|${esc(r.id||"")}">${ic("i-copy",13)}<span>Copy MDT string</span></button>`:""}
       <a class="wlink" href="${home}" target="_blank" rel="noopener noreferrer">${ic("i-gate",12)}${esc(src.l)}</a>
     </div></div>`;
 };

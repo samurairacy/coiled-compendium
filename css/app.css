@@ -1230,6 +1230,11 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
 }
 .wbtn:hover{background:var(--d-accent,var(--accent));color:var(--ground)}
 .wbtn svg{flex:none}
+/* Alternate routes: same action, less pull. The accent belongs to the one
+   route this site annotates below, so the other two step back rather than
+   competing with it. Not a judgement on them — a hierarchy. */
+.wbtn.alt{border-color:var(--rule);color:var(--ink-muted)}
+.wbtn.alt:hover{background:var(--ink-muted);color:var(--ground);border-color:var(--ink-muted)}
 .wbtn.ok{border-color:var(--signal-ok,#7CB342);color:var(--signal-ok,#7CB342)}
 .wbtn.ok:hover{background:transparent;color:var(--signal-ok,#7CB342)}
 .wbtn.warn{border-color:var(--signal-urgent);color:var(--signal-urgent)}

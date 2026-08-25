@@ -223,8 +223,9 @@ async function routeCopy(btn){
   const [kind,dungeonId,slug]=btn.dataset.route.split("|");
   const lab=btn.querySelector("span");
   btn.dataset.busy="1"; const was=lab.textContent;
-  const done=(msg,cls)=>{lab.textContent=msg; btn.className="wbtn "+(cls||"");
-    setTimeout(()=>{lab.textContent=was; btn.className="wbtn"; delete btn.dataset.busy;},3600);};
+  const alt=btn.classList.contains("alt")?" alt":"";
+  const done=(msg,cls)=>{lab.textContent=msg; btn.className="wbtn"+alt+" "+(cls||"");
+    setTimeout(()=>{lab.textContent=was; btn.className="wbtn"+alt; delete btn.dataset.busy;},3600);};
   lab.textContent="Fetching\u2026";
   try{
     const s=await routeString(kind,dungeonId,slug||"");
