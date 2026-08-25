@@ -252,6 +252,23 @@ item icons keyed by Blizzard slug.
 - **Ula'tek is a named gap.** No source has tested her (Icy Veins says so
   outright); her page carries journal-derived structure behind an explicit
   warning. Don't fill the gap with confidence; fill it with live data.
+- **The ledger now has a POST-LAUNCH tier of one, and it outranks theory.**
+  `tk_hero` (21 Aug 2026) is a guild describing what week one actually did;
+  everything else in this repository was written before the raid opened.
+  Where the two disagree, the live source wins **and the row says so out
+  loud** — see Vashnik below. Do not quietly average them.
+- **The Vashnik "never drink the same fountain twice" rule is FALSIFIED.**
+  It was in the data as an iron rule. Week one walks a plain counter-clockwise
+  circle that deliberately doubles Blood, because the never-repeat rotation
+  loads three stacks onto Shadow and Flame instead and pays for it in raid
+  damage and add health. The pre-launch rule was a reasonable inference from
+  the tooltip; it is not what the fight rewards.
+- **Sha is new to the ledger and is treated that way.** Tier 3, own footage,
+  all 28 encounters from the tank's chair — but nothing in the project
+  corroborates it yet. Where it is the only source for a claim the prose says
+  so ("one tank guide reports"), and its two disagreements with Tactyks
+  (Hoardmonger pile order, whether Void Cascade is a tank soak) are filed as
+  open questions rather than resolved by whichever was read last.
 - **wow.gg is quarantined.** Its fight descriptions are Mythic-based by
   its own admission and its names read like translation (13 of them are in
   the concordance as wrong spellings). Cite it for structure, loot and

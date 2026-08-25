@@ -63,7 +63,17 @@ const SOURCES={
  tk_va  :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Normal/Heroic Venomous Abyss Raid Guide (video)",d:"2026-08-13",u:"https://www.youtube.com/watch?v=L__7PvkXaoc"},
  tk_vtk :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Venomous Abyss Tank Tips for Normal and Heroic (video)",d:"2026-08-14",u:"https://www.youtube.com/watch?v=P-V2_kWBmP8"},
  tk_rt  :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Pug-Friendly Mythic+ Routes for All Season 2 Dungeons",d:"2026-08-15",u:"https://www.youtube.com/watch?v=nZJi0Fdgl5Q"},
- tk_trk :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Season 2 Tank Trinket and Cantrip Gear Preview",d:"2026-06-27",u:"https://www.youtube.com/watch?v=2d3ebU0MuE8"}
+ tk_trk :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Season 2 Tank Trinket and Cantrip Gear Preview",d:"2026-06-27",u:"https://www.youtube.com/watch?v=2d3ebU0MuE8"},
+ /* The first POST-LAUNCH source in the ledger. Everything else here was
+    recorded before the season opened; this is a guild describing what week
+    one actually did, which is why it outranks pre-launch theory wherever the
+    two disagree — and it says so in the rows it touches. */
+ tk_hero:{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Venomous Abyss Tips and Tricks for the Hardest Heroic Bosses (video, post-launch)",d:"2026-08-21",u:"https://www.youtube.com/watch?v=zL6NayUYepg"},
+ /* New to this ledger, and treated accordingly: a tank-only walkthrough of
+    all 28 encounters with its own footage. Where it is the ONLY source for a
+    claim the text says so, and its two disagreements with Tactyks are filed
+    as open questions rather than quietly resolved. */
+ sha_tnk:{l:"SHA",t:3,k:"creator",  a:"Sha",b:"Tank Tips and Tricks for Dungeon Bosses, Mythic+ Season 2 (video)",d:"2026-08-18",u:"https://www.youtube.com/watch?v=pBrG9id-5OM"}
 };
 
 /* ═══ TAG VOCABULARIES ═══ icon + label. Colour is never the only cue. ═══ */
@@ -155,6 +165,16 @@ const DISPUTES=[
   b:{p:"Relaxed late in the PTR. A 15 Aug routing video says the requirement changed and demonstrates a route leaving two packs unpulled that still makes count; Wowhead separately reported PTR dungeon tuning that removed some King's Rest trash. Note these are not the same claim — removing trash does not by itself relax a 100% requirement.",s:["tk_rt","wh_dt"]},
   extra:"A written dungeon overview dated 11-12 Aug states flatly that you must pull every mob. That is a steadier kind of source than a video and it strengthens Position A — but it PREDATES the routing video by three or four days, so it cannot rebut a claim about a later change. Date order matters more than pedigree here.",
   r:"Open the key and check whether count completes with a pack skipped. This is now the oldest open question in the compendium and the cheapest to answer.",dg:"kings-rest"},
+ {id:"don-piles",q:"Which Hoardmonger pile do you feed him first — meat or bone?",
+  a:{p:"Meat first, then bone. The meat empowerment adds a knockback to his bellow, which is annoying rather than dangerous, so it is the cheapest thing to carry for the longest time.",s:["tk_don"]},
+  b:{p:"Bone first, then meat. The bone empowerment only adds spikes to a frontal you are already dodging, while the meat knockback keeps launching the group away from the soaks it needs to reach.",s:["sha_tnk"]},
+  extra:"Both agree completely on the third: mushrooms LAST, because that pile also multiplies how many mushrooms he throws and the soak volume is what actually overwhelms a group. The argument is only about which of the other two is cheaper to carry, and each side reasons from the mechanic it finds more disruptive rather than from measurement. A tank holding him against terrain refuses the meat knockback outright, which may dissolve the question entirely for some groups.",
+  r:"Run it both ways at the same key level and compare damage taken across the two long stretches.",dg:"den-of-nalorakk"},
+ {id:"vsa-cascade",q:"Is Void Cascade a tank soak?",
+  a:{p:"No, emphatically — it is not a soak at all. The targeted player runs out and strafes. It prefers ranged DPS and falls to healers only if no ranged are alive, and a tank standing in it is spending health nobody asked for.",s:["sha_tnk"]},
+  b:{p:"Some groups have the tank soak it, and it works.",s:["tk_tech"]},
+  extra:"Both describe the same projectile, so this is not a disagreement about the mechanic — it is about whether spending tank health to save a ranged player some movement is a trade worth making. Worth recording because both sources report groups getting angry at tanks, in opposite directions. Everyone agrees it can be dropped with a combat drop, which costs neither.",
+  r:"Compare a soaking tank's damage taken against the uptime a kiting ranged player actually loses. Until someone measures it this is a preference dressed as a rule.",dg:"voidscar-arena"},
  {id:"vsa-buff",q:"How much Versatility does the Voidscar left path grant?",
   a:{p:"5% Versatility, from Proof of Endurance.",s:["tk_vsa"]},
   b:{p:"3% Versatility.",s:["tk_rt"]},
