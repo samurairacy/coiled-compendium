@@ -188,6 +188,10 @@ for fname, src in (("mplus", mplus), ("raid", raid)):
     for i, ln in enumerate(src.split("\n"), 1):
         if '{n:"' not in ln:
             continue
+        # A NESTED object's keys are not this object's keys. hf:{d,t} and
+        # play:{tank,...} both live inline, so mask them out before counting or
+        # every hotfix note reads as a second t:.
+        ln = re.sub(r'\w+:\{[^{}]*\}', "", ln)
         for key in ("t", "c", "r", "s", "e", "h"):
             n = len(re.findall(r'(?<=[,{])%s:[\["]' % key, ln))
             if n > 1:

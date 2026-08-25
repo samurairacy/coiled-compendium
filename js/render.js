@@ -82,6 +82,18 @@ const sevLegend=()=>`<p class="sevkey">${ic("i-info",13)}
    nobody's eye stopped at. It gets a flag and a rule of its own now: the raid
    is two games and the reader has to be able to see which one a line is about
    without reading it. */
+/* A hotfix is a statement about TIME: the thing you learned last Tuesday may
+   no longer be true. It was written as an ALL-CAPS run-in inside the effect
+   text, which at a glance is simply body text, so it moves to its own line
+   behind a dated stamp.
+   The treatment is deliberately COLOURLESS. Every other flag on the site owns
+   a hue — red kills, rose is difficulty, amber is severity, gold is the
+   brand, and eight dungeon accents plus eight boss accents claim most of what
+   is left. A solid neutral slab is the one loud thing that cannot collide
+   with any of them on any page, and it is honest: a hotfix is not danger, it
+   is an editorial notice. The double left rule is unique on this site. */
+const hotfixLine=hf=>hf&&hf.t
+  ?`<p class="hotfix"><span class="hfstamp" title="Blizzard changed this after the season opened. Anything you read before this date describes the old version.">Hotfix${hf.d?` · ${esc(hf.d)}`:""}</span>${esc(hf.t)}</p>`:"";
 const heroLine=(txt,cls)=>txt
   ?`<p class="heroicline ${cls||""}"><span class="hflag">${ic("i-warn",10)}Heroic</span>${esc(txt)}</p>`:"";
 /* Blizzard's own dungeon shorthand, read off the in-game Best Runs panel.
@@ -142,7 +154,8 @@ function abilityRow(a,roleFilter,diff){
     <div><p class="effect">${esc(a.e)}${srcMark(a.s)}</p>
       ${ctrs?`<div class="tags">${ctrs}</div>`:""}
       ${a.h?`<p class="read play">${esc(a.h)}</p>`:""}
-      ${a.hh&&diff==="h"?heroLine(a.hh,"inrow"):""}</div></div>`;
+      ${a.hh&&diff==="h"?heroLine(a.hh,"inrow"):""}
+      ${hotfixLine(a.hf)}</div></div>`;
 }
 /* Every trash block carries a gravity tier taken straight from the mob's own
    k, so nothing is styled by hand: mini-bosses read loudest, lieutenants sit a
@@ -608,7 +621,8 @@ function pDungeon(id,tab){
     +callsBlock(d)
     +(d.buffs.length?`<div class="sec"><h2>Interactables</h2><span class="n">${d.buffs.length}</span></div>
       ${d.buffs.map(b=>`<div class="card acc"><h3>${esc(b.n)}</h3><div class="meta">${esc(b.loc)}</div>
-        <p>${esc(b.e)}${srcMark(b.s)}</p><p class="read">Usable by: ${esc(b.w)}</p></div>`).join("")}`
+        <p>${esc(b.e)}${srcMark(b.s)}</p><p class="read">Usable by: ${esc(b.w)}</p>
+        ${hotfixLine(b.hf)}</div>`).join("")}`
       :`<div class="sec"><h2>Interactables</h2><span class="n">None recorded</span></div>
         <p class="note">No party buff objects recorded in this dungeon.</p>`)
     +locBlock(d)+rewardBlock(d)+disputeBlock(d.id)+resolvedBlock(d.id)

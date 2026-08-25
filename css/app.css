@@ -1135,3 +1135,27 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
   border-color:currentColor;color:inherit;background:none}
 .fopt[aria-pressed="true"] .dcode{border-color:var(--accent-ink);opacity:.75}
 @media print{.dcode{color:#000;border-color:#000;background:none}}
+
+/* ═══ HOTFIX ═══ a statement about TIME, and deliberately the one colourless
+   flag on the site. Every hue is spoken for — red kills, rose is difficulty,
+   amber is severity, gold is the brand, and sixteen dungeon and boss accents
+   claim the rest — so a solid neutral slab is the only loud thing that cannot
+   collide with any of them on any page. It is also honest: a hotfix is not
+   danger, it is an editorial notice that what you learned may be stale. The
+   double left rule appears nowhere else. ═══════════════════════════════ */
+.hotfix{
+  border-left:3px double var(--ink-faint);padding:.3rem 0 .3rem .7rem;
+  margin:.5rem 0 0;font-size:.88rem;color:var(--ink-muted);max-width:70ch;
+  background:linear-gradient(90deg,rgba(255,255,255,.035),transparent 60%)
+}
+.hfstamp{
+  display:inline-block;font-family:var(--face-term);font-size:.57rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;padding:.12rem .4rem;border-radius:2px;
+  background:var(--ink-muted);color:var(--ground);margin-right:.5rem;
+  vertical-align:.08em;white-space:nowrap;cursor:help
+}
+.abil .hotfix{margin-top:.45rem}
+@media print{
+  .hotfix{border-left-color:#000;background:none}
+  .hfstamp{background:#000;color:#fff}
+}
