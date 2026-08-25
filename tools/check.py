@@ -107,25 +107,54 @@ if IMG is not None:
           (len(orphan), ": " + ", ".join(orphan[:4]) if orphan else ""))
     check(len(jkeys) > 0, "journal portrait keys present (%d referenced)" % len(jkeys))
 
-# ── 3. bosses: equals encounters.length, per dungeon ───────────────────────
-# The header patterns tolerate ANY optional field between id: and what they
-# anchor on — quoted strings, inline objects, bare literals. They have been
-# widened three times: for code:, then for wago:{...}, then for routes:[...].
-# Each time the previous form was too narrow by exactly one kind of value and
-# the checks found ZERO rather than failing on substance.
-# Both times the checks silently found zero rather than failing on substance,
-# which is the worst way for a checker to break. Do not re-pin these adjacent.
-DHEAD = r'\{id:"[\w\-]+",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|\[[^\[\]]*\]|[\w.]+),)*?name:"(?:[^"\\]|\\.)*",short:'
-ids = re.findall(r'\{id:"([\w\-]+)",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|\[[^\[\]]*\]|[\w.]+),)*?name:"(?:[^"\\]|\\.)*",short:', mplus)
-declared = re.findall(r'bosses:(\d+)', mplus)
-enc_counts = [len(re.findall(r'\{n:"(?:[^"\\]|\\.)*",o:\d+,', seg)) for seg in
-              re.split(DHEAD, mplus)[1:]]
+# ── 3. bosses: equals encounters.length, per dungeon ─────────────────
+# Dungeon headers are SCANNED, not matched. The old regex was widened five
+# times \u2014 for code:, for wago:{...}, for routes:[...], for routes holding
+# nested pull arrays \u2014 and each widening was followed by another field shape
+# it had not anticipated. A regex cannot express "this object's fields but not
+# its children's", because that needs bracket counting.
+#
+# Each time it went stale the checks found ZERO dungeons rather than failing on
+# substance, which is the worst way for a checker to break. This ends that: any
+# nested structure is skipped wholesale, so no future field shape can blind it.
+def dungeon_headers(src):
+    """Yield (position, {key: value}) for each top-level dungeon object.
 
-# ── 3b. Blizzard's in-game dungeon codes ───────────────────────────────────
+    Walks forward from {id:" collecting key:"value" pairs at depth zero and
+    stepping over anything nested, whatever shape it takes."""
+    out = []
+    for m in re.finditer(r'\{id:"([\w\-]+)"', src):
+        i, depth, fields = m.end(), 0, {"id": m.group(1)}
+        while i < len(src):
+            c = src[i]
+            if c in "{[":
+                depth += 1; i += 1; continue
+            if c in "}]":
+                if depth == 0:
+                    break
+                depth -= 1; i += 1; continue
+            if depth == 0:
+                f = re.match(r',([a-zA-Z]+):"((?:[^"\\]|\\.)*)"', src[i:])
+                if f:
+                    fields[f.group(1)] = f.group(2)
+                    i += f.end(); continue
+            i += 1
+        out.append((m.start(), fields))
+    return out
+
+
+heads = dungeon_headers(mplus)
+ids = [h["id"] for _, h in heads if "code" in h and "short" in h]
+declared = re.findall(r'bosses:(\d+)', mplus)
+bounds = [pos for pos, h in heads if "code" in h and "short" in h] + [len(mplus)]
+enc_counts = [len(re.findall(r'\{n:"(?:[^"\\]|\\.)*",o:\d+,', mplus[bounds[k]:bounds[k + 1]]))
+              for k in range(len(bounds) - 1)]
+
+# \u2500\u2500 3b. Blizzard's in-game dungeon codes \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
 # Eight, unique, uppercase. They are a second NAME and the search index leans
 # on them, so a typo would quietly make a dungeon unfindable by the exact
 # string most players type into group finder.
-codes = re.findall(r'\{id:"[\w\-]+",(?:\w+:(?:"[^"]*"|\{[^{}]*\}|\[[^\[\]]*\]|[\w.]+),)*?code:"([A-Z]+)"', mplus)
+codes = [h["code"] for _, h in heads if "code" in h and "short" in h]
 check(len(codes) == 8 and len(set(codes)) == 8,
       "8 unique in-game dungeon codes (%d found, %d unique)" % (len(codes), len(set(codes))))
 ok = len(ids) == 8 and len(declared) == 8 and all(int(d) == c for d, c in zip(declared, enc_counts))

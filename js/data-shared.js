@@ -183,7 +183,7 @@ const ROLEPROFILE={
 const ROUTESRC={
  wago:{by:"Tactyks",src:"tk_rt",l:"Wago",
    t:"Pug route",
-   d:"Deliberately conservative — no skips, minimised interrupts, minimised danger. The route the pull-by-pull below annotates.",
+   d:"Deliberately conservative — no skips, minimised interrupts, minimised danger. The longest-standing route here and the default below.",
    home:s=>"https://wago.io/"+s, data:s=>"https://data.wago.io/api/raw/encoded?id="+s},
  sha:{by:"Sha",src:"sha_rt",l:"Google Sheet",
    t:"Early season",

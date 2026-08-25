@@ -14,6 +14,10 @@ function route(){
     const rq=new URLSearchParams(qs).get("r");
     if(rq!==null){ROLEF=["tank","healer","mdps","rdps"].includes(rq)?rq:null;
       try{ROLEF?localStorage.setItem("cc-role",ROLEF):localStorage.removeItem("cc-role");}catch(e){}}
+    /* which author's pull-by-pull, if the link carried one. Read but never
+       stored: this is a per-run choice, not a preference. */
+    const tq=new URLSearchParams(qs).get("rt");
+    if(tq!==null)ROUTEF=/^[a-z]{2,8}$/.test(tq)?tq:null;
   }
   $$(".page").forEach(p=>p.classList.remove("on"));
   document.body.removeAttribute("data-dungeon");
@@ -129,6 +133,10 @@ function lfacetsFromQS(qs){const p=new URLSearchParams(qs);
 
    Every failure is reported ON the button, and every card carries the author's
    own link, which is the thing that still works when none of this does. */
+/* Which author's pull-by-pull is showing. URL state so a shared link keeps
+   it, but deliberately NOT persisted: which route you want is a per-run
+   choice, unlike the role lens or difficulty which describe who you are. */
+let ROUTEF=null;
 const WAGO="https://data.wago.io";
 const RDOC={};                       /* provider key -> parsed {dungeonId:string} */
 
@@ -278,6 +286,13 @@ document.addEventListener("click",e=>{
      the route, so setting it sends route() looking for a page called "id",
      which lands you on home. Anything jumping within the current page uses
      data-goto and is scrolled here instead, leaving the hash alone. */
+  const rs=e.target.closest("[data-rt]");
+  if(rs){e.preventDefault();ROUTEF=rs.dataset.rt;
+    const h=(location.hash||"").slice(2).split("?")[0].split("/").filter(Boolean);
+    if(h[0]==="d"&&D[h[1]]){
+      history.replaceState(null,"","#/d/"+h[1]+"/route?rt="+ROUTEF+(ROLEF?"&r="+ROLEF:""));
+      $("#p-dungeon").innerHTML=pDungeon(h[1],"route");}
+    return;}
   const wg=e.target.closest("[data-route]");
   if(wg){e.preventDefault();routeCopy(wg);return;}
   const gt=e.target.closest("[data-goto]");

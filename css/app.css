@@ -1186,6 +1186,23 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
    it sits above; the dungeon accent says which dungeon it belongs to.
    The LINK is not decoration. It is the fallback for every way the button can
    fail, so it stays legible rather than being tucked away. ══════════ */
+/* Whose pull-by-pull to read. A segmented control rather than a dropdown:
+   three options that a reader may want to flip between deserve to be visible
+   at once. Selection is URL state, never stored ' see app.js. */
+.rsel{display:flex;gap:.25rem;margin:0 0 .2rem;flex-wrap:wrap}
+.rsel-b{
+  font-family:var(--face-term);font-size:.66rem;font-weight:700;letter-spacing:.11em;
+  text-transform:uppercase;padding:.36rem .75rem;border-radius:2px;
+  border:1px solid var(--rule);color:var(--ink-faint);background:transparent;
+  transition:color var(--dur) var(--ease),border-color var(--dur) var(--ease)
+}
+.rsel-b:hover{color:var(--ink);border-color:var(--ink-muted)}
+.rsel-b.on{
+  color:var(--d-accent,var(--accent));border-color:var(--d-accent,var(--accent));
+  background:color-mix(in srgb,var(--d-accent,var(--accent)) 10%,transparent)
+}
+@media print{.rsel{display:none}}
+
 /* ' PUBLISHED ROUTES ' One card per author. Cards are a grid so three
    authors read as three options rather than a stack of notices. */
 .rgrid{
@@ -1250,15 +1267,6 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
 }
 .wbtn:hover{background:var(--d-accent,var(--accent));color:var(--ground)}
 .wbtn svg{flex:none}
-/* Which route the pull-by-pull describes. This used to be a muted button,
-   which sat next to a LIVE badge and got read as "less live" — two
-   orthogonal signals carried by adjacent styling. Said in words now, and
-   as a marker on the primary rather than a demotion of the others. */
-.rc-anno{
-  font-family:var(--face-term);font-size:.55rem;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--d-accent,var(--accent));cursor:help;white-space:nowrap;
-  border-bottom:1px dotted var(--d-accent,var(--accent))
-}
 .wbtn.ok{border-color:var(--signal-ok,#7CB342);color:var(--signal-ok,#7CB342)}
 .wbtn.ok:hover{background:transparent;color:var(--signal-ok,#7CB342)}
 .wbtn.warn{border-color:var(--signal-urgent);color:var(--signal-urgent)}

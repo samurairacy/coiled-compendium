@@ -72,7 +72,7 @@ KNOWN = set("""
  mobs encounters calls rewards noLoot isNew origin sigil banner name i l
  patch opens minIlvl entrance fork wings ids after converge difficulties
  schedule ilvl brackets crests way trigger m won by extra dg v zone tp note code hf
- routes none home data live src
+ routes none home data live src pulls thin
 """.split())
 
 # creator display name -> source-key prefix that would justify naming them

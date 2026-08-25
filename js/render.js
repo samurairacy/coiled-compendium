@@ -118,7 +118,7 @@ const routeCard=(d,r)=>{
   const live=!r.none;
   return `<div class="rcard${live?"":" dead"}">
     <div class="rc-h">
-      <b>${esc(src.by)}</b><span class="rc-t">${esc(src.t)}</span>${r.k==="wago"?`<span class="rc-anno" title="The pull-by-pull notes below this section describe this route specifically. The other two are published alternatives we link but do not annotate.">Annotated below</span>`:""}
+      <b>${esc(src.by)}</b><span class="rc-t">${esc(src.t)}</span>
       <span class="rbadge ${live?"is-live":"is-link"}"
         title="${live
           ?`Fetched from ${esc(src.by)}&#39;s own ${esc(src.l)} the moment you press Copy, so it is always their current version. Nothing is stored on this site.`
@@ -692,11 +692,19 @@ function pDungeon(id,tab){
         return blocks.trim()?`<div class="area-h">${esc(ar.n)}</div>`+objBlock(ar.brief)+blocks:"";}).join("");
   }
   else if(tab==="route"){
+    /* Which author's pull list to show. Tactyks' lives on d.route for
+       historical reasons; the other two hang off their route card. */
+    const withPulls=(d.routes||[]).filter(r=>r.k==="wago"||(r.pulls&&r.pulls.length));
+    const pick=withPulls.find(r=>r.k===ROUTEF)||withPulls[0]||null;
+    const pulls=pick?(pick.k==="wago"?d.route:pick.pulls):d.route;
+    const who=pick?ROUTESRC[pick.k]:null;
     body=routeOptions(d)+
-    `<div class="sec"><h2>Pull by pull</h2><span class="n">${d.route.length} pulls</span></div>
-    <p class="note">This is <b>Tactyks&#39; route</b>, annotated. Deliberately conservative: no skips, minimised interrupts, minimised danger. Faster groups
-    combine several of these. Numbers in accent are lust windows; red outlines are the pulls that wiped groups on the PTR.</p>
-    ${d.route.map(p=>`<div class="pull ${p.lust?"lust":""} ${p.d===3?"d3":""}"><div class="num">${p.n}</div>
+    (withPulls.length>1?`<div class="rsel">${withPulls.map(r=>
+      `<button class="rsel-b${r===pick?" on":""}" data-rt="${esc(r.k)}">${esc(ROUTESRC[r.k].by)}</button>`
+      ).join("")}</div>`:"")+
+    `<div class="sec"><h2>Pull by pull</h2><span class="n">${pulls.length} pulls${who?" \u00b7 "+esc(who.by):""}</span></div>
+    <p class="note">${who?`This is <b>${esc(who.by)}&#39;${who.by.endsWith("s")?"":"s"} route</b>, annotated from their own walkthrough.`:""} Numbers in accent are lust windows; red outlines are the most dangerous pulls.${pick&&pick.thin?` <b>Thinner than the others by some way:</b> this author covers all eight dungeons in the time the others spend on one, so the order and the mob names are theirs and several notes are deliberately short rather than invented.`:""}</p>
+    ${pulls.map(p=>`<div class="pull ${p.lust?"lust":""} ${p.d===3?"d3":""}"><div class="num">${p.n}</div>
       <div><div class="pn">${esc(p.t)}</div><div class="tags" style="margin-top:.3rem">
         <span class="chip">${esc(p.m)}</span>${p.lust?`<span class="chip c-counter">${ic("i-enrage")}Lust</span>`:""}
         ${p.d===3?`<span class="chip" style="border-color:var(--signal-urgent);color:var(--signal-urgent)">${ic("i-warn")}High risk</span>`:""}</div>
