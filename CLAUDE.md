@@ -430,6 +430,22 @@ item icons keyed by Blizzard slug.
 - **Source tiering** (see the SOURCES ledger): 1 Blizzard, 2 Wowhead/Icy
   Veins, 3 established creators (Method, Tactyks — the transcripts the
   project owner most trusts), 4 SEO/derivative sites (wow.gg).
+- **Long runs don't stop to ask** (2026-10-17). The project owner often
+  leaves a task running for hours or overnight, so a pause that waits for a
+  click can waste the whole night. While work is left in what was asked,
+  never stop to make them choose: no `AskUserQuestion`, no plan approval
+  (`EnterPlanMode`/`ExitPlanMode`) unless a plan was asked for, no "offer"
+  session cards (`start_session` with `initiation: "offer"`; do the work
+  here, or propose follow-ups as `own_initiative` cards, which don't block),
+  and never the desktop app's `wrap_up` box: it's denied in the user
+  settings, so close every turn with an ordinary message, any question in
+  its text. Where there's a real choice, take the pick this file and the
+  project's docs point to, record it and why, and carry on. Stop and ask
+  only for what the safety rules reserve for the user (buying, sending or
+  posting, signing in, deleting, anything irreversible) or when truly
+  blocked with nothing else to do; a review this file asks for still
+  happens. In those cases finish everything that doesn't depend on the
+  answer first, and ask at the end.
 
 ## Deployment
 
