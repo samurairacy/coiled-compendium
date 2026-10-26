@@ -35,7 +35,9 @@ quietly go stale.
   with dates, tiers, and what would settle it. Nothing is quietly picked.
 - **Log Analysis** — pull reviews built from real combat logs and read against the
   encounter pages: what a raid asked after a night of wipes, the numbers that answer
-  it, and what actually ended each pull. Every figure is computed from the log.
+  it, and what actually ended each pull. Every figure is computed from the log by
+  the pipeline in [`tools/logs/`](tools/logs/README.md), which also produces each
+  review's PDF, and each new night is compared with the last.
 
 ## How it's sourced
 

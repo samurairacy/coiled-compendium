@@ -1405,6 +1405,7 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
 .lgheat tbody th{text-align:right;font-family:var(--face-body);font-size:.8rem;letter-spacing:0;text-transform:none;color:var(--ink-muted);white-space:nowrap}
 .lgheat td{font-family:var(--face-term);background:var(--ground-sunken);color:var(--ink);min-width:2.4rem}
 .lgheat tbody tr:hover{background:none}
+.lgheat td.out{background:none;color:var(--ink-faint)}
 @media(max-width:700px){.lgheat{display:table}}
 .lglist-cards{display:grid;gap:.85rem}
 .lgcard{text-decoration:none;color:inherit;display:block}

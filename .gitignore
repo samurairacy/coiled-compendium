@@ -5,3 +5,6 @@ desktop.ini
 # Local working documents — briefs, notes, scratch. This repository is public;
 # docs/ is where anything not meant for publication lives.
 docs/
+
+# Python bytecode. The log tools write it on import and it embeds local paths.
+__pycache__/

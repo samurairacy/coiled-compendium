@@ -421,6 +421,19 @@ if LOGS:
     check(not lprob, "log reports render: known blocks and charts, clean ids, real bosses, PDFs on disk (%d reports%s)"
           % (len(LOGS), "" if not lprob else " \u2014 " + "; ".join(lprob)))
     check('id="p-logs"' in html and 'id="p-log"' in html, "index.html has the two Log Analysis page containers")
+    # data-logs.js is GENERATED from tools/logs/reports/ + tools/logs/facts/.
+    # A hand edit would be silently undone by the next build, so the file must
+    # be byte-identical to what the builder produces now.
+    sys.path.insert(0, R("tools", "logs"))
+    try:
+        import build as logbuild
+        _, fresh = logbuild.render()
+        check(fresh == logs_src, "js/data-logs.js matches tools/logs/build.py output (run it after editing a report or facts)")
+    except Exception as e:
+        check(False, "tools/logs/build.py could not render the reports: %s" % e)
+    missing_facts = [f for f in os.listdir(R("tools", "logs", "reports")) if f.endswith(".py") and not f.startswith("_")
+                     and not os.path.exists(R("tools", "logs", "facts", f[:-3] + ".json"))]
+    check(not missing_facts, "every report module has its facts file committed (%s)" % (", ".join(missing_facts) or "all present"))
 
 # ── 9b. no anchor may carry a bare fragment href ─────────────────────
 # The hash IS the route. <a href="#sourcing-ulatek"> sets location.hash, and
