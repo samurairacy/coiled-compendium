@@ -386,6 +386,42 @@ check(len(rblocks) == 8 and len(slugs) == 8 and not rprob,
       "8 dungeons carry published routes, providers all known (%d dungeons, %d Wago slugs%s)"
       % (len(rblocks), len(slugs), "" if not rprob else " \u2014 " + "; ".join(sorted(set(rprob)))))
 
+# ── 9a. log analysis ──────────────────────────────────────────────────
+# A report is strict JSON, so it gets the same parse tripwire as ICONS. Beyond
+# that, the ways a report breaks quietly: a block or chart kind the renderer
+# does not know renders as nothing; an id that is not a clean slug breaks its
+# route; a boss key that is not a raid boss loses its accent and cross-link;
+# a PDF link that points at nothing is a dead download.
+logs_src = read("js", "data-logs.js")
+LOGS = strict("LOGS", logs_src, "[]")
+check(LOGS is not None, "LOGS parses (%s reports)" % (LOGS and len(LOGS)))
+if LOGS:
+    logjs = read("js", "logs.js")
+    bkinds = set(re.findall(r'case "(\w+)":', logjs))
+    ckinds = set(re.findall(r'(\w+):ch[A-Z]\w*[,}]', logjs))
+    boss_ids = set(re.findall(r'^ \{id:"([\w-]+)",o:\d', raid, re.M))
+    lprob = []
+    ids = [L.get("id", "") for L in LOGS]
+    if len(set(ids)) != len(ids):
+        lprob.append("duplicate id")
+    for L in LOGS:
+        lid = L.get("id", "")
+        if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", lid):
+            lprob.append("id %r is not a route-safe slug" % lid)
+        if L.get("mod") == "r" and L.get("boss") not in boss_ids:
+            lprob.append("%s: boss %r is not a raid boss" % (lid, L.get("boss")))
+        if L.get("pdf") and not os.path.exists(R(*L["pdf"].split("/"))):
+            lprob.append("%s: pdf %s missing" % (lid, L["pdf"]))
+        for s in L.get("sections", []):
+            for b in s.get("blocks", []):
+                if b.get("k") not in bkinds:
+                    lprob.append("%s: unknown block kind %r" % (lid, b.get("k")))
+                elif b["k"] == "chart" and b.get("kind") not in ckinds:
+                    lprob.append("%s: unknown chart kind %r" % (lid, b.get("kind")))
+    check(not lprob, "log reports render: known blocks and charts, clean ids, real bosses, PDFs on disk (%d reports%s)"
+          % (len(LOGS), "" if not lprob else " \u2014 " + "; ".join(lprob)))
+    check('id="p-logs"' in html and 'id="p-log"' in html, "index.html has the two Log Analysis page containers")
+
 # ── 9b. no anchor may carry a bare fragment href ─────────────────────
 # The hash IS the route. <a href="#sourcing-ulatek"> sets location.hash, and
 # route() slices the first two characters off expecting "#/", so it looks up a
@@ -398,7 +434,7 @@ check(len(rblocks) == 8 and len(slugs) == 8 and not rprob,
 # sprite reference never touches location.
 ANCHOR = re.compile(r'<a\b[^>]*?href="#(?!/)([^"]*)"')
 badanchor = []
-for f in ("index.html", "js/render.js", "js/wishlist.js", "js/app.js"):
+for f in ("index.html", "js/render.js", "js/wishlist.js", "js/logs.js", "js/app.js"):
     body = io.open(R(*f.split("/")), encoding="utf-8").read()
     for m in ANCHOR.finditer(body):
         # data-goto may sit either side of href, so judge the whole tag, not

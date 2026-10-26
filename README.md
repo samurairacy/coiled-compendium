@@ -33,6 +33,9 @@ quietly go stale.
   Filters live in the URL, so a filtered view is a link you can send someone.
 - **Open disputes** — where sources contradict each other, both positions are shown
   with dates, tiers, and what would settle it. Nothing is quietly picked.
+- **Log Analysis** — pull reviews built from real combat logs and read against the
+  encounter pages: what a raid asked after a night of wipes, the numbers that answer
+  it, and what actually ended each pull. Every figure is computed from the log.
 
 ## How it's sourced
 

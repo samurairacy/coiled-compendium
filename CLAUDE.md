@@ -11,7 +11,7 @@ licensing position the project depends on.
 ## Architecture
 
 Since 2026-08-17 the site is a small `index.html` shell over split files.
-**Load order is the contract** — six classic scripts with `defer`, which
+**Load order is the contract** — eight classic scripts with `defer`, which
 preserves document order and keeps the site working from `file://`:
 
     index.html            shell: head, icon sprite, nav, page containers
@@ -20,8 +20,10 @@ preserves document order and keeps the site working from `file://`:
                           ICONS, CORRECTIONS — vocabulary both modules use
     js/data-mplus.js      DUNGEONS (+ D map, ROUTING)
     js/data-raid.js       RAID (+ RB map)
+    js/data-logs.js       LOGS (+ LOGI map) — log-analysis reports as blocks
     js/render.js          helpers and every page function
     js/wishlist.js        wishlists: store, CRUD, insights, voidcore odds
+    js/logs.js            Log Analysis: block renderer, charts, both pages
     js/app.js             router, facet/difficulty delegation, search, boot
 
 **No build step, deliberately.** Data files are JS object literals, not
@@ -70,8 +72,8 @@ item icons keyed by Blizzard slug.
   bars. `check.py` fails on any bare fragment href in an `<a>`. SVG sprite
   refs (`<use href="#i-warn">`) are a different thing and stay legal.
 - **Two modules, one brand.** The nav is two module entries (accent dots),
-  a divider, then the shared indexes: Mechanics, Loot, Season, Sources,
-  Glossary. Mechanics and Loot are single indexes spanning both modules
+  a divider, then the shared indexes: Mechanics, Loot, Wishlist, Log
+  Analysis, Season, Sources, Glossary. Mechanics and Loot are single indexes spanning both modules
   with a **From** facet (Dungeons | Raid) — a deliberate decision after
   going back and forth; do not split them per module. Module sub-pages ride
   a second-level bar: Dungeons·Routes under Mythic+, Bosses·Prep under Raid.
@@ -335,6 +337,24 @@ item icons keyed by Blizzard slug.
   module's delegated listener matches `[data-wl]` only — same qualifier
   discipline that keeps mechanics (`[data-f]`) and loot (`[data-lf]`)
   from eating each other's clicks.
+- **Log Analysis is a third kind of page: what happened, not what the fight
+  is.** `#/logs` lists reports, `#/logs/<id>` shows one. A report is a LOGS
+  entry in `js/data-logs.js` written as **blocks** (lede, p, cap, h3, ul,
+  tiles, callout, table, chart) that `js/logs.js` renders, so a second report
+  is a data change, not code. The only inline markup is `**bold**` and
+  `*italic*`, applied after escaping. Charts are drawn in SVG/HTML by the
+  renderer, never shipped as images, using a three-colour set (Heart, body,
+  adds) validated against `--ground` and scoped to these pages. The urgent
+  signal keeps its single meaning there: the snap chain that wiped the raid.
+  **Every number in a report is computed from the log by an analysis script,
+  not typed.** The first report (Ula'tek Heroic, 21 Oct 2026) was produced
+  that way, and its PDF twin lives in `assets/logs/`. The log is public and
+  the owner chose to publish it with character names. A raid report sets
+  `data-raid`/`data-boss` so it wears its boss's accent, but the nav lights
+  Log Analysis, not Raid. The boss page links any reports for that fight via
+  `logNote()`. `check.py` strict-parses LOGS and fails on an unknown block or
+  chart kind, an id that is not a route-safe slug, a boss key that is not a
+  raid boss, or a PDF path missing from disk.
 - **Voidcore odds are exact, and the mechanics are owner-verified in game**
   (2026-08-17): a core draws uniformly from the dungeon's — in the raid,
   that boss's, offered after the kill — loot table filtered to your **loot

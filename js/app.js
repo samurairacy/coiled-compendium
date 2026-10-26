@@ -1,6 +1,6 @@
 /* js/app.js — router, facet delegation, search, boot
-   Load order: data-shared → data-mplus → data-raid → render → app.
-   All five load with `defer`, which preserves this order. */
+   Load order: data-shared → data-mplus → data-raid → data-logs → render →
+   wishlist → logs → app. All load with `defer`, which preserves this order. */
 
 function route(){
   /* the hash may carry a query: facet state on the indexes, difficulty and
@@ -40,6 +40,12 @@ function route(){
   else if(key==="wl"&&h[1]==="import"){page="wl";html=pWlImport(qs||"");}
   else if(key==="wl"&&h[1]){page="wl";html=pWlOne(h[1]);}
   else if(key==="wl"){page="wl";html=pWl();}
+  /* log analysis: the index, or one report. A raid report wears its boss's
+     accent, the same way the boss page does. */
+  else if(key==="logs"&&h[1]&&LOGI[h[1]]){page="log";const L=LOGI[h[1]];
+    if(L.mod==="r"&&RB[L.boss]){document.body.setAttribute("data-raid","");document.body.setAttribute("data-boss",L.boss);}
+    html=pLog(h[1]);}
+  else if(key==="logs"){page="logs";html=pLogs();}
   else if(key==="routes"){page="routes";html=pRoutes();}
   else if(key==="season"){page="season";html=pSeason();}
   else if(key==="sources"){page="sources";html=pSources();}
@@ -74,6 +80,8 @@ function route(){
     :page==="raid"?RAID.name+" — "
     :page==="prep"?"Raid Prep — "
     :page==="wl"?((h[1]&&h[1]!=="import"&&wlGet(h[1])?wlGet(h[1]).name:"Wishlists")+" — ")
+    :page==="log"?LOGI[h[1]].title+" log, "+LOGI[h[1]].date+" — "
+    :page==="logs"?"Log Analysis — "
     :page!=="home"?key[0].toUpperCase()+key.slice(1)+" — ":"")+"The Coiled Compendium";
   window.scrollTo({top:0,behavior:"instant"});
 }
@@ -383,6 +391,8 @@ const INDEX=[
  {t:"Raid prep",m:"Lockout, schedule, what to bring",h:"#/raid/prep"},
  ...DUNGEONS.flatMap(d=>d.buffs.map(b=>({t:b.n,m:`Interactable · ${d.name}`,h:`#/d/${d.id}`}))),
  {t:"Wishlists",m:"Your lists · keys to run · voidcore odds",h:"#/wl"},
+ {t:"Log Analysis",m:`Pull reviews from real combat logs · ${LOGS.length} so far`,h:"#/logs"},
+ ...LOGS.map(L=>({t:`${L.title} log review`,m:`Log analysis · ${L.when} · ${L.pulls} pulls`,h:`#/logs/${L.id}`})),
  {t:"Every poison in the season",m:"Mechanics index · filtered",h:"#/mechanics"},
  {t:"Source ledger",m:"Who said what, and when",h:"#/sources"},
  {t:"Caption decoder",m:"Glossary · names that are wrong everywhere",h:"#/glossary"}

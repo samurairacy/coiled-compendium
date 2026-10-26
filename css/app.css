@@ -1328,3 +1328,93 @@ h1 .dcode{font-size:.72rem;margin-left:.7rem;top:-.28em}
 }
 .gapnote svg{color:var(--signal-urgent);flex:none;margin-top:.2rem}
 .gapnote p{margin:0;font-size:.88rem;color:var(--ink-muted);line-height:1.65;max-width:none}
+
+/* ═══ LOG ANALYSIS ═══ pull reviews from real combat logs ═════════════
+   The three category colours were validated as a set against --ground
+   (lightness band, chroma floor, deutan/protan/tritan separation, contrast)
+   and are scoped here: they mean "where a cast went", nothing else. The
+   urgent signal keeps its one meaning — the chain that wiped the raid. */
+.page[data-page="log"],.page[data-page="logs"]{--lg-heart:#23A853;--lg-body:#5A8CF2;--lg-adds:#B8862C}
+.lgkick{font-family:var(--face-term);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--d-accent,var(--accent));margin:1.6rem 0 .3rem}
+.lgwhen{font-family:var(--face-display);font-style:italic;font-size:1.15rem;color:var(--ink-muted);margin:.25rem 0 0}
+.lgtoc{display:flex;flex-wrap:wrap;gap:.35rem 1.2rem;margin:1.2rem 0 0;padding:.75rem 0;border-top:1px solid var(--rule-soft);border-bottom:1px solid var(--rule-soft)}
+.lgtoc .linklike{font-size:.85rem;text-decoration:none;color:var(--ink-muted)}
+.lgtoc .linklike:hover{color:var(--ink);text-decoration:underline}
+.lgsec{scroll-margin-top:calc(var(--bar) + 1rem)}
+.lgsec .sec{margin-top:.6rem}
+.lgsec>.sec:first-child{margin-top:2.6rem}
+.lgsec:first-of-type .sec{margin-top:2rem}
+.lglede{margin:0 0 1.1rem}
+.lgp{max-width:var(--measure);margin:0 0 .9rem;font-size:.95rem}
+.lgsmall{max-width:var(--measure);margin:0 0 .7rem;font-size:.84rem;color:var(--ink-muted)}
+.lgcap{font-size:.82rem;font-style:italic;color:var(--ink-faint);max-width:var(--measure);margin:-.4rem 0 1.4rem}
+.lgh3{margin:1.8rem 0 .7rem;font-size:1.18rem}
+.lglist{max-width:var(--measure);padding-left:1.2rem;margin:0 0 1rem}
+.lglist li{margin:0 0 .6rem;font-size:.95rem}
+.lglist li::marker{color:var(--d-accent,var(--accent))}
+.lgtiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:0 0 1.4rem}
+.lgtile{background:var(--ground-raised);padding:.9rem 1rem .8rem;display:flex;flex-direction:column;gap:.3rem}
+.lgtile b{font-family:var(--face-display);font-size:1.8rem;line-height:1.05;font-weight:700;color:var(--ink)}
+.lgtile.acc b{color:var(--r-accent)}
+.lgtile.gold b{color:var(--accent)}
+.lgtile span{font-size:.8rem;color:var(--ink-muted);line-height:1.4}
+.lgcall{background:var(--ground-panel);border-left:3px solid var(--d-accent,var(--accent));padding:.85rem 1.1rem .4rem;margin:0 0 1.4rem;max-width:calc(var(--measure) + 6rem)}
+.lgcall-h{font-family:var(--face-term);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--d-accent,var(--accent));margin-bottom:.4rem}
+.lgcall p{margin:0 0 .5rem;font-size:.93rem}
+.lgcall ol{margin:0 0 .5rem;padding-left:1.2rem}.lgcall li{margin:0 0 .3rem;font-size:.93rem}
+.lgscroll{overflow-x:auto;max-width:100%}
+.lgtable{font-size:.86rem}
+.lgtable td.num,.lgtable th.num{white-space:nowrap}
+.lgtable tr.flag td:first-child{box-shadow:inset 3px 0 0 var(--signal-urgent)}
+@media(max-width:700px){.lgscroll .lgtable{display:table}}
+.lgfig{margin:0 0 .9rem;background:var(--ground-raised);border:1px solid var(--rule);padding:.8rem .9rem}
+.lgsvg{display:block;width:100%;height:auto;font-family:var(--face-body)}
+.lg-grid{stroke:var(--rule-soft);stroke-width:1}
+.lg-tick{fill:var(--ink-faint);font-size:11px;font-family:var(--face-term)}
+.lg-axis{fill:var(--ink-muted);font-size:11.5px}
+.lg-stage{fill:var(--ink-faint);font-size:11px}.lg-stage.on{fill:var(--r-accent)}
+.lg-band{fill:var(--r-accent);opacity:.1}
+.lg-line{fill:none;stroke:#6B6253;stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round}
+.lg-line:hover{stroke:var(--ink-muted);stroke-width:2}
+.lg-line.best{stroke:var(--r-accent);stroke-width:2.4}
+.lg-end,.lg-note{paint-order:stroke;stroke:var(--ground-raised);stroke-width:4px;stroke-linejoin:round}
+.lg-end{fill:var(--ink-muted);font-size:11px}.lg-end.best{fill:var(--ink);font-weight:600}
+.lg-note{fill:var(--ink-muted);font-size:11px}
+.lg-chain{stroke:var(--ink-faint);stroke-width:3;stroke-linecap:round}
+.lg-chain.bad{stroke:var(--signal-urgent)}
+.lg-dot{fill:var(--ink);stroke:var(--ground-raised);stroke-width:2}
+.lg-peak{fill:var(--ink-muted);font-size:11px}.lg-peak.bad{fill:var(--signal-urgent);font-weight:600}
+.lglegend{display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;font-size:.8rem;color:var(--ink-muted);margin:0 0 .7rem}
+.lglegend span{display:inline-flex;align-items:center;gap:.4rem}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px}
+.sw.heart,.lgbar .track i.heart{background:var(--lg-heart)}
+.sw.body,.lgbar .track i.body{background:var(--lg-body)}
+.sw.adds,.lgbar .track i.adds{background:var(--lg-adds)}
+.lgbars{display:flex;flex-direction:column;gap:.38rem}
+.lgbar{display:grid;grid-template-columns:11.5rem 1fr 5.6rem;gap:.7rem;align-items:center}
+.lgbar .who{font-size:.85rem;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lgbar .who em{font-style:normal;color:var(--ink-faint);font-size:.75rem}
+.lgbar .track{display:flex;gap:2px;height:12px}
+.lgbar .track i{display:block;height:100%;border-radius:2px}
+.lgbar .val{font-family:var(--face-term);font-size:.78rem;color:var(--ink)}
+@media(max-width:560px){.lgbar{grid-template-columns:7rem 1fr 4.6rem;gap:.45rem}.lgbar .who em{display:none}}
+.lgheat{border-collapse:separate;border-spacing:2px;font-size:.8rem;margin:0;min-width:560px}
+.lgheat th,.lgheat td{border:none;padding:.3rem .35rem;text-align:center}
+.lgheat thead th{font-size:.66rem;line-height:1.2}
+.lgheat thead th span{display:block;color:var(--ink-faint);letter-spacing:0;text-transform:none}
+.lgheat tbody th{text-align:right;font-family:var(--face-body);font-size:.8rem;letter-spacing:0;text-transform:none;color:var(--ink-muted);white-space:nowrap}
+.lgheat td{font-family:var(--face-term);background:var(--ground-sunken);color:var(--ink);min-width:2.4rem}
+.lgheat tbody tr:hover{background:none}
+@media(max-width:700px){.lgheat{display:table}}
+.lglist-cards{display:grid;gap:.85rem}
+.lgcard{text-decoration:none;color:inherit;display:block}
+.lgcard:hover{border-color:var(--d-accent,var(--accent))}
+.lgcard p{color:var(--ink-muted);font-size:.92rem;margin:.4rem 0 .8rem;max-width:var(--measure)}
+@media print{
+  .lgtoc,.lgkick+h1+.lgwhen+.tile-foot a{display:none!important}
+  .lgfig,.lgcall,.lgtiles{break-inside:avoid;background:#fff;border-color:#bbb}
+  .lgtile{background:#fff}
+  .lg-line{stroke:#999}.lg-line.best{stroke:#000}.lg-band{fill:#000;opacity:.06}
+  .lg-dot{fill:#000;stroke:#fff}.lg-chain{stroke:#999}
+  .lgheat td{border:1px solid #ddd}
+}

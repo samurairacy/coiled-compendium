@@ -1,6 +1,7 @@
-/* js/render.js — helpers and every page function
-   Load order: data-shared → data-mplus → data-raid → render → app.
-   All five load with `defer`, which preserves this order. */
+/* js/render.js — helpers and every page function except the feature files
+   (wishlist.js, logs.js). Load order: data-shared → data-mplus → data-raid →
+   data-logs → render → wishlist → logs → app. All load with `defer`, which
+   preserves this order. */
 
 /* ═══════════════════════════════════════════════════════════════════════
    ENGINE — domain-agnostic. Router · renderers · facets · search.
@@ -1304,6 +1305,7 @@ function pBoss(id,tab){
   ${b.jp?bossMedia(b.jp,b.n):""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}
   ${b.gap?`<p class="gapflag">${ic("i-warn",13)} <b>This page rests on thinner sourcing than the rest.</b> <button class="linklike" data-goto="sourcing-${b.id}">How it knows what it knows ↓</button></p>`:""}
+  ${typeof logNote==="function"?logNote(b.id):""}
   ${briefBlock(b.brief,"raidbrief",b.briefh)}
   ${abilCount(b)?`<div class="lenses">${diffToggle()}${roleBar()}</div>${roleNote()}${sevLegend()}`:""}
   ${playBlock(b.play,ROLEF,b.playh)}
