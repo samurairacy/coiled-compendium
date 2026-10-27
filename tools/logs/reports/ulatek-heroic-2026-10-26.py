@@ -74,6 +74,17 @@ def report(F, facts):
     sh = {r[0]: r for r in H['share']}
     pots_w3 = sum(1 for x in third for ts in x['potions'].values() if any(lastw(x) - 15 <= t <= lastw(x) + 20 for t in ts))
     never = sorted(set(S['players']) - {p for x in P for p in x['potions']})
+    # who still drinks at the pull rather than in a window, by pulls
+    pre, inw1, total, here = (collections.Counter() for _ in range(4))
+    for x in P:
+        for p in x['roster']:
+            here[p] += 1
+        for p, ts in x['potions'].items():
+            total[p] += len(ts)
+            pre[p] += any(t < 20 for t in ts)
+            inw1[p] += any(125 <= t <= 156 for t in ts)
+    at_pull = sorted((p for p in pre if pre[p] >= 3 and pre[p] > inw1[p]), key=lambda p: -pre[p])
+    sparse = sorted(p for p in here if here[p] >= 6 and total[p] <= here[p] / 3)
     shr = [x for x in P if x['adds'].get('Shrieker')]
     life = lambda a: (a[1] - a[0]) if a[1] is not None else None
     fastest = min((x for x in shr if len(x['adds']['Shrieker']) >= 3 and all(a[1] for a in x['adds']['Shrieker'])),
@@ -118,7 +129,7 @@ def report(F, facts):
           "%d alive. One had the health and the other had the bodies, and neither had both."
           % (f1(hp_at(best, lastw(best))), alive_at(best, lastw(best)), f1(hp_at(pull(F, 5), 574)), alive_at(pull(F, 5), lastw(pull(F, 5)))),
           "**The fixes from 21 October held.** Blight Vein never went past %d stacks (it reached %d and wiped two pulls last time). There were "
-          "%d opening Rattler Slams (there were %d). %d Potions of Recklessness went into the first Heart window (there were %d). %d of %d "
+          "%d opening Rattler Slams (there were %d). %d combat potions went into the first Heart window (there were %d). %d of %d "
           "Serpent’s Bite circles held." % (B['bv'], A['bv'], B['slams'], A['slams'], B['pots'], A['pots'], B['held'][0], B['held'][1]),
           "**Heart targeting got worse, and worst where it matters most.** %d%% of targeted casts in the first window went at the Heart (%d%% "
           "on 21 Oct), %d%% in the second (%d%%), and **%d%% in the third**, the only window that can end the fight."
@@ -157,7 +168,7 @@ def report(F, facts):
           ['Opening Rattler Slams', str(A['slams']), str(B['slams'])],
           ['Unchecked Rage events', str(A['ur']), str(B['ur'])],
           ['Serpent’s Bite circles held', '%d of %d' % A['held'], '%d of %d' % B['held']],
-          ['Potions in the first Heart window', str(A['pots']), str(B['pots'])],
+          ['Combat potions in the first Heart window', str(A['pots']), str(B['pots'])],
           ['Vipers hatched in Stage One', str(A['vipers']), str(B['vipers'])],
           ['Avoidable hits per 10 min alive', f1(A['avoid']), f1(B['avoid'])]]},
         {'k': 'cap', 't': 'Heart-window averages leave out pulls that wiped inside the window. Tonight’s first four pulls were seventeen players, '
@@ -207,8 +218,13 @@ def report(F, facts):
           '**Hyperxd at %d%%** is still the tank holding her through the windows. Parmageddon is at %d%%.'
           % (share_of(F, 'Hyperxd'), share_of(F, 'Parmageddon'))]},
         {'k': 'h3', 't': 'Potions: the advice landed'},
-        {'k': 'p', 't': '%d Potions of Recklessness went into the first window tonight, against %d on 21 October, and %d more into the third '
-                        'window. Still never drunk, in any pull: %s.' % (B['pots'], A['pots'], pots_w3, w(never))},
+        {'k': 'p', 't': '%d combat potions (Potion of Recklessness and Light’s Potential, which share a cooldown) went into the first '
+                        'window tonight, against %d on 21 October, and %d into the third. Still drinking at the pull instead of the window: '
+                        '%s.%s%s'
+                        % (B['pots'], A['pots'], pots_w3,
+                           w(['**%s** (%d of %d pulls at the pull, %d in the first window)' % (p, pre[p], here[p], inw1[p]) for p in at_pull]),
+                           (' %s drank only %s all night.' % (w(sparse), w(['%d' % total[p] for p in sparse]))) if sparse else '',
+                           (' No combat potion at all: %s.' % w(never)) if never else '')},
       ]},
       {'id': 'avoidable', 'kick': 'Section 3', 'h': 'Avoidable damage', 'blocks': [
         {'k': 'lede', 't': 'The same definition as on 21 October: **Caustic Waves**, **Virulent Spit**, **Falling Debris**, **Deadly Venom** '

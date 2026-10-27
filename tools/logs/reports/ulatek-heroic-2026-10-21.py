@@ -102,7 +102,7 @@ def report(F, facts):
           'Leave 4.5 s or more between Grasping Fangs snap sets.',
           'Tail tank taunting by 8 s; taunt her only from melee; her tank never leaves her reach.',
           'A named reserve for any Serpent’s Bite group that has lost a member.',
-          'Potion of Recklessness inside the first Heart window.']},
+          'A combat potion inside the first Heart window, not at the pull.']},
       ]},
       {'id': 'night', 'kick': 'Section 1', 'h': 'How the night went', 'blocks': [
         {'k': 'lede', 't': "Every pull follows the same script: Stage One in 135 s, a 20-second Heart window, Stage Two, a second window "
@@ -158,13 +158,13 @@ def report(F, facts):
               'well under 1%% of her health per window. Good to collect, but every pull ended for other reasons first.'
               % (rng(wc), share_of(F, 'Predz'), share_of(F, 'Vurve'))},
         {'k': 'h3', 't': 'The bigger lever in the window: potions'},
-        {'k': 'p', 't': 'Heroism lands at %s s, which is right: it covers the whole window. Potions are a different story. Potion of '
-                        'Recklessness was drunk in the first 10 s by %s, which puts it on cooldown for the first window. Only %s drank one '
-                        '*inside* the first Heart window. %s never drank one in any pull. Potion damage spent on the Heart counts double, so '
-                        'the window is the best place for it. The %s%% spread in the first window’s damage across pulls is bigger than the '
-                        'whole mis-targeting cost.'
+        {'k': 'p', 't': 'Heroism lands at %s s, which is right: it covers the whole window. Potions are a different story. Almost '
+                        'everyone drinks a combat potion (Potion of Recklessness or Light’s Potential, which share a cooldown), but most drink '
+                        'it in the first 10 s: %s. That puts it on cooldown for the first window. Only %s drank one *inside* the first Heart '
+                        'window.%s Potion damage spent on the Heart counts double, so the window is the best place for it. The %s%% spread in '
+                        'the first window’s damage across pulls is bigger than the whole mis-targeting cost.'
                         % (rng(lust, f0), w(early), w(['%s (%d pull%s)' % (p, k, '' if k == 1 else 's') for p, k in sorted(in_w1.items())]),
-                           w(never), rng(r1))},
+                           (' %s drank no combat potion in any pull.' % w(never)) if never else '', rng(r1))},
       ]},
       {'id': 'avoidable', 'kick': 'Section 3', 'h': 'Avoidable damage', 'blocks': [
         {'k': 'lede', 't': 'Personal avoidable damage here means mechanics where the hit belongs to the person hit, according to the Ula’tek '
@@ -268,7 +268,7 @@ def report(F, facts):
           'plus %.0fM of raid-wide damage from untanked hits across the night.' % tankfail,
           '**Serpent’s Bite reserves**: when a soak group loses a member, a named player from another group moves to its circle. This would '
           'have prevented #2, #8 and #9.',
-          '**Potion of Recklessness inside the first Heart window** for everyone who can, instead of pre-pull or not at all.',
+          '**A combat potion inside the first Heart window**, Recklessness or Light’s Potential, for everyone, instead of at the pull.',
           '**Pawsey, Littlemel, Hyperxd: Heart macro or focus target** for the two windows. Pawsey and %s: Caustic Waves and Virulent Spit '
           'awareness in Stage Two.' % spit_who]},
       ]},

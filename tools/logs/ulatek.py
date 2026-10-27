@@ -66,7 +66,11 @@ CALC = {'1318329', '1306119'}
 MARK = '1298367'               # Mother's Wrath mark on the tank
 TAUNTS = {'Growl', 'Hand of Reckoning', 'Taunt', 'Dark Command', 'Provoke', 'Torment'}
 LUST = {'2825', '32182', '80353', '390386', '264667', '466904'}
-POTION = 'Potion of Recklessness'
+# Combat potions: they share one cooldown, so a player drinks one or the
+# other. Light's Potential was missed at first, which put seven players who
+# drink it every pull on a "never drank one" list. Freightrunner's Flask is
+# not one: it is cast 50 times a night, far too often for a potion.
+POTIONS = {'Potion of Recklessness', "Light's Potential"}
 r1_ = lambda v: round(v, 1)
 
 
@@ -167,6 +171,7 @@ def analyse_pull(P):
     purge_hits = collections.defaultdict(list)
     marks = []
     lust, potions = [], collections.defaultdict(list)
+    potion_kind = collections.defaultdict(collections.Counter)
     rezzes = []
     kicks = {k: {'casts': 0, 'kicked': 0, 'through': [], 'kickers': collections.Counter()} for k in KICKABLE.values()}
     hatch = {}
@@ -228,8 +233,9 @@ def analyse_pull(P):
             if is_player(src):
                 if sid in LUST:
                     lust.append([r1_(rt), nm(src), r[10]])
-                if r[10] == POTION:
+                if r[10] in POTIONS:
                     potions[nm(src)].append(r1_(rt))
+                    potion_kind[nm(src)][r[10]] += 1
                 w = win_of(rt)
                 if w is not None and dst != '0000000000000000' and not is_player(dst):
                     heart_cast[(w, src)][CAT.get(npc_id(dst), 'Other') if npc_id(dst) in (BOSS, HEART, TAIL) else 'Adds'] += 1
@@ -424,7 +430,7 @@ def analyse_pull(P):
         'double_purge': {k: v for k, v in dbl.items() if v},
         'tail': {'first_tank_cast': tail_first_cast, 'first_swing': tail_first_swing, 'first_tank_swing': tail_tank_swing},
         'taunts': taunts, 'marks': marks,
-        'lust': lust, 'potions': dict(potions), 'rezzes': rezzes,
+        'lust': lust, 'potions': dict(potions), 'potion_kind': {p: dict(c) for p, c in potion_kind.items()}, 'rezzes': rezzes,
         'kicks': {k: {**v, 'kickers': v['kickers'].most_common()} for k, v in kicks.items() if v['casts']},
         'eggs': sorted(hatch.values(), key=lambda e: e[0]),
         'adds': {name: sorted(([r1_(adds_seen[g]), r1_(adds_died[g]) if g in adds_died else None]

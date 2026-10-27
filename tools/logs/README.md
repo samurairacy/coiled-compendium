@@ -68,6 +68,11 @@ WoWCombatLog-*.txt ──ulatek.py──▶ facts/<id>.json ──build.py──
   counts as a hit.
 - **Targeting is measured from cast targets, not damage.** The log's own `ST` /
   `AOE` flag keeps cleave procs out of the mis-targeting cost.
+- **Combat potions are a set, not one item.** Potion of Recklessness and
+  Light's Potential share a cooldown, so a player drinks one or the other
+  (`POTIONS` in `ulatek.py`). Counting only Recklessness put seven players who
+  drink Light's Potential every pull on a "never drank one" list. Add any new
+  combat potion to the set before quoting potion numbers.
 - **A carrier who dies holding Serpent's Bite becomes the Calcified Corpse.**
   When the corpse appears the same instant the carrier dies, the circle did not
   fail; the carrier did.
