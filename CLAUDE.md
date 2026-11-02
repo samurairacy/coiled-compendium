@@ -86,6 +86,21 @@ item icons keyed by Blizzard slug.
   336 abilities. Every dungeon's `bosses:` equals `encounters.length`; if
   they ever diverge, treat it as a misfiled encounter, not intent (that
   defect shipped once, and an earlier CLAUDE.md wrongly blessed it).
+- **The Unbinding of Kith'ix (patch 12.1.5, 13 Oct 2026) is a second raid,
+  filed INSIDE the raid module on purpose.** One boss, its own instance, door,
+  lockout and item levels — but the same story one floor down (Ula'tek was the
+  door he was locked behind), and every index here already speaks "raid boss".
+  So Kith'ix is `RAID.bosses[8]` carrying `inst:"kithix"`, and the instance
+  facts live on `RAID.annex`. **Anything that counts or labels the Venomous
+  Abyss must filter `inst` out** — `ABYSS()` in render.js does — or the landing
+  page reads "nine bosses" and search calls him boss 9 of 9. Splitting into a
+  `RAIDS` array was considered and declined: it touches every page, the loot
+  facet, wishlists and search for no reader-visible gain. Revisit if a THIRD
+  instance arrives. His journal (`wh_ejk`) was read for Normal and Heroic side
+  by side, and that is what settled three numbers the guides quote
+  differently — each guide was describing a different difficulty, not
+  disagreeing. The one real disagreement, when to Bloodlust, is filed as
+  `kx-lust`.
 - **Raid module: The Venomous Abyss is a fork, not a line.** After
   Nek'zali it splits into two wings — Entombed Sentinels → Vashnik, and
   The Lost Explorers → Sszorak — converging at the Twin Fangs, then the
@@ -126,7 +141,8 @@ item icons keyed by Blizzard slug.
   a wrong `ro` silently misfilters the spec facet. `rc:` is a source key for
   eligibility *seen in game*, and it **outranks every rule below** — the chips
   drop the unconfirmed tooltip and wear a tick, and `check.py` exempts those
-  rows. **All 41 trinket roles are observed** as of 2026-08-17 — the owner
+  rows. **All 41 Season 2 launch trinket roles are observed** as of 2026-08-17 (the
+  three Kith'ix trinkets added in 12.1.5 are inferred, dashed, until looked at) — the owner
   walked both modules in game — so `ro` is *data*, not a reading, and the page
   no longer disclaims it: the "UNCONFIRMED: Role" facet heading and the
   per-option prefixes are gone, because a disclaimer that undersells the data
@@ -331,7 +347,7 @@ item icons keyed by Blizzard slug.
   key `cc-wl` (`{v:1,active,lists:[{k,name,cls,items:[{id,star}]}]}`), read
   lazily behind try/catch so a corrupt blob degrades to an explained empty
   state and can never brick the router. Items serialize on **Wowhead ids**
-  — `check.py` asserts all 312 loot rows carry one, uniquely — because 57
+  — `check.py` asserts all 322 loot rows carry one, uniquely — because 57
   names changed this season and ids didn't. **Sharing is sending a
   snapshot**, never a live link: `#/wl/import?i=<id[s]>.<id>…&n=…&c=…`
   (dot-joined, `s` marks a star) opens a preview whose one action is "Save
@@ -446,7 +462,7 @@ item icons keyed by Blizzard slug.
 - **The homepage status line computes live** against the Season 2 start of
   18 Aug 2026 (the raid opens the same week). A stale-looking homepage is
   usually just the calendar.
-- **Ability icons are keyed by name, not ID.** `ICONS` (380 entries) maps
+- **Ability icons are keyed by name, not ID.** `ICONS` (410 entries) maps
   name → Blizzard slug; `abilIcon()` renders `assets/icons/<slug>.jpg`.
   **A name without an entry wears the classic red question mark**
   (`inv_misc_questionmark`, asserted on disk by `check.py`), never an empty

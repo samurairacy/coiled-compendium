@@ -300,7 +300,8 @@ else:
 # two items one. Names won't do — 57 were renamed this season; ids survived.
 loot_rows = [m.group(0) for m in re.finditer(r'\{n:"(?:[^"\\]|\\.)*"[^{}]*?\}', mplus + raid)
              if 'sl:"' in m.group(0)]
-check(len(loot_rows) == 312, "312 loot rows found (%d)" % len(loot_rows))
+# 312 until 12.1.5 added the ten Kith'ix pieces
+check(len(loot_rows) == 322, "322 loot rows found (%d)" % len(loot_rows))
 lids = [re.search(r'\bid:(\d+)', b) for b in loot_rows]
 check(all(lids), "every loot row carries a Wowhead id (%d without)" % sum(1 for m in lids if not m))
 lidv = [m.group(1) for m in lids if m]
@@ -321,7 +322,8 @@ check(not ldup, "loot ids unique (%s)" % (", ".join(ldup[:4]) or "clean"))
 # which is the editorial mistake that actually happened.
 trinkets = [b.group(0) for b in re.finditer(r'\{n:"(?:[^"\\]|\\.)*"[^{}]*?\}', mplus + raid)
             if 'sl:"Trinket"' in b.group(0)]
-check(len(trinkets) == 41, "41 trinkets found (%d)" % len(trinkets))
+# 41 until 12.1.5 added three from Kith'ix
+check(len(trinkets) == 44, "44 trinkets found (%d)" % len(trinkets))
 name_of = lambda t: re.search(r'\{n:"((?:[^"\\]|\\.)*)"', t).group(1)
 arr = lambda t, k: re.findall(r'"(\w+)"', (re.search(r'\b%s:\[([^\]]*)\]' % k, t) or [None, ""])[1])
 noro = [name_of(t) for t in trinkets if not arr(t, "ro")]

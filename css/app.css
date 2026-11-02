@@ -125,6 +125,10 @@ body[data-boss="sszorak"],           [data-boss="sszorak"]           { --d-accen
 body[data-boss="twin-fangs"],        [data-boss="twin-fangs"]        { --d-accent:#309DDC; --d-accent-2:#6F8FD6; --d-ink:#14232F; }
 body[data-boss="coiled-altar"],      [data-boss="coiled-altar"]      { --d-accent:#6F8FD6; --d-accent-2:#9680C5; --d-ink:#1C212F; }
 body[data-boss="ulatek"],            [data-boss="ulatek"]            { --d-accent:#9680C5; --d-accent-2:#2CC966; --d-ink:#241F2D; }
+/* Kith'ix is one floor below the descent: void magenta, the palette's
+   end, with Liadrin's gold as the second accent — the fight is the dark and
+   the one light holding it back. */
+body[data-boss="kithix"],            [data-boss="kithix"]            { --d-accent:#C27ADB; --d-accent-2:#E2B653; --d-ink:#26132C; }
 
 /* ═══ LOCKED LAYER ═══════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box}
@@ -651,6 +655,10 @@ h3 .cicon{margin-right:.4rem}
   border:1px solid transparent;border-radius:2px;transition:color var(--dur) var(--ease)
 }
 .dswitch a svg{width:15px;height:15px;color:var(--d-accent);opacity:.55;flex:none}
+/* The boss switcher crosses an instance boundary at Kith'ix, who is a raid
+   of his own; a hairline says so without a label competing with the names. */
+.dswitch .dsw-sep{flex:none;width:1px;align-self:stretch;margin:.25rem .35rem;background:var(--rule)}
+.dswitch .rnum svg{width:11px;height:11px;opacity:1;color:inherit}
 /* Labels are the in-game codes, so they are set as identifiers rather
    than words. Near-uniform length is the point: the bar reads as eight
    slots instead of a ragged list of names. */

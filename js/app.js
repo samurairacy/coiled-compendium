@@ -379,15 +379,16 @@ const INDEX=[
  /* ability rows carry their module: dungeon rows point into the dungeon,
     raid rows into the boss page */
  ...ALL.map(x=>x.mod==="r"
-   ?{t:x.a.n,m:`${x.src} · ${x.kind} · ${RAID.name}`,h:`#/r/${x.b.id}`}
+   ?{t:x.a.n,m:`${x.src} · ${x.kind} · ${x.b.inst&&RAID.annex?RAID.annex.name:RAID.name}`,h:`#/r/${x.b.id}`}
    :{t:x.a.n,m:`${x.a.alt?"also "+x.a.alt+" · ":""}${x.src} · ${x.kind} · ${x.d.name}`,h:`#/d/${x.d.id}/${x.kind==="Boss"?"bosses":"trash"}`}),
  ...DUNGEONS.flatMap(d=>d.loot?d.loot.i.map(x=>({t:x.n,m:`${x.ty} · ${x.sl} · ${d.name}`,h:`#/d/${d.id}/loot`})):[]),
- ...RAID.bosses.flatMap(b=>(b.loot||[]).map(x=>({t:x.n,m:`${x.ty} · ${x.sl} · ${b.n} · ${RAID.name}`,h:`#/r/${b.id}/loot`}))),
+ ...RAID.bosses.flatMap(b=>(b.loot||[]).map(x=>({t:x.n,m:`${x.ty} · ${x.sl} · ${b.n} · ${b.inst&&RAID.annex?RAID.annex.name:RAID.name}`,h:`#/r/${b.id}/loot`}))),
  ...DUNGEONS.flatMap(d=>[...d.areas.flatMap(a=>a.mobs),...d.encounters].flatMap(m=>{
    const e={t:m.n,m:`${KINDS[m.k]||"Boss"} · ${d.name}`,h:`#/d/${d.id}/${m.o?"bosses":"trash"}`};
    return m.alt?[e,{t:m.alt,m:`Alternate name for ${m.n} · ${d.name}`,h:e.h}]:[e];})),
- ...RAID.bosses.map(b=>({t:b.n,m:`Boss ${b.o} of ${RAID.bosses.length} · ${RAID.name}`,h:`#/r/${b.id}`})),
- {t:RAID.name,m:`Raid · ${RAID.bosses.length} bosses · Normal and Heroic`,h:"#/raid"},
+ ...RAID.bosses.map(b=>({t:b.n,m:b.inst&&RAID.annex?`Single-boss raid · ${RAID.annex.name} · patch ${RAID.annex.patch}`:`Boss ${b.o} of ${RAID.bosses.filter(x=>!x.inst).length} · ${RAID.name}`,h:`#/r/${b.id}`})),
+ {t:RAID.name,m:`Raid · ${RAID.bosses.filter(x=>!x.inst).length} bosses · Normal and Heroic`,h:"#/raid"},
+ ...(RAID.annex?[{t:RAID.annex.name,m:`Raid · one boss · patch ${RAID.annex.patch}`,h:`#/r/${RAID.annex.bosses[0]}`}]:[]),
  {t:"Raid prep",m:"Lockout, schedule, what to bring",h:"#/raid/prep"},
  ...DUNGEONS.flatMap(d=>d.buffs.map(b=>({t:b.n,m:`Interactable · ${d.name}`,h:`#/d/${d.id}`}))),
  {t:"Wishlists",m:"Your lists · keys to run · voidcore odds",h:"#/wl"},

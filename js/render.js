@@ -827,7 +827,7 @@ const mechRow=x=>`<div class="mres"><div class="mtop">
 /* What a reader wants at a chunk boundary: how far in they are, which dungeons
    that stretch covered, and whether any of it will end a run. */
 const mechNote=(shown,total,slice)=>{
-  const dg=[...new Set(slice.map(x=>x.mod==="r"?RAID.short:x.d.short))];
+  const dg=[...new Set(slice.map(x=>x.mod==="r"?(x.b.inst&&RAID.annex?RAID.annex.short:RAID.short):x.d.short))];
   const s3=slice.filter(x=>x.a.sev===3).length;
   const kl=slice.filter(x=>isLethal(x.a)).length;
   return milestone(shown,total,[dg.join(", "),s3?`${s3} run-ender${s3>1?"s":""}`:"",kl?`${kl} kill${kl>1?"":"s"} outright`:""]);
@@ -1131,15 +1131,21 @@ const bossTile=b=>`<a class="rboss" href="#/r/${b.id}" data-boss="${b.id}">
   ${b.sub?`<span class="rsub">${esc(b.sub)}</span>`:""}
   <span class="rabil">${abilCount(b)||"—"} abilities</span></a>`;
 
+/* The Venomous Abyss proper — the annex raid's boss is listed separately,
+   never as boss 9 of an 8-boss instance. */
+const ABYSS=()=>RAID.bosses.filter(b=>!b.inst);
+const annexOf=b=>b&&b.inst&&RAID.annex&&RAID.annex.id===b.inst?RAID.annex:null;
+
 function pRaid(){
-  const nAb=RAID.bosses.reduce((n,b)=>n+abilCount(b),0);
+  const nAb=ABYSS().reduce((n,b)=>n+abilCount(b),0);
+  const AX=RAID.annex;
   const F=RAID.fork, tile=id=>bossTile(RB[id]);
   return `<div class="crumb"><a href="#/">Compendium</a> › <em>Raid</em></div>
   <h1>${esc(RAID.name)}</h1>
   ${modbar("raid","raid")}
   <div class="tile-foot" style="border:none;padding:.8rem 0 0">
     <span class="pill new" style="background:var(--r-accent);color:var(--r-ink)">Patch ${RAID.patch}</span>
-    <span class="pill">${ic("i-boss")}${RAID.bosses.length} bosses</span>
+    <span class="pill">${ic("i-boss")}${ABYSS().length} bosses</span>
     <span class="pill">Normal · Heroic</span>
     ${nAb?`<span class="pill">${nAb} abilities</span>`:""}
     <span class="pill warn">${ic("i-warn")}Pre-launch data</span></div>
@@ -1155,7 +1161,14 @@ function pRaid(){
   <div class="rfork">
     ${F.wings.map(w=>`<div class="rwing"><div class="rwing-h">${esc(w.n)}</div>${w.ids.map(tile).join("")}</div>`).join("")}
   </div>
-  <div class="rlist">${[F.converge,...RAID.bosses.filter(b=>b.o>=7).map(b=>b.id)].map(tile).join("")}</div>
+  <div class="rlist">${[F.converge,...ABYSS().filter(b=>b.o>=7).map(b=>b.id)].map(tile).join("")}</div>
+
+  ${AX?`<div class="sec"><h2>${esc(AX.name)}</h2><span class="n">One boss · patch ${esc(AX.patch)}</span></div>
+  <p class="note">A raid of its own, added on ${esc(new Date(AX.opens+"T12:00:00Z").toLocaleDateString(undefined,{day:"numeric",month:"long"}))}
+  with its own door and its own lockout — and the same story one floor down: Ula'tek was guarding the door he was
+  locked behind. ${esc(AX.trash)}${srcMark(["me_kx","jf_kx"])}</p>
+  <div class="rlist">${AX.bosses.map(tile).join("")}</div>
+  <p class="note">${esc(AX.way)}${srcMark(AX.s)} — ${esc(AX.where)}</p>`:""}
 
   ${disputeBlock("raid")}
   ${resolvedBlock("raid")}
@@ -1190,6 +1203,9 @@ function pPrep(){
   ${il.brackets.map((b,i)=>`<tr><td>${esc(b)}</td><td class="mono">${il.n[i]}</td><td class="mono">${il.h[i]}</td></tr>`).join("")}
   </tbody></table>
   <p class="note">Every boss also drops ten crests: ${esc(il.crests.n)}; on Heroic, ${esc(il.crests.h)}.${srcMark(["iv_va"])}</p>
+  ${RAID.annex?`<p class="note"><b>${esc(RAID.annex.name)}</b> is a separate instance with its own lockout. Kith'ix
+  drops item level ${RAID.annex.ilvl.n} on Normal and ${RAID.annex.ilvl.h} on Heroic (${RAID.annex.ilvl.lfr} Raid Finder,
+  ${RAID.annex.ilvl.m} Mythic). ${esc(RAID.annex.crests)} ${esc(RAID.annex.extras)}${srcMark(RAID.annex.s)}</p>`:""}
 
   <div class="sec"><h2>Tier sets</h2><span class="n">Bosses 2–6, plus the Curio</span></div>
   <p class="note">Set tokens drop from the four wing bosses and the Twin Fangs — Vashnik holds chests, the
@@ -1251,6 +1267,7 @@ const abilCount=b=>(b.phases?b.phases.flatMap(p=>p.a||[]):(b.a||[])).length;
 function pBoss(id,tab){
   const b=RB[id]; if(!b) return `<p>Unknown boss.</p>`;
   const wing=RAID.fork.wings.find(w=>w.ids.includes(b.id));
+  const AX=annexOf(b);
   const phases=b.phases||[{n:"The fight",trigger:"",a:b.a||[]}];
   /* On Normal, Heroic-only rows collapse to a counted line rather than
      vanishing — silent filtering is how a reader forms a wrong picture and
@@ -1293,14 +1310,16 @@ function pBoss(id,tab){
   return `<div class="crumb"><a href="#/">Compendium</a> › <a href="#/raid">Raid</a> › <em>${esc(b.n)}</em></div>
   <p class="printmeta">The Coiled Compendium — ${esc(b.n)} · ${DIFFL[DIFF]}${ROLEF?` · viewing as ${({tank:"Tank",healer:"Healer",mdps:"Melee DPS",rdps:"Ranged DPS"})[ROLEF]}`:""} · samurairacy.github.io/coiled-compendium</p>
   <nav class="dswitch" id="dswitch" aria-label="Switch boss">${RAID.bosses.map(x=>
-    `<a href="#/r/${x.id}" data-boss="${x.id}" ${x.id===b.id?'aria-current="page"':""}
-      title="${esc(x.pos)} — ${esc(x.n)}"><span class="rnum">${x.o}</span>${esc(x.short)}</a>`).join("")}</nav>
+    `${x.inst?`<span class="dsw-sep" aria-hidden="true"></span>`:""}<a href="#/r/${x.id}" data-boss="${x.id}" ${x.id===b.id?'aria-current="page"':""}
+      title="${esc(x.pos)} — ${esc(x.n)}${annexOf(x)?" · "+esc(annexOf(x).name):""}"><span class="rnum">${x.inst?ic("i-boss",11):x.o}</span>${esc(x.short)}</a>`).join("")}</nav>
   <h1>${esc(b.n)}</h1>
   <div class="tile-foot" style="border:none;padding:.8rem 0 0">
     <span class="pill">${esc(b.pos)}</span>
     ${wing?`<span class="pill">${esc(wing.n)}</span>`:""}
     ${abilCount(b)?`<span class="pill">${ic("i-boss")}${abilCount(b)} abilities</span>`:""}
-    <span class="pill warn">${ic("i-warn")}Pre-launch data</span></div>
+    ${AX?`<span class="pill">${esc(AX.name)} · patch ${esc(AX.patch)}</span>
+    <span class="pill">Journal-checked · live sources</span>`
+       :`<span class="pill warn">${ic("i-warn")}Pre-launch data</span>`}</div>
   ${b.img&&IMG[b.img]?`<div class="hban"><img src="${IMG[b.img]}" alt="${esc(b.n)} in game" decoding="async"></div>`:""}
   ${b.jp?bossMedia(b.jp,b.n):""}
   ${b.sub?`<p class="lede">${esc(b.sub)}</p>`:""}

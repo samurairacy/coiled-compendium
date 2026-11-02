@@ -11,6 +11,12 @@
 const SOURCES={
  bz_game:{l:"BLIZZARD",t:1,k:"blizzard",a:"Blizzard",b:"Patch 12.1 notes and in-game data",d:"2026-08-16",u:"https://worldofwarcraft.blizzard.com/en-us/news",note:"Season structure, affix bands, reward tracks and drop sources as published by Blizzard or read directly from the live client."},
  wh_ej  :{l:"JOURNAL",t:1,k:"journal",a:"Blizzard Encounter Journal",b:"In-game dungeon journal, mirrored by Wowhead (PTR 12.1.0)",d:"2026-08-16",u:"https://www.wowhead.com/",note:"The text is Blizzard's own. The delivery is a third-party mirror, so transcription error is possible and PTR values can still move — but on names, numbers and mechanics this outranks every guide."},
+ /* The Kith'ix journal, read for BOTH difficulties side by side. It settles
+    three numbers the guides quote differently, each because the guides were
+    describing different difficulties: Devastated's Physical amplification
+    (100% Normal, 150% Heroic), the Nullify kill threshold (6 and 5), and
+    Luminous Grace's healing (50%, against one site's 100%). */
+ wh_ejk :{l:"JOURNAL",t:1,k:"journal",a:"Blizzard Encounter Journal",b:"Kith'ix, Normal and Heroic (12.1.5), mirrored by Wowhead",d:"2026-11-02",u:"https://www.wowhead.com/npc=267861/kithix/heroic-encounter-journal",note:"Blizzard's text through a third-party mirror. Negation's duration is blank in the journal itself."},
  bz0813 :{l:"BLIZZARD",t:1,k:"blizzard", a:"Blizzard",b:"Hotfixes: 13 August 2026",d:"2026-08-13",u:"https://news.blizzard.com/en-us/article/24296142/hotfixes-august-14-2026"},
  bz0814 :{l:"BLIZZARD",t:1,k:"blizzard", a:"Blizzard",b:"Hotfixes: 14 August 2026",d:"2026-08-14",u:"https://news.blizzard.com/en-us/article/24296142/hotfixes-august-14-2026"},
  wh_dt  :{l:"WOWHEAD",t:2,k:"wowhead",  a:"Wowhead",b:"Midnight Season 2 Dungeon Tuning for Patch 12.1",d:"2026-07-25",u:"https://www.wowhead.com/news/midnight-season-2-dungeon-tuning-for-patch-12-1-382238"},
@@ -63,6 +69,18 @@ const SOURCES={
  tk_va  :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Normal/Heroic Venomous Abyss Raid Guide (video)",d:"2026-08-13",u:"https://www.youtube.com/watch?v=L__7PvkXaoc"},
  tk_vtk :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Venomous Abyss Tank Tips for Normal and Heroic (video)",d:"2026-08-14",u:"https://www.youtube.com/watch?v=P-V2_kWBmP8"},
  tk_rt  :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Pug-Friendly Mythic+ Routes for All Season 2 Dungeons",d:"2026-08-15",u:"https://www.youtube.com/watch?v=nZJi0Fdgl5Q"},
+ wh_kx  :{l:"WOWHEAD",t:2,k:"wowhead",  a:"Wowhead (Daylea)",b:"The Unbinding of Kith'ix Raid Guide: Boss Cheat Sheet and Rewards",d:"2026-10-13",u:"https://www.wowhead.com/guide/midnight/raids/the-unbinding-of-kithix-boss-strategy-abilities-rewards"},
+ me_kx  :{l:"METHOD",t:3,k:"method",   a:"Method (Purke)",b:"Kith'ix Heroic and Mythic Boss Guide",d:"2026-10-14",u:"https://www.method.gg/guides/the-unbinding-of-kithix/kithix"},
+ mt_kx  :{l:"MYTHIC TRAP",t:3,k:"creator",a:"Mythic Trap",b:"Kith'ix strategy guide",d:"2026-10-13",u:"https://www.mythictrap.com/en/venomous-abyss/kithix"},
+ tk_kx  :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Normal/Heroic Kith'ix Boss Guide (video, PTR footage)",d:"2026-10-09",u:"https://www.youtube.com/watch?v=qEDjHal4GL4"},
+ jf_kx  :{l:"JFUNKGAMING",t:3,k:"creator",  a:"JFunkGaming",b:"Heroic/Mythic Kith'ix Boss Guide (video, PTR footage)",d:"2026-10-12",u:"https://www.youtube.com/watch?v=WMXHYh0VR7c"},
+ /* Mythic, and post-launch. Cited only where its handling carries over to
+    Heroic — beetle grips one at a time, fragment soakers alternating, the
+    fear dispel order. */
+ rcp_kx :{l:"READY CHECK",t:3,k:"creator",  a:"Ready Check Pull",b:"Kith'ix Mythic Guide (updated, video)",d:"2026-10-18",u:"https://www.youtube.com/watch?v=81IyNmj8294"},
+ /* New to the ledger and says so himself — his first guide. A Heroic tank's
+    week-one account; cited for what he saw, never against the journal. */
+ oe_kx  :{l:"OEVRIT",t:3,k:"creator",  a:"oevrit",b:"Heroic Kith'ix Tank Guide (video, post-launch)",d:"2026-10-17",u:"https://www.youtube.com/watch?v=2Ea3THJO5Uk"},
  tk_trk :{l:"TACTYKS",t:3,k:"creator",  a:"Tactyks",b:"Season 2 Tank Trinket and Cantrip Gear Preview",d:"2026-06-27",u:"https://www.youtube.com/watch?v=2d3ebU0MuE8"},
  /* The first POST-LAUNCH source in the ledger. Everything else here was
     recorded before the season opened; this is a guild describing what week
@@ -264,6 +282,11 @@ const SEASON={
 
 /* ═══ CONTESTED — rendered wherever the claim appears ═══ */
 const DISPUTES=[
+ {id:"kx-lust",q:"Kith'ix: Bloodlust on the pull, or save it for Stage Two?",
+  a:{p:"Stage Two. Luminous Grace already gives 50% damage, the burn is a one-minute race against Eightfold Eclipse, and it is the window every cooldown is saved for.",s:["me_kx","wh_kx","rcp_kx"]},
+  b:{p:"On the pull. On Heroic, killing the first swarm in time was the stricter check, and the final stage died quickly without it.",s:["jf_kx"]},
+  extra:"Tactyks takes the middle: Stage Two by default, Stage One if your raid finds the final damage check easy and lust lets you skip a dangerous early loop.",
+  r:"It turns on which check your raid is closer to failing. If you are reaching 100 energy with adds alive, the pull. If you are dying to the eighth eclipse, Stage Two.",dg:"raid"},
  {id:"kr-count",q:"Does King's Rest still require 100% trash count?",
   a:{p:"Yes — every mob in the instance, believed to be a first for the format.",s:["bz_game"]},
   b:{p:"Relaxed late in the PTR. A 15 Aug routing video says the requirement changed and demonstrates a route leaving two packs unpulled that still makes count; Wowhead separately reported PTR dungeon tuning that removed some King's Rest trash. Note these are not the same claim — removing trash does not by itself relax a 100% requirement.",s:["tk_rt","wh_dt"]},
@@ -917,7 +940,32 @@ const ICONS={
 "Harsh Winter":"spell_frost_arcticwinds",
 "Cloudpiercer":"ability_skyreach_wind_wall",
 "Static Discharge":"spell_shaman_staticshock",
-"Spore Spines":"inv_misc_herb_04"
+"Spore Spines":"inv_misc_herb_04",
+/* The Unbinding of Kith'ix (12.1.5) - slugs read off the journal's own spell links. */
+"Voidswarm":"spell_shadow_shadesofdarkness",
+"Commanding Presence":"achievement_nazmir_boss_mythraxtheunraveler",
+"Venom Roar":"ability_creature_poison_02",
+"Nightfall":"spell_priest_divinestar_shadow",
+"Voidweave":"inv_cosmicvoid_beam",
+"Gut Reaction":"inv_ability_poison_nova",
+"Incubation":"inv_11_0_raid_mercurialegg_red",
+"Extinguish":"inv_elemental_primal_shadow",
+"Unspeakable Horrors":"spell_misc_emotionafraid",
+"Twisted Appendage":"inv12_ability_priest_tentacleslam",
+"Dark Devastation":"inv_1205_voidforge_fluctuatingvoidcores_midnight",
+"Voidscar":"inv_cosmicvoid_groundstate",
+"Suffocating Darkness":"inv_112_raidtrinkets_blobofswirlingvoid_gold",
+"Dark Frenzy":"inv_shadowelementalmount_purple",
+"Refulgent Bulwark":"spell_holy_powerwordbarrier",
+"Abyssal Grasp":"spell_priest_voidtendrils",
+"Eclipse Fragment":"inv_1205_voidforge_sovereignvoidcores_cosmicvoid",
+"Exhausted":"inv_ability_holyfire_debuff",
+"Stygian Howl":"ability_warlock_eradication",
+"Last Light":"spell_holy_surgeoflight",
+"Eightfold Eclipse":"inv_nullstone_void",
+"Null Gate":"inv_cosmicvoid_nova",
+"Nullify":"inv_1205_voidforge_sovereignvoidcorefragments_cosmicvoid",
+"Negation":"spell_shadow_seedofdestruction"
 };
 
 /* ═══ ROWS THAT ARE NOT SPELLS ═══════════════════════════════════════════
